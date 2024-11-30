@@ -1,0 +1,221 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'themes/login_themes/css/login_themes.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main style="margin-left: 8px;">
+    <section>
+        <div class="container-fluid">
+            <!-- Main Heading -->
+            <div class="row">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2">
+                        <div class="col-sm-12" style="display:flex;">
+                            <i class='bx bx-calendar-plus text-success req-head-icon'></i>
+                            <h1 class="h3 text-success req-head">Login Themes Selection</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <section>
+        <div class="col-sm-12" style="display:flex; margin-top: 0.5rem;">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <div class="itemsetup_container">
+                            <form id="login_theme">
+                                <div class="add_edit_head">
+                                    <h2 class="text-primary">Login Themes Views List</h2>
+                                </div>
+                                <!--  -->
+                                <div class="themes-card">
+                                    <div class="card" style="width: 18rem; margin: 0.5rem; cursor: pointer;" data-radio-id="login_theme1">
+                                        <div class="background">
+                                            <div class="main_background">
+                                                <img src="{% static 'images/login_themes/login_themes1.jpg' %}" alt="">
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="login_theme" value="login_theme1"
+                                                        id="login_theme1" {% if logintheme_name == 'login_theme1' %}checked{% endif %}>
+                                                    <label class="form-check-label" for="login_theme1">
+                                                        Themes 1
+                                                    </label>
+                                                    <span class="status" style="display: inline; margin-left: 6rem; color: green; font-size: 0.95rem; font-weight: bold;">active</span>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="fullexitBtn">
+                                                <i class='bx bx-fullscreen loginthemefullscrnBtn' style="cursor: pointer;"></i>
+                                                <i class='bx bx-cross loginthemecloseBtn' style="display: none; cursor: pointer;"></i>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="card" style="width: 18rem; margin: 0.5rem; cursor: pointer;" data-radio-id="login_theme2">
+                                        <div class="background">
+                                            <div class="main_background">
+                                                <img src="{% static 'images/login_themes/login_themes2.jpg' %}" alt="">
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="login_theme" value="login_theme2"
+                                                        id="login_theme2" {% if logintheme_name == 'login_theme2' %}checked{% endif %}>
+                                                    <label class="form-check-label" for="login_theme2">
+                                                        Themes 2
+                                                    </label>
+                                                    <span class="status" style="display: inline; margin-left: 6rem; color: green; font-size: 0.95rem; font-weight: bold;">active</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="card" style="width: 18rem; margin: 0.5rem; cursor: pointer;" data-radio-id="login_theme3">
+                                        <div class="background">
+                                            <div class="main_background">
+                                                <img src="{% static 'images/login_themes/login_themes3.jpg' %}" alt="">
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="login_theme" value="login_theme3"
+                                                        id="login_theme3" {% if logintheme_name == 'login_theme3' %}checked{% endif %}>
+                                                    <label class="form-check-label" for="login_theme3">
+                                                        Themes 3
+                                                    </label>
+                                                    <span class="status" style="display: inline; margin-left: 6rem; color: green; font-size: 0.95rem; font-weight: bold;">active</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="card" style="width: 18rem; margin: 0.5rem; cursor: pointer;" data-radio-id="login_theme4">
+                                        <div class="background">
+                                            <div class="main_background">
+                                                <img src="" alt="Comming Soon">
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="login_theme" value="login_theme4"
+                                                        id="login_theme4" disabled>
+                                                    <label class="form-check-label" for="login_theme4">
+                                                        Themes 4
+                                                    </label>
+                                                    <span class="status" style="display: inline; margin-left: 6rem; color: green; font-size: 0.95rem; font-weight: bold;">active</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <!--  -->
+                                <div class="submitted_login" style="padding: 2rem;">
+                                    <div class="submit_button">
+                                        <button type="submit" class="btn btn-success btn-sm">Save & Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+
+        </div>
+    </section>
+</main>
+<script>
+    // ajax submission
+    $(document).ready(function () {
+        $("#login_theme").submit(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+    
+            // Get form data
+            var formData = $(this).serialize();
+    
+            // Make AJAX request
+            $.ajax({
+                url: "{% url 'save_update_login_theme' %}",
+                data: formData,
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },  // Add this line to include the CSRF token
+                method: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.msg);
+                        location.reload(true);
+                    } else {
+                        toastr.warning("Save failed. Error: " + response.errmsg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX request failed. Status: " + status + ", Error: " + error);
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Select all cards, radio buttons, and status spans
+        const cards = document.querySelectorAll('.card');
+        const radios = document.querySelectorAll('.form-check-input');
+        const statusSpans = document.querySelectorAll('.status');
+    
+        // Function to hide all status spans
+        const hideAllStatusSpans = () => {
+            statusSpans.forEach(span => (span.style.display = 'none'));
+        };
+    
+        // Function to show the status span for the checked radio button
+        const showActiveStatus = () => {
+            radios.forEach(radio => {
+                const span = radio.closest('.form-check').querySelector('.status'); // Locate the corresponding span
+                if (radio.checked && span) {
+                    span.style.display = 'inline'; // Show the status span
+                } else if (span) {
+                    span.style.display = 'none'; // Hide the status span
+                }
+            });
+        };
+    
+        // Add click event listener to each card
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Get the associated radio button ID from the data-radio-id attribute
+                const radioId = card.getAttribute('data-radio-id');
+                const radio = document.getElementById(radioId);
+    
+                // If the radio button is found
+                if (radio) {
+                    // Uncheck all radios and check the selected one
+                    radios.forEach(radioInput => (radioInput.checked = false));
+                    radio.checked = true;
+    
+                    // Update the active status
+                    showActiveStatus();
+    
+                    console.log(`${radioId} is now checked and active status is shown`);
+                } else {
+                    console.error(`Radio button with ID ${radioId} not found`);
+                }
+            });
+        });
+    
+        // Add change event listener to radio buttons
+        radios.forEach(radio => {
+            radio.addEventListener('change', showActiveStatus);
+        });
+    
+        // Initialize visibility on page load
+        showActiveStatus();
+    });
+
+</script>
+{% endblock %}
