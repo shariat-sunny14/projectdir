@@ -1,0 +1,464 @@
+{% load humanize %}
+{% load static %}
+<style>
+    .sub-title2 {
+        margin-top: -8px;
+    }
+
+    .sub-title3 {
+        margin-top: -8px;
+    }
+
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-color: black;
+        border-style: dashed;
+        border-width: 0;
+    }
+
+    #grocery_receipt tbody tr td:first-child::before {
+        content: none !important;
+        min-width: 1em;
+        margin-right: 0.5em;
+    }
+</style>
+<div class="container-fluid">
+    <div id="pos_outprint" class="pos_receipt-body">
+        <section>
+            <table class="table" style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                <tr>
+                    <center>
+                        <label class="com-namess" style="display: flex; flex-direction: column; flex-wrap: nowrap;">
+                            <!-- Company Name Here -->
+                            <span style="font-size: 2.5rem;">ডেইলি প্লাস</span>
+                            <span style="margin-top: -0.7rem; margin-bottom: 0.3rem; display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center; font-size: 0.9rem;">Daily Plus Departmental Store</span>
+                        </label>
+                    </center>
+                    <center class="sub-title1">
+                        <small>
+                            <span class="com-address">
+                                <span class="com-address-title math-fonts"><!-- Address: --></span>
+                                <span class="com-address-name math-fonts"></span>
+                            </span>
+                        </small>
+                    </center>
+                    <center class="sub-title3">
+                        <small>
+                            <span class="com-hotline">
+                                <span class="com-hotline-title math-fonts"><!-- Hotline: --></span>
+                                <span class="com-hotline-name math-fonts"></span>
+                                <span class="com-fax-title math-fonts"><!-- Fax: --></span>
+                                <span class="com-fax-name math-fonts"></span>
+                            </span>
+                        </small>
+                    </center>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+            <!-- <div class="lh-1"></div> -->
+            <!-- <hr> -->
+            <div class="lh-1">
+                <div class="pos-info-body">
+                    <div class="row pos-info-header">
+                        <!--  -->
+                        <div class="row col-sm-12" style="margin-top: 2rem;">
+                            <div class="row col-sm-12" style="margin-top: -34px; margin-left: 0.5rem; padding: 0px;">
+                                <span class="posBarcodeImg" style="padding-top: 3px;"><img name="barcode" jsbarcode-value="{{transaction.inv_id}}"></span>
+                                <span class="math-fonts" style="padding: 0px 3px 3px 12px; display: flex; justify-content: space-between;">Invoice No. : <span class="math-fonts">{{ transaction.inv_id }}</span></span>
+                                <span class="math-fonts" style="padding: 0px 3px 3px 12px; display: flex; justify-content: space-between;">Date : <span class="math-fonts">{{ transaction.ss_created_on }}</span></span>
+                                <span class="math-fonts" style="padding: 0px 3px 3px 12px; display: flex; justify-content: space-between;">Sales by: <span class="math-fonts">{{ transaction.first_name }} {{ transaction.last_name }}</span></span>
+                                <span class="math-fonts font-weight" style="padding: 0px 3px 3px 12px; font-weight: bold;">Customer Info</span>
+                                <span class="math-fonts" style="padding: 0px 3px 3px 12px;">Name : {{ transaction.customer_name }}</span>
+                                <span class="math-fonts" style="padding: 0px 3px 3px 12px;">Mobile : {{ transaction.mobile_number }}</span>
+                                <span class="math-fonts" style="padding: 0px 3px 3px 12px;">Address : {{ transaction.address }}</span>
+                                <span class="math-fonts font-weight" style="padding: 0px 3px 3px 12px; align-items: center; font-size: 1rem; font-weight: bold; display: flex; justify-content: space-between;">
+                                    Reward Point :
+                                    <span class="math-fonts" style="display: flex; flex-direction: row; align-items: center; flex-wrap: wrap;">
+                                        <!-- <img src="{% static 'images/money_sign/bd_taka_sign.png' %}" alt="" class="money_sign__img" style="height: 1.3rem; margin-right: 0.5rem;"> -->
+                                        <span class="math-fonts" id="rewardpointbalance" style="margin-top: 5px;"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div style="display: flex; margin-bottom: 2px; padding: 0px; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                <input type="hidden" value="" name="duePaidStatus">
+                                <span class="pos_paid-due-status math-fonts" id="duePaidStatus"></span>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <input type="hidden" id="regis_id" name="reg_id" value="{{ transaction.reg_id }}">
+                        <input type="hidden" id="id_org_id" name="org_id" value="{{ transaction.org_id }}">
+                        <!-- <div class="row col-sm-12">
+                            <div class="row col-sm-12" style="margin-left: 2.5rem; padding: 3px; margin-bottom: 10px;">
+                                <span class="pos_paid-due-status">Customer Copy</span>
+                            </div>
+                        </div> -->
+                        <!--  -->
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <table class="table receipt-table" style="width: 100%; margin-left: 0.3rem; margin-right: 0.3rem;" id="grocery_receipt">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: left; font-size: 11px; width: 10%;" rowspan="2"><span class="math-fonts" style="margin-left: 0.5rem;">MRP</span></th>
+                        <th scope="col" class="math-fonts" style="text-align: center; width: 5%;" rowspan="2">Qty</th>
+                        <th scope="col" class="math-fonts" style="text-align: center; width: 8%;" rowspan="2">Dis.</th>
+                        <th scope="col" style="text-align: right; font-size: 11px; width: 12%;" rowspan="2"><span class="math-fonts" style="margin-right: 0.4rem;">SubTotal</span></th>
+                    </tr>
+                </thead>
+                <tbody style="border-bottom: hidden!important; font-size: 11px;">
+                    {% for item in salesItems %}
+                    <tr>
+                        <td style="text-align: left; padding-top: 0px; padding-bottom: 0px;"><span class="math-fonts" style="margin-left: 0.5rem;">{{item.sales_rate}}</span></td>
+                        <td class="math-fonts" style="text-align: center; padding-top: 0px; padding-bottom: 0px;">{{item.qty_cancelQty}}</td>
+                        <td class="math-fonts" style="text-align: center; padding-top: 0px; padding-bottom: 0px;">{{item.item_wise_disc|floatformat:"3"}}</td>
+                        <td style="text-align: right; padding-top: 0px; padding-bottom: 0px;"><span class="math-fonts" style="margin-right: 0.4rem;">{{ item.total_amount|floatformat:"0" }}</span></td>
+                    </tr>
+                    <tr style="border-top: hidden !important;">
+                        <td class="math-fonts" style="text-align: left; font-size: 0.8rem; padding-top: 0px; padding-bottom: 0px;" colspan="4"><span style="margin-left: 0.5rem;">{{item.item_id.item_name}}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <!--  -->
+        <section>
+            <div class="lh-1">
+                <div style="display:flex;">
+                    <!-- payment table -->
+                    <div style="border-top: 1px solid black; width: 100%;">
+                        <table class="table payment-table" style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                            <tbody>
+
+                                <tr style="border-style: hidden!important;">
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%; font-weight: bold;">
+                                        Total Amt. :
+                                    </td>
+                                    <td class="font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%; font-weight: bold;">
+                                        <span class="math-fonts" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                                            <!-- <img src="{% static 'images/money_sign/bd_taka_sign.png' %}" alt="" class="money_sign__img" style="height: 1.3rem; margin-right: 0.2rem;"> -->
+                                            {{ grand_total|floatformat:"1" }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="border-style: hidden!important;">
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%;">
+                                        Discount Amt. (-):
+                                    </td>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%;">
+                                        {{ grand_gross_dis }}
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px dashed #c5c1c1!important;">
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%;">
+                                        Total VAT amt (+):
+                                    </td>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%;">
+                                        {{ grand_gross_vat_tax }}
+                                    </td>
+                                </tr>
+                                <!--  -->
+                                <tr>
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%; font-weight: bold;">
+                                        Net Total Amt. :
+                                    </td>
+                                    <td class="font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%; font-weight: bold;">
+                                        <span class="math-fonts" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                                            <!-- <img src="{% static 'images/money_sign/bd_taka_sign.png' %}" alt="" class="money_sign__img" style="height: 1.3rem; margin-right: 0.2rem;"> -->
+                                            {{ net_total_amt }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%; font-weight: bold;">
+                                        Paid Amt. :
+                                    </td>
+                                    <td class="font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%; font-weight: bold;">
+                                        <span class="math-fonts" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                                            <!-- <img src="{% static 'images/money_sign/bd_taka_sign.png' %}" alt="" class="money_sign__img" style="height: 1.3rem; margin-right: 0.2rem;"> -->
+                                            {{ total_collection_amt|floatformat:1 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="border-style: hidden !important; border-bottom: 1px dashed black !important;">
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%; font-weight: bold;">
+                                        Reward Point Adjust :
+                                    </td>
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%; font-weight: bold;">
+                                        {{ adjust_amt_sum|floatformat:1 }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%;">
+                                        Refund Amt. :
+                                    </td>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%;">
+                                        {{refund_amt_sum|floatformat:1}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%; font-weight: bold;">
+                                        Net Paid Amt. :
+                                    </td>
+                                    <td class="math-fonts font-weight" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%; font-weight: bold;">
+                                        <span class="math-fonts" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                                            <!-- <img src="{% static 'images/money_sign/bd_taka_sign.png' %}" alt="" class="money_sign__img" style="height: 1.3rem; margin-right: 0.2rem;"> -->
+                                            {{total_net_collection|floatformat:1}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%;">
+                                        Due Amt. :
+                                    </td>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%;">
+                                        <input type="hidden" id="duePaidVal" name="duePaidVal"
+                                            value="{{ net_due_amt }}">
+                                        {{ net_due_amt }}
+                                    </td>
+                                </tr>
+                                <!--  -->
+                                <tr style="border-bottom: hidden!important;">
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%;">
+                                        Given Amt. :
+                                    </td>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%;">
+                                        <input type="hidden" id="id_given_amt" name="given_amt"
+                                            value="{{ tot_given_amt }}">
+                                        {{ tot_given_amt }}
+                                    </td>
+                                </tr>
+                                <tr class="math-fonts" style="border-top: 1px solid black !important; border-bottom: hidden!important;">
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align:right; width: 80%;">
+                                        Change Amt. :
+                                    </td>
+                                    <td class="math-fonts" style="padding-top: 2px; padding-bottom: 2px; text-align: right; width: 20%;">
+                                        <input type="hidden" id="id_change_amt" name="change_amt"
+                                            value="{{ net_due_amt }}">
+                                        {{ tot_change_amt }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-sm-12" style="margin-left: 0.5rem; padding: 0px; font-size: 11px;">
+                <!-- <span class="math-fonts" style="padding: 0px;">Remarks : {{ paymt.remarks }}</span>
+                <span class="math-fonts" style="padding: 0px;">In Word : {{ numbers_as_words }} Tk. only</span>
+                <span class="math-fonts font-weight" style="padding: 0px; font-size: 14px; font-weight: bold;">Note :</span>
+                <span class="math-fonts" style="padding: 0px;">**Goods sold without a receipt are not returned.</span> -->
+                <span class="math-fonts" style="padding: 0px;">**Sold Item not refundable, Exchangeable within 72 hrs.</span>
+                <span class="math-fonts" style="padding: 0px; text-align: left; margin-top: 0.1rem; margin-bottom: 0.5rem;">Thanks for Shopping at - <span class="math-fonts font-weight">Daily Plus Supershop</span></span>
+            </div>
+        </section>
+    </div>
+    <!--  -->
+    <hr>
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-light bg-gradient border rounded-0 btn-sm me-1" type="button" id="pos_receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+        <button class="btn btn-secondary bg-gradient border rounded-0 btn-sm" type="button" data-bs-dismiss="modal">
+            <i class='bx bx-window-close'></i>
+            Close
+        </button>
+    </div>
+    <!--  -->
+</div>
+<script>
+    $(document).ready(function () {
+        // Check for existence of reg_id and org_id
+        var regisID = $('#regis_id').val();
+        var orgID = $('#id_org_id').val();
+    
+        function fetchRewardBalanceAmounts(regisID, orgID) {
+            if (regisID && orgID) {
+                $.ajax({
+                    url: "{% url 'get_reward_point_balance' %}",
+                    type: 'GET',
+                    data: {
+                        reg_id: regisID,
+                        org_id: orgID
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        let balance = 0;
+        
+                        // Check if response is an array and loop to accumulate reward_balance
+                        if (Array.isArray(response)) {
+                            response.forEach(function (reward) {
+                                balance += parseFloat(reward.reward_balance || 0);
+                            });
+                        } 
+        
+                        // Update input and text fields with formatted balance
+                        $('#rewardpointbalance').text(balance.toFixed(2));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching transactions:', status, error);
+                        $('#rewardpointbalance').text('0.00');
+                    }
+                });
+            } else {
+                console.warn('Required IDs are missing.');
+                $('#rewardpointbalance').text('0.00');
+            }
+        }
+    
+        // Only fetch and display if both IDs are present
+        if (regisID && orgID) {
+            fetchRewardBalanceAmounts(regisID, orgID);
+        } else {
+            $('#id_balances').val(0.00);  // Default to 0 if IDs are missing
+        }
+    });
+    //<!--  -->
+    $(document).ready(function () {
+        let companyInfo;
+    
+        // Make Ajax request to get user information
+        $.ajax({
+            type: 'GET',
+            url: '/get_user_org_informations/',
+            success: function (response) {
+                // Store the companyInfo data
+                companyInfo = response;
+    
+                // Now that you have the data, update the HTML
+                updateCompanyInfoUI();
+            },
+            error: function (error) {
+                console.error('Error fetching user information:', error);
+            }
+        });
+    
+        // Function to update the HTML with companyInfo
+        function updateCompanyInfoUI() {
+            // Check if companyInfo is defined
+            if (companyInfo) {
+                // Update the HTML content
+                $('.com-name').text(companyInfo.org_name);
+                $('.com-address-name').text(companyInfo.address);
+                $('.email-address-name').text(companyInfo.email);
+                $('.website-name').text(companyInfo.website);
+                $('.com-hotline-name').text(`${companyInfo.phone}, ${companyInfo.hotline}`);
+                $('.com-fax-name').text(companyInfo.fax);
+    
+                // Display the organization logo
+                if (companyInfo.org_logo) {
+                    $('.com-receipt-logo').attr('src', companyInfo.org_logo);
+                }
+            } else {
+                // Handle the case where companyInfo is not available
+                console.error('Company information is not available.');
+            }
+        }
+    
+        $('#pos_receipt_print').click(function () {
+            var head = $('head').clone();
+            var p = $('#pos_outprint').clone();
+            var el = $("<div>");
+    
+            // Append necessary styles to the head
+            head.append('<style>body{background-color:unset !important;}</style>');
+            head.append('<style>.footer { position: relative; bottom: 0px; text-align: left; width: 100%; font-size: 0.9rem; font-family: math; color: black;}</style>');
+            head.append('<style>.pos_receipt-body { position: relative; }</style>'); // Make sure to use relative position
+    
+            const footerText = 'TBOX, Contact: +8801309-994317,';
+            const now = new Date();
+            const formattedDateTime = now.toLocaleString();
+    
+            var footerContent =
+                `<div class="footer chalanFooter">
+                    <span class="software-woner-title">Software By: </span>
+                    <span class="software-woner-name">${footerText}</span>
+                    <span class="printed-on-title">- Printed on: </span>
+                    <span class="printed-on-date">${formattedDateTime}</span>
+                </div>`;
+    
+            el.append(head);
+            el.append('<div class="pos_receipt-body">' + p.html() + '</div>'); // Append the main content
+            el.append(footerContent); // Append the footer
+    
+            var nw = window.open('', '_blank', "width=800,height=800,left=300,top=200");
+            nw.document.write('<html>' + el.html() + '</html>'); // Write the complete HTML structure
+            nw.document.close();
+    
+            // Set up the afterprint function to close the window after printing
+            nw.onafterprint = function () {
+                nw.close();
+            };
+    
+            // Trigger the print function after a short delay to ensure the content loads properly
+            setTimeout(() => {
+                nw.print();
+            }, 300);
+        });
+    });
+
+    // Function to generate barcode images
+    function generateBarcodeImages() {
+        var elements = document.querySelectorAll(".posBarcodeImg img");
+        for (var i = 0; i < elements.length; i++) {
+            var img = elements[i];
+            var id = "barcode" + i; // Generate unique ID for each barcode
+            img.id = id;
+            var value = img.getAttribute("jsbarcode-value");
+            JsBarcode("#" + id, value, {
+                format: "CODE128",
+                lineColor: "#000000",
+                width: 1,
+                height: 28,
+                displayValue: false,
+                fontSize: 10,
+                fontOptions: "lighter",
+            });
+        }
+    }
+
+    // Function to clear barcode images
+    function clearBarcodeImages() {
+        var elements = document.querySelectorAll(".posBarcodeImg img");
+        for (var i = 0; i < elements.length; i++) {
+            var img = elements[i];
+            var id = img.id;
+            JsBarcode("#" + id, ""); // Clear the barcode by setting an empty string
+        }
+    }
+
+    // Call generateBarcodeImages() to generate barcode images and clearBarcodeImages() to clear them.
+    generateBarcodeImages();
+
+    // To clear the barcode images when needed:
+    // clearBarcodeImages();
+
+    // Due Paid Status
+
+    $(function () {
+        var due_amt = $('#duePaidVal').val()
+        if ((due_amt) > 0) {
+            due_value = "Invoice Bill Due";
+        } else if ((due_amt) < 0) {
+            due_value = "Invoice Need Refund";
+        } else {
+            due_value = "Invoice Bill Paid";
+        }
+        $('#duePaidStatus').text(due_value).toLocaleString('en-US')
+        $('[name="duePaidStatus"]').val(due_value)
+        //console.log("Due Value:" + due_amt)
+    });
+</script>
+
+<!--  -->
