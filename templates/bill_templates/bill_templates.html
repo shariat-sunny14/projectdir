@@ -1,0 +1,402 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'bill_receipt/css/bill_receipt.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main style="margin-left: 8px;">
+    <section>
+        <div class="container-fluid">
+            <!-- Main Heading -->
+            <div class="row">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2">
+                        <div class="col-sm-12" style="display:flex;">
+                            <i class='bx bx-copy-alt text-success req-head-icon'></i>
+                            <h1 class="h3 text-success req-head">Select Bill Templates</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <section>
+        <div class="col-sm-12" style="display:flex; margin-top: 0.5rem;">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <div class="itemsetup_container">
+                            <form id="apptemp_form">
+                                <input type="hidden" id="id_org_filter" name="org_filter" value="">
+                                <div class="add_edit_head">
+                                    <h2 class="text-primary">Application Templates Info</h2>
+                                </div>
+                                <!--  -->
+                                <div class="col-sm-12">
+                                    <div class="card main-card">
+                                        <div class="card-body card-body_store" style="border-bottom: 1px solid rgb(211, 211, 211);">
+                                            <div class="item_setupflag" style="display: flex;">
+                                                <!--  -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                                                    <div class="container col-sm-4" style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                        <div class="row org-filterRow">
+                                                            <label for="id_org" class="col-sm-3 col-form-label font_size_filter">
+                                                                Org Name:
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="id_org" name="org" class="form-select item_inputbox" aria-label="Default select example">
+                                                                    <!--  -->
+                                                                    {% for org in org_list %}
+                                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                                        {{org.org_name}}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="container col-sm-4"
+                                                        style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                        <div class="row org-filterRow">
+                                                            <label for="bill_template" class="col-sm-3 col-form-label font_size_filter">
+                                                                Billing:
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="bill_template" name="bill_template" class="form-select item_inputbox" aria-label="Default select example">
+                                                                    <!--  -->
+                                                                    <option value="" selected disabled>Choose Templates</option>
+                                                                    <option value="pharmacy_store">Pharmacy Billing</option>
+                                                                    <option value="board_store">Board Store Billing</option>
+                                                                    <option value="grocery_store">Grocery Billing</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="container col-sm-4"
+                                                        style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                        <div class="row org-filterRow">
+                                                            <label for="inv_cancel_temps" class="col-sm-3 col-form-label font_size_filter">
+                                                                Inv Cancel:
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="inv_cancel_temps" name="inv_cancel_temps" class="form-select item_inputbox" aria-label="Default select example">
+                                                                    <!--  -->
+                                                                    <option value="" selected disabled>Choose Templates</option>
+                                                                    <option value="pharmacy_store/invoice_cancel">Pharmacy Invoice Cancel</option>
+                                                                    <option value="board_store/invoice_cancel">Board Invoice Cancel</option>
+                                                                    <option value="grocery_store/invoice_cancel">Grocery Invoice Cancel</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="container col-sm-4"
+                                                        style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                        <div class="row org-filterRow">
+                                                            <label for="item_cancel_temps" class="col-sm-3 col-form-label font_size_filter">
+                                                                Item Cancel:
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="item_cancel_temps" name="item_cancel_temps" class="form-select item_inputbox" aria-label="Default select example">
+                                                                    <!--  -->
+                                                                    <option value="" selected disabled>Choose Templates</option>
+                                                                    <option value="pharmacy_store/item_wise_invoice_cancel">Pharmacy Item Cancel</option>
+                                                                    <option value="board_store/item_wise_invoice_cancel">Board Item Cancel</option>
+                                                                    <option value="grocery_store/item_wise_invoice_cancel">Grocery Item Cancel</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="container col-sm-4"
+                                                        style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                        <div class="row org-filterRow">
+                                                            <label for="refund_coll_temps" class="col-sm-3 col-form-label font_size_filter">
+                                                                Refund Coll.:
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="refund_coll_temps" name="refund_coll_temps" class="form-select item_inputbox" aria-label="Default select example">
+                                                                    <!--  -->
+                                                                    <option value="" selected disabled>Choose Templates</option>
+                                                                    <option value="pharmacy_store/refund_collection">Pharmacy Refund Collection</option>
+                                                                    <option value="board_store/refund_collection">Board Refund Collection</option>
+                                                                    <option value="grocery_store/refund_collection">Grocery Refund Collection</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="container col-sm-4"
+                                                        style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                        <div class="row org-filterRow">
+                                                            <label for="due_coll_temps" class="col-sm-3 col-form-label font_size_filter">
+                                                                Due Coll.:
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="due_coll_temps" name="due_coll_temps" class="form-select item_inputbox" aria-label="Default select example">
+                                                                    <!--  -->
+                                                                    <option value="" selected disabled>Choose Templates</option>
+                                                                    <option value="pharmacy_store/due_collections">Pharmacy Due Collections</option>
+                                                                    <option value="board_store/due_collections">Board Due Collections</option>
+                                                                    <option value="grocery_store/due_collections">Grocery Due Collections</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-12" style="display: flex; margin-top: 3rem; margin-bottom: 1rem; margin-right: 1rem; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                                                        <div class="col-sm-4">
+                                                            <div class="submit_button">
+                                                                <button type="submit" class="btn btn-success btn-sm">
+                                                                    Save & Update
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                </div>
+                                                <!--  -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+        </div>
+    </section>
+    <section>
+        <div class="col-sm-12" style="display:flex; margin-top: 0.5rem;">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <div class="itemsetup_container">
+                            <div class="add_edit_head">
+                                <h2 class="text-success">Org wise Bill Templates Info</h2>
+                            </div>
+                            <!--  -->
+                            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                                <div class="module-table">
+                                    <table id="apptemp_table" class="table table-striped table-hover" style="width: 100%; border: 1px solid #6aa2a8;">
+                                        <thead class="text-center table-header_itemlist" style="font-size: 0.8rem;">
+                                            <tr>
+                                                <th style="text-align:center;">ID</th>
+                                                <th style="text-align:center;">Org</th>
+                                                <th style="text-align:center;">Creator</th>
+                                                <th style="text-align:center;">Bill Temps</th>
+                                                <th style="text-align:center;">Inv. Can Temps</th>
+                                                <th style="text-align:center;">Item Can Temps</th>
+                                                <th style="text-align:center;">Refund Temps</th>
+                                                <th style="text-align:center;">Due Coll. Temps</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="apptempTB" style="text-align:center; font-size: 0.85rem;">
+                                            <!-- Rows will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+        </div>
+    </section>
+</main>
+<script>
+    $(document).ready(function () {
+        // Add event listener to the organization filter dropdown
+        $('#id_org').change(function () {
+            filterReceipts();
+        });
+    
+        // Initial call to populate the table with all data
+        filterReceipts();
+    
+        function filterReceipts() {
+            // Get the selected organization ID
+            var org_id = $('#id_org').val();
+            
+            // Check if org_id is valid
+            if (org_id) {
+                // Make AJAX request to fetch receipt data
+                $.ajax({
+                    url: '/get_apps_temp_options/',  // Updated URL to match the API endpoint
+                    type: 'GET',
+                    data: {'org_filter': org_id},  // Use correct parameter name
+                    dataType: 'json',
+                    success: function (data) {
+                        // Update the table with the filtered data
+                        updateTable(data);
+                    },
+                    error: function (error) {
+                        console.error('Error fetching receipt data:', error);
+                    }
+                });
+            }
+        }
+    
+        function updateTable(data) {
+            // Clear existing table rows
+            $('#apptempTB').empty();
+        
+            // Append filtered data to the table
+            $.each(data, function (index, apptemp) {
+                // Determine the display text based on bill temp name
+                var billtempDisplay;
+                var invcantempDisplay;
+                var itemcantempDisplay;
+                var refundtempDisplay;
+                var duecoltempDisplay;
+
+                switch (apptemp.billing_temp) {
+                    case 'pharmacy_store':
+                        billtempDisplay = 'Pharmacy Billing';
+                        break;
+                    case 'board_store':
+                        billtempDisplay = 'Board Billing';
+                        break;
+                    case 'grocery_store':
+                        billtempDisplay = 'Grocery Billing';
+                        break;
+                    default:
+                        billtempDisplay = 'Unknown Template'; // Fallback for unexpected values
+                }
+
+                switch (apptemp.inv_can_temp) {
+                    case 'pharmacy_store/invoice_cancel':
+                        invcantempDisplay = 'Pharmacy Inv. Cancel';
+                        break;
+                    case 'board_store/invoice_cancel':
+                        invcantempDisplay = 'Board Inv. Cancel';
+                        break;
+                    case 'grocery_store/invoice_cancel':
+                        invcantempDisplay = 'Grocery Inv. Cancel';
+                        break;
+                    default:
+                        invcantempDisplay = 'Unknown Template'; // Fallback for unexpected values
+                }
+
+                switch (apptemp.item_can_temp) {
+                    case 'pharmacy_store/item_wise_invoice_cancel':
+                        itemcantempDisplay = 'Pharmacy Item Cancel';
+                        break;
+                    case 'board_store/item_wise_invoice_cancel':
+                        itemcantempDisplay = 'Board Item Cancel';
+                        break;
+                    case 'grocery_store/item_wise_invoice_cancel':
+                        itemcantempDisplay = 'Grocery Item Cancel';
+                        break;
+                    default:
+                        itemcantempDisplay = 'Unknown Template'; // Fallback for unexpected values
+                }
+
+                switch (apptemp.refund_coll_temp) {
+                    case 'pharmacy_store/refund_collection':
+                        refundtempDisplay = 'Pharmacy Refund';
+                        break;
+                    case 'board_store/refund_collection':
+                        refundtempDisplay = 'Board Refund';
+                        break;
+                    case 'grocery_store/refund_collection':
+                        refundtempDisplay = 'Grocery Refund';
+                        break;
+                    default:
+                        refundtempDisplay = 'Unknown Template'; // Fallback for unexpected values
+                }
+
+                switch (apptemp.due_coll_temp) {
+                    case 'pharmacy_store/due_collections':
+                        duecoltempDisplay = 'Pharmacy Due Collection';
+                        break;
+                    case 'board_store/due_collections':
+                        duecoltempDisplay = 'Board Due Collection';
+                        break;
+                    case 'grocery_store/due_collections':
+                        duecoltempDisplay = 'Grocery Due Collection';
+                        break;
+                    default:
+                        duecoltempDisplay = 'Unknown Template'; // Fallback for unexpected values
+                }
+        
+                // Construct the HTML for the row
+                var row = '<tr style="height: 3rem;">' +
+                    '<td>' + apptemp.temp_id + '</td>' +
+                    '<td>' + apptemp.org_name + '</td>' +
+                    '<td>' + apptemp.ss_creator + '</td>' +
+                    '<td>' + billtempDisplay + '</td>' +
+                    '<td>' + invcantempDisplay + '</td>' +
+                    '<td>' + itemcantempDisplay + '</td>' +
+                    '<td>' + refundtempDisplay + '</td>' +
+                    '<td>' + duecoltempDisplay + '</td>' +
+                    '</tr>';
+        
+                // Append the constructed row to the table
+                $('#apptempTB').append(row);
+            });
+        }
+    });
+
+    //
+    $(document).ready(function() {
+        // Retrieve and log the value of the hidden input field
+        var storedOrgId = $('#id_org').val();
+
+        if (storedOrgId) {
+            $('#id_org_filter').val(storedOrgId);
+        } else {
+            console.log('Hidden input field is empty.'); // Debugging line
+        }
+
+        // Update the hidden input field when the dropdown value changes
+        $('#id_org').change(function() {
+            var selectedOrgId = $(this).val();
+            $('#id_org_filter').val(selectedOrgId);
+        });
+    });
+
+    // ajax submission
+    $(document).ready(function () {
+        // Attach the submit handler to the form
+        $("#apptemp_form").submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            // Get the form data
+            var formData = $(this).serialize();
+    
+            // Make AJAX request
+            $.ajax({
+                url: "{% url 'save_apps_templates' %}",
+                data: formData,
+                headers: { "X-CSRFToken": "{{ csrf_token }}" }, // Include the CSRF token
+                method: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.msg);
+                        location.reload(true); // Optionally reload page on success
+                    } else {
+                        toastr.warning("Save failed. Error: " + response.errmsg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX request failed. Status: " + status + ", Error: " + error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,649 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<title>Dues Details Report</title>
+<!--========== CSS ==========-->
+<!--========== Bootstrap link ==========-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- Barcode CDN -->
+<script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'purchase_order/css/purchase_order.css' %}">
+{% endblock %}
+<style>
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-width: 1;
+        border: 1px solid;
+    }
+
+    tr:nth-child(even) {
+        background: None !important;
+    }
+
+    hr {
+        margin: 0.3rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    .com-name {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .com-address {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-address-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .email-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-hotline-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-fax-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-fax-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .software-woner-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-by-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-on-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-page-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .software-woner-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-by-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-on-date {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-page-no {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .mul-items-othrs {
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .mul-items-names {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .receipt-name {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 25px;
+        border: 1px solid #c5c1c1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 15px;
+        font-weight: bolder;
+    }
+
+    .invoice_id {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcodeImg {
+        position: absolute;
+        top: 5rem;
+        right: 2rem;
+        display: flex;
+        margin-top: 4px;
+        margin-left: 21px;
+    }
+
+    .rec-type {
+        display: flex;
+        margin-top: -15px;
+    }
+
+    /* .rec-align {
+        font-size: 9px;
+        margin-top: 2px;
+    } */
+
+    .receipt-logo {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        text-align: left;
+        width: 5%;
+        border-radius: 50%;
+    }
+
+    .receipt-img {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: -8px;
+        left: -6px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .com-receipt-logo {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 0rem;
+        left: 3rem;
+    }
+
+    .paid-due-status {
+        width: 56%;
+        display: flex;
+        align-items: stretch;
+        text-align: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+        background: #9b99998a;
+        font-weight: bolder;
+        border-bottom: 3px solid #8d8a8a;
+        border-right: 3px solid #8d8a8a;
+    }
+
+    .status-DP {
+        text-align: center;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        border-style: hidden !important;
+    }
+
+    .sub-title1 {
+        margin-top: -9px;
+        width: 100%;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: center;
+    }
+
+    .sub-title2 {
+        margin-top: -7px;
+    }
+
+    .sub-title3 {
+        margin-top: -3px;
+    }
+</style>
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<div class="loader"></div>
+<!-- loader end -->
+<main>
+    <section style="margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <div id="outprint">
+                <section>
+                    <table class="table"
+                        style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                        <tr>
+                            <div class="receipt-logo">
+                                <!-- <img class="com-receipt-logo" src="" alt="logo"> -->
+                            </div>
+                        </tr>
+                        <tr>
+                            <center>
+                                <label class="com-name">
+                                    <!-- Company Name Here -->
+                                </label>
+                            </center>
+                            <center class="sub-title1">
+                                <small>
+                                    <span class="com-address">
+                                        <span class="com-address-title">Address: </span>
+                                        <span class="com-address-name"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title2">
+                                <small>
+                                    <span class="email-address-title">Email: </span>
+                                    <span class="com-address email-address-name"></span>
+                                    <span class="website-title">Website: </span>
+                                    <span class="website-name"></span>
+                                </small>
+                            </center>
+                            <center class="sub-title3">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">Hotline: </span>
+                                        <span class="com-hotline-name"></span>
+                                        <span class="com-fax-title">Fax: </span>
+                                        <span class="com-fax-name"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="from_to_date">
+                                        <span class="from_date-title" style="font-size: 0.75rem; font-weight: bolder;"></span>
+                                        to
+                                        <span class="to_date-title" style="font-size: 0.75rem; font-weight: bolder;"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="com-branch-title"
+                                            style="font-size: 0.75rem; font-weight: bolder;"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0.1rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title" style="font-size: 0.98rem;">
+                                            Dues Details Report
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <hr>
+    <!--  -->
+    <section style="margin-bottom: 10rem;">
+        <div class="row row_item_setup">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <!--  -->
+                        <section>
+                            <div class="card" style="border: 0px;">
+                                <div class="card-body" style="padding: 0.2rem 0.2rem;">
+                                    <div class="col-xl-12">
+                                        <form action="" method="">
+                                            <div class="table-body">
+                                                <table id="salesTB" class="table" style="width: 100%;">
+                                                    <thead class="text-center table-header" style="background: #fff; color: black;">
+                                                        <tr>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">SL</th>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">Invoice No</th>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">Name</th>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">Mobile</th>
+                                                            <th style="text-align:center;" colspan="3">Item Details</th>
+                                                            <th style="text-align:center;">Total Bill</th>
+                                                            <th style="text-align:center;">C. Cost</th>
+                                                            <th style="text-align:center;">Dis.</th>
+                                                            <th style="text-align:center;">VAT Tax</th>
+                                                            <th style="text-align:center;">Cancel</th>
+                                                            <th style="text-align:center;">Net Bill</th>
+                                                            <th style="text-align:center;">Collection</th>
+                                                            <th style="text-align:center;">Due Coll.</th>
+                                                            <th style="text-align:center;">Tot. Coll.</th>
+                                                            <th style="text-align:center;">Refund Amt.</th>
+                                                            <th style="text-align:center;">Net Coll.</th>
+                                                            <th style="text-align:center;">Total Dues</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="text-align:center;">Items Name</th>
+                                                            <th style="text-align:center;">Qty.</th>
+                                                            <th style="text-align:center;">Price</th>
+                                                            <th style="text-align:center;">(A)</th>
+                                                            <th style="text-align:center;">(B)</th>
+                                                            <th style="text-align:center;">(C)</th>
+                                                            <th style="text-align:center;">(D)</th>
+                                                            <th style="text-align:center;">(E)</th>
+                                                            <th style="text-align:center;">(A+B+D)-(C+E) (F)</th>
+                                                            <th style="text-align:center;">(G)</th>
+                                                            <th style="text-align:center;">(H)</th>
+                                                            <th style="text-align:center;">(G+H) (I)</th>
+                                                            <th style="text-align:center;">(J)</th>
+                                                            <th style="text-align:center;">(I-J) (K)</th>
+                                                            <th style="text-align:center;">(F-K)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-body-row">
+                                                        <!--  -->
+                    
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+    <!-- <hr> -->
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+            onclick="printReceipt()" id="receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+    </div>
+    <!--  -->
+</section>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        function getQueryParam(param) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+    
+        function validateDates(startFrom, endFrom) {
+            if (new Date(startFrom) > new Date(endFrom)) {
+                console.error('From date cannot be greater than To date');
+                return false;
+            }
+            return true;
+        }
+    
+        function updateTable(data) {
+            var tbody = $('#salesTB tbody');
+            tbody.empty();
+    
+            if (data.combined_data && data.combined_data.length > 0) {
+                $.each(data.combined_data, function (index, item) {
+                    
+                    var mainRow= '<tr>' +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${index + 1}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.invoice || ''}</td>` +
+                            `<td style="text-align:left;" rowspan="${item.inv_details.length}">${item.customer_name || ''}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.mobile_number || ''}</td>` +
+                            `<td style="text-align:left;">${item.inv_details[0].item_name || ''}</td>` +
+                            `<td style="text-align:center;">${(parseFloat(item.inv_details[0].qty) || 0).toFixed(1)} / ${item.inv_details[0].uom || ''}</td>` +
+                            `<td style="text-align:center;">${(parseFloat(item.inv_details[0].sales_rate) || 0).toFixed(1)}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_sales || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_cost_amt || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_discount_sum || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.grand_vat_tax || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.grand_cancel_amt || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_net_bill || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_collection_amt || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_due_collection_amt || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.grand_collection || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_refund_collection_amt || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_net_collection || 0.0}</td>` +
+                            `<td style="text-align:center;" rowspan="${item.inv_details.length}">${item.total_dues || 0.0}</td>` +
+                        '</tr>';
+                    tbody.append(mainRow);
+
+
+                    // Add additional rows for remaining items in the invoice details
+                    for (var i = 1; i < item.inv_details.length; i++) {
+                        var detailRow = '<tr>' +
+                            `<td style="text-align:left;">${item.inv_details[i].item_name || ''}</td>` +
+                            `<td style="text-align:center;">${(parseFloat(item.inv_details[i].qty) || 0).toFixed(1)} / ${item.inv_details[i].uom || ''}</td>` +
+                            `<td style="text-align:center;">${(parseFloat(item.inv_details[i].sales_rate) || 0).toFixed(1)}</td>` +
+                            '</tr>';
+                        tbody.append(detailRow);
+                    }
+                });
+    
+                var totalRow = `
+                    <tr>
+                        <td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="7">Total:</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.all_total_sales || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.grand_total_cost_amt || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.all_total_discount_sum || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.all_grand_vat_tax || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.all_grand_cancel_amt || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.all_total_net_bill || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.grand_total_collection || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.grand_total_due_collection || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.total_grand_collection || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.grand_total_refund_collection || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.grand_total_net_collection || 0}</td>
+                        <td style="text-align:center; font-size: 0.75rem; font-weight: bold;">${data.grand_total_dues || 0}</td>
+                    </tr>`;
+                tbody.append(totalRow);
+            } else {
+                tbody.append('<tr><td colspan="14" style="text-align:center;">No data available for the selected criteria</td></tr>');
+            }
+        }
+    
+        function fetchDataAndPopulateTable(startFrom, endFrom, filterOrg, filterBranch) {
+            if (!validateDates(startFrom, endFrom)) return;
+    
+            $.ajax({
+                url: '/get_dues_invoice_values/',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                data: {
+                    start_from: startFrom,
+                    end_from: endFrom,
+                    org_id: filterOrg || '',
+                    branch_id: filterBranch || ''
+                },
+                success: function (response) {
+                    // Utility function to format date to DD-MM-YYYY
+                    function formatDate(dateString) {
+                        var date = new Date(dateString); // Parse the date string
+                        var day = String(date.getDate()).padStart(2, '0'); // Get day and ensure two digits
+                        var month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                        var year = date.getFullYear(); // Get full year
+                        return `${day}-${month}-${year}`; // Format as DD-MM-YYYY
+                    }
+
+                    // Populate company information
+                    $('.com-name').text(response.org_name);
+                    $('.com-address-name').text(response.org_address);
+                    $('.email-address-name').text(response.org_email);
+                    $('.website-name').text(response.org_website);
+                    $('.com-hotline-name').text(response.org_hotline);
+                    $('.com-fax-name').text(response.org_fax);
+                    
+                    // Format and display start_from and end_from
+                    $('.from_date-title').text(formatDate(response.start_from));
+                    $('.to_date-title').text(formatDate(response.end_from));
+
+                    // Populate branch-specific information
+                    $('.com-branch-title').text(response.branch_name);
+
+                    updateTable(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error, xhr.responseText);
+                    $('#salesTB tbody').html('<tr><td colspan="14" style="text-align:center;">Failed to load data. Please try again.</td></tr>');
+                }
+            });
+        }
+    
+        // Fetch query parameters
+        var orgId = getQueryParam('org_id');
+        var branchId = getQueryParam('branch_id');
+        var startFrom = getQueryParam('start_from');
+        var endFrom = getQueryParam('end_from');
+    
+        // Validate parameters and fetch data
+        if (orgId && branchId && startFrom && endFrom) {
+            fetchDataAndPopulateTable(startFrom, endFrom, orgId, branchId);
+        } else {
+            console.error('Missing required query parameters');
+            $('#salesTB tbody').html('<tr><td colspan="14" style="text-align:center;">Invalid URL parameters. Please provide valid criteria.</td></tr>');
+        }
+    });
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+    
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    // loader scrt
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            // document.body.removeChild("loader");
+        });
+    });
+
+    //
+    function printReceipt() {
+        const footerText = 'TBOX, Contact: +8801309-994317,';
+        const now = new Date();
+        const formattedDateTime = now.toLocaleString();
+        const pageNumber = 1; // Update this dynamically if needed
+
+        // Append your footer content
+        const footerContent =
+            `<div class="footer">
+                <span class="software-woner-title">Software By: </span>
+                <span class="software-woner-name">${footerText}</span>
+                <span class="printed-by-title">- Printed By: </span>
+                <span class="printed-by-name"></span>
+                <span class="printed-on-title">- Printed on: </span>
+                <span class="printed-on-date">${formattedDateTime}</span>
+                <span class="printed-page-title">- Page </span>
+                <span class="printed-page-no">${pageNumber}</span>
+            </div>`;
+
+        var printContents = document.querySelector('main').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        // Append footer content to the end of the print contents
+        printContents += footerContent;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+    //<!--  -->
+    //
+</script>
+{% endblock %}

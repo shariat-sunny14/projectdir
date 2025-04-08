@@ -1,0 +1,73 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container" style="border: 0;">
+                <form enctype="multipart/form-data">
+                    <!--  -->
+                    <div class="alert_box">
+                        <div class="icon" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-evenly; align-items: center;">
+                            <i class='bx bx-user' style="font-size: 4.5rem;"></i>
+                        </div>
+                        <header style="color: red;">Confirm</header>
+                        <p>Are you want to permanently Delete?</p>
+                        <div class="btns">
+                            <button id="deleteBtn" type="button" data-wo_coll_id="{{ woinvcoll_data.pk }}" class="btn btn-danger">
+                                Confirm Delete?
+                            </button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '#deleteBtn', function() {
+        var wo_coll_id = $(this).data('wo_coll_id');
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var org_id = urlParams.get('org_id') || $('#id_filter_org').val();
+        var branch_id = urlParams.get('branch_id') || $('#id_filter_branch').val();
+    
+        if (!org_id || !branch_id) {
+            toastr.warning("Missing organization or branch ID.");
+            return;
+        }
+    
+        $.ajax({
+            type: 'DELETE',
+            url: `/without_inv_collection_dtl_elete/${wo_coll_id}/`,
+            contentType: 'application/json',  // Send JSON data
+            data: JSON.stringify({ org_id: org_id, branch_id: branch_id }),
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            },
+            success: function(resp) {
+                if (resp.success) {
+                    toastr.success(resp.msg);
+                    location.reload();
+                } else {
+                    toastr.error(resp.errmsg);
+                }
+            },
+            error: function(xhr) {
+                var resp = xhr.responseJSON; // Get JSON response
+                if (resp && resp.errmsg) {
+                    toastr.error(resp.errmsg);
+                } else {
+                    toastr.error("An unknown error occurred.");
+                }
+            }
+        });
+    });
+
+    // Reload page when modal is dismissed
+    $('#modal_md').on('hide.bs.modal', function () {
+        location.reload();
+    });
+</script>
