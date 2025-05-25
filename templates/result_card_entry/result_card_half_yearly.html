@@ -1,0 +1,662 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_entry/css/result_card_entry.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #455697;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-6"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bx-credit-card text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">Result Card Half Yearly</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-6" style="display: flex; justify-content: right;">
+                                    <!--  -->
+                                    <button type="button" onClick="navigateTo('/result_card_entry_services/')"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #43507e; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        Card Entry List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <section style="display: flex; width: 100%;">
+                    <!--  -->
+                    <!-- form body -->
+                    <section style="width: 100%; margin-left: 0.5rem; margin-right: 0.5rem;">
+                        <form action="" id="resultsCardEntForm">
+                            <div class="transcript-container">
+                                <div class="transcript-header" style="display: none;">
+                                    <header>
+                                        <div class="header-bottom">
+                                            <section class="grading-scale-body">
+                                                <table>
+                                                    <thead style="background: rgb(172, 172, 172);">
+                                                        <tr>
+                                                            <th style="text-align: center; width: 5%;">Letter Grade</th>
+                                                            <th style="text-align: center; width: 5%;">Marks Interval</th>
+                                                            <th style="text-align: center; width: 5%;">Grade Point</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center;">A+</td>
+                                                            <td style="text-align: center;">80-100</td>
+                                                            <td style="text-align: center;">5.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">A</td>
+                                                            <td style="text-align: center;">70-79</td>
+                                                            <td style="text-align: center;">4.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">A-</td>
+                                                            <td style="text-align: center;">60-69</td>
+                                                            <td style="text-align: center;">3.50</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">B</td>
+                                                            <td style="text-align: center;">50-59</td>
+                                                            <td style="text-align: center;">3.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">C</td>
+                                                            <td style="text-align: center;">40-49</td>
+                                                            <td style="text-align: center;">2.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">D</td>
+                                                            <td style="text-align: center;">33-39</td>
+                                                            <td style="text-align: center;">1.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">F</td>
+                                                            <td style="text-align: center;">00-32</td>
+                                                            <td style="text-align: center;">0.00</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </section>
+                                        </div>
+                                    </header>
+                                </div>
+
+                                <section>
+                                    <input type="hidden" value="{{ org_list.org_id|default:'' }}" name="is_org_id">
+                                    <input type="hidden" value="{{ branch_list.branch_id|default:'' }}" name="is_branch_id">
+                                    <input type="hidden" value="{{ registration.reg_id|default:'' }}" name="is_reg_id">
+                                    <input type="hidden" value="{{ registration.class_id|default:'' }}" name="is_class_id">
+                                    <input type="hidden" value="{{ registration.section_id|default:'' }}" name="is_section_id">
+                                    <input type="hidden" value="{{ registration.shift_id|default:'' }}" name="is_shifts_id">
+                                    <input type="hidden" value="{{ registration.groups_id|default:'' }}" name="is_groups_id">
+                                    <div class="card main_pos_card">
+                                        <div class="row cash_point_row">
+                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                                                <div class="col-sm-8">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_students_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Student’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox" id="id_students_name" value="{{ registration.full_name|default:'' }}"
+                                                                        name="students_name" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_father_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Father’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.father_name|default:'' }}"
+                                                                        autocomplete="off" id="id_father_name" name="father_name" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_mother_name:" class="col-sm-2 col-form-label">
+                                                                    Mother’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.mother_name|default:'' }}"
+                                                                        id="id_mother_name" autocomplete="off" name="mother_name" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_class"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Class:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.class_id.class_name|default:'' }}"
+                                                                        id="id_is_class" name="is_class" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_roll_no" class="col-sm-2 col-form-label">
+                                                                    Roll No:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.roll_no|default:'' }}"
+                                                                        id="id_roll_no" name="roll_no" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_section" class="col-sm-2 col-form-label">
+                                                                    Section:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.section_id.section_name|default:'' }}"
+                                                                        id="id_is_section" name="is_section" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_shift" class="col-sm-2 col-form-label">
+                                                                    Shift:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.shift_id.shift_name|default:'' }}"
+                                                                        id="id_is_shift" name="is_shift" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                                <!--  -->
+                                                <div class="col-sm-4">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_average_gpa" class="col-sm-8 fontsize col-form-label">
+                                                                    GPA:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox" id="id_is_average_gpa" name="is_average_gpa" step="0.01" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_average_letter_grade" class="col-sm-8 fontsize col-form-label">
+                                                                    Letter Grade:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_average_letter_grade" name="average_letter_grade" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_obtained_marks" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Obtained Marks:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_obtained_marks" name="total_obtained_marks" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_result_status" class="col-sm-8 fontsize col-form-label">
+                                                                    Result Status:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_result_status" name="result_status" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_merit_position" class="col-sm-8 fontsize col-form-label">
+                                                                    Merit Position:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_merit_position" name="merit_position" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_working_days" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Working Days:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_working_days" name="total_working_days" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_present_days" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Present Days:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_present_days" name="total_present_days" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </section>
+                                <!--  -->
+                                <section class="subject-marks" style="margin-top: 1rem; margin-bottom: 1rem;">
+                                    <h3>Subject-Wise Grade & Marks</h3>
+                                    <section>
+                                        <div class="col-xl-12">
+                                            <div class="table-body item_table_body">
+                                                <div class="d-flex w-100" id="POS-field">
+                                                    <table class="table table-striped" style="width: 100%;" id="subWGTBL">
+                                                        <thead class="text-center table-header_itemlist">
+                                                            <tr>
+                                                                <th rowspan="2" style="text-align:center; width: 35%;">Name of Subjects</th>
+                                                                <th rowspan="2" style="text-align:center; width: 10%;">Marks</th>
+                                                                <th colspan="4" style="text-align:center;">Obtained Marks</th>
+                                                                <th rowspan="2" style="text-align:center; width: 10%;">Letter Grade</th>
+                                                                <th rowspan="2" style="text-align:center; width: 10%;">GP</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="text-align:center; width: 8%;">MCQ</th>
+                                                                <th style="text-align:center; width: 8%;">Written</th>
+                                                                <th style="text-align:center; width: 10%;">Practical</th>
+                                                                <th style="text-align:center; width: 10%;">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="mytbody">
+                                                            {% for subject in subjects %}
+                                                                <tr>
+                                                                    <td style="text-align: left;"><span style="margin-left: 10px; font-size: 15px; font-weight: 500; font-family: 'Georgia', serif;">{{ subject.subjects_name }}</span><input type="hidden" name="is_subjects_id[]" value="{{ subject.subjects_id }}"></td>
+                                                                    <td style="text-align: center;"><strong style="font-size: 15px; font-weight: bolder; font-family: math;">{{ subject.is_marks }} <input type="hidden" class="defaults-marks" name="sub_defaults_marks[]" value="{{ subject.is_marks }}"></strong></td>  <!-- Default Marks or fetch from another table if needed -->
+                                                                    <td><input type="number" class="form-control result_entry_inputbox" name="is_mcq[]" value="0" min="0" max="99" autocomplete="off" required></td>  <!-- MCQ -->
+                                                                    <td><input type="number" class="form-control result_entry_inputbox" name="is_written[]" value="0" min="0" max="99" autocomplete="off" required></td>  <!-- Written -->
+                                                                    <td><input type="number" class="form-control result_entry_inputbox" name="is_practical[]" value="0" min="0" max="99" autocomplete="off" required></td>  <!-- Practical -->
+                                                                    <td style="text-align: center;"><strong class="id_total_inv_marks" style="font-size: 15px; font-weight: bolder; font-family: math;"></strong><input type="hidden" value="0" name="total_inv_marks[]"></td>  <!-- Total -->
+                                                                    <td style="text-align: center;"><strong id="id_is_letter_grade" style="font-size: 15px; font-weight: bolder; font-family: math;"></strong><input type="hidden" name="sub_letter_grade[]"></td>  <!-- Letter Grade -->
+                                                                    <td style="text-align: center;"><strong id="id_is_gp" style="font-size: 15px; font-weight: bolder; font-family: math;"></strong><input type="hidden" name="is_sub_gp[]"></td>  <!-- GP -->
+                                                                </tr>
+                                                            {% empty %}
+                                                                <tr>
+                                                                    <td colspan="8" class="text-center text-danger">No subjects found for this student.</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                                <tr>
+                                                                    <td style="text-align: right;"><strong style="margin-right: 0.5rem; font-size: 15px; font-weight: bolder; font-family: 'Georgia', serif;">Total Marks:</strong></td>
+                                                                    <td style="text-align: center;"><strong id="id_total_marks" style="font-size: 15px; font-weight: bolder; font-family: math;"></strong><input type="hidden" id="id_total_defaults_marks" name="total_defaults_marks"></td>
+                                                                    <td colspan="4" style="text-align: right;"><strong id="id_grand_total_marks" style="margin-right: 1.5rem; font-size: 15px; font-weight: bolder; font-family: math;"></strong><input type="hidden" class="grand_total_marks" name="is_grand_total_marks"></td>
+                                                                    <td colspan="2"></td>
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <section>
+                                    <div class="card main_pos_card" style="padding: 20px;">
+                                        <div class="row cash_point_row col-sm-12">
+                                            <div class="col-sm-8" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center;">
+                                                <strong class="col-sm-2REMKS" style="margin-right: 1rem;">Remarks:</strong> 
+                                                <div class="col-sm-10REMKS">
+                                                    <textarea type="text" class="form-control pos_inputbox" id="id_is_remarks" name="is_remarks" autocomplete="off"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4" style="display: flex; flex-wrap: nowrap; flex-direction: row; align-items: center;">
+                                                <strong class="col-sm-4" style="margin-right: 1rem; font-size: 13px;">Date of Publication:</strong> 
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control pos_inputbox datepicker" id="id_date_of_publication" name="date_of_publication" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <!-- -------------------------------------------------------------------- -->
+                            <section style="margin-top: 5rem; margin-bottom: 1rem;">
+                                <div class="payment-submitBtn">
+                                    <button type="submit" style="text-align:center; width: 8rem;" id="cardEntrySubmission"
+                                        class="btn btn-success col-sm-4 text-white btn-xs item_payment_btn">
+                                        Save & Print
+                                    </button>
+                                </div>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+                <!--  -->
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        function calculateGrandTotal() {
+            const totalInputs = document.querySelectorAll('input[name="total_inv_marks[]"]');
+            let grandTotal = 0;
+
+            totalInputs.forEach(input => {
+                grandTotal += parseInt(input.value) || 0;
+            });
+
+            document.getElementById('id_grand_total_marks').textContent = grandTotal;
+            document.getElementById('id_total_obtained_marks').value = grandTotal;
+            document.querySelector('.grand_total_marks').value = grandTotal;
+        }
+
+        function calculateResult() {
+            const subjectRows = document.querySelectorAll('#mytbody tr');
+            let totalGP = 0;
+            let totalSubjects = 0;
+            let isFailed = false;
+
+            subjectRows.forEach(row => {
+                const totalInput = row.querySelector('input[name="total_inv_marks[]"]');
+                const defaultMarks = parseInt(row.querySelector('.defaults-marks')?.value) || 0;
+
+                if (!totalInput || isNaN(defaultMarks)) return;
+
+                const total = parseInt(totalInput.value) || 0;
+                let gp = 0;
+
+                // Determine GP based on grading scale
+                if (defaultMarks === 50) {
+                    if (total >= 40) gp = 5.00;
+                    else if (total >= 35) gp = 4.00;
+                    else if (total >= 30) gp = 3.50;
+                    else if (total >= 25) gp = 3.00;
+                    else if (total >= 20) gp = 2.00;
+                    else if (total >= 17) gp = 1.00;
+                    else gp = 0.00;
+                } else {
+                    if (total >= 80) gp = 5.00;
+                    else if (total >= 70) gp = 4.00;
+                    else if (total >= 60) gp = 3.50;
+                    else if (total >= 50) gp = 3.00;
+                    else if (total >= 40) gp = 2.00;
+                    else if (total >= 33) gp = 1.00;
+                    else gp = 0.00;
+                }
+
+                if (gp === 0.00) isFailed = true;
+
+                totalGP += gp;
+                totalSubjects++;
+            });
+
+            const gpa = (totalSubjects > 0) ? (totalGP / totalSubjects).toFixed(2) : '0.00';
+
+            let letterGrade = 'F';
+            let resultStatus = 'Failed';
+
+            // Only assign GPA-based grade if student passed all subjects
+            if (!isFailed) {
+                const gpaNum = parseFloat(gpa);
+                if (gpaNum >= 5.00) letterGrade = 'A+';
+                else if (gpaNum >= 4.00) letterGrade = 'A';
+                else if (gpaNum >= 3.50) letterGrade = 'A-';
+                else if (gpaNum >= 3.00) letterGrade = 'B';
+                else if (gpaNum >= 2.00) letterGrade = 'C';
+                else if (gpaNum >= 1.00) letterGrade = 'D';
+                else letterGrade = 'F';
+
+                resultStatus = 'Passed';
+            }
+
+            document.getElementById('id_is_average_gpa').value = gpa;
+            document.getElementById('id_average_letter_grade').value = letterGrade;
+            document.getElementById('id_result_status').value = resultStatus;
+        }
+
+        document.querySelectorAll('.result_entry_inputbox').forEach(input => {
+            input.addEventListener('input', () => {
+                const row = input.closest('tr');
+                const mcqInput = row.querySelector('input[name="is_mcq[]"]');
+                const writtenInput = row.querySelector('input[name="is_written[]"]');
+                const practicalInput = row.querySelector('input[name="is_practical[]"]');
+                const totalInput = row.querySelector('input[name="total_inv_marks[]"]');
+                const totalElement = row.querySelector('.id_total_inv_marks');
+                const gradeElement = row.querySelector('#id_is_letter_grade');
+                const gradeinputElement = row.querySelector('input[name="sub_letter_grade[]"]');
+                const gpElement = row.querySelector('#id_is_gp');
+                const gpinputElement = row.querySelector('input[name="is_sub_gp[]"]');
+                const defaultMarks = parseInt(row.querySelector('.defaults-marks')?.value) || 0;
+
+                let mcq = parseInt(mcqInput.value) || 0;
+                let written = parseInt(writtenInput.value) || 0;
+                let practical = parseInt(practicalInput.value) || 0;
+
+                const inputs = [mcqInput, writtenInput, practicalInput];
+                [mcq, written, practical].forEach((val, index) => {
+                    if (val > 99) {
+                        toastr.info("Only 2-digit numbers (0–99) are allowed.");
+                        inputs[index].value = inputs[index].value.slice(0, 2);
+                    }
+                });
+
+                mcq = parseInt(mcqInput.value) || 0;
+                written = parseInt(writtenInput.value) || 0;
+                practical = parseInt(practicalInput.value) || 0;
+
+                const total = mcq + written + practical;
+
+                if (total > defaultMarks) {
+                    toastr.warning(`Total marks (${total}) must not exceed ${defaultMarks} for this subject.`);
+                    input.value = '';
+                    return;
+                }
+
+                if (totalElement) totalElement.textContent = total;
+                if (totalInput) totalInput.value = total;
+
+                let letter = 'F', gp = '0.00';
+
+                if (defaultMarks === 50) {
+                    if (total >= 40) { letter = 'A+'; gp = '5.00'; }
+                    else if (total >= 35) { letter = 'A'; gp = '4.00'; }
+                    else if (total >= 30) { letter = 'A-'; gp = '3.50'; }
+                    else if (total >= 25) { letter = 'B'; gp = '3.00'; }
+                    else if (total >= 20) { letter = 'C'; gp = '2.00'; }
+                    else if (total >= 17) { letter = 'D'; gp = '1.00'; }
+                } else {
+                    if (total >= 80) { letter = 'A+'; gp = '5.00'; }
+                    else if (total >= 70) { letter = 'A'; gp = '4.00'; }
+                    else if (total >= 60) { letter = 'A-'; gp = '3.50'; }
+                    else if (total >= 50) { letter = 'B'; gp = '3.00'; }
+                    else if (total >= 40) { letter = 'C'; gp = '2.00'; }
+                    else if (total >= 33) { letter = 'D'; gp = '1.00'; }
+                }
+
+                if (gradeElement) gradeElement.textContent = letter;
+                if (gradeinputElement) gradeinputElement.value = letter;
+                if (gpElement) gpElement.textContent = gp;
+                if (gpinputElement) gpinputElement.value = gp;
+
+                calculateGrandTotal();
+                calculateResult();
+            });
+        });
+
+    });
+
+
+    ///////////////////////////////////////////////////
+    document.addEventListener('DOMContentLoaded', function () {
+        const pubDateInput = document.getElementById('id_date_of_publication');
+        
+        if (pubDateInput) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${dd}-${mm}-${yyyy}`; // Format: yyyy-mm-dd  ${yyyy}-${mm}-${dd}
+
+            pubDateInput.value = formattedDate;
+        }
+    });
+
+    // Initialize jQuery UI Datepicker
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd-mm-yy', // Desired format: dd-mm-yyyy
+            changeYear: true,
+            changeMonth: true
+        });
+    });
+    //////////////////////////////  
+    $(document).ready(function() {
+        $('.result_entry_inputbox').on('focus', function() {
+            if ($(this).val() === '0') {
+                $(this).val('');
+            }
+        });
+    
+        $('.result_entry_inputbox').on('blur', function() {
+            if ($(this).val().trim() === '') {
+                $(this).val('0');
+            }
+        });
+    });
+
+    ///////////////////////////
+    document.addEventListener('input', function (e) {
+        if (e.target.classList.contains('result_entry_inputbox')) {
+            let value = e.target.value;
+            if (value.length > 2) {
+                toastr.info("Only 2-digit numbers (0-99) are allowed.");
+                e.target.value = value.slice(0, 2);
+            }
+        }
+    });
+
+    ///////////////////////
+    function calculateTotalMarks() {
+        let total = 0;
+        document.querySelectorAll('.defaults-marks').forEach(function(input) {
+            let val = parseFloat(input.value) || 0;
+            total += val;
+        });
+        document.getElementById('id_total_marks').textContent = total;
+        document.getElementById('id_total_defaults_marks').value = total;
+    }
+
+    // Run on page load
+    window.addEventListener('DOMContentLoaded', calculateTotalMarks);
+
+    // Optional: Also update on input change if user can edit
+    document.addEventListener('input', function (e) {
+        if (e.target.classList.contains('defaults-marks')) {
+            calculateTotalMarks();
+        }
+    });
+    ///////////////////////
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+
+
+    $(document).ready(function () {
+        $('#resultsCardEntForm').submit(function (e) {
+            e.preventDefault();
+    
+            $('#cardEntrySubmission').prop('disabled', true).html('Processing...');
+    
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'save_results_card_entry' %}",
+                data: new FormData(this),  // direct reference to the form
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.status === 'success') {
+                        var receiptUrl = "{% url 'results_card_entry_report' %}?id=" + resp.res_card_id;
+                        modal_lg("Results Card Report", receiptUrl);
+        
+                        $('#modal_lg').on('hide.bs.modal', function () {
+                            navigateTo("{% url 'result_card_entry_services' %}");
+                        });
+                        toastr.success("Results Card Entry Successful!..");
+                    } else {
+                        toastr.error(resp.msg || "An error occurred", 'Error');
+                        console.error(resp);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("Network error! Please try again.");
+                    console.error('AJAX Error:', status, error);
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#cardEntrySubmission').prop('disabled', false).html('Save & Print');
+                    }, 1000); // shorter delay for better UX
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
