@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% load humanize %} {% load static %}
+
+  <!----===== Boxicons CSS ===== -->
+  <link rel="stylesheet" href="{% static 'assets/boxicons-2.1.4/css/boxicons.min.css' %}" />
+
+  <!--========== FAVICON ICONS ==========-->
+  <link rel="shortcut icon" href="{% static 'fav_icon/favicon.ico' %}" />
+
+  <!--========== Bootstrap link ==========-->
+  <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}" />
+
+  <!-- jQuery CDN -->
+  <script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+
+  <!-- toastr js -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'assets/toastr/css/toastr.min.css' %}" />
+  <!-- JS -->
+  <script src="{% static 'assets/toastr/js/toastr.min.js' %}"></script>
+
+  <!-- ===== CSS ===== -->
+  <link rel="stylesheet" type="text/css" href="{% static 'logger_style/login_theme.css' %}" />
+  <title>TBOX</title>
+  <style>
+    .alert-content {
+      background: linear-gradient(135deg, #ffe4e1, #f0fff4, #e0f2fe);
+      width: 100%;
+      padding: 30px;
+      border-radius: 1.5rem;
+      box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      max-height: 90%;
+      animation: slideIn 0.3s ease;
+      font-family: "Segoe UI", sans-serif !important;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .alert-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right,
+          #f12711,
+          #f5af19);
+      /* red to orange */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* fallback */
+      color: transparent;
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .startupdate {
+      background: linear-gradient(to right,
+          #f12711,
+          #f5af19);
+      /* red to orange */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* fallback */
+      color: transparent;
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .bkash-example-caption {
+      background: linear-gradient(to right,
+          #f12711,
+          #f5af19);
+      /* red to orange */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* fallback */
+      color: transparent;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .close-btn {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      font-size: 22px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      /* Add continuous movement */
+      animation: bounceClose 3s ease-in-out infinite;
+    }
+
+    /* Hover: scale up */
+    .close-btn:hover {
+      transform: scale(1.2);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Click: bounce */
+    .close-btn:active {
+      animation: bounceClose 0.3s;
+    }
+
+    /* Continuous movement animation */
+    @keyframes floatMove {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    /* Bounce when clicked */
+    @keyframes bounceClose {
+      0% {
+        transform: scale(1.2);
+      }
+
+      50% {
+        transform: scale(0.9);
+      }
+
+      100% {
+        transform: scale(1.1);
+      }
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      color: #222;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h3 {
+      margin-top: 0;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .due-section {
+      background: #fff7ed;
+      border-left: 8px solid #f97316;
+    }
+
+    .shutdown-section {
+      background: #fef2f2;
+      border-left: 8px solid #ef4444;
+    }
+
+    .notice-section {
+      background: #fef2f2;
+      border-left: 8px solid #e20d0d;
+    }
+
+    .bkash-section {
+      background: #eef2ff;
+      border-left: 8px solid #6366f1;
+    }
+
+    .highlight {
+      background: linear-gradient(to right,
+          #f12711,
+          #f5af19);
+      /* red to orange */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* fallback */
+      color: transparent;
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .highlight_service {
+      font-weight: bold;
+      color: #000000;
+    }
+
+    .bkash-steps {
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .contact-steps {
+      margin-top: 10px;
+      line-height: 1.6;
+      margin-bottom: 6px;
+      padding-left: 2.2rem;
+      font-size: 14px;
+    }
+
+    .bkash-steps li {
+      margin-bottom: 6px;
+    }
+
+    .contact-steps li {
+      margin-bottom: 6px;
+    }
+
+    .bkash-image {
+      margin-top: 15px;
+      text-align: center;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bkash-image img {
+      width: 32%;
+      height: 50rem;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .bkash-steps {
+      padding-left: 2.2rem;
+    }
+
+    .contact-info {
+      font-size: 1rem;
+      font-weight: bolder;
+      background: linear-gradient(to right, #114af1, #f51919);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .contact-label {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: transparent;
+      background: linear-gradient(to right, rgb(139 48 175), rgb(189 62 251 / 71%));
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .months-summary {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .month-column {
+      flex: 1;
+      min-width: 200px;
+      max-height: 200px;
+      /* 👈 limit height */
+      overflow-y: auto;
+      /* 👈 enable vertical scroll */
+      padding-right: 10px;
+      /* space for scrollbar */
+    }
+
+    .month-list {
+      list-style-type: none;
+      padding-left: 1rem;
+      margin: 0;
+    }
+
+    .month-list li {
+      margin-bottom: 4px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .paid-column li {
+      color: green;
+    }
+
+    .unpaid-column li {
+      color: red;
+    }
+
+    /* Optional: style scrollbars for better appearance */
+    .month-column::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .month-column::-webkit-scrollbar-thumb {
+      background: #aaa;
+      border-radius: 10px;
+    }
+
+    .month-column::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+
+    @media (max-width: 600px) {
+      .alert-content {
+        padding: 20px;
+      }
+
+      .section h3 {
+        font-size: 18px;
+      }
+
+      .bkash-steps {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<!--  -->
+
+<body>
+  <div class="container-fluid">
+    <div id="paymentModal" class="alert-body">
+      <div class="alert-content">
+        <div class="alert-header">
+          <h2>
+            📢
+            <span class="gradient-text">Software Service Charge Payment Required</span>
+          </h2>
+        </div>
+
+        <!-- Section 1: Contact Info -->
+        <div class="section notice-section" style="background: #fffbea; border-left: 8px solid #facc15;">
+          <h3 style="font-size: 1.4rem; font-weight: bold; margin-bottom: 15px;">
+            ⚠️ <span class="highlight">প্রিয় গ্রাহক,</span>
+          </h3>
+          <p style="font-size: 1rem; line-height: 1.8; color: #444;">
+            আমাদের সেবায় বিঘ্ন ঘটায় আমরা আন্তরিকভাবে দুঃখিত। নির্ধারিত <strong>মাসিক সার্ভিস চার্জ</strong> বাকি থাকায়
+            আপনার সফটওয়্যারটি
+            <strong style="color: #dc2626;">সাময়িকভাবে বন্ধ</strong> রয়েছে।
+          </p>
+          <p style="font-size: 1rem; line-height: 1.8; color: #444;">
+            অনুগ্রহ করে সার্ভিস চার্জ পরিশোধ করুন। <strong style="color: #1e40af;">পেমেন্ট সম্পন্ন হওয়ার ২০ মিনিটের
+              মধ্যে</strong> সেবা স্বয়ংক্রিয়ভাবে চালু হয়ে যাবে।
+          </p>
+          <p style="font-size: 1rem; line-height: 1.8; color: #444;">
+            আপনার সহযোগিতা ও আমাদের পাশে থাকার জন্য <strong style="color: #16a34a;">আন্তরিক ধন্যবাদ।</strong>
+          </p>
+          <p style="font-size: 1rem; font-weight: bold; margin-top: 15px; color: #555;">
+            ——— <span
+              style="background: linear-gradient(to right, #1d4ed8, #dc2626); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">টিবক্স
+              টিম</span>
+          </p>
+        </div>
+
+        <!-- Section 2: Due Info -->
+        <div class="section due-section">
+          <h3>1️⃣ <span class="highlight">Software Service Charge, Payment & Due Amt Info</span></h3>
+
+          <p>Your Software Started On: <span class="startupdate">...</span></p>
+          <p>Your Monthly Service Charge: <span class="highlight_service serviceChargeAmt">৳ ...</span></p>
+          <p>Total Months: <strong class="totalMonths">0</strong></p>
+
+          <div class="months-summary">
+            <!-- Paid Months Column -->
+            <div class="month-column paid-column">
+              <p>✅ Paid Months (<strong class="paidMonthsCount">0</strong>):</p>
+              <ul class="month-list paidMonthsList"></ul>
+            </div>
+
+            <!-- Unpaid Months Column -->
+            <div class="month-column unpaid-column">
+              <p>❌ Unpaid Months (<strong class="unpaidMonthsCount">0</strong>):</p>
+              <ul class="month-list unpaidMonthsList"></ul>
+            </div>
+          </div>
+
+          <p style="font-size: 1.1rem">
+            Your <span class="highlight">Due Amount</span> is:
+            <span class="highlight dueAmount">৳ ...</span>
+          </p>
+          <p style="color: #b91c1c; font-weight: bold;">Due to non-payment, your service has been suspended.</p>
+          <p style="color: #1e3a8a; font-weight: bold;">If payment is made, service will resume within 20 minutes.</p>
+        </div>
+
+        <!-- Section 3: Contact Info -->
+        <div class="section shutdown-section">
+          <h3>2️⃣ <span class="highlight">Contact With TBOX Administration</span></h3>
+          <ul class="contact-steps">
+            <li><span class="contact-label">Software by :</span> <strong class="contact-info">Tbox (Pvt.)
+                Limited</strong></li>
+            <li><span class="contact-label">Support by :</span> <strong class="contact-info">Software Engineer</strong>
+            </li>
+            <li><span class="contact-label">Mail to :</span> <strong
+                class="contact-info">tbox.info.bd@gmail.com</strong></li>
+            <li><span class="contact-label">Cell :</span> <strong class="contact-info">+8801309-994317</strong></li>
+          </ul>
+        </div>
+
+        <!-- Section 4: bKash Payment -->
+        <div class="section bkash-section">
+          <h3>3️⃣ <span class="highlight">How to Pay via bKash (বিকাশে পেমেন্ট)</span></h3>
+          <ul class="bkash-steps">
+            <li>✅ Open bKash App or dial *247# (বিকাশ অ্যাপ খুলুন অথবা *247# ডায়াল করুন)</li>
+            <li>✅ Choose "Send Money" (পেমেন্ট পাঠাতে "Send Money" নির্বাচন করুন)</li>
+            <li>✅ Bkash Number (বিকাশে যে নম্বরে টাকা পাঠাবেন ): <strong class="gradient-text">01681332576</strong></li>
+            <li>✅ Pay Amount (পেমেন্টের পরিমাণ): <strong class="gradient-text dueAmount">৳ ...</strong></li>
+            <li>✅ Reference (রেফারেন্স): <strong class="gradient-text">Your Business Name</strong></li>
+            <li>✅ Confirm and Send (নিশ্চিত করুন এবং পাঠান)</li>
+          </ul>
+
+          <!-- Screenshots -->
+          <div class="bkash-image">
+            <img src="{% static 'images/bkash_send_money/bkash_1.png' %}" alt="" />
+            <img src="{% static 'images/bkash_send_money/bkash_2.jpg' %}" alt="" />
+            <img src="{% static 'images/bkash_send_money/bkash_3.png' %}" alt="" />
+            <img src="{% static 'images/bkash_send_money/bkash_4.png' %}" alt="" />
+            <img src="{% static 'images/bkash_send_money/bkash_5.png' %}" alt="" />
+            <img src="{% static 'images/bkash_send_money/bkash_6.png' %}" alt="" />
+            <img src="{% static 'images/bkash_send_money/bkash_7.png' %}" alt="" />
+            <p>📷 <span class="bkash-example-caption">Example Screenshot of bKash Payment</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="container-fluid" style="margin-top: 3rem">
+    <div class="footer">
+      <p class="text-muted">
+        Copyright &copy; TBOX <span id="currentYear"></span>. All Rights Reserved.
+        Software Versions: 1.0.0
+      </p>
+    </div>
+  </div>
+
+  <!-- JS: Fetch and Fill Data -->
+  <script>
+    $(document).ready(function () {
+      const orgName = sessionStorage.getItem("org_name");
+
+      if (orgName) {
+        $.ajax({
+          url: "/get_blocked_service_data_public/",
+          method: "GET",
+          data: { org_name: orgName },
+          success: function (resp) {
+            if (resp.success) {
+              $(".startupdate").text(resp.is_start_up_date);
+              $(".serviceChargeAmt").text("৳ " + resp.service_charge);
+              $(".dueAmount").text("৳ " + resp.due_amount);
+              $(".totalMonths").text(resp.total_months);
+              $(".paidMonthsCount").text(resp.paid_months.length);
+              $(".unpaidMonthsCount").text(resp.unpaid_months.length);
+
+              let paidHtml = "";
+              resp.paid_months.forEach(([year, month]) => {
+                paidHtml += `<li>✅ ${month.charAt(0).toUpperCase() + month.slice(1)} ${year}</li>`;
+              });
+              $(".paidMonthsList").html(paidHtml);
+
+              let unpaidHtml = "";
+              resp.unpaid_months.forEach(([year, month]) => {
+                unpaidHtml += `<li>❌ ${month.charAt(0).toUpperCase() + month.slice(1)} ${year}</li>`;
+              });
+              $(".unpaidMonthsList").html(unpaidHtml);
+            } else {
+              toastr.error(resp.errmsg || "Could not fetch data.");
+            }
+          },
+          error: function () {
+            toastr.error("Request failed.");
+          }
+        });
+      } else {
+        toastr.error("No organization selected.");
+      }
+
+      // Set footer year
+      $("#currentYear").text(new Date().getFullYear());
+    });
+  </script>
+</body>
+
+</html>

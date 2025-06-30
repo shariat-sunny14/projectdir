@@ -1,0 +1,913 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'item_pos_style/css/item_pos_style.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #458b97;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-6"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bx-credit-card text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">Without Invoice Collection</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-6" style="display: flex; justify-content: right;">
+                                    <button type="button" onClick="navigateTo('/lists_of_without_invoice_collections/')"
+                                        title="Without Invoice Collections List"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #397580; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        Without Invoice Collections List
+                                    </button>
+                                    <!--  -->
+                                    <button type="button" onClick="navigateTo('/item_pos_billing/')"
+                                        title="Invoice List"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #397580; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        Billing
+                                    </button>
+                                    <!--  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form action="" id="woinvcoll-form">
+                    <input type="hidden" class="form-control pos_inputbox" id="id_reg_id" name="reg_id" readonly>
+                    <!--  -->
+                    <section style="padding: 0.5rem;">
+                        <div class="card main_pos_card">
+                            <div class="row cash_point_row">
+                                <div class="col-sm-12">
+                                    <div class="card pos_card">
+                                        <div class="card-body pos_card_body">
+                                            <div class="row cash_point_row">
+                                                <div class="col-sm-6 text-start"
+                                                    style="border-right: 1px solid rgba(0,0,0,.125);">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row justify-content-start">
+                                                                <!--  -->
+                                                                <div class="col-sm-8">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_org" title="Organization Name"
+                                                                            class="col-sm-client-label col-form-label">
+                                                                            Organization:
+                                                                        </label>
+                                                                        <div class="col-sm-client-input">
+                                                                            <select id="id_org" name="org"
+                                                                                class="form-select pos_inputbox">
+                                                                                {% for org in org_list %}
+                                                                                <option value="{{ org.org_id }}"
+                                                                                    id="{{ org.org_id }}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--  -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-6 text-end">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row justify-content-end">
+                                                                <!-- Added justify-content-end -->
+                                                                <div class="col-sm-8">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_branchs"
+                                                                            class="col-sm-2 col-form-label">
+                                                                            Branchs:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select id="id_branchs" name="branchs"
+                                                                                class="form-select pos_inputbox"></select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!--  -->
+                    <section style="padding: 0.5rem;">
+                        <div class="col-sm-12" style="display: flex;">
+                            <!--  -->
+                            <div class="col-sm-6">
+                                <div id="client_searchBody" style="display: none; margin-right: 0.3rem;">
+                                    <div class="card main_pos_card">
+                                        <div class="row cash_point_row">
+                                            <div class="col-sm-12">
+                                                <div class="card pos_card">
+                                                    <div class="card-body pos_card_body">
+                                                        <div class="row cash_point_row">
+                                                            <!--  -->
+                                                            <div class="card pos_card" id="client_searchInput"
+                                                                style="display: none;">
+                                                                <div class="card-body pos_card_body">
+                                                                    <div class="row cash_point_row">
+                                                                        <!--  -->
+                                                                        <div
+                                                                            style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center;  margin-bottom: 0.2rem;">
+                                                                            <div class="col-sm-10">
+                                                                                <fieldset>
+                                                                                    <input type="text"
+                                                                                        class="form-control pos_inputbox"
+                                                                                        id="clients_name"
+                                                                                        placeholder="Search B2B Clients"
+                                                                                        style="background: #fffab6;">
+                                                                                </fieldset>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-sm-6" style="margin-left: 0.4rem;">
+                                <div id="reg_searchBody" style="display: block;">
+                                    <div class="card main_pos_card">
+                                        <div class="row cash_point_row">
+                                            <div class="col-sm-12">
+                                                <div class="card pos_card">
+                                                    <div class="card-body pos_card_body">
+                                                        <div class="row cash_point_row">
+                                                            <!--  -->
+                                                            <div class="card pos_card" id="reg_searchInput"
+                                                                style="display: block;">
+                                                                <div class="card-body pos_card_body">
+                                                                    <div class="row cash_point_row">
+                                                                        <!--  -->
+                                                                        <div
+                                                                            style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center;  margin-bottom: 0.2rem;">
+                                                                            <div class="col-sm-10">
+                                                                                <input type="text"
+                                                                                    class="form-control pos_inputbox"
+                                                                                    id="register_customer"
+                                                                                    placeholder="Search by CN / Name / Phone No"
+                                                                                    style="background: #fffab6;">
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                        </div>
+                    </section>
+                    <!--  -->
+                    <section style="padding: 0.5rem;">
+                        <div class="card main_pos_card">
+                            <div class="row cash_point_row">
+                                <div class="col-sm-8">
+                                    <div class="card pos_card">
+                                        <div class="card-body pos_card_body">
+                                            <div class="row cash_point_row">
+                                                <div class="col-sm-6">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="customer_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Customer's:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        value="General Customer" id="customer_name"
+                                                                        name="customer_name" autocomplete="off"
+                                                                        required>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_house_no"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    House No.:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_house_no"
+                                                                        name="house_no">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_road_no" class="col-sm-2 col-form-label">
+                                                                    Road No.:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_road_no" autocomplete="off"
+                                                                        name="road_no">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_sector_no"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Sector No.:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_sector_no" name="sector_no"
+                                                                        autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_side_off_factory"
+                                                                    style="color: #f15900; font-weight: 700;"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Side Office/Factory:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_side_off_factory" name="side_off_factory"
+                                                                        autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="mobile_number"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Mobile:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="number"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="mobile_number"
+                                                                        name="mobile_number" required>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_area" class="col-sm-2 col-form-label">
+                                                                    Area:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_area" name="area">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_floor_no"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Floor No.:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_floor_no"
+                                                                        name="floor_no">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_order_no"
+                                                                    style="color: #f15900; font-weight: 700;"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Order No.:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_order_no"
+                                                                        name="order_no">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <!-- Credit Balance -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_address" class="col-sm-2 col-form-label">
+                                                                    Address:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <textarea type="text"
+                                                                        class="form-control pos_inputbox"
+                                                                        style="height: 1.55rem;" autocomplete="off"
+                                                                        id="id_address" name="address"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="col-sm-4">
+                                    <div class="card pos_card">
+                                        <div class="card-body pos_card_body">
+                                            <div class="row cash_point_row">
+                                                <div class="col-sm-12">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="gender"
+                                                                    class="col-sm-2 col-form-label">Gender:</label>
+                                                                <div class="col-sm-8">
+                                                                    <select id="gender" name="gender"
+                                                                        class="form-select reg_wise_disable pos_inputbox"
+                                                                        aria-label="Default select example">
+                                                                        <option value="" selected disabled>
+                                                                            Choose Gender ...
+                                                                        </option>
+                                                                        <option value="Male">Male</option>
+                                                                        <option value="Female">Female</option>
+                                                                        <option value="Others">Others</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="emergency_person"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Emer. Person:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" class="form-control pos_inputbox"
+                                                                        id="emergency_person" name="emergency_person"
+                                                                        autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_emergency_phone"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Emer. Phone:
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="number"
+                                                                        class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_emergency_phone"
+                                                                        name="emergency_phone">
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row" id="id_sales_type">
+                                                                <label for="id_reg_balances"
+                                                                    class="col-sm-2 text-danger col-form-label"
+                                                                    style="font-weight: bolder;">
+                                                                    Balance :
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <!--  -->
+                                                                    <input type="hidden" id="id_reg_balances"
+                                                                        name="reg_balances" value=""
+                                                                        class="form-control pos_inputbox">
+                                                                    <span id="reg_balances"
+                                                                        class="form-control item_inputbox text-success credit_balance">0.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                            </div>
+                        </div>
+                    </section>
+                    <!--  -->
+                    <section>
+                        <div class="col-sm-12" style="display: flex;">
+                            <div class="col-sm-6">
+                                <section>
+                                    <div class="card main-card">
+                                        <div class="card-body card-body_item_setup">
+                                            <div class="itemsetup_container" style="padding: 0.5rem;">
+                                                <div class="add_edit_head">
+                                                    <h2 class="text-info">Collections Info</h2>
+                                                </div>
+                                                <!--  -->
+                                                <!-- 1st row -->
+                                                <div class="row row_item_setup">
+                                                    <div
+                                                        style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: center; align-items: center;">
+                                                        <div class="col-sm-12" style="display: flex;">
+                                                            <div class="col-sm-12">
+                                                                <div class="card main-card">
+                                                                    <div class="card-body item_setup_sub">
+                                                                        <div class="row cash_point_row">
+                                                                            <label for="id_collection_amount"
+                                                                                class="col-md-2 col-form-label font_size_filter">
+                                                                                Coll. Amt.:
+                                                                            </label>
+                                                                            <div class="col-md-10">
+                                                                                <input type="number"
+                                                                                    class="form-control reset_input item_inputbox"
+                                                                                    style="text-align: right; padding-right: 1rem; background: #fffab6;"
+                                                                                    id="id_collection_amount"
+                                                                                    step="0.01" name="collection_amount"
+                                                                                    autocomplete="off"
+                                                                                    placeholder="Enter Your Collections Amt."
+                                                                                    required="">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12" style="display: flex;">
+                                                            <div class="col-sm-12">
+                                                                <div class="card main-card">
+                                                                    <div class="card-body item_setup_sub">
+                                                                        <div class="row cash_point_row">
+                                                                            <label for="id_descriptions"
+                                                                                class="col-md-2 col-form-label font_size_filter">
+                                                                                Descriptions:
+                                                                            </label>
+                                                                            <div class="col-md-10">
+                                                                                <textarea type="number"
+                                                                                    class="form-control reset_input item_inputbox"
+                                                                                    style="height: 5.7rem; padding-right: 1rem;"
+                                                                                    id="id_descriptions"
+                                                                                    name="descriptions"
+                                                                                    autocomplete="off"
+                                                                                    placeholder="Descriptions here ..."
+                                                                                    required=""></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <!--  -->
+                            <!--  -->
+                            <div class="col-sm-6">
+                                <section>
+                                    <div class="card main-card">
+                                        <div class="card-body card-body_item_setup">
+                                            <div class="itemsetup_container" style="padding: 0.5rem;">
+                                                <div class="add_edit_head">
+                                                    <h2 class="text-second">Collections Methord Info</h2>
+                                                </div>
+                                                <!--  -->
+                                                <!-- 1st row -->
+                                                <div class="row row_item_setup" style="font-size: 13px;">
+                                                    <div
+                                                        style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: center; align-items: center;">
+                                                        <!-- payment body -->
+                                                        <table id="" class="table paymode_table" style="width: 100%;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        Collections Mode
+                                                                    </td>
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        Collections Type
+                                                                    </td>
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        Comments
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody>
+                                                                <tr style="border-style: hidden!important;">
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        <div class="col-sm-12">
+                                                                            <select id="pay_mode" name="pay_mode"
+                                                                                class="form-select pos_inputbox"
+                                                                                aria-label="Default select example">
+                                                                                <option value="1">Cash</option>
+                                                                                <option value="2">Check</option>
+                                                                                <option value="3">Debit Card</option>
+                                                                                <option value="4">Credit Card</option>
+                                                                                <option value="5">Bkash</option>
+                                                                                <option value="6">Nagad</option>
+                                                                                <option value="7">Upay</option>
+                                                                                <option value="8">UCash</option>
+                                                                                <option value="9">Bank Deposit</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        <div class="col-sm-12">
+                                                                            <select id="pay_type" name="pay_type"
+                                                                                class="form-select pos_inputbox"
+                                                                                aria-label="Default select example">
+                                                                                <option value="5" id="dueOption">
+                                                                                    Without Invoice Collection
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        <div class="col-sm-12" id="comments">
+                                                                            <input type="text"
+                                                                                class="form-control pos_inputbox reset_input"
+                                                                                id="id_comments" name="comments"
+                                                                                style="text-align:center"
+                                                                                autocomplete="off">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <!--  -->
+                                                        </table>
+                                                        <!--  -->
+                                                        <table id="otherType" class="table paymode_table"
+                                                            style="width: 100%; display: block;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        CQ/CC/DC/DD/MB/OP
+                                                                    </td>
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        Mobile Number
+                                                                    </td>
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        Reference
+                                                                    </td>
+                                                                    <td style="text-align:center;width: 20%;">
+                                                                        Bank Name
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody>
+                                                                <tr style="border-style: hidden!important;">
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text"
+                                                                                class="form-control pos_inputbox reset_input"
+                                                                                id="card_info" name="card_info"
+                                                                                style="text-align:center"
+                                                                                autocomplete="off">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        <div class="col-sm-12">
+                                                                            <input type="number"
+                                                                                class="form-control pos_inputbox reset_input"
+                                                                                id="pay_mob_number"
+                                                                                name="pay_mob_number"
+                                                                                style="text-align:center"
+                                                                                autocomplete="off">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text"
+                                                                                class="form-control pos_inputbox reset_input"
+                                                                                id="pay_reference" name="pay_reference"
+                                                                                style="text-align:center"
+                                                                                autocomplete="off">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="text-align:center; width: 20%;">
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text"
+                                                                                class="form-control pos_inputbox reset_input"
+                                                                                id="bank_name" name="bank_name"
+                                                                                style="text-align:center"
+                                                                                autocomplete="off">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--  -->
+                                                    </div>
+                                                    <!--  -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <!--  -->
+                        </div>
+                    </section>
+                    <!--  -->
+                    <section>
+                        <div class="col-sm-12"
+                            style="margin-top: 2rem; margin-bottom: 1rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                            <div class="col-sm-6">
+                                <!-- submit button -->
+                                <div class="submit_button">
+                                    <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px; padding: 0.5rem 1rem; font-size: 0.9rem; line-height: 1;"
+                                        onclick="$('.reset_input').val('');">
+                                        Clear
+                                    </button>
+                                    <button type="submit" id="collSubmitBtn" class="btn btn-success btn-sm"
+                                        style="margin-right: 10px; padding: 0.5rem 1rem; font-size: 0.9rem; line-height: 1;">
+                                        Submit Collection
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        $('#woinvcoll-form').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $('#collSubmitBtn').prop('disabled', true).html('<i class="bx bx-loader-circle"></i> Processing...');
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save_without_invoice_collection' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (success = resp.msg) {
+                        toastr.success(resp.msg);
+                        location.reload();
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#collSubmitBtn').prop('disabled', false).html('Submit Collection');
+                    }, 1500);
+                }
+            });
+        });
+    });
+
+    //get branch
+    $(document).ready(function () {
+
+        $('#id_org').change(function () {
+            OrgWiseUpdateFilterOptions();
+        });
+
+        OrgWiseUpdateFilterOptions();
+
+        function OrgWiseUpdateFilterOptions() {
+            var selectedOrgId = $('#id_org').val();
+
+            // Branch option value
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: selectedOrgId },
+                success: function (data) {
+                    $('#id_branchs').empty();
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_branchs').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+                    $('#id_branchs').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+
+        //
+        $.ajax({
+            url: "{% url 'get_user_stores' %}",
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.stores) {
+                    var select = $('#cash_point');
+                    select.empty();
+                    $.each(response.stores, function (index, store) {
+                        select.append($('<option>', {
+                            value: store.store_id,
+                            id: store.store_id,
+                            text: store.store_name
+                        }));
+                    });
+
+                    // After populating user stores, trigger the change event for cash_point
+                    $('#cash_point').trigger('change');
+                } else {
+                    console.error('Error fetching user stores');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    // get register client
+    $(document).ready(function () {
+        // Define a function to clear and focus the input field
+        function clearRegCustomerInput() {
+            $('#register_customer').val('').focus();
+        }
+
+        $('#register_customer').typeahead({
+            source: function (query, result) {
+                var selected_id_org = $('#id_org').val();
+                $.ajax({
+                    url: '/search_registration_for_billing/',
+                    data: {
+                        query: query,
+                        org_filter: selected_id_org,
+                    },
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        result($.map(data.data, function (register) {
+                            return {
+                                name: register.full_name.toString(),
+                                customerNo: register.customer_no.toString(),
+                                mobileNumber: register.mobile_number.toString(),
+                                id: register.reg_id,
+                            };
+                        }));
+                    }
+                });
+            },
+            updater: function (register) {
+                var selectedRegisterId = register.id;
+                var orgID = $('#id_org').val();
+
+                $.ajax({
+                    url: '/select_registrations_details/',
+                    data: { selectedRegister: selectedRegisterId }, // Send the selected item ID to retrieve details
+                    dataType: "json",
+                    type: "GET",
+                    success: function (response) {
+                        var selectedRegisterDtl = response.data;
+
+                        // Assign selected data to the corresponding text input fields
+                        $('#id_reg_id').val(selectedRegisterDtl.reg_id);
+                        $('#customer_name').val(selectedRegisterDtl.full_name);
+                        $('#mobile_number').val(selectedRegisterDtl.mobile_number);
+                        $('#gender').val(selectedRegisterDtl.gender);
+                        $('#id_address').val(selectedRegisterDtl.address);
+                        $('#emergency_person').val(selectedRegisterDtl.emergency_person);
+                        $('#id_emergency_phone').val(selectedRegisterDtl.emergency_mobile);
+
+                        clearRegCustomerInput();
+
+                        if (selectedRegisterId && orgID) {
+                            fetchAndDisplayClientsTrns(selectedRegisterId, orgID);
+                        }
+                    }
+                });
+
+                // Return the selected item name to fill the input field
+                return register.name;
+            },
+            items: 50, // Specify the number of items to display
+            displayText: function (item) {
+                return item.name; // Adjust this if you want to customize the display text
+            },
+            matcher: function (item) {
+                // Custom matcher to filter based on name, customerNo, or mobileNumber
+                var query = this.query.toLowerCase();
+                return item.name.toLowerCase().includes(query) ||
+                    item.customerNo.toLowerCase().includes(query) ||
+                    item.mobileNumber.toLowerCase().includes(query);
+            }
+        });
+    });
+
+    function fetchAndDisplayClientsTrns(regisID, orgID) {
+        if (regisID && orgID) {
+            $.ajax({
+                url: "{% url 'get_clients_trans_summary_report' %}",
+                type: 'GET',
+                data: {
+                    reg_id: regisID,
+                    org_id: orgID
+                },
+                dataType: 'json',
+                success: function (response) {
+                    var total_OP_DebitAmt = 0;
+                    var total_OP_CreditAmt = 0;
+                    var total_trns_DebitAmt = 0;
+                    var total_trns_CreditAmt = 0;
+                    var balance = 0;
+
+                    if (Array.isArray(response.combined_data)) {
+                        response.combined_data.forEach(function (transaction) {
+                            total_OP_DebitAmt += parseFloat(transaction.op_debit_amt || 0);
+                            total_OP_CreditAmt += parseFloat(transaction.op_credit_amt || 0);
+                            total_trns_DebitAmt += parseFloat(transaction.trns_debit_amt || 0);
+                            total_trns_CreditAmt += parseFloat(transaction.trns_credit_amt || 0);
+                        });
+
+                        balance = (total_OP_DebitAmt + total_trns_DebitAmt) - (total_OP_CreditAmt + total_trns_CreditAmt);
+                        $('#id_reg_balances').val(balance.toFixed(2));  // Corrected to use .val() for input field
+                        $('#reg_balances').text(balance.toFixed(2));
+                    } else {
+                        $('#id_reg_balances').val('0.00');
+                        $('#reg_balances').text('0.00');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching transactions:', status, error);
+                }
+            });
+        } else {
+            console.warn('Required IDs are missing.');
+        }
+    }
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+</script>
+{% endblock %}

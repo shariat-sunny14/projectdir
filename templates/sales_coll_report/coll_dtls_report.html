@@ -1,0 +1,1029 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<title>Collection Details Report</title>
+<!--========== CSS ==========-->
+<!--========== Bootstrap link ==========-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- Barcode CDN -->
+<script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'purchase_order/css/purchase_order.css' %}">
+{% endblock %}
+<style>
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-width: 1;
+        border: 1px solid;
+    }
+
+    tr:nth-child(even) {
+        background: None !important;
+    }
+
+    hr {
+        margin: 0.3rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    .com-name {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .com-address {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-address-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .email-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-hotline-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-fax-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-fax-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .software-woner-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-by-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-on-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-page-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .software-woner-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-by-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-on-date {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-page-no {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .mul-items-othrs {
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .mul-items-names {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .receipt-name {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 25px;
+        border: 1px solid #c5c1c1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 15px;
+        font-weight: bolder;
+    }
+
+    .invoice_id {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcodeImg {
+        position: absolute;
+        top: 5rem;
+        right: 2rem;
+        display: flex;
+        margin-top: 4px;
+        margin-left: 21px;
+    }
+
+    .rec-type {
+        display: flex;
+        margin-top: -15px;
+    }
+
+    /* .rec-align {
+        font-size: 9px;
+        margin-top: 2px;
+    } */
+
+    .receipt-logo {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        text-align: left;
+        width: 5%;
+        border-radius: 50%;
+    }
+
+    .receipt-img {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: -8px;
+        left: -6px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .com-receipt-logo {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 0rem;
+        left: 3rem;
+    }
+
+    .paid-due-status {
+        width: 56%;
+        display: flex;
+        align-items: stretch;
+        text-align: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+        background: #9b99998a;
+        font-weight: bolder;
+        border-bottom: 3px solid #8d8a8a;
+        border-right: 3px solid #8d8a8a;
+    }
+
+    .status-DP {
+        text-align: center;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        border-style: hidden !important;
+    }
+
+    .sub-title1 {
+        margin-top: -9px;
+        width: 100%;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: center;
+    }
+
+    .sub-title2 {
+        margin-top: -7px;
+    }
+
+    .sub-title3 {
+        margin-top: -3px;
+    }
+</style>
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<div class="loader"></div>
+<!-- loader end -->
+<main>
+    <section style="margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <div id="outprint">
+                <section>
+                    <table class="table"
+                        style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                        <tr>
+                            <div class="receipt-logo">
+                                <!-- <img class="com-receipt-logo" src="" alt="logo"> -->
+                            </div>
+                        </tr>
+                        <tr>
+                            <center>
+                                <label class="com-name">
+                                    <!-- Company Name Here -->
+                                </label>
+                            </center>
+                            <center class="sub-title1">
+                                <small>
+                                    <span class="com-address">
+                                        <span class="com-address-title">Address: </span>
+                                        <span class="com-address-name"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title2">
+                                <small>
+                                    <span class="email-address-title">Email: </span>
+                                    <span class="com-address email-address-name"></span>
+                                    <span class="website-title">Website: </span>
+                                    <span class="website-name"></span>
+                                </small>
+                            </center>
+                            <center class="sub-title3">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">Hotline: </span>
+                                        <span class="com-hotline-name"></span>
+                                        <span class="com-fax-title">Fax: </span>
+                                        <span class="com-fax-name"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="start_end_date">
+                                        <span class="start_from-title" style="font-size: 0.75rem; font-weight: bolder;"></span>
+                                        to
+                                        <span class="end_from-title" style="font-size: 0.75rem; font-weight: bolder;"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="com-branch-title"
+                                            style="font-size: 0.75rem; font-weight: bolder;"></span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0.1rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title" style="font-size: 0.98rem;">
+                                            Collection Details Report
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <hr>
+    <!--  -->
+    <section style="margin-bottom: 10rem;">
+        <div class="row row_item_setup">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <!--  -->
+                        <section>
+                            <div class="card" style="border: 0px;">
+                                <div class="card-body" style="padding: 0.2rem 0.2rem;">
+                                    <div class="col-xl-12">
+                                        <form action="" method="">
+                                            <div class="table-body">
+                                                <table id="collectionTB" class="table" style="width: 100%;">
+                                                    <thead class="text-center table-header" style="color: black; background: none;">
+                                                        <tr>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">SL</th>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">Inv. No</th>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">C. Name</th>
+                                                            <th style="text-align:center; vertical-align: middle;" rowspan="2">Mobile</th>
+                                                            <th style="text-align:center; vertical-align: middle; width: 6%;" rowspan="2">Coll. P Mode</th>
+                                                            <th style="text-align:center; vertical-align: middle; width: 6%;" rowspan="2">Ref. P Mode</th>
+                                                            <th style="text-align:center;" colspan="3">Item Details</th>
+                                                            <th style="text-align:center;">Tot Bill</th>
+                                                            <th style="text-align:center;">C. Cost</th>
+                                                            <th style="text-align:center;">Dis</th>
+                                                            <th style="text-align:center;">VAT Tax</th>
+                                                            <th style="text-align:center;">Cancel</th>
+                                                            <th style="text-align:center;">Net Bill</th>
+                                                            <th style="text-align:center;">Coll.</th>
+                                                            <th style="text-align:center;">Due Coll.</th>
+                                                            <th style="text-align:center;">Tot. Coll.</th>
+                                                            <th style="text-align:center;">Adj. Amt.</th>
+                                                            <th style="text-align:center;">Ref. Amt.</th>
+                                                            <th style="text-align:center;">Net Coll.</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="text-align:center;">Items Name</th>
+                                                            <th style="text-align:center;">Qty.</th>
+                                                            <th style="text-align:center;">Price</th>
+                                                            <th style="text-align:center;">(A)</th>
+                                                            <th style="text-align:center;">(B)</th>
+                                                            <th style="text-align:center;">(C)</th>
+                                                            <th style="text-align:center;">(D)</th>
+                                                            <th style="text-align:center;">(E)</th>
+                                                            <th style="text-align:center;">(A+B+D)-(C+E) (F)</th>
+                                                            <th style="text-align:center;">(G)</th>
+                                                            <th style="text-align:center;">(H)</th>
+                                                            <th style="text-align:center;">(G+H) (I)</th>
+                                                            <th style="text-align:center;">(J)</th>
+                                                            <th style="text-align:center;">(K)</th>
+                                                            <th style="text-align:center;">(I-K)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-body-row" style="font-size: 12px;">
+                                                        <!--  -->
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+    <!-- <hr> -->
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+            onclick="printReceipt()" id="receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+    </div>
+    <!--  -->
+</section>
+<!--  -->
+<script>
+    $(document).ready(function() {
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Extract values from the URL
+        var startFrom = getQueryParam('start_from');
+        var endFrom = getQueryParam('end_from');
+        var filterOrg = getQueryParam('org_id');
+        var filterBranch = getQueryParam('branch_id');
+
+        // Check if all parameters are present
+        if (startFrom && endFrom && filterOrg && filterBranch) {
+            // Call fetchDataAndPopulateTable with the extracted values
+            fetchDataAndPopulateTable(startFrom, endFrom, filterOrg, filterBranch);
+        } else {
+            console.error('Missing query parameters in the URL');
+        }
+
+        //<!-- ==================================================== -->
+
+        // Function to update table with data from API response
+        function updateTable(data) {
+            var tbody = $('#collectionTB tbody');
+            tbody.empty(); // Clear existing table rows
+
+            var payModeMap = {
+                1: 'Cash',
+                2: 'Cheque',
+                3: 'Debit Card',
+                4: 'Credit Card',
+                5: 'Bkash',
+                6: 'Nagad',
+                7: 'Upay',
+                8: 'UCash',
+                9: 'Bank Deposit'
+            };
+
+            // Function to format payment modes with numbering
+            function formatPaymentModes(modes) {
+                return (modes || []).map((mode, index) => (index + 1) + '. ' + (payModeMap[mode] || mode)).join('<br>');
+            }
+            
+            // Iterate over data and append rows to the table body
+            $.each(data.combined_data, function(index, item) {
+                var coll_pay_mode_name = formatPaymentModes(item.coll_pay_modes);
+                var ref_pay_mode_name = formatPaymentModes(item.ref_pay_modes);
+
+                var mainRow = '<tr>' +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${index + 1}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.inv_id || ''}</td>` +
+                    `<td style="text-align:left;" rowspan="${item.inv_details?.length || 1}">${item.customer_name || ''}</td>` +
+                    `<td style="text-align:left;" rowspan="${item.inv_details?.length || 1}">${item.mobile_number || ''}</td>` +
+                    `<td style="text-align:left;" rowspan="${item.inv_details?.length || 1}">${coll_pay_mode_name || ''}</td>` +
+                    `<td style="text-align:left;" rowspan="${item.inv_details?.length || 1}">${ref_pay_mode_name || ''}</td>` +
+                    
+                    // Check if `item.inv_details` exists and has at least one element before accessing properties
+                    `<td style="text-align:left;">${(item.inv_details && item.inv_details.length > 0) ? item.inv_details[0].item_name : ''}</td>` +
+                    `<td style="text-align:center;">${(item.inv_details && item.inv_details.length > 0) ? (parseFloat(item.inv_details[0].qty) || 0).toFixed(1) + ' / ' + item.inv_details[0].uom : ''}</td>` +
+                    `<td style="text-align:center;">${(item.inv_details && item.inv_details.length > 0) ? (parseFloat(item.inv_details[0].sales_rate) || 0).toFixed(1) : ''}</td>` +
+                
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_sales || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_cost || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_discount || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_vat_tax || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_cancel_amt || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_net_bill || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_collection_amt || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_due_collection_amt || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.grand_collection || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_adjust_amt || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_refund_collection_amt || 0.0}</td>` +
+                    `<td style="text-align:center;" rowspan="${item.inv_details?.length || 1}">${item.total_net_collection || 0.0}</td>` +
+                    '</tr>';
+                
+                tbody.append(mainRow);
+
+
+                // Add additional rows for remaining items in the invoice details
+                for (var i = 1; i < item.inv_details.length; i++) {
+                    var detailRow = '<tr>' +
+                        `<td style="text-align:left;">${item.inv_details[i].item_name || ''}</td>` +
+                        `<td style="text-align:center;">${(parseFloat(item.inv_details[i].qty) || 0).toFixed(1)} / ${item.inv_details[i].uom || ''}</td>` +
+                        `<td style="text-align:center;">${(parseFloat(item.inv_details[i].sales_rate) || 0).toFixed(1)}</td>` +
+                        '</tr>';
+                    tbody.append(detailRow);
+                }
+            });
+            
+            // Add another row for total values
+            var totalRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="9"></td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grandtotal_sales + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grandtotal_cost + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_discount + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_vat_tax + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_cancel_amt + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_net_bill + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_collection + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_due_collection + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_grand_collection + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_adjust_collection + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_refund_collection + '</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_net_collection + '</td>' +
+                '</tr>';
+            tbody.append(totalRow);
+
+            //
+            var totalRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Sub Total Collections:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_net_collection + '</td>' +
+                '</tr>';
+            tbody.append(totalRow);
+            //======================== Mobile Bank Collections / Refund Descriptions Start ========================
+            // Add mobile bank wise collection row for total values
+            var mobileBlankstartRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="21"></td>' +
+                '</tr>';
+            tbody.append(mobileBlankstartRow);
+
+            var mobilebankdescrRow = '<tr>' +
+                '<td style="text-align:right; font-size: 1rem; font-weight: bold;" colspan="21">Mobile Bank Descriptions</td>' +
+                '</tr>';
+            tbody.append(mobilebankdescrRow);
+            
+            // Bkash
+            var BkashRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Bkash Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_bkash_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(BkashRow);
+            // Nagad
+            var NagadRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Nagad Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_nagad_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(NagadRow);
+            // Upay
+            var UpayRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Upay Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_upay_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(UpayRow);
+            // UCash
+            var UCashRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">UCash Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_ucash_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(UCashRow);
+
+            // Mobile Bank Collection
+            var totmobilebankRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Mobile Bank Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.mobile_bank_coll + '</td>' +
+                '</tr>';
+            tbody.append(totmobilebankRow);
+
+            // without invoice collection with mobile Bank
+            var withoutinvmbcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Without Invoice Collection (Mobile Bank):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_woinvcoll_mb_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvmbcollRow);
+
+            // Registration Local Client Payment Amount (Mobile Bank)
+            var withoutinvmbcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Registration Local Client Payment Amount (Mobile Bank) (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_regclipay_mb_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvmbcollRow);
+
+            // Supplier/Party Payment Amount (Mobile Bank)
+            var withoutinvmbcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Supplier/Party Payment Amount (Mobile Bank) (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_suppclipay_mb_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvmbcollRow);
+
+            // Total Mobile Bank Collection
+            var totmobilebankRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Net Mobile Bank Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.net_mobile_bank_coll + '</td>' +
+                '</tr>';
+            tbody.append(totmobilebankRow);
+
+                                        //==============mobile Bank refund ==============
+            // Bkash Refund
+            var BkashRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Bkash Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_bkash_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(BkashRefRow);
+            // Nagad Refund
+            var NagadRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Nagad Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_nagad_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(NagadRefRow);
+            // Upay Refund
+            var UpayRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Upay Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_upay_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(UpayRefRow);
+            // UCash Refund
+            var UCashRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">UCash Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_ucash_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(UCashRefRow);
+            // Total Mobile Bank Refund
+            var totmobilebankRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Mobile Bank Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_mobile_bank_refund + '</td>' +
+                '</tr>';
+            tbody.append(totmobilebankRefRow);
+            // Grand Total Mobile Bank Collections
+            var grandtotmobilebankRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Grand Total Mobile Bank Collections:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_mobile_bank_coll + '</td>' +
+                '</tr>';
+            tbody.append(grandtotmobilebankRow);
+
+            var mobileBlankendRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="21"></td>' +
+                '</tr>';
+            tbody.append(mobileBlankendRow);
+            //======================== Mobile Bank Collections / Refund Descriptions end ========================
+            
+            //======================== Bank Collections / Refund Descriptions Start ========================
+            // Add bank wise collection row for total values
+            var bankdescrRow = '<tr>' +
+                '<td style="text-align:right; font-size: 1rem; font-weight: bold;" colspan="21">Bank Descriptions</td>' +
+                '</tr>';
+            tbody.append(bankdescrRow);
+            // Cheque
+            var ChequeCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Cheque Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_cheque_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(ChequeCollRow);
+            // Debit Card
+            var DebitCardCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Debit Card Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_debit_card_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(DebitCardCollRow);
+            // Credit Card
+            var CreditCardCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Credit Card Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_credit_card_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(CreditCardCollRow);
+            // Bank Deposit
+            var BankDepositCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Bank Deposit Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_bank_deposit_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(BankDepositCollRow);
+
+            // Total Bank Collections
+            var totbankCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Bank Collections:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_bank_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(totbankCollRow);
+
+            // without invoice collection with Bank
+            var withoutinvbcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Without Invoice Collection (Bank):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_woinvcoll_b_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvbcollRow);
+
+            // Registration Local Client Payment Amount (Bank)
+            var withoutinvbcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Registration Local Client Payment Amount (Bank) (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_regclipay_b_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvbcollRow);
+
+            // Supplier/Party Payment Amount (Bank)
+            var withoutinvbcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Supplier/Party Payment Amount (Bank) (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_suppclipay_b_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvbcollRow);
+
+            // Net Bank Collections
+            var totbankCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Net Bank Collections:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.net_bank_coll_amt + '</td>' +
+                '</tr>';
+            tbody.append(totbankCollRow);
+
+                                            //============== Bank Refund ==============
+            // Cheque Refund
+            var ChequeRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Cheque Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_cheque_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(ChequeRefRow);
+            // Debit Card Refund
+            var DebitCardRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Debit Card Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_debit_card_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(DebitCardRefRow);
+            // Credit Card Refund
+            var CreditCardRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Credit Card Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_credit_card_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(CreditCardRefRow);
+            // Bank Deposit Refund
+            var BankDepositRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem;" colspan="20">Bank Deposit Refund:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem;">' + data.grand_bank_deposit_ref_amt + '</td>' +
+                '</tr>';
+            tbody.append(BankDepositRefRow);
+            // Total Bank Refund
+            var totbankRefRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Bank Refunds:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_bank_refund_amt + '</td>' +
+                '</tr>';
+            tbody.append(totbankRefRow);
+            // Grand Total Bank Collections
+            var grandtotbankRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Grand Total Bank Collections:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_bank_coll + '</td>' +
+                '</tr>';
+            tbody.append(grandtotbankRow);
+            //
+            var bankBlankendRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="21"></td>' +
+                '</tr>';
+            tbody.append(bankBlankendRow);
+            //======================== Bank Collections / Refund Descriptions end ========================
+
+            // Cash collection Description
+            var bankdescrRow = '<tr>' +
+                '<td style="text-align:right; font-size: 1rem; font-weight: bold;" colspan="21">Cash Collection Descriptions</td>' +
+                '</tr>';
+            tbody.append(bankdescrRow);
+
+            // net Sub Total Collections
+            var otherRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Net Sub Total Collections (Cash):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.net_sub_total_coll_cash + '</td>' +
+                '</tr>';
+            tbody.append(otherRow);
+
+            // Other Expense total values
+            var otherRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Other Expense (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_other_exp_amt + '</td>' +
+                '</tr>';
+            tbody.append(otherRow);
+
+            // grand carrying payment amt
+            var carryingRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Carrying / Lifting Cost (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_carrying_pay_amt + '</td>' +
+                '</tr>';
+            tbody.append(carryingRow);
+
+            // Local Purchase On Cash for total values
+            var lpRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Local Purchase On Cash (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_amt + '</td>' +
+                '</tr>';
+                //data.total_bankdepositRow_amt
+            tbody.append(lpRow);
+
+            // Local Purchase return On Cash for total values
+            var lprRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Local Purchase Return On Cash (+):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_ret_total_amt + '</td>' +
+                '</tr>';
+                //data.total_bankdepositRow_amt
+            tbody.append(lprRow);
+
+            // Manual Return Receive wise collection row for total values
+            var MrrRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Manual Return Recieved (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_mrr_total_amt + '</td>' +
+                '</tr>';
+            tbody.append(MrrRow);
+
+            // without invoice collection with cash
+            var withoutinvcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Without Invoice Collection (Cash) (+):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_woinvcoll_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvcollRow);
+
+            // Registration Local Client Payment Amount (Cash)
+            var withoutinvcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Registration Local Client Payment Amount (Cash) (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_regclipay_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvcollRow);
+
+            // Supplier/Party Payment Amount (Cash)
+            var withoutinvcollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Supplier/Party Payment Amount (Cash) (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_suppclipay_amt + '</td>' +
+                '</tr>';
+            tbody.append(withoutinvcollRow);
+
+            // others branch collection receive row for total values
+            var otherbrnchrecRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Daily collection received from Sub Branch: (+):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.dep_rec_sub_branch + '</td>' +
+                '</tr>';
+                //data.total_bankdepositRow_amt
+            tbody.append(otherbrnchrecRow);
+
+            // Add another row for total values
+            var grandCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Net Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.grand_total_collection + '</td>' +
+                '</tr>';
+            tbody.append(grandCollRow);
+
+            // others branch payment to main branch wise collection row for total values
+            var othBranchtomainbranchRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Daily collection Deposit from Main Branch: (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.deposit_main_branch + '</td>' +
+                '</tr>';
+                //data.total_bankdepositRow_amt
+            tbody.append(othBranchtomainbranchRow);
+
+            // Add another row for Bank Deposit
+            var grandCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Daily Collection Bank Deposit (-):</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_daily_deposit + '</td>' +
+                '</tr>';
+            tbody.append(grandCollRow);
+
+            // Add another row for Remaining Collection from Total Net Collection
+            var grandCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Remaining Collection from Total Net Collection:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_remaining_collection + '</td>' +
+                '</tr>';
+            tbody.append(grandCollRow);
+
+            // Add another row for Cash on Hand
+            var grandCollRow = '<tr>' +
+                '<td style="text-align:right; font-size: 0.75rem; font-weight: bold;" colspan="20">Total Cash on Hands:</td>' +
+                '<td style="text-align:center; font-size: 0.75rem; font-weight: bold;">' + data.total_cash_on_hand + '</td>' +
+                '</tr>';
+            tbody.append(grandCollRow);
+        }
+    
+        // Function to make AJAX request and update table
+        function fetchDataAndPopulateTable(startFrom, endFrom, filterOrg, filterBranch) {
+            startLoader();
+            // Make AJAX request to collectionsReportAPI
+            $.ajax({
+                url: '/get_collections_report_values/', // Adjust the URL based on your project setup
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}' // Ensure that csrf_token is replaced with the actual CSRF token value
+                },
+                data: {
+                    start_from: startFrom,
+                    end_from: endFrom,
+                    org_id: filterOrg,
+                    branch_id: filterBranch,
+                },
+                success: function(response) {
+                    // Utility function to format date to DD-MM-YYYY
+                    function formatDate(dateString) {
+                        var date = new Date(dateString); // Parse the date string
+                        var day = String(date.getDate()).padStart(2, '0'); // Get day and ensure two digits
+                        var month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                        var year = date.getFullYear(); // Get full year
+                        return `${day}-${month}-${year}`; // Format as DD-MM-YYYY
+                    }
+
+                    // Populate company information
+                    $('.com-name').text(response.org_name);
+                    $('.com-address-name').text(response.org_address);
+                    $('.email-address-name').text(response.org_email);
+                    $('.website-name').text(response.org_website);
+                    $('.com-hotline-name').text(response.org_hotline);
+                    $('.com-fax-name').text(response.org_fax);
+
+                    // Format and display start_from and end_from
+                    $('.start_from-title').text(formatDate(response.start_from));
+                    $('.end_from-title').text(formatDate(response.end_from));
+
+                    // Populate branch-specific information
+                    $('.com-branch-title').text(response.branch_name);
+
+                    // Call updateTable function with API response data
+                    updateTable(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+                complete: function() {
+                    endLoader(); // Always hide loader when done
+                }
+            });
+        }
+    
+        // Set today's date as the default value for start_from and end_from inputs
+        var today = new Date();
+        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        $('#start_from').val(formattedDate);
+        $('#end_from').val(formattedDate);
+    
+        // Fetch and populate table on page load with today's date
+        //fetchDataAndPopulateTable(formattedDate, formattedDate);
+    
+        // Add event listeners for date input changes
+        $('#start_from, #end_from, #id_filter_org, #id_filter_branch').change(function() {
+            // Get the values of start_from and end_from when date inputs change
+            var startsFrom = $('#start_from').val();
+            var endsFrom = $('#end_from').val();
+            var filterOrg = $('#id_filter_org').val();
+            var filterBranch = $('#id_filter_branch').val();
+    
+            // Fetch and populate table with updated date range
+            fetchDataAndPopulateTable(startsFrom, endsFrom, filterOrg, filterBranch);
+        });
+    });
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+    
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    //
+    function printReceipt() {
+        const footerText = 'TBOX, Contact: +8801309-994317,';
+        const now = new Date();
+        const formattedDateTime = now.toLocaleString();
+        const pageNumber = 1; // Update this dynamically if needed
+
+        // Append your footer content
+        const footerContent =
+            `<div class="footer">
+                <span class="software-woner-title">Software By: </span>
+                <span class="software-woner-name">${footerText}</span>
+                <span class="printed-by-title">- Printed By: </span>
+                <span class="printed-by-name"></span>
+                <span class="printed-on-title">- Printed on: </span>
+                <span class="printed-on-date">${formattedDateTime}</span>
+                <span class="printed-page-title">- Page </span>
+                <span class="printed-page-no">${pageNumber}</span>
+            </div>`;
+
+        var printContents = document.querySelector('main').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        // Append footer content to the end of the print contents
+        printContents += footerContent;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+    //<!--  -->
+    //
+</script>
+{% endblock %}

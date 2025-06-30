@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== FAVICON ICONS ==========-->
+    <link rel="shortcut icon" href="{% static 'fav_icon/favicon.ico' %}">
+
+    <!----===== Boxicons CSS ===== -->
+    <link rel="stylesheet" href="{% static 'assets/boxicons-2.1.4/css/boxicons.min.css' %}">
+
+    <!--========== Bootstrap link ==========-->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+    <!-- datatable -->
+    <link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+    <!-- <script src="{% static 'assets/DataTables_1.13.6/js/dataTables.dataTables.min.js' %}"></script> -->
+
+    <!-- *************************** chart js ***************************** -->
+    <!-- Include Chart.js -->
+    <script src="{% static 'assets/chart_cdn/chart_js/chart.min.js' %}"></script>
+    
+    <!-- Include chartjs-plugin-datalabels AFTER Chart.js -->
+    <script src="{% static 'assets/chart_cdn/chartjs-plugin-datalabels/plugin-datalabels.js' %}"></script>
+    <!-- *************************** chart js ***************************** -->
+
+    <!-- *************************** Report ***************************** -->
+    <!-- jsPDF -->
+    <script src="{% static 'assets/jspdf/jspdf-1.5.3/jspdf.min.js' %}"></script>
+
+    <!-- jspdf-autotable -->
+    <script src="{% static 'assets/jspdf/jspdf-autotable-3.5.6/jspdf.plugin.autotable.min.js' %}"></script>
+    <!-- *************************** Report ***************************** -->
+
+    <!--==========Bootstap MAIN JS ==========-->
+    <!--Jquery Cdn -->
+    <script src="{% static 'assets/bootstrap-5.0.2/dist/js/bootstrap.min.js' %}"></script>
+    <!-- <script src="{% static 'assets/bootstrap-5.0.2/dist/js/bootstrap.bundle.min.js' %}"></script> -->
+
+    <!-- ajax googleapis libs jquery -->
+    <script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+
+    <!-- datatables CDN javascript / CSS -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'assets/jquery_dataTables/css/jquery.dataTables.1.13.6.css' %}">
+    <!-- js -->
+    <script src="{% static 'assets/jquery_dataTables/js/jquery.dataTables.1.13.6.js' %}" defer></script>
+
+    <!-- toastr js -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'assets/toastr/css/toastr.min.css' %}">
+    <!-- JS -->
+    <script src="{% static 'assets/toastr/js/toastr.min.js' %}"></script>
+
+    <!-- jQuery CDN -->
+    <script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+    <!-- Then include jQuery UI and the datepicker widget -->
+    <link rel="stylesheet" href="{% static 'assets/jquery-ui-1.13.2/jquery-ui.css' %}">
+    <script src="{% static 'assets/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+
+    <!-- Bootstrap Typeahead library -->
+    <script src="{% static 'assets/bootstrap-3-typeahead-4.0.2/typeahead.min.js' %}"></script>
+
+    <!-- Barcode CDN -->
+    <script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+
+    <!-- tom-select -->
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'assets/tom_select_2.0.0/css/tom_select.css' %}">
+    <!-- js -->
+    <script src="{% static 'assets/tom_select_2.0.0/js/tom_select.complete.min.js' %}"></script>
+
+    <!-- ======== main base from style CSS ======== -->
+    <link rel="stylesheet" type="text/css" href="{% static 'base_form_style/main_base_style/css/main_base_style.css' %}">
+
+    <title>TBOX</title>
+
+    {% block extra_link %} {% endblock %}
+</head>
+
+<body>
+    <!--========== HEADER ==========-->
+    <header class="header">
+        <div class="header__container">
+            {% if user.is_authenticated %}
+            <!--  -->
+            <div style="width: 35%;">
+                <a class="header__nane">{{ user_org_name }}</a>
+                <span class="branch__nane">{{ user_branch_name }}</span>
+                <span class="branch__address">{{ user_branch_address }}</span>
+            </div>
+            <!--  -->
+            
+            <!--  -->
+            <div class="title_user_name">
+                <div class="body_user_name">
+                    <div class="user__name">
+                        <h3>
+                            {{ user_first_name }}
+                            {{ user_last_name }}
+                            <div class="designation">
+                                ({{ user_designation }})
+                            </div>
+                        </h3>
+                    </div>
+                    <a href="#logout/confirmation">
+                        {% if user_profile_img %}
+                        <img src="{{ user_profile_img }}" alt="" class="header__img">
+                        {% else %}
+                        <!-- Provide a default image or leave it empty -->
+                        <img src="{% static 'images/profile_img/user.png' %}" alt="" class="header__img">
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- <a href="#logout/confirmation">
+                <i class='bx bxs-cog logout__icon'></i>
+            </a> -->
+
+            <div class="header__toggle">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    {% include 'base_form/navbar/nav_bar.html' %}
+    <!-- Item Re Order alert -->
+    <!-- {% include 'base_form/notification_alert/notification_alert.html' %} -->
+    <!-- Item Re Order alert -->
+    <!--========== CONTENTS ==========-->
+
+    <main>
+        <section>
+            <div class="block_body">
+                <!--========== CONTENTS ==========-->
+                {% block body %} {% endblock %}
+            </div>
+        </section>
+    </main>
+
+
+
+    <!-- log out modal start -->
+    <div id="logout/confirmation" class="modal_body">
+        <div class="modalcontent">
+            <div class="toggle">
+                <h1></h1>
+            </div>
+            <ul>
+                <!--  -->
+                <li>
+                    <a href="/accounts/profile/" class="nav__link" style="padding: 0; border-bottom: 0;">
+                        <span class="icon"><i class='bx bx-home' aria-hidden="true"></i></span>
+                        <span class="title">Home</span>
+                    </a>
+                </li>
+                <!--  -->
+                <li>
+                    {% if user.is_authenticated %}
+                    <a href="#" class="useInfoChanging_by_user" data-id="{{ user.user_id }}">
+                        <span class="icon"><i class="bx bx-user" aria-hidden="true"></i></span>
+                        <span class="title">User Info</span>
+                    </a>
+                    {% endif %}
+                </li>
+                <!--  -->
+                <li>
+                    {% if user.is_authenticated %}
+                    <a href="#" class="passwordChanging_by_user" data-id="{{ user.user_id }}">
+                        <span class="icon"><i class="bx bx-lock" aria-hidden="true"></i></span>
+                        <span class="title">Password</span>
+                    </a>
+                    {% endif %}
+                </li>
+                <!--  -->
+                <li>
+                    <a href="{% url 'logout' %}" id="logout-link">
+                        <span class="icon"><i class='bx bx-log-out bx-flip-horizontal' aria-hidden="true"></i></span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+                <!--  -->
+                <li>
+                    <a href="{% url 'logout_all_users' %}">
+                        <span class="icon"><i class='bx bx-bolt-circle bx-flip-horizontal' aria-hidden="true"></i></span>
+                        <span class="title">Sys Down For 6hrs</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="modalclose">&times;</a>
+        </div>
+    </div>
+
+    <!-- modal including start -->
+    {% include 'modal_service/uni_modal.html' %}
+    {% include 'modal_service/confirmation_modal.html' %}
+    {% include 'modal_service/modal-lg.html' %}
+    {% include 'modal_service/modal-xl.html' %}
+    {% include 'modal_service/modal-md.html' %}
+    {% include 'modal_service/serviceChargeAlert-modal.html' %}
+    <!-- modal including end -->
+
+    <!-- main loader start -->
+    {% include 'loader_service/circle_loader.html' %}
+    {% include 'loader_service/line_loader.html' %}
+    <!-- main loader end -->
+
+    <!--========== main base from js file ==========-->
+    <script src="{% static 'base_form_style/main_base_style/js/script.js' %}"></script>
+
+    <!-- password changing by user -->
+    <script>
+        function checkSessionTimeout() {
+            fetch("{% url 'check_session' %}")
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.is_authenticated) {
+                        sessionStorage.clear();
+                        window.location.href = "{% url 'login' %}";
+                    }
+                })
+                .catch(err => {
+                    console.error("Session check failed:", err);
+                });
+        }
+
+        // Check every 31 minutes
+        setInterval(checkSessionTimeout, 1000 * 60 * 31); // 31 mins
+
+        // Track last active time before browser/tab closes
+        window.addEventListener("beforeunload", () => {
+            sessionStorage.setItem("lastActiveTime", Date.now());
+        });
+
+        // Clear sessionStorage if returning after long inactivity
+        window.addEventListener("load", () => {
+            const lastActive = sessionStorage.getItem("lastActiveTime");
+            const timeoutLimit = 1000 * 60 * 60 * 1; // 1 hour
+
+            if (lastActive && Date.now() - parseInt(lastActive, 10) > timeoutLimit) {
+                sessionStorage.clear();
+            }
+        });
+
+        //////////////////////////////////////
+        document.addEventListener("DOMContentLoaded", function () {
+            const logoutLink = document.getElementById("logout-link");
+            if (logoutLink) {
+                logoutLink.addEventListener("click", function (e) {
+                    e.preventDefault(); // stop default navigation
+
+                    // Clear sessionStorage
+                    sessionStorage.clear();
+
+                    // Redirect to logout URL
+                    window.location.href = logoutLink.href;
+                });
+            }
+        });
+
+        /////////////////////////////////////////////////
+        //1. present date onujayee previous month a jodi due_amount > 0 hoy tahole serviceChargeAlertModal show hobe.
+        //2. present date onujayee alert_start_isoformat jodi over hoye jay (I mean present date > alert_start_isoformat) tahole  serviceChargeAlertModal show hobe.
+        //3. serviceChargeAlertModal show hobe 1 time. 1 time ar por page reload dileo serviceChargeAlertModal show hobe.
+        //4. alert_end_isoformat ar 5 days age theke alert_end_isoformat 1 previous day porjonto serviceChargeAlertModal show hobe 3 hours por por
+        //5. alert_end_isoformat day tey serviceChargeAlertModal show hobe 30 minute por por
+
+        $(document).ready(function () {
+            const serviceData = {
+                due_amount: {{ due_amount|default:0 }},
+                alert_start: "{{ alert_start_isoformat }}",
+                alert_end: "{{ alert_end_isoformat }}"
+            };
+
+            const today = new Date();
+            const alertStartDate = new Date(serviceData.alert_start);
+            const alertEndDate = new Date(serviceData.alert_end);
+
+            const MONTHS_LIST = [
+                "january", "february", "march", "april", "may", "june",
+                "july", "august", "september", "october", "november", "december"
+            ];
+
+            function isSameDate(d1, d2) {
+                return d1.getFullYear() === d2.getFullYear() &&
+                    d1.getMonth() === d2.getMonth() &&
+                    d1.getDate() === d2.getDate();
+            }
+
+            function showModalWithInterval(intervalKey, intervalMs) {
+                const lastShown = localStorage.getItem(intervalKey);
+                const now = Date.now();
+
+                if (!lastShown || now - parseInt(lastShown) > intervalMs) {
+                    localStorage.setItem(intervalKey, now);
+                    serviceChargeAlertModal("Alert Modal", "{% url 'get_service_charge_payment_alert' %}");
+                }
+            }
+
+            // Condition 1: Show ONCE per login if previous month is due
+            const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            const jsonUnpaidMonths = {{ unpaid_months|safe }};
+            const hasPrevMonthDue = jsonUnpaidMonths.some(([y, m]) => {
+                const mIndex = MONTHS_LIST.indexOf(m.toLowerCase());
+                return mIndex === prevMonth.getMonth() && y === prevMonth.getFullYear();
+            });
+
+            if (hasPrevMonthDue && serviceData.due_amount > 0) {
+                if (!sessionStorage.getItem("modal_prev_due_shown")) {
+                    sessionStorage.setItem("modal_prev_due_shown", "1");
+                    serviceChargeAlertModal("Alert Modal", "{% url 'get_service_charge_payment_alert' %}");
+                }
+                return;
+            }
+
+            // Condition 2: today > alert_start_date (once per day)
+            if (today > alertStartDate) {
+                showModalWithInterval("modal_once", 1000 * 60 * 60 * 24);
+                return;
+            }
+
+            // Condition 4: Between alert_end -5 and alert_end -1 (every 3 hours)
+            const daysBeforeAlertEnd = Math.floor((alertEndDate - today) / (1000 * 60 * 60 * 24));
+            if (daysBeforeAlertEnd >= 1 && daysBeforeAlertEnd <= 5) {
+                showModalWithInterval("modal_3hr", 1000 * 60 * 60 * 3);
+                return;
+            }
+
+            // Condition 5: On alert_end_date (every 30 min)
+            if (isSameDate(today, alertEndDate)) {
+                showModalWithInterval("modal_30min", 1000 * 60 * 30);
+                return;
+            }
+        });
+        /////////////////////////////////////////////////
+
+        // User Info Change Modal
+        $('.useInfoChanging_by_user').click(function () {
+            // main loader
+            lineloaderstart();
+            // main loader
+            modal_xl("edit user setup", "{% url 'user_info_update_by_user' %}?user_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        })
+        // password change modal
+        $('.passwordChanging_by_user').click(function () {
+            // main loader
+            lineloaderstart();
+            // main loader
+            modal_md("Password Change Info", "{% url 'password_changing_by_user' %}?user_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        })
+    </script>
+
+    <!--========== from doctor setup js file ==========-->
+    <!-- <script src="{% static 'doctor_setup_style/js/doctor_setup_script.js' %}"></script> -->
+
+</body>
+<!-- Footer -->
+<!-- <footer class="footer"> -->
+<!-- <li class="list-inline-item"><a href="#"><i class='bx bxl-linkedin-square'></i></a></li> -->
+<!-- <p class="text-muted">Copyright &copy;Shariat Sunny 2023. All Rights Reserved. Software Versions: 1.0.0</p> -->
+<!-- </footer> -->
+<!-- Footer End -->
+
+</html>

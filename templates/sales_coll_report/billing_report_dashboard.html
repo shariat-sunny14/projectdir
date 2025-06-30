@@ -1,0 +1,366 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'statistics_style/css/statistics_style.css' %}">
+<link rel="stylesheet" href="{% static 'sales_coll_report_style/css/sales_coll_report_style.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<!-- <div class="loader"></div> -->
+<!-- loader end -->
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 0rem; padding-right: 0rem;">
+        <section style="height: 100vh; border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #337e6b;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="border-bottom: 0px solid transparent;">
+                        <div class="d-sm-flex align-items-center" style="margin-left: 1rem;">
+                            <i class='bx bx-scatter-chart text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Billing Summary Reports Dashboard</h1>
+                            <!--  -->
+                            <div style="position: absolute; right: 2rem;">
+                                <!--  -->
+                                <button type="button" onClick="navigateTo('/item_pos_billing/')"
+                                    class="btn col-ms-3 text-white btn-xs item_payment_btn"
+                                    style="display: flex; font-size: 0.8rem; font-weight: bolder; box-shadow: 4px 5px 10px 0px #2a6d5c; border-radius: 0.7rem; border: 1.5px solid #fff; height: 1.7rem; padding: 0.5rem 1.3rem; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                    Billing
+                                </button>
+                                <!--  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <section style="margin: 0.5rem;">
+                <div class="card" style="align-items: start; margin-bottom: 0.5rem; box-shadow: 0px 5px 5px rgba(97, 97, 97, 0.3)">
+                    <div class="card-body col-sm-12" style="background: #b9cec9;">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element col-sm-12" style="display:flex">
+                                        <!--  -->
+                                        <div class="row g-3 col-sm-5 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="id_filter_org" class="col-form-label">Org :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select item_inputbox store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row g-3 col-sm-5 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="id_filter_branch" class="col-form-label">Branch :</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select item_inputbox store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    <!--  -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <!-- from to date -->
+                                        <div class="row g-3 col-sm-4 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="start_from" class="col-form-label">From :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control item_inputbox datepicker" id="start_from"
+                                                    name="start_from" autocomplete="off" required>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row g-3 col-sm-4 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="end_from" class="col-form-label">To :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control item_inputbox datepicker" id="end_from"
+                                                    name="end_from" autocomplete="off" required>
+                                            </div>
+                                        </div>
+                                        <!-- from to date -->
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-top: 1rem; border-top: 2px solid rgba(0, 0, 0, .125);"></section>
+            <!--  -->
+            <section style="width: 97.5%; margin-top: 2rem; margin-left: 0.5rem;">
+                <div class="display-flex col-sm-12">
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card" style="margin-right: 2.2rem;">
+                            <div class="card-body card-body-mody" style="margin-bottom: 1rem;">
+                                <h5 class="card-title title-font text-success">Total Sales</h5>
+                                <h5 class="font-weight-light pb-2 mb-1 card-body-size text-info" style="font-size: 1.8rem; font-weight: bolder;"
+                                    id="totalSalesAmt">Loading...</h5>
+                                <div class="card-icon-wrapper bg-success salesDtlsReport">
+                                    <span style="font-size: 0.95rem; font-weight: bolder; color: #fff;">Views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card" style="margin-right: 2.2rem;">
+                            <div class="card-body card-body-mody" style="margin-bottom: 1rem;">
+                                <h5 class="card-title title-font text-success">Total Collections (CASH)</h5>
+                                <h5 class="font-weight-light pb-2 mb-1 card-body-size text-success" style="font-size: 1.8rem; font-weight: bolder;"
+                                    id="totalCashCollAmt">Loading...</h5>
+                                <div class="card-icon-wrapper bg-success collDtlsReport">
+                                    <span style="font-size: 0.95rem; font-weight: bolder; color: #fff;">Views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body card-body-mody" style="margin-bottom: 1rem;">
+                                <h5 class="card-title title-font text-success">Total Dues</h5>
+                                <h5 class="font-weight-light pb-2 mb-1 card-body-size text-danger" style="font-size: 1.8rem; font-weight: bolder;"
+                                    id="totalDuesAmt">Loading...</h5>
+                                <div class="card-icon-wrapper bg-success duesDtlsReport">
+                                    <span style="font-size: 0.95rem; font-weight: bolder; color: #fff;">Views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                </div>
+            </section>
+        </section>
+    </section>
+    <!--  -->
+    <script>
+        $(function () {
+            $(document).on('click', '.salesDtlsReport', function (e) {
+                e.preventDefault();
+                
+                var OrgId = $('#id_filter_org').val();
+                var branchId = $('#id_filter_branch').val();
+                var startFrom = $('#start_from').val();
+                var endFrom = $('#end_from').val();
+                
+                // Correct the query string construction
+                var colldtlsReportUrl = "{% url 'sales_details_reports' %}" + 
+                    "?org_id=" + encodeURIComponent(OrgId) +
+                    "&branch_id=" + encodeURIComponent(branchId) +
+                    "&start_from=" + encodeURIComponent(startFrom) +
+                    "&end_from=" + encodeURIComponent(endFrom);
+                
+                window.open(colldtlsReportUrl, '_blank');
+            });
+        });
+        //
+        $(function () {
+            $(document).on('click', '.collDtlsReport', function (e) {
+                e.preventDefault();
+                
+                var OrgId = $('#id_filter_org').val();
+                var branchId = $('#id_filter_branch').val();
+                var startData = $('#start_from').val();
+                var endData = $('#end_from').val();
+                
+                // Correct the query string construction
+                var colldtlsReportUrl = "{% url 'collections_details_reports' %}" + 
+                    "?org_id=" + encodeURIComponent(OrgId) +
+                    "&branch_id=" + encodeURIComponent(branchId) +
+                    "&start_from=" + encodeURIComponent(startData) +
+                    "&end_from=" + encodeURIComponent(endData);
+                
+                window.open(colldtlsReportUrl, '_blank');
+            });
+        });
+        //
+        $(function () {
+            $(document).on('click', '.duesDtlsReport', function (e) {
+                e.preventDefault();
+                
+                var OrgId = $('#id_filter_org').val();
+                var branchId = $('#id_filter_branch').val();
+                var startFrom = $('#start_from').val();
+                var endFrom = $('#end_from').val();
+                
+                // Correct the query string construction
+                var colldtlsReportUrl = "{% url 'dues_details_reports' %}" + 
+                    "?org_id=" + encodeURIComponent(OrgId) +
+                    "&branch_id=" + encodeURIComponent(branchId) +
+                    "&start_from=" + encodeURIComponent(startFrom) +
+                    "&end_from=" + encodeURIComponent(endFrom);
+                
+                window.open(colldtlsReportUrl, '_blank');
+            });
+        });
+
+        // Set today's date as the default value for start_from and end_from inputs
+        var today = new Date();
+        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        $('#start_from').val(formattedDate);
+        $('#end_from').val(formattedDate);
+        // Set today's date as the default value for start_from and end_from inputs end
+
+        // get branch option org wise
+        $(document).ready(function () {
+            // Initial population of branch options based on the selected organization
+            updateBranchOptionsfilter();
+
+            // Event listener for the change event on #id_filter_org
+            $('#id_filter_org').change(function () {
+                updateBranchOptionsfilter();
+            });
+
+            function updateBranchOptionsfilter() {
+                // Get the selected organization ID
+                var selectedFilterOrgId = $('#id_filter_org').val();
+
+                // Make an AJAX request to get branch options based on the selected organization
+                $.ajax({
+                    url: '/get_branch_options/',
+                    method: 'GET',
+                    data: { org_id: selectedFilterOrgId },
+                    success: function (data) {
+                        // Clear existing options
+                        $('#id_filter_branch').empty();
+
+                        // Add fetched branch options
+                        $.each(data.branch_list, function (index, branch) {
+                            $('#id_filter_branch').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                        });
+
+                        // Trigger change event for #id_filter_branch to automatically update its value
+                        $('#id_filter_branch').trigger('change');
+                    },
+                    error: function (error) {
+                        console.error('Error fetching branch options:', error);
+                    }
+                });
+            }
+        });
+
+        $(document).ready(function () {
+            // Function to update sales_total_amt based on the date range
+            function updateSalesTotalAmt() {
+                var filterOrg = $('#id_filter_org').val();
+                var filterBranch = $('#id_filter_branch').val();
+                var startDate = $('#start_from').val();
+                var endDate = $('#end_from').val();
+        
+                // Ensure filterBranch is not empty before making the AJAX request
+                if (!filterBranch) {
+                    console.log("Waiting for filterBranch value...");
+                    return; // Stop execution if filterBranch is empty
+                }
+
+                // total sales
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: '{% url "statistics_dashboard:get_statistics_total_sales_report" %}',
+                    method: 'POST',
+                    data: {
+                        'org_id': filterOrg,
+                        'branch_id': filterBranch,
+                        'start_from': startDate,
+                        'end_from': endDate,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        var totalSalesAmts = response.all_total_net_bill;
+                        setTimeout(function () {
+                            $('#totalSalesAmt').text(totalSalesAmts + ' Tk.');
+                        }, 500);
+                    }
+                });
+        
+                // total collection cash
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: '{% url "statistics_dashboard:get_statistics_total_cash_coll_report" %}',
+                    method: 'POST',
+                    data: {
+                        'org_id': filterOrg,
+                        'branch_id': filterBranch,
+                        'start_from': startDate,
+                        'end_from': endDate,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        var cashCollectionAmt = response.grand_total_collection;
+                        setTimeout(function () {
+                            $('#totalCashCollAmt').text(cashCollectionAmt + ' Tk.');
+                        }, 500);
+                    }
+                });
+
+                // total Dues
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: '{% url "statistics_dashboard:get_statistics_total_dues_report" %}',
+                    method: 'POST',
+                    data: {
+                        'org_id': filterOrg,
+                        'branch_id': filterBranch,
+                        'start_from': startDate,
+                        'end_from': endDate,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        var totalDuesAmts = response.grand_total_dues;
+                        setTimeout(function () {
+                            $('#totalDuesAmt').text(totalDuesAmts + ' Tk.');
+                        }, 500);
+                    }
+                });
+            }
+        
+            // Trigger updateSalesTotalAmt function when date inputs change
+            $('#id_filter_org, #id_filter_branch, #start_from, #end_from').change(function () {
+                updateSalesTotalAmt();
+                $('#totalCashCollAmt').text('Loading...');
+                $('#totalSalesAmt').text('Loading...');
+                $('#totalDuesAmt').text('Loading...');
+                
+            });
+        
+            // Initial call to fetch and display sales_total_amt (only if filterBranch has a value)
+            if ($('#id_filter_branch').val()) {
+                updateSalesTotalAmt();
+            }
+        });
+    </script>
+</main>
+{% endblock %}
