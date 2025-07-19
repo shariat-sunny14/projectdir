@@ -1,0 +1,516 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_entry/css/result_card_entry_list.css' %}">
+<!--========== from js file ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #26325ae0;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Result Card Entry Print List</h1>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <section>
+                <div class="card po_card"
+                    style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <!--  -->
+                                        <div class="row store_row col-sm-6"
+                                            style="flex-grow: 1; display: flex; justify-content: right;">
+                                            <label for="id_filter_org" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Org:
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-6"
+                                            style="flex-grow: 2; display: flex; justify-content: right;">
+                                            <label for="id_filter_branch" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Branch:
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    <!--  -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section>
+                <div class="card po_card"
+                    style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="col-sm-12" style="display: flex; flex-direction: row; align-items: center; flex-wrap: nowrap; justify-content: flex-start;">
+                            <div class="col-sm-3">
+                                <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: center;">
+                                    <label for="id_is_class" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                        Class:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="id_is_class" name="is_class"
+                                            class="form-select store_Selectbox"
+                                            aria-label="Default select example">
+                                            <!--  -->
+                                            {% for cls in classlist %}
+                                                <option value="{{ cls.class_id }}" data-allow_group="{{ cls.allow_groups }}">
+                                                    {{ cls.class_name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-sm-3">
+                                <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: center;">
+                                    <label for="id_is_section" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                        Section:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="id_is_section" name="is_section"
+                                            class="form-select store_Selectbox"
+                                            aria-label="Default select example">
+                                            <!--  -->
+                                            <option value="" selected>All Section</option>
+                                            {% for section in sectionlist %}
+                                                <option value="{{ section.section_id }}">
+                                                    {{ section.section_name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-sm-3">
+                                <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: center;">
+                                    <label for="id_is_shift" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                        Shift:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="id_is_shift" name="is_shift"
+                                            class="form-select store_Selectbox"
+                                            aria-label="Default select example">
+                                            <!--  -->
+                                            <option value="" selected>All Shift</option>
+                                            {% for shifts in shiftslist %}
+                                                <option value="{{ shifts.shift_id }}">
+                                                    {{ shifts.shift_name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-sm-3" id="groups_block" style="display: none;">
+                                <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: flex-start;">
+                                    <label for="id_is_groups" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                        Groups:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="id_is_groups" name="is_groups"
+                                            class="form-select store_Selectbox"
+                                            aria-label="Default select example">
+                                            <!--  -->
+                                            <option value="" selected disabled>Choose here</option>
+                                            {% for groups in groupslist %}
+                                                <option value="{{ groups.groups_id }}">
+                                                    {{ groups.groups_name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                    </div>
+                </div>
+            </section>
+            <section class="submissionBtn" style="padding: 10px;">
+                <div class="row row_item_setup">
+                    <div class="col-sm-12">
+                        <div class="card main-card" style="background: #ededed;">
+                            <div class="card-body card-body_item_setup">
+                                <div class="row row_item_setup">
+                                    <!-- submit button -->
+                                    <div class="submit_button">
+                                        <!--  -->
+                                        <button type="submit" class="btn btn-success btn-sm" id="printHalfYearly" style="margin-right: 10px; padding: 0.09rem 0.6rem;">
+                                            Print Half Yearly
+                                        </button>
+                                        <!--  -->
+                                        <button type="submit" class="btn btn-warning btn-sm text-white" id="printYearly" style="margin-right: 10px; padding: 0.09rem 0.6rem;">
+                                            Print Yearly
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                <div class="module-table">
+                    <table id="RELRPTABLE" class="table table-striped table-hover" style="width: 100%; border: 1px solid #404c72e0;">
+                        <thead class="text-center table-header_itemlist" style="background: #404c72e0">
+                            <tr>
+                                <th style="text-align:center; width: 6%;">
+                                    Sl
+                                </th>
+                                <th style="text-align:center; width: 25%;">
+                                    Name
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Roll
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Class
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Section
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Shift
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Half Yearly
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Yearly
+                                </th>
+                                <th style="text-align:center; width: 2%;">
+                                    <input type="checkbox" id="id_all_selection" style="width: 1.5rem; height: 1.5rem; cursor: pointer;">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="POL_TBody" style="text-align:center; font-size: 0.8rem">
+                            <!--  -->
+
+                        </tbody>
+
+                        <!-- loader start -->
+                        <div class="loader"></div>
+                        <!-- loader end -->
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<!-- present date show scriptStart  -->
+<script>
+    // Define globally so it's accessible in both blocks
+    function toggleGroupsBlock() {
+        const $selected = $('#id_is_class option:selected');
+        const allowGroup = $selected.data('allow_group');
+    
+        if (allowGroup == 1 || String(allowGroup).toLowerCase() === "true") {
+            $('#groups_block').show();
+            $('#id_is_groups').prop('required', true);
+        } else {
+            $('#groups_block').hide();
+            $('#id_is_groups').prop('required', false).val('');
+        }
+    }
+    
+    $(document).ready(function () {
+        $('#id_is_class').on('change', toggleGroupsBlock);
+        toggleGroupsBlock(); // Run initially
+    });
+    /////////////////////////////////////////////////
+
+    $(document).ready(function () {
+        // Load initial data
+        handlePORowSelection();  // Assuming this is defined elsewhere
+    
+        $('#id_filter_org, #id_filter_branch, #id_is_class, #id_is_section, #id_is_shift, #id_is_groups').change(() => {
+            loadPOlist();
+        });
+    
+        // Main function to load filtered data
+        function loadPOlist() {
+            const orgFilter = $('#id_filter_org').val();
+            const branchFilter = $('#id_filter_branch').val();
+            const isClassFilter = $('#id_is_class').val();
+            const isSectionFilter = $('#id_is_section').val();
+            const isShiftFilter = $('#id_is_shift').val();
+            const isGroupsFilter = $('#id_is_groups').val();
+    
+            if (!branchFilter) return;
+    
+            startLoader();
+    
+            $.ajax({
+                type: 'GET',
+                url: '/get_result_card_entry_re_print_details/',
+                data: {
+                    'filter_org': orgFilter,
+                    'filter_branch': branchFilter,
+                    'filter_class': isClassFilter,
+                    'filter_section': isSectionFilter,
+                    'filter_shift': isShiftFilter,
+                    'filter_groups': isGroupsFilter
+                },
+                success: function (data) {
+                    try {
+                        $('#RELRPTABLE').DataTable().destroy();
+                    } catch (err) {}
+    
+                    updatePOTable(data);
+    
+                    $('#RELRPTABLE').DataTable({
+                        ordering: false,
+                    });
+    
+                    highlightSelectedRowOnInit();  // Optional callback
+    
+                    endLoader();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Ajax Error:', xhr.responseText);
+                }
+            });
+        }
+    
+        // Populate the table with filtered data
+        function updatePOTable(data) {
+            const tableBody = $('#POL_TBody');
+            tableBody.empty();
+    
+            if (!data.data || data.data.length === 0) {
+                $('#noDataFoundRow').show();
+                return;
+            }
+    
+            $('#noDataFoundRow').hide();
+    
+            $.each(data.data, function (index, cardDtls) {
+                const rowHtml = `
+                    <tr class="po-row" data-id="${cardDtls.reg_id}">
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td style="text-align:left;">${cardDtls.full_name}</td>
+                        <td style="text-align:center;">${cardDtls.roll_no}</td>
+                        <td style="text-align:center;">${cardDtls.class_name}</td>
+                        <td style="text-align:center;">${cardDtls.section_name}</td>
+                        <td style="text-align:center;">${cardDtls.shift_name}</td>
+                        <td style="text-align:center;">
+                            <button type="button" class="btn btn-warning printBtn table-row-btn btn-xs text-white" 
+                                data-res_card_id="${cardDtls.res_card_id}" style="cursor: pointer; margin: 4px; font-size: 1.2rem; padding: 2px 8px 2px 8px;">
+                                <i class='bx bx-edit printIcon text-white'></i>
+                            </button>
+                            <!--  -->
+                            <button type="button" class="btn btn-info printBtn table-row-btn btn-xs text-white resultsPrintBtn" 
+                                data-res_card_id="${cardDtls.res_card_id}" style="cursor: pointer; margin: 4px; font-size: 1.2rem; padding: 2px 8px 2px 8px;">
+                                <i class='bx bx-printer printIcon text-white'></i>
+                            </button>
+                        </td>
+                        <td style="text-align:center;">
+                            <button type="button" class="btn btn-warning printBtn table-row-btn btn-xs text-white" 
+                                data-res_card_id="${cardDtls.res_card_id}" style="cursor: pointer; margin: 4px; font-size: 1.2rem; padding: 2px 8px 2px 8px;">
+                                <i class='bx bx-edit printIcon text-white'></i>
+                            </button>
+                            <!--  -->
+                            <button type="button" class="btn btn-success printBtn table-row-btn btn-xs text-white yearly_results_entry" 
+                                data-res_card_id="${cardDtls.res_card_id}" style="cursor: pointer; margin: 4px; font-size: 1.2rem; padding: 2px 8px 2px 8px;">
+                                <i class='bx bx-printer printIcon text-white'></i>
+                            </button>
+                        </td>
+                        <td style="text-align:center;">
+                            <input type="checkbox" class="multi_selection custom-checkbox" id="id_multi_selection_${index}" name="is_multi_selection[]" value="${cardDtls.res_card_id}" style="width: 1.5rem; height: 1.5rem; cursor: pointer;">
+                        </td>
+                    </tr>`;
+                tableBody.append(rowHtml);
+            });
+        }
+    });
+
+    
+    //
+    function handlePORowSelection() {
+        // Attach click event listener to all rows
+        $(document).on("click", ".po-row", function () {
+            var clickedPOId = $(this).data("id");
+
+            // Remove highlighting from other rows
+            $(".po-row").removeClass("selected-row");
+
+            // Highlight the selected row
+            $(this).addClass("selected-row");
+
+            // Save the selected PO ID to local storage
+            localStorage.setItem("selectedPOID", clickedPOId);
+        });
+    }
+
+    function highlightSelectedRowOnInit() {
+        var selectedPOID = localStorage.getItem("selectedPOID");
+        if (selectedPOID) {
+            $(".po-row").each(function () {
+                if ($(this).data("id").toString() === selectedPOID) {
+                    $(this).addClass("selected-row");
+                    return false; // Break the loop once the match is found
+                }
+            });
+        }
+    }
+    //
+    // get branch option org wise
+    $(document).ready(function () {
+        // Initial population of branch options based on the selected organization
+        updateBranchOptionsfilter();
+
+        // Event listener for the change event on #id_filter_org
+        $('#id_filter_org').change(function () {
+            updateBranchOptionsfilter();
+        });
+
+        function updateBranchOptionsfilter() {
+            // Get the selected organization ID
+            var selectedFilterOrgId = $('#id_filter_org').val();
+
+            // Make an AJAX request to get branch options based on the selected organization
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: selectedFilterOrgId },
+                success: function (data) {
+                    // Clear existing options
+                    $('#id_filter_branch').empty();
+
+                    // Add fetched branch options
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_filter_branch').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+
+                    // Trigger change event for #id_filter_branch to automatically update its value
+                    $('#id_filter_branch').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+    });
+
+    $(function () {
+        $(document).on('click', '.resultsPrintBtn', function () {
+            const resCardId = $(this).data('res_card_id');
+            const is_class = $('#id_is_class').val();
+            const is_section = $('#id_is_section').val();
+            const is_shift = $('#id_is_shift').val();
+            const is_groups = $('#id_is_groups').val();
+
+            if (resCardId) {
+                const url = `/print_transcript/?id=${resCardId}&is_class=${is_class}&is_section=${is_section}&is_shift=${is_shift}&is_groups=${is_groups}`;
+                window.open(url, '_blank');
+            } else {
+                toastr.error("res_card_id is missing.");
+            }
+        });
+    });
+
+    ///////////////////////////////
+    $(function () {
+        // Master checkbox toggles all child checkboxes
+        $(document).on('change', '#id_all_selection', function () {
+            const isChecked = $(this).is(':checked');
+            $('.multi_selection').prop('checked', isChecked);
+        });
+
+        // If any child checkbox is unchecked, master becomes unchecked
+        $(document).on('change', '.multi_selection', function () {
+            const total = $('.multi_selection').length;
+            const checked = $('.multi_selection:checked').length;
+            $('#id_all_selection').prop('checked', total === checked);
+        });
+
+        // Print button handler
+        $('#printHalfYearly').on('click', function () {
+
+            var is_class = $('#id_is_class').val();
+            var is_section = $('#id_is_section').val();
+            var is_shift = $('#id_is_shift').val();
+            var is_groups = $('#id_is_groups').val();
+
+            const selectedIds = [];
+
+            $('.multi_selection:checked').each(function () {
+                selectedIds.push($(this).val());
+            });
+
+            if (selectedIds.length === 0) {
+                toastr.error("Please select at least one student.");
+                return;
+            }
+
+            const url = `/print_multiple_transcripts/?ids=${selectedIds.join(',')}&is_class=${is_class}&is_section=${is_section}&is_shift=${is_shift}&is_groups=${is_groups}`;
+            window.open(url, '_blank');
+        });
+    });
+    ////////////////////////////////////////////
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+</script>
+
+{% endblock %}

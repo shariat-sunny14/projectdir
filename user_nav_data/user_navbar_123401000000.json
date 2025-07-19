@@ -1,0 +1,127 @@
+{
+    "10000000000": {
+        "module_name": "Home",
+        "types": {
+            "BI Statistics": {
+                "type_icon": "bx bx-pie-chart-alt-2",
+                "features": [
+                    {
+                        "feature_page_link": "/statistics_dashboard/",
+                        "feature_icon": "bx bx-scatter-chart",
+                        "feature_name": "Status of Statistics"
+                    }
+                ]
+            }
+        }
+    },
+    "10000000001": {
+        "module_name": "Security Access Control",
+        "types": {
+            "Security Services": {
+                "type_icon": "bx bx-cog",
+                "features": [
+                    {
+                        "feature_page_link": "/user_setup/",
+                        "feature_icon": "bx bx-cog",
+                        "feature_name": "User Setup & Access"
+                    },
+                    {
+                        "feature_page_link": "/module_feature_setup/",
+                        "feature_icon": "bx bx-reset",
+                        "feature_name": "Module & Feature Setup"
+                    },
+                    {
+                        "feature_page_link": "/organizations_list/",
+                        "feature_icon": "bx bxs-window-alt",
+                        "feature_name": "Organizations Setup"
+                    },
+                    {
+                        "feature_page_link": "/examination_category_setup_services/",
+                        "feature_icon": "bx bx-shape-circle",
+                        "feature_name": "Class, Section, Subjects, Exam Type Setup"
+                    },
+                    {
+                        "feature_page_link": "/defaults_exam_modes_setup/",
+                        "feature_icon": "bx bxs-pyramid",
+                        "feature_name": "Defaults Exam Modes Setup"
+                    }
+                ]
+            }
+        }
+    },
+    "10000000002": {
+        "module_name": "Students Registrations",
+        "types": {
+            "Registrations": {
+                "type_icon": "bx bxs-user-rectangle",
+                "features": [
+                    {
+                        "feature_page_link": "/students_registration_services/",
+                        "feature_icon": "bx bxs-user",
+                        "feature_name": "Students List"
+                    }
+                ]
+            }
+        }
+    },
+    "10000000003": {
+        "module_name": "Results Card Print",
+        "types": {
+            "Results Card": {
+                "type_icon": "bx bx-archive",
+                "features": [
+                    {
+                        "feature_page_link": "/result_card_entry_services/",
+                        "feature_icon": "bx bxs-book-content",
+                        "feature_name": "Result Card  Half/Yearly Entry"
+                    }
+                ]
+            },
+            "Results Card Print": {
+                "type_icon": "bx bx-folder-minus",
+                "features": [
+                    {
+                        "feature_page_link": "/result_card_re_print_list/",
+                        "feature_icon": "bx bx-repeat",
+                        "feature_name": "Print Results Card"
+                    }
+                ]
+            }
+        }
+    },
+    "10000000004": {
+        "module_name": "Results Finalization",
+        "types": {
+            "Finalize Results": {
+                "type_icon": "bx bx-hard-hat",
+                "features": [
+                    {
+                        "feature_page_link": "/result_finalize_services/",
+                        "feature_icon": "bx bx-book-content",
+                        "feature_name": "Add New Finalize Results Entry"
+                    },
+                    {
+                        "feature_page_link": "/result_finalization_list/",
+                        "feature_icon": "bx bx-left-indent",
+                        "feature_name": "Result Finalization List"
+                    }
+                ]
+            }
+        }
+    },
+    "10000000005": {
+        "module_name": "SMS Services",
+        "types": {
+            "SMS Services": {
+                "type_icon": "bx bx-mail-send",
+                "features": [
+                    {
+                        "feature_page_link": "/sms_services_lists/",
+                        "feature_icon": "bx bx-send",
+                        "feature_name": "SMS Send List"
+                    }
+                ]
+            }
+        }
+    }
+}

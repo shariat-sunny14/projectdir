@@ -1,0 +1,569 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'registration/css/registration.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'registration/js/registration.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section>
+        <div class="container-fluid">
+            <!-- Main Heading -->
+            <div class="row">
+                <div class="col col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2" style="height: 2rem;">
+                        <i class='bx bxs-user-rectangle text-success req-head-icon'></i>
+                        <h1 class="h3 text-success req-head">Registered List</h1>
+                        <div style="position: absolute; right: 2rem;">
+                            <!--  -->
+                            <button type="button" id="addregistration"
+                                class="btn btn-success bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                style="display: flex; font-size: 0.8rem; font-weight: bolder; box-shadow: 4px 5px 10px 0px #43507e; border-radius: 0.7rem; border: 1.5px solid #fff; height: 1.7rem; padding: 0.5rem 1.3rem; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                Add New Students
+                            </button>
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col col-md-12 sub-header">
+                    <div class="d-sm-flex align-items-center mb-2">
+                        <!--  -->
+                        <div class="others-container d-flex" style="flex-grow: 1; display: flex; justify-content: right;">
+                            <!--  -->
+                        </div>
+                        <!--  -->
+                        <div class="others-container d-flex">
+                            <div class="sub-headerBtn">
+                                <div class="card-body card-body_item_setup" style="display: flex; justify-content: center; margin-left: 2rem;">
+                                    <div class="form-check form-check-inline inline_item">
+                                        <input class="form-check-input radio2" type="radio" name="option" value="true" id="activeList" checked>
+                                        <label class="form-check-label" for="activeList">Active</label>
+                                    </div>
+                                    <div class="form-check form-check-inline inline_item">
+                                        <input class="form-check-input radio3" type="radio" name="option" value="false" id="inactiveList">
+                                        <label class="form-check-label" for="inactiveList">Inactive</label>
+                                    </div>
+                                    <div class="form-check form-check-inline inline_item">
+                                        <input class="form-check-input radio1" type="radio" name="option" value="1" id="allList">
+                                        <label class="form-check-label" for="allList">All</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <section>
+        <div class="card po_card"
+            style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.3rem; background: whitesmoke;">
+            <div class="card-body">
+                <div class="report-filter">
+                    <!-- Date Range Filter -->
+                    <div class="date-range">
+                        <div class="row date_range-body" style="font-size: 0.8rem;">
+                            <div class="date_range-element" style="display:flex; flex-wrap: nowrap; align-items: center;">
+                                <!--  -->
+                                <div class="row store_row col-sm-4"
+                                    style="flex-grow: 1; display: flex; justify-content: left;">
+                                    <label for="id_filter_org" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                        Org:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="id_filter_org" name="filter_org" class="form-select regInput-field"
+                                            aria-label="Default select example">
+                                            {% for org in org_list %}
+                                            <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                {{org.org_name}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="row store_row col-sm-4"
+                                    style="flex-grow: 2; display: flex; justify-content: left;">
+                                    <label for="id_filter_branch" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                        Branch:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="id_filter_branch" name="filter_branch"
+                                            class="form-select regInput-field"
+                                            aria-label="Default select example">
+                                            <!--  -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="row store_row col-sm-2" style="flex-grow: 2; display: flex; justify-content: right;">
+                                    <div class="others-container d-flex">
+                                        <div style="font-size: 0.9rem;">
+                                            <div class="card-body card-body_item_setup" style="display: flex; justify-content: center; margin-left: 2rem;">
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio2" type="radio" name="is_versions" value="true" id="englishList" checked>
+                                                    <label class="form-check-label" for="englishList">English</label>
+                                                </div>
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio3" type="radio" name="is_versions" value="false" id="banglaList">
+                                                    <label class="form-check-label" for="banglaList">Bangla</label>
+                                                </div>
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio1" type="radio" name="is_versions" value="1" id="allversionsList">
+                                                    <label class="form-check-label" for="allversionsList">All</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <section>
+        <div class="card po_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+            <div class="card-body">
+                <div class="col-sm-12" style="display: flex; flex-direction: row; align-items: center; flex-wrap: nowrap; justify-content: flex-start;">
+                    <div class="col-sm-3">
+                        <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: center;">
+                            <label for="id_is_class" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem; margin-right: 5px;">
+                                Class:
+                            </label>
+                            <div class="col-sm-9">
+                                <select id="id_is_class" name="is_class"
+                                    class="form-select regInput-field"
+                                    aria-label="Default select example">
+                                    <!--  -->
+                                    {% for cls in classlist %}
+                                        <option value="{{ cls.class_id }}" data-allow_group="{{ cls.allow_groups }}">
+                                            {{ cls.class_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-3">
+                        <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: center;">
+                            <label for="id_is_section" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem; margin-right: 5px;">
+                                Section:
+                            </label>
+                            <div class="col-sm-9">
+                                <select id="id_is_section" name="is_section"
+                                    class="form-select regInput-field"
+                                    aria-label="Default select example">
+                                    <option value="" selected>All Section</option>
+                                    <!--  -->
+                                    {% for section in sectionlist %}
+                                        <option value="{{ section.section_id }}">
+                                            {{ section.section_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-3">
+                        <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: center;">
+                            <label for="id_is_shift" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem; margin-right: 5px;">
+                                Shift:
+                            </label>
+                            <div class="col-sm-9">
+                                <select id="id_is_shift" name="is_shift"
+                                    class="form-select regInput-field"
+                                    aria-label="Default select example">
+                                    <option value="" selected>All Shift</option>
+                                    <!--  -->
+                                    {% for shifts in shiftslist %}
+                                        <option value="{{ shifts.shift_id }}">
+                                            {{ shifts.shift_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-3" id="groups_block" style="display: none;">
+                        <div class="filter-body" style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: nowrap; align-items: flex-start;">
+                            <label for="id_is_groups" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem; margin-right: 5px;">
+                                Groups:
+                            </label>
+                            <div class="col-sm-9">
+                                <select id="id_is_groups" name="is_groups" class="form-select regInput-field"
+                                    aria-label="Default select example">
+                                    <option value="" selected>All Groups</option>
+                                    <!--  -->
+                                    {% for groups in groupslist %}
+                                        <option value="{{ groups.groups_id }}">
+                                            {{ groups.groups_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <section>
+        <div class="tableBody">
+            <div class="tableContainer">
+                <table id="regTbl" class="table table-striped table-hover" style="width: 150%; border: 1px solid #dfdede;">
+                    <thead class="text-center">
+                        <tr>
+                            <th style="width: 20%; text-align: center;">Name</th>
+                            <th style="width: 10%; text-align: center;">S/N</th>
+                            <th style="width: 10%; text-align: center;">Roll No</th>
+                            <th style="width: 8%; text-align: center;">Gender</th>
+                            <th style="width: 8%; text-align: center;">Class</th>
+                            <th style="width: 8%; text-align: center;">Section</th>
+                            <th style="width: 8%; text-align: center;">Shift</th>
+                            <th style="width: 8%; text-align: center;">Groups</th>
+                            <th style="width: 10%; text-align: center;">Mobile</th>
+                            <th style="width: 8%; text-align: center;">DOB</th>
+                            <th style="width: 8%; text-align: center;">Blood Group</th>
+                            <th style="width: 8%; text-align: center;">Reg. Date</th>
+                            <th style="width: 25%; text-align: center;">Address</th>
+                            <th style="width: 8%; text-align: center;">Status</th>
+                            <th style="width: 10%; text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="regTbody" class="table-body-row" style="text-align:center;">
+                        <!-- Add rows dynamically with JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // Define globally so it's accessible in both blocks
+    function toggleGroupsBlock() {
+        const $selected = $('#id_is_class option:selected');
+        const allowGroup = $selected.data('allow_group');
+    
+        if (allowGroup == 1 || String(allowGroup).toLowerCase() === "true") {
+            $('#groups_block').show();
+            $('#id_is_groups').prop('required', true);
+        } else {
+            $('#groups_block').hide();
+            $('#id_is_groups').prop('required', false).val('');
+        }
+    }
+    
+    $(document).ready(function () {
+        $('#id_is_class').on('change', toggleGroupsBlock);
+        toggleGroupsBlock(); // Run initially
+    });
+
+    // get branch option org wise
+    $(document).ready(function () {
+        // Initial population of branch options based on the selected organization
+        updateBranchOptionsfilter();
+
+        // Event listener for the change event on #id_filter_org
+        $('#id_filter_org').change(function () {
+            updateBranchOptionsfilter();
+        });
+
+        function updateBranchOptionsfilter() {
+            // Get the selected organization ID
+            var selectedFilterOrgId = $('#id_filter_org').val();
+
+            // Make an AJAX request to get branch options based on the selected organization
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: selectedFilterOrgId },
+                success: function (data) {
+                    // Clear existing options
+                    $('#id_filter_branch').empty();
+
+                    // Add fetched branch options
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_filter_branch').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+
+                    // Trigger change event for #id_filter_branch to automatically update its value
+                    $('#id_filter_branch').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+    });
+    /////////////////////////////////////////////
+    $(document).ready(function () {
+        var debounceTimer;
+    
+        // Handle radio button change and filters
+        $('input[name="option"], input[name="is_versions"], #id_filter_org, #id_filter_branch, #id_is_class, #id_is_section, #id_is_shift, #id_is_groups').change(function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(filterUsers, 300); // Debounce with a 300ms delay
+        });
+    
+        function filterUsers() {
+            // Get filter values
+            var is_active = $('input[name="option"]:checked').val();
+            var is_versions = $('input[name="is_versions"]:checked').val();
+            var org_id = $('#id_filter_org').val();
+            var branch_id = $('#id_filter_branch').val();
+            var class_id = $('#id_is_class').val();
+            var section_id = $('#id_is_section').val();
+            var shift_id = $('#id_is_shift').val();
+            var groups_id = $('#id_is_groups').val();
+        
+            // Create an object to hold the parameters
+            var filterParams = {
+                'org_id': org_id,
+                'branch_id': branch_id,
+                'class_id': class_id,
+                'section_id': section_id,
+                'shift_id': shift_id,
+                'groups_id': groups_id,
+            };
+        
+            // Only include is_active if it is not "All" (value="1")
+            if (is_active !== '1') {
+                filterParams['is_active'] = is_active;
+            }
+
+            if (is_versions !== '1') {
+                filterParams['is_versions'] = is_versions;
+            }
+        
+            // Make AJAX request to filter_users view
+            $.ajax({
+                url: '/get_customer_registration_list/',
+                type: 'GET',
+                data: filterParams,
+                dataType: 'json',
+                success: function (data) {
+                    // Destroy the existing DataTable instance
+                    $('#regTbl').DataTable().destroy();
+        
+                    // Update the table with the filtered data
+                    updateTable(data.regs_data);
+        
+                    // Re-initialize DataTable after updating the table data
+                    $('#regTbl').DataTable({
+                        "ordering": false,
+                    });
+                }
+            });
+        }
+
+        function formatDate(dobStr) {
+            const date = new Date(dobStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+        }
+    
+        function updateTable(regsData) {
+            // Clear existing table rows
+            $('#regTbody').empty();
+    
+            // Append filtered data to the table
+            $.each(regsData, function (index, reg) {
+                var row = `
+                    <tr>
+                        <td style="text-align:left;">
+                            <img src="${reg.customer_img || "{% static 'images/profile_img/user.png' %}"}" alt="" class="user-img_table">
+                            ${reg.full_name}
+                        </td>
+                        <td>${reg.students_no}</td>
+                        <td>${reg.roll_no}</td>
+                        <td>${reg.gender}</td>
+                        <td>${reg.class_name}</td>
+                        <td>${reg.section_name}</td>
+                        <td>${reg.shift_name}</td>
+                        <td>${reg.groups_name}</td>
+                        <td>${reg.mobile_number}</td>
+                        <td>${formatDate(reg.dateofbirth)}</td>
+                        <td>${reg.blood_group}</td>
+                        <td>${formatDate(reg.reg_date)}</td>
+                        <td style="text-align:left;">${reg.address}</td>
+                        <td class="status_active_inactive" data-is-active="${reg.is_active}">
+                            ${reg.is_active ? 'Active' : 'Inactive'}
+                        </td>
+                        <td style="text-align:center;">
+                            <div style="display: flex; text-align: center; justify-content: center; align-items: center;">
+                                <div class="statusBtn">
+                                    <button title="Edit" class="btn btn-secondary text-white btn-xs editregistration statusDtlBtn" data-id="${reg.reg_id}">
+                                        <i class='bx bxs-edit statusDtlIcon'></i>
+                                    </button>
+                                </div>
+            
+                                ${reg.is_active ? `
+                                <div class="statusBtn">
+                                    <button id="inactive" title="Set Inactive" class="btn btn-danger inactiveReg text-white btn-xs statusDtlBtn" data-id="${reg.reg_id}">
+                                        <i class='bx bx-toggle-left statusDtlIcon'></i>
+                                    </button>
+                                </div>` : `
+                                <div class="statusBtn">
+                                    <button id="active" title="Set Active" class="btn btn-success activeReg text-white btn-xs statusDtlBtn" data-id="${reg.reg_id}">
+                                        <i class='bx bx-toggle-right statusDtlIcon'></i>
+                                    </button>
+                                </div>`}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            
+                // Append the constructed row to the table
+                $('#regTbody').append(row);
+            });
+    
+            // Update status labels
+            updateStatusElements();
+        }
+    
+        // Update active/inactive labels
+        function updateStatusElements() {
+            $('.status_active_inactive').each(function () {
+                var is_active = $(this).data('is-active').toString().toLowerCase().trim();
+                if (is_active === "true") {
+                    $(this).text("Active").addClass("active");
+                } else {
+                    $(this).text("Inactive").addClass("inactive");
+                }
+            });
+        }
+    
+        // Trigger the initial change event
+        $('input[name="option"]').change();
+        $('input[name="is_versions"]').change();
+    });
+
+
+    $(document).ready(function () {
+        $(document).on('click', '#addregistration', function () {
+            lineloaderstart();
+            modal_xl("Add New Registration", "{% url 'add_registration_modal' %}");
+            lineloaderstop();
+        });
+
+        $(document).on('click', '.editregistration', function () {
+            lineloaderstart();
+            modal_xl("edit Registration", "{% url 'edit_registration_modal' %}?reg_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        });
+
+        $(document).on('click', '.activeReg', function () {
+            lineloaderstart();
+            modal_md("Active Reg Registration", "{% url 'active_registration' %}?reg_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        });
+
+        $(document).on('click', '.inactiveReg', function () {
+            lineloaderstart();
+            modal_md("Inactive Reg Registration", "{% url 'inactive_registration' %}?reg_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        });
+    });
+
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    // image load in the page
+    function displaySelectedImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+    
+            reader.onload = function (e) {
+                var img = new Image();
+                img.src = e.target.result;
+    
+                img.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+    
+                    var maxWidth = 300;
+                    var maxHeight = 300;
+    
+                    var width = img.width;
+                    var height = img.height;
+    
+                    if (width > maxWidth || height > maxHeight) {
+                        if (width > height) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        } else {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+    
+                        canvas.width = width;
+                        canvas.height = height;
+    
+                        ctx.drawImage(img, 0, 0, width, height);
+    
+                        // Create or select the element with ID 'selected_image'
+                        var selectedImage = document.getElementById('selected_image');
+                        if (!selectedImage) {
+                            selectedImage = new Image();
+                            selectedImage.id = 'selected_image';
+                            document.body.appendChild(selectedImage); // Append the image to the body or any other appropriate container
+                        }
+    
+                        // Set the image source to the resized image
+                        selectedImage.src = canvas.toDataURL('image/jpeg');
+    
+                        // Check if image size exceeds 300x300 after resizing
+                        if (width > maxWidth || height > maxHeight) {
+                            toastr.warning('Image size should be within 300x300 pixels.');
+                        }
+                    } else {
+                        // If the image is within the size limit, set the image source directly
+                        var selectedImage = document.getElementById('selected_image');
+                        if (selectedImage) {
+                            selectedImage.src = img.src;
+                        }
+                    }
+                };
+            };
+    
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}
