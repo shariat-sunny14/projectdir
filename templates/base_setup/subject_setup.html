@@ -1,0 +1,723 @@
+<section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+    <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+        <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #455697;">
+            <!-- Main Heading -->
+            <div class="row" style="display: flex; justify-content: center; text-align: center; align-items: center;">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2" style="margin-left: 0.5rem;">
+                        <i class='bx bx-book-alt text-white req-head-icon'></i>
+                        <h1 class="h3 text-white req-head">Subjects Setup</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <section>
+            <div class="row row_item_setup">
+                <div class="col-sm-5">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemfilter_container">
+                                <div class="filter_head">
+                                    <h2 class="text-warning">Filtering</h2>
+                                </div>
+                                <!--  -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup" style="display: flex; justify-content: center; border-bottom: 1px solid rgb(211, 211, 211);">
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio2" type="radio" name="subjectsoption"
+                                                        value="true" id="subjectsActive">
+                                                    <label class="form-check-label" for="subjectsActive">Active</label>
+                                                </div>
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio3" type="radio" name="subjectsoption"
+                                                        value="false" id="subjectsInactive">
+                                                    <label class="form-check-label" for="subjectsInactive">Inactive</label>
+                                                </div>
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio1" type="radio" name="subjectsoption"
+                                                        value="1" id="subjectsAll">
+                                                    <label class="form-check-label" for="subjectsAll">All</label>
+                                                </div>
+                                                <div class="form-check form-check-inline"
+                                                    style="position: relative; z-index: 1; margin-bottom: 6px;">
+                                                    <a href="/examination_category_setup_services/"
+                                                        class="btn btn-danger text-white btn-xs item_del_btn">
+                                                        Clear
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="container col-sm-12" style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                <div class="row org-filterRow">
+                                                    <label for="id_subjects_org_filter" class="col-org_filter col-form-label font_size_filter">
+                                                        Org:
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_subjects_org_filter" name="subjects_org_filter" class="form-select item_inputbox"
+                                                            aria-label="Default select example" required>
+                                                            {% for org in user_org_list %}
+                                                            <option value="{{org.org_id}}">
+                                                                {{ org.org_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="row org-filterRow">
+                                                    <label for="id_class_name_filter" class="col-org_filter col-form-label font_size_filter">
+                                                        Class:
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_class_name_filter" name="class_name_filter" class="form-select item_inputbox"
+                                                            aria-label="Default select example" required>
+                                                            {% for clss in user_others_access.class_access %}
+                                                                <option value="{{clss.class_id}}" data-allow_group_filter="{{ clss.allow_groups }}" {% if clss.is_defaults %}selected{% endif %}>
+                                                                    {{ clss.class_name }}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="row org-filterRow" id="groups_block_filter" style="display: none;">
+                                                    <label for="id_groups_name_filter" class="col-org_filter col-form-label font_size_filter">
+                                                        Groups:
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_groups_name_filter" name="groups_name_filter" class="form-select item_inputbox"
+                                                            aria-label="Default select example" required>
+                                                            <option value="" selected>All Groups</option>
+                                                            {% for group in user_others_access.group_access %}
+                                                                <option value="{{group.groups_id}}">
+                                                                    {{ group.groups_name }}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemfilter_container">
+                                <div class="filter_head">
+                                    <h2 class="text-success">List of Subjects</h2>
+                                </div>
+                                <!--  -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup">
+                                                <div class="type_type">
+                                                    <table id="" class="table table-striped table-hover" style="width: 100%;">
+                                                        <thead class="text-center table-header_itemlist">
+                                                            <tr>
+                                                                <th style="text-align:center; width: 20%;">Subjects No.</th>
+                                                                <th style="text-align:center; width: 30%;">Subjects Name</th>
+                                                                <th style="text-align:center; width: 35%;">Organizations</th>
+                                                                <th style="text-align:center; width: 15%;">Status</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="4"
+                                                                    style="text-align:center; background: #fff !important;">
+                                                                    <input type="search" id="SubjectSearch"
+                                                                        class="form-control search_control item_inputbox"
+                                                                        style="margin-left: 4px; background:#fffab6;"
+                                                                        placeholder="Searching ..." autocomplete="off">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody id="subjectsTB" class="table-body-row"
+                                                            style="text-align:center; cursor: pointer;">
+
+                                                        </tbody>
+                                                        <!-- loader start -->
+                                                        <section class="loader_subjects">
+                                                            <div class="loader-body_subjects">
+                                                                <div class="loader_subjects">
+                                                                    <div class="upper ball"></div>
+                                                                    <div class="right ball"></div>
+                                                                    <div class="lower ball"></div>
+                                                                    <div class="left ball"></div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <!-- loader end -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item UoM main entry form -->
+                <div class="col-sm-7">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemsetup_container">
+                                <form action="" method="" id="subjectsForm">
+                                    <input type="hidden" id="id_subjects_id" name="subjects_id" value="">
+                                    <div class="add_edit_head">
+                                        <h2 class="text-primary">Add/Update Subjects Setup Info</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="item_setupflag"
+                                                        style="display: flex; justify-content: right;">
+                                                        <label class="form-check-label text-danger setupflag_label"
+                                                            for="id_is_active_subjects">
+                                                            Active?
+                                                        </label>
+                                                        <input class="form-check-input" type="checkbox" id="id_is_active_subjects"
+                                                            name="is_active" value="1" aria-label="..." checked>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="row row_item_setup">
+                                                        <!--  -->
+                                                        <div class="col-sm-5">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_subjects_no" class="col-sm-4 col-form-label font_size_filter required" title="Subjects No.">
+                                                                            Subj. No:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text"
+                                                                                class="form-control item_inputbox"
+                                                                                id="id_subjects_no" name="subjects_no" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="col-sm-7">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_subjects_name" title="Subjects Name"
+                                                                            class="col-sm-3 col-form-label font_size_filter required">
+                                                                            Subj. Name:
+                                                                        </label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text"
+                                                                                class="form-control item_inputbox" id="id_subjects_name" 
+                                                                                name="subjects_name" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-5">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_is_marks" class="col-sm-4 col-form-label font_size_filter required" title="Is Marks">
+                                                                            Full Marks:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="number" class="form-control item_inputbox" id="id_is_marks" 
+                                                                                name="is_marks" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="col-sm-7">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_is_pass_marks" title="Subjects Name"
+                                                                            class="col-sm-3 col-form-label font_size_filter required">
+                                                                            Pass Marks:
+                                                                        </label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text"
+                                                                                class="form-control item_inputbox" id="id_is_pass_marks" 
+                                                                                name="is_pass_marks" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-12">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_is_class"
+                                                                            class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Class:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_is_class" name="is_class_id" class="form-select item_inputbox"
+                                                                                aria-label="Default select example" required>
+                                                                                <option value="" selected disabled>Choose Class Name ...</option>
+                                                                                {% for clss in user_others_access.class_access %}
+                                                                                <option value="{{clss.class_id}}" data-allow_group="{{ clss.allow_groups }}" {% if clss.is_defaults %}selected{% endif %}>
+                                                                                    {{ clss.class_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="row row_item_setup" id="groups_block" style="display: none;">
+                                                        <div class="col-sm-12">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row" style="margin-top: -2px;">
+                                                                        <label for="id_is_groups" class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Groups:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_is_groups" name="is_groups_id" class="form-select item_inputbox"
+                                                                                aria-label="Default select example" required>
+                                                                                <option value="" selected disabled>Choose Groups Name ...</option>
+                                                                                {% for group in user_others_access.group_access %}
+                                                                                <option value="{{group.groups_id}}">
+                                                                                    {{ group.groups_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-12">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_subjects_org"
+                                                                            class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Org Name:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_subjects_org" name="subjects_org" class="form-select item_inputbox"
+                                                                                aria-label="Default select example" required>
+                                                                                <option value="" selected disabled>Choose Organization ...</option>
+                                                                                {% for org in user_org_list %}
+                                                                                <option value="{{org.org_id}}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- submit button -->
+                                    <div class="submit_button">
+                                        <button type="button" class="btn btn-primary btn-sm" style="margin-right: 10px;" onclick="location.href='/type_uom_category';">
+                                            New
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;"
+                                            onclick="resetSubjectsForm();">
+                                            Clear
+                                        </button>
+                                        <button type="submit" value="submit" class="btn btn-success btn-sm"
+                                            style="margin-right: 10px;">
+                                            Save & Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+<!--  -->
+<script>
+    //
+    // Define globally so it's accessible in both blocks
+    function toggleGroupsBlock() {
+        const classSelect = document.getElementById("id_is_class");
+        const groupsBlock = document.getElementById("groups_block");
+
+        const selectedOption = classSelect.options[classSelect.selectedIndex];
+        const allowGroup = selectedOption.getAttribute("data-allow_group");
+
+        if (allowGroup === "1" || allowGroup === "True" || allowGroup === "true") {
+            groupsBlock.style.display = "block";
+            $('#id_is_groups').prop('required', true);
+        } else {
+            groupsBlock.style.display = "none";
+            $('#id_is_groups').prop('required', false);
+            $('#id_is_groups').val("");  // Clear selection if hidden
+        }
+    }
+
+    function toggleGroupsBlockFilter() {
+        const classSelectFilter = document.getElementById("id_class_name_filter");
+        const groupsBlock = document.getElementById("groups_block");
+        const groupsBlockFilter = document.getElementById("groups_block_filter");
+
+        const selectedOptionFilter = classSelectFilter.options[classSelectFilter.selectedIndex];
+        const allowGroupFilter = selectedOptionFilter.getAttribute("data-allow_group_filter");
+
+        if (allowGroupFilter === "1" || allowGroupFilter === "True" || allowGroupFilter === "true") {
+            groupsBlockFilter.style.display = "flex";
+        } else {
+            groupsBlockFilter.style.display = "none";
+            $('#id_groups_name_filter').val(""); // Clear if hidden
+        }
+
+        if (allowGroupFilter === "1" || allowGroupFilter === "True" || allowGroupFilter === "true") {
+            groupsBlock.style.display = "block";
+            $('#id_is_groups').prop('required', true);
+        } else {
+            groupsBlock.style.display = "none";
+            $('#id_is_groups').prop('required', false);
+            $('#id_is_groups').val("");  // Clear selection if hidden
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const classSelect = document.getElementById("id_is_class");
+        const classSelectFilter = document.getElementById("id_class_name_filter");
+
+        // Bind events
+        classSelect.addEventListener("change", toggleGroupsBlock);
+        classSelectFilter.addEventListener("change", toggleGroupsBlockFilter);
+
+        // Initial run
+        toggleGroupsBlock();
+        toggleGroupsBlockFilter();
+    });
+    //
+    $(document).ready(function () {
+        // Define a function to populate the table with data
+        function subjectsPopulateTable(data) {
+            for (var i = 0; i < data.subjectsDtls.length; i++) {
+                var subjectsData = data.subjectsDtls[i];
+
+                $("#id_subjects_id").val(subjectsData.subjects_id);
+                $("#id_subjects_no").val(subjectsData.subjects_no);
+                $("#id_subjects_name").val(subjectsData.subjects_name);
+                $("#id_is_marks").val(subjectsData.is_marks);
+                $("#id_is_pass_marks").val(subjectsData.is_pass_marks);
+
+                $("#id_subjects_org option").filter(function () {
+                    return $(this).text().trim() === subjectsData.org_name.trim();
+                }).prop("selected", true);
+
+                $("#id_is_class option").filter(function () {
+                    return $(this).text().trim() === subjectsData.is_class_name.trim();
+                }).prop("selected", true).trigger("change");
+
+                $("#id_is_groups option").filter(function () {
+                    return $(this).text().trim() === (subjectsData.is_groups_name || "").trim();
+                }).prop("selected", true);
+
+                $("#id_is_active_subjects").prop("checked", subjectsData.is_active);
+
+                // This is now safe to call because it's globally defined
+                toggleGroupsBlock();
+            }
+        }
+
+        // Fetch data from your Django view using AJAX
+        $(document).on("click", ".subjects_editBtn", function () {
+            var subjectsID = $(this).data("subjects_id"); // Get the item_id from the data attribute
+
+            $.ajax({
+                type: "GET",
+                url: "/select_subjects_data/" + subjectsID + "/",
+                dataType: "json",
+                success: function (data) {
+                    subjectsPopulateTable(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error:", error);
+                    toastr.warning("Failed to fetch Item UoM details");
+                }
+            });
+        });
+
+    });
+
+    //<!--  -->
+    $(document).ready(function () {
+        // Load initial data based on the initially checked radio button
+        loadInitialSubjectsData();
+        handleSubjectsRowSelection();
+
+        // Add event listeners to radio buttons
+        $('input[name="subjectsoption"]').change(function () {
+            localStorage.setItem('subjectslistOption', $('input[name="subjectsoption"]:checked').val());
+
+            // Load items
+            loadSubjectslist();
+        });
+
+        $('#id_subjects_org_filter').change(() => {
+            // Save the selected organization filter value to local storage
+            //subjectsOrgFilterValue = $('#id_subjects_org_filter').val();
+            // Load items
+            loadSubjectslist();
+        });
+
+        $('#id_class_name_filter').change(() => {
+            loadSubjectslist();
+        });
+
+        $('#id_groups_name_filter').change(() => {
+            loadSubjectslist();
+        });
+
+
+        // Load items based on the search query
+        loadSubjectsFromSearch();
+
+        // Function to load items based on the search query
+        function loadSubjectsFromSearch() {
+            // Get the search query from local storage if it exists
+            var savedSubjectsSearchQuery = localStorage.getItem("subjectsSearchQuery");
+            var subjectsListsearch = $('#SubjectSearch');
+
+            // Check if there's a saved search query
+            if (savedSubjectsSearchQuery) {
+                // Set the search input value
+                subjectsListsearch.val(savedSubjectsSearchQuery);
+            }
+
+            // Add an event listener to the search input field
+            subjectsListsearch.on('input', function () {
+                var query = $(this).val();
+                localStorage.setItem("subjectsSearchQuery", query);
+                loadSubjectslist();
+            });
+
+            // Trigger the search on page load
+            loadSubjectslist();
+        }
+
+        function loadInitialSubjectsData() {
+            // Retrieve the selected option from local storage
+            var groupsinitialOption = localStorage.getItem('subjectslistOption') || 'true';
+
+            // Check the corresponding radio button
+            $('input[name="subjectsoption"][value="' + groupsinitialOption + '"]').prop('checked', true);
+
+            // Load items
+            loadSubjectslist();
+        }
+
+        function loadSubjectslist() {
+            var subjectsSearchQuery = localStorage.getItem("subjectsSearchQuery") || '';
+            var subjectsoption = localStorage.getItem('subjectslistOption') || 'true';
+            var subjectsOrgFilterValue = $('#id_subjects_org_filter').val();
+            var classNameFilterValue = $('#id_class_name_filter').val();
+            var groupsNameFilterValue = $('#id_groups_name_filter').val();
+        
+            $.ajax({
+                type: 'GET',
+                url: '/get_list_of_subjects_data/',
+                data: {
+                    'subjectsoption': subjectsoption,
+                    'subjects_search_query': subjectsSearchQuery,
+                    'subjects_org_filter': subjectsOrgFilterValue,
+                    'class_name_filter': classNameFilterValue,
+                    'groups_name_filter': groupsNameFilterValue,
+                },
+                success: function (data) {
+                    updateSubjectsTable(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Ajax Error:', xhr.responseText);
+                }
+            });
+        }
+
+        function updateSubjectsTable(data) {
+            var tableBody = $('#subjectsTB');
+            tableBody.empty();
+
+            if (data.data && data.data.length === 0) {
+                $('#noDataFoundRow').show();
+            } else {
+                $('#noDataFoundRow').hide();
+
+                if (data.data) {
+                    $.each(data.data, function (index, subjectsL) {
+                        var subjectsstatusText = subjectsL.is_active ? 'Active' : 'Inactive';
+                        var subjectsstatusClass = subjectsL.is_active ? 'active-status' : 'inactive-status';
+
+                        tableBody.append(`<tr class="subjects_editBtn" data-subjects_id="${subjectsL.subjects_id}">
+                            <td style="text-align: center;">${subjectsL.subjects_no}</td>
+                            <td style="text-align: left;">${subjectsL.subjects_name}</td>
+                            <td style="text-align: left;">${subjectsL.org_name}</td>
+                            <td class="status_act_inac ${subjectsstatusClass}" style="text-align: center;">${subjectsstatusText}</td>
+                        </tr>`);
+                    });
+                }
+            }
+            // Check if there is a selected item ID in local storage and highlight the row
+            handleSubjectsRowSelection();
+        }
+
+        $(function () {
+            $('#subjectsForm').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: "{% url 'subjects_save_and_update' %}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (resp) {
+                        if (success = resp.msg) {
+                            toastr.success(resp.msg);
+                            loadSubjectslist();
+                            showSubjectsLoader();
+                            resetSubjectsForm();
+                            // Hide loader
+                            setTimeout(function () {
+                                hideSubjectsLoader();
+                            }, 1100);
+
+                        } else {
+                            toastr.error(resp.errmsg);
+                        }
+                    }
+                });
+            });
+        });
+    });
+
+    function handleSubjectsRowSelection() {
+        // Check if there is a selected item ID in local storage and highlight the row
+        var selectedSubjectsID = localStorage.getItem("selectedSubjectsID");
+        if (selectedSubjectsID) {
+            $(".subjects_editBtn").removeClass("selected-row");
+            $(".subjects_editBtn[data-subjects_id='" + selectedSubjectsID + "']").addClass("selected-row");
+        }
+
+        // Add an event listener to the item rows
+        $(document).on("click", ".subjects_editBtn", function () {
+            var clickedSubjectsID = $(this).data("subjects_id");
+            $(".subjects_editBtn").removeClass("selected-row");
+            $(this).addClass("selected-row");
+
+            // Save the selected item ID to local storage
+            localStorage.setItem("selectedSubjectsID", clickedSubjectsID);
+        });
+    }
+
+    //==========================================
+    //loader 
+    const loader_subjects = document.querySelector(".loader_subjects");
+    const loaderBody_subjects = document.querySelector(".loader-body_subjects");
+
+    // Function to show the loader
+    function showSubjectsLoader() {
+        loader_subjects.style.display = "block";
+        loaderBody_subjects.style.display = "block";
+        loader_subjects.style.left = "50%"; // Set left position to center
+        loader_subjects.style.top = "50%"; // Set top position to center
+    }
+
+    // Function to hide the loader
+    function hideSubjectsLoader() {
+        loader_subjects.style.display = "none";
+        loaderBody_subjects.style.display = "none";
+    }
+
+    // Function to check and show loader based on local storage
+    function checkAndshowSubjectsLoader() {
+        const loaderVisible = localStorage.getItem("loaderVisible");
+        if (loaderVisible === "true") {
+            showSubjectsLoader();
+        }
+    }
+
+    // Event listener for radio button change
+    document.querySelectorAll('input[name="subjectsoption"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            showSubjectsLoader(); // Show loader when radio button changes
+            // Add logic to handle the radio button change if needed
+            setTimeout(() => {
+                hideSubjectsLoader(); // Hide loader after a delay (you can adjust this)
+            }, 1100); // Example: hide loader after 2 seconds
+        });
+    });
+
+    // Check and show loader on page load
+    checkAndshowSubjectsLoader();
+
+    window.addEventListener("load", () => {
+        // Adjust the delay in milliseconds (e.g., 2000 for 2 seconds)
+        setTimeout(() => {
+            hideSubjectsLoader();
+        }, 1100);
+    });
+    //loader
+    //==========================================
+
+    function resetSubjectsForm() {
+        $('#subjectsForm')[0].reset();
+        $('#id_subjects_id').val('');
+    }
+</script>

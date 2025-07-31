@@ -1,0 +1,533 @@
+{% load humanize %}
+{% load static %}
+<style>
+    /* Page settings for WeasyPrint */
+    @page {
+    size: A4;
+    margin: 10px 10px 12px 10px;
+
+    @bottom-left {
+        content: "Software By: TECHROOT'S (Pvt.) Limited – Printed on: {{ printed_on }} – Page " counter(page);
+        font-size: 10px;
+        font-family: Arial, sans-serif;
+        color: #555;
+        margin-bottom: 0.7rem;
+    }
+}
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        font-family: 'Georgia', serif;
+        font-size: 14px;
+        background: white;
+    }
+
+    .content-wrapper {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .main-body {
+        position: relative;
+        z-index: 2;
+        border: 3px dashed black;
+        padding: 7px;
+        background: white;
+    }
+
+    .hologram img {
+        position: absolute;
+        top: 14.5rem;
+        left: 8rem;
+        width: 70%;
+        filter: blur(1px);
+        z-index: 1;
+        /* Lower value to go behind */
+        pointer-events: none;
+        /* Optional: ensures clicks go through */
+    }
+
+    .transcript-header {
+        display: grid;
+        grid-template-columns: 2fr 0fr;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    header .logo {
+        width: 80px;
+        margin: 10px auto;
+        display: block;
+    }
+
+    .header-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .head-line {
+        width: 20rem;
+        font-size: 21px;
+        border: 2px solid #000;
+        display: inline-block;
+        padding: 7px 10px;
+        margin: 0;
+        border-radius: 0.5rem;
+        font-family: 'Georgia', serif;
+        font-weight: 600;
+    }
+
+    .strong-fonts {
+        font-family: 'Georgia', serif;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .grading-scale table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9px;
+    }
+
+
+    .grading-scale {
+        font-size: 14px;
+        margin-left: 3rem;
+    }
+
+    .grading-scale th,
+    .grading-scale td {
+        border: 1px solid #000;
+        padding: 0px;
+        text-align: center;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 250px auto;
+        gap: 8px 20px;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    #gradingScale th {
+        border: 1px solid #000;
+        padding: 0px;
+        text-align: center;
+    }
+
+    #gradingScale td {
+        border: 1px solid #000;
+        padding: 2px 6px;
+        text-align: center;
+    }
+
+    #studentReportInfo th {
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    #studentReportInfo td {
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    #subGradeReportInfo th {
+        border: 1px solid #000;
+        padding: 2px 6px;
+        text-align: center;
+    }
+
+    #subGradeReportInfo td {
+        border: 1px solid #000;
+        padding: 5px 6px;
+        text-align: center;
+    }
+
+    .subject-marks h3 {
+        padding-top: 3.5rem;
+        margin-bottom: 1px;
+        text-align: center;
+        font-family: 'Georgia', serif !important;
+        font-size: 1.6rem;
+        font-weight: bolder;
+    }
+
+    .total td {
+        font-weight: bold;
+    }
+
+    .remarks {
+        margin-top: 30px;
+        font-size: 16px;
+        border: 1px solid #000;
+        padding: 10px;
+        font-family: 'Georgia', serif;
+    }
+
+    footer {
+        margin-top: 40px;
+        text-align: center;
+    }
+
+    .signature {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 40px;
+        margin-top: 30px;
+        font-size: 0.8rem;
+        font-family: 'Georgia', serif;
+        font-weight: 600;
+    }
+
+    .date {
+        margin-top: 0px !important;
+        font-size: 11px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        margin-bottom: 0.2rem;
+        margin-left: 2px;
+    }
+
+    #subGradeReportInfo tr:nth-child(even) {
+        background-color: transparent !important;
+    }
+
+    #studentReportInfo {
+        background-color: transparent !important;
+    }
+
+    #studentReportInfo td.left {
+        text-align: left !important;
+        vertical-align: middle;
+        padding: 3px 6px;
+        font-size: 14px;
+    }
+
+    #studentReportInfo td.strong {
+        font-weight: bold;
+        font-family: Arial, sans-serif !important;
+    }
+
+    .subjectsName {
+        text-align: left !important;
+    }
+
+    .totalMarksCol {
+        text-align: right !important;
+    }
+
+    .spanSubjectsName {
+        margin-left: 0rem;
+        font-size: 15px;
+        font-weight: 500;
+        font-family: 'Georgia', serif;
+    }
+
+    .defaultSizeAlign {
+        font-size: 15px !important;
+        font-weight: bold !important;
+        font-family: Arial, sans-serif !important;
+    }
+
+    .defaultFronts {
+        font-size: 15px !important;
+        font-family: Arial, sans-serif !important;
+    }
+</style>
+
+<body>
+    <div class="content-wrapper">
+        <div class="main-body">
+            <div class="transcript-container">
+
+                <div class="transcript-header">
+
+                    <div class="header-body">
+                        <table>
+                            <tr>
+
+                            </tr>
+                            <tr>
+                                <center>
+                                    <label style="font-family: 'Georgia', serif; font-size: 2rem; font-weight: bold;">
+                                        <!-- school Name Here -->
+                                        {{ transaction.org_name }}
+                                    </label>
+                                </center>
+                                <center>
+                                    <label style="font-family: 'Georgia', serif; font-size: 1.5rem; font-weight: bold;">
+                                        Half Yearly Exam – {{ transaction.create_date }}
+                                    </label>
+                                </center>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                        </table>
+                        <div class="body-element">
+                            <table class="table" style="width: 100%; border-style: hidden!important;">
+                                <tr style="display:flex;">
+                                    <td style="text-align: left; width: 22%; border-style: hidden !important;">
+
+                                    </td>
+                                    <td style="text-align: center; width: 50%; border-style: hidden !important;">
+                                        <img src="{% static 'images/company_logo/shksc_edu_logo.png' %}" alt=""
+                                            style="width: 20%;">
+                                        <div>
+                                            <h3 class="head-line">ACADEMIC TRANSCRIPT</h3>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: right; width: 24%; border-style: hidden !important;">
+                                        <div>
+                                            <section class="grading-scale"
+                                                style="display: flex; margin-right: -1.3rem; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                                <table id="gradingScale">
+                                                    <thead style="background: #d7d7d7;">
+                                                        <tr>
+                                                            <th>Letter Grade</th>
+                                                            <th>Marks Interval</th>
+                                                            <th>Grade Point</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>A+</td>
+                                                            <td>80-100</td>
+                                                            <td>5.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>A</td>
+                                                            <td>70-79</td>
+                                                            <td>4.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>A-</td>
+                                                            <td>60-69</td>
+                                                            <td>3.50</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>B</td>
+                                                            <td>50-59</td>
+                                                            <td>3.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>C</td>
+                                                            <td>40-49</td>
+                                                            <td>2.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>D</td>
+                                                            <td>33-39</td>
+                                                            <td>1.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>F</td>
+                                                            <td>00-32</td>
+                                                            <td>0.00</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </section>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <section style="margin-top: -0.8rem;">
+                    <table border="1" cellspacing="0" cellpadding="6" id="studentReportInfo"
+                        style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Student’s Name</strong></td>
+                            <td class="left">{{ transaction.full_name }}</td>
+                            <td class="left"><strong class="strong-fonts">GPA</strong></td>
+                            <td class="left strong">{{ transaction.is_average_gpa }}</td>
+                        </tr>
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Father’s Name</strong></td>
+                            <td class="left">{{ transaction.father_name }}</td>
+                            <td class="left"><strong class="strong-fonts">Letter Grade</strong></td>
+                            <td class="left strong">{{ transaction.average_letter_grade }}</td>
+                        </tr>
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Mother’s Name</strong></td>
+                            <td class="left">{{ transaction.mother_name }}</td>
+                            <td class="left"><strong class="strong-fonts">Total Obtained Marks</strong></td>
+                            <td class="left strong">{{ transaction.is_grand_total_marks }}</td>
+                        </tr>
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Class</strong></td>
+                            <td class="left strong">{{ transaction.class_name }}</td>
+                            <td class="left"><strong class="strong-fonts">Result Status</strong></td>
+                            <td class="left strong">{{ transaction.result_status }}</td>
+                        </tr>
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Roll No</strong></td>
+                            <td class="left">{{ transaction.roll_no }}</td>
+                            <td class="left"><strong class="strong-fonts">Merit Position</strong></td>
+                            <td class="left strong">{{ transaction.merit_position }}</td>
+                        </tr>
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Section</strong></td>
+                            <td class="left">{{ transaction.section_name }}</td>
+                            <td class="left"><strong class="strong-fonts">Total Working Days</strong></td>
+                            <td class="left strong">{{ transaction.total_working_days }}</td>
+                        </tr>
+                        <tr>
+                            <td class="left"><strong class="strong-fonts">Shift</strong></td>
+                            <td class="left">{{ transaction.shift_name }}</td>
+                            <td class="left"><strong class="strong-fonts">Total Present Days</strong></td>
+                            <td class="left strong">{{ transaction.total_present_days }}</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="subject-marks">
+                    <h3>Subject-Wise Grade & Marks</h3>
+                    <table id="subGradeReportInfo">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="text-align:center; width: 33%; font-family: 'Georgia', serif; font-size: 1rem;">
+                                    Name of Subjects
+                                </th>
+                                <th rowspan="2" style="text-align:center; width: 9%; font-family: 'Georgia', serif; font-size: 1rem;">
+                                    Full Marks
+                                </th>
+                                <th rowspan="2" style="text-align:center; width: 9%; font-family: 'Georgia', serif; font-size: 1rem;">
+                                    Pass Marks
+                                </th>
+                                <th colspan="4" style="text-align:center; font-family: 'Georgia', serif; font-size: 1rem;">
+                                    Obtained Marks
+                                </th>
+                                <th rowspan="2" style="text-align:center; width: 9%; font-family: 'Georgia', serif; font-size: 1rem;">
+                                    Letter Grade
+                                </th>
+                                <th rowspan="2" style="text-align:center; width: 15%; font-family: 'Georgia', serif; font-size: 1rem;">
+                                    GP
+                                </th>
+                            </tr>
+                            <tr>
+                                <th
+                                    style="text-align:center; width: 8%; font-family: 'Georgia', serif; font-size: 0.75rem;">
+                                    MCQ</th>
+                                <th
+                                    style="text-align:center; width: 8%; font-family: 'Georgia', serif; font-size: 0.75rem;">
+                                    Written</th>
+                                <th
+                                    style="text-align:center; width: 9%; font-family: 'Georgia', serif; font-size: 0.75rem;">
+                                    Practical</th>
+                                <th
+                                    style="text-align:center; width: 9%; font-family: 'Georgia', serif; font-size: 0.75rem;">
+                                    Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resMyTB">
+                            {% for subject in subjects %}
+                            <tr>
+                                <td class="subjectsName">
+                                    <span class="spanSubjectsName">
+                                        {{ subject.subjects_id.subjects_name }}
+                                    </span>
+                                </td>
+                                <td class="defaultSizeAlign">
+                                    <strong>
+                                        {{ subject.sub_defaults_marks }}
+                                    </strong>
+                                </td>
+                                <td class="defaultSizeAlign">
+                                    <strong>
+                                        {{ subject.sub_pass_marks }}
+                                    </strong>
+                                </td>
+                                <td class="defaultFronts">{{ subject.is_mcq }}</td> <!-- MCQ -->
+                                <td class="defaultFronts">{{ subject.is_written }}</td> <!-- Written -->
+                                <td class="defaultFronts">{{ subject.is_practical }}</td> <!-- Practical -->
+                                <td class="defaultSizeAlign">
+                                    <strong>
+                                        {{ subject.total_inv_marks }}
+                                    </strong>
+                                </td> <!-- Total -->
+                                <td class="defaultSizeAlign">
+                                    <strong>
+                                        {{ subject.sub_letter_grade }}
+                                    </strong>
+                                </td> <!-- Letter Grade -->
+                                <td class="defaultSizeAlign">
+                                    <strong>
+                                        {{ subject.is_sub_gp }}
+                                    </strong>
+                                </td> <!-- GP -->
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center text-danger">No subjects found for this student.</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td class="totalMarksCol">
+                                    <strong style="margin-right: 0.5rem; font-size: 15px; font-weight: bolder; font-family: 'Georgia', serif;">
+                                        Total Marks:
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong id="id_total_marks" class="defaultSizeAlign">
+                                        {{ transaction.total_defaults_marks }}
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong id="id_total_marks" class="defaultSizeAlign">
+                                        {{ transaction.is_grand_pass_marks }}
+                                    </strong>
+                                </td>
+                                <td colspan="3"></td>
+                                <td class="defaultSizeAlign">
+                                    <strong>
+                                        {{ transaction.is_grand_total_marks }}
+                                    </strong>
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="remarks">
+                    <strong style="font-family: 'Georgia', serif;">Remarks:</strong> {{ transaction.is_remarks }}
+                </section>
+
+                <footer>
+                    <div class="signature">
+                        <div>_____________________<br>Class Teacher</div>
+                        <div>_____________________________<br>(Md. Mahbubur Rahman Mollah)<br>Principal</div>
+                    </div>
+                    <p class="date">Date of Publication of Result: {{ transaction.date_of_publication }}</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
