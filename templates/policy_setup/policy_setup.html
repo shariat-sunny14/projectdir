@@ -1,0 +1,517 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'base_setup/css/base_setup.css' %}">
+<!--========== from type_category js file ==========-->
+<script src="{% static 'base_setup/js/base_setup.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<section  class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+    <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+        <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #455697;">
+            <!-- Main Heading -->
+            <div class="row" style="display: flex; justify-content: center; text-align: center; align-items: center;">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2" style="margin-left: 0.5rem;">
+                        <i class='bx bx-book-alt text-white req-head-icon'></i>
+                        <h1 class="h3 text-white req-head">Letter Grade & Exam Type Policy</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <section>
+            <div class="row row_item_setup">
+                <!-- form 1 -->
+                <div class="col-sm-12">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemsetup_container">
+                                <form action="" method="" id="POLICYFORM">
+                                    <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 2rem;">Letter Grade & Exam Type Policy Information</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="col-sm-12">
+                                                    <div class="card main-card">
+                                                        <div class="card-body card-body_item_setup" style="padding: 0rem 0rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                            <div class="item_setupflag" style="display: flex; margin-right: 1rem; justify-content: right;">
+                                                                <label class="form-check-label setupflag_label" for="id_is_english">
+                                                                    Is English:
+                                                                </label>
+                                                                <input class="form-check-input" type="radio" id="id_is_english" name="is_version" value="english" checked>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="item_setupflag" style="display: flex; margin-right: 1rem; justify-content: right;">
+                                                                <label class="form-check-label setupflag_label" for="id_is_bangla">
+                                                                    Is Bangla:
+                                                                </label>
+                                                                <input class="form-check-input" type="radio" id="id_is_bangla" name="is_version" value="bangla">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-6">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_org"
+                                                                            class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Org:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_org" name="org" class="form-select item_inputbox" aria-label="Default select example" required>
+                                                                                {% for org in user_org_list %}
+                                                                                <option value="{{org.org_id}}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <!--  -->
+                                                        <div class="col-sm-6">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row" style="margin-top: -2px;">
+                                                                        <label for="id_is_class" class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Class:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_is_class" name="is_class_id" class="form-select item_inputbox"
+                                                                                aria-label="Default select example" required>
+                                                                                <option value="" selected disabled>Choose Class Name ...</option>
+                                                                                {% for clss in user_others_access.class_access %}
+                                                                                <option value="{{clss.class_id}}" data-allow_group="{{ clss.allow_groups }}" {% if clss.is_defaults %}selected{% endif %}>
+                                                                                    {{ clss.class_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <!--  -->
+                                    <div class="itemsetup_container" style="margin: 1rem 10px 10px 10px;">
+                                        <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 2rem;">Class/Exam Type Wise Exam Mode Info</h2>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-12">
+                                                <div class="card main-card">
+                                                    <div class="card-body card-body_item_setup" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                        <!--  -->
+                                                        <section style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem;">
+                                                            <div class="module-table">
+                                                                <table id="EXAMTYPETABLE" class="table table-striped table-hover"
+                                                                    style="width: 100%; border: 1px solid #6aa2a8;">
+                                                                    <thead class="text-center table-header_itemlist">
+                                                                        <tr>
+                                                                            <th style="text-align:center;">
+                                                                                Sl
+                                                                            </th>
+                                                                            <th style="text-align:center;">
+                                                                                Exam Mode
+                                                                            </th>
+                                                                            {% for xm_t in exam_type %}
+                                                                            <th style="text-align:center;">
+                                                                                {{ xm_t.exam_type_name }}
+                                                                            </th>
+                                                                            {% endfor %}
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="EXAMTYPETBD" style="text-align:center; font-size: 0.8rem">
+                                                                        <!--  -->
+                                                                        {% for xm_m in exam_mode %}
+                                                                        <tr>
+                                                                            <td>{{ forloop.counter }}</td>
+                                                                            <td style="text-align: left;">{{ xm_m.is_mode_name }}</td>
+
+                                                                            {% for xm_t in exam_type %}
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="exam_selection[]" value="{{ xm_m.def_mode_id }}|{{ xm_t.exam_type_id }}">
+                                                                            </td>
+                                                                            {% endfor %}
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center;">
+                                        <div class="col-sm-6">
+                                            <div class="itemsetup_container" style="margin: 1rem 10px 10px 10px;">
+                                                <div class="add_hundred_fifty_head">
+                                                <h2 class="text-primary">Exam Grade 0 (Zero) to 100 (Hundred) Info</h2>
+                                                </div>
+                                                <!--  -->
+                                                <div class="row row_item_setup">
+                                                    <div class="col-sm-12">
+                                                        <div class="card main-card">
+                                                            <div class="card-body card-body_item_setup" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                                <!--  -->
+                                                                <section style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem;">
+                                                                    <div class="module-table">
+                                                                        <table id="GRADEHUNDREDTABLE" class="table table-striped table-hover"
+                                                                            style="width: 100%; border: 1px solid #6aa2a8;">
+                                                                            <thead class="text-center table-header_itemlist">
+                                                                                <tr>
+                                                                                    <th style="text-align:center; width: 10%;">
+                                                                                        Sl
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        Letter Grade
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        From Marks
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        To Marks
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        Grade Point
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        Active
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="GRADEHUNDREDTBD" style="text-align:center; font-size: 0.8rem">
+                                                                                <!--  -->
+                                                                                {% for lg in letter_grade %}
+                                                                                <tr>
+                                                                                    <td>{{ forloop.counter }}</td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="hidden" value="{{lg.grade_id}}" name="is_grade_id_hundred[]">
+                                                                                        {{ lg.is_grade_name }}
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="number" class="form-control item_inputbox zero_to_null" name="is_from_marks_hundred[]" value="0" autocomplete="off" style="text-align: center;" required>
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="number" class="form-control item_inputbox zero_to_null" name="is_to_marks_hundred[]" value="0" autocomplete="off" style="text-align: center;" required>
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="number" class="form-control item_inputbox zero_to_null" name="is_grade_point_hundred[]" value="0" step="0.01" autocomplete="off" style="text-align: center;" required>
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="checkbox" class="form-check-input item_inputbox" name="is_active_hundred[]" style="height: 1.6rem; width: 1.6rem; cursor: pointer;">
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <!--  -->
+                                        <div class="col-sm-6">
+                                            <div class="itemsetup_container" style="margin: 1rem 10px 10px 10px;">
+                                                <div class="add_hundred_fifty_head">
+                                                <h2 class="text-primary">Exam Grade 0 (Zero) to 50 (Fifty) Info</h2>
+                                                </div>
+                                                <!--  -->
+                                                <div class="row row_item_setup">
+                                                    <div class="col-sm-12">
+                                                        <div class="card main-card">
+                                                            <div class="card-body card-body_item_setup" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                                <!--  -->
+                                                                <section style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem;">
+                                                                    <div class="module-table">
+                                                                        <table id="GRADEFIFTYTABLE" class="table table-striped table-hover"
+                                                                            style="width: 100%; border: 1px solid #6aa2a8;">
+                                                                            <thead class="text-center table-header_itemlist">
+                                                                                <tr>
+                                                                                    <th style="text-align:center; width: 10%;">
+                                                                                        Sl
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        Letter Grade
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        From Marks
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        To Marks
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        Grade Point
+                                                                                    </th>
+                                                                                    <th style="text-align:center; width: 15%;">
+                                                                                        Active
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="GRADEFIFTYTBD" style="text-align:center; font-size: 0.8rem">
+                                                                                <!--  -->
+                                                                                {% for lg in letter_grade %}
+                                                                                <tr>
+                                                                                    <td>{{ forloop.counter }}</td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="hidden" value="{{lg.grade_id}}" name="is_grade_id_fifty[]">
+                                                                                        {{ lg.is_grade_name }}
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="number" class="form-control item_inputbox zero_to_null" name="is_from_marks_fifty[]" value="0" autocomplete="off" style="text-align: center;" required>
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="number" class="form-control item_inputbox zero_to_null" name="is_to_marks_fifty[]" value="0" autocomplete="off" style="text-align: center;" required>
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="number" class="form-control item_inputbox zero_to_null" name="is_grade_point_fifty[]" value="0" step="0.01" autocomplete="off" style="text-align: center;" required>
+                                                                                    </td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <input type="checkbox" class="form-check-input item_inputbox" name="is_active_fifty[]" style="height: 1.6rem; width: 1.6rem; cursor: pointer;">
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <!--  -->
+                                    <!-- submit button -->
+                                    <div class="submit_button" style="margin-top: 5rem;">
+                                        <button type="button" class="btn btn-primary btn-sm" style="margin-right: 10px;" onclick="location.href='/letter_grade_exam_type_policy_setups';">
+                                            New
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;"
+                                            onclick="resetClassForm();">
+                                            Clear
+                                        </button>
+                                        <button type="submit" value="submit" class="btn btn-success btn-sm"
+                                            style="margin-right: 10px;">
+                                            Save & Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+<!--  -->
+<script>
+    //<!--  -->
+    $(document).ready(function () {
+        loadPolicySetupData();
+        function loadPolicySetupData() {
+            $.ajax({
+                url: "/get_lg_xmtype_policy_setup_data/",
+                type: "GET",
+                data: {
+                    org: $("#id_org").val(),
+                    is_class_id: $("#id_is_class").val(),
+                    is_version: $("input[name='is_version']:checked").val()
+                },
+                success: function (resp) {
+
+                    // === Reset Table 1 (Exam Mode & Type) ===
+                    $("input[name='exam_selection[]']").prop("checked", false);
+
+                    // === Reset Table 2 (Hundred Marks) ===
+                    $("#GRADEHUNDREDTBD tr").each(function () {
+                        $(this).find("input[name='is_from_marks_hundred[]']").val("0");
+                        $(this).find("input[name='is_to_marks_hundred[]']").val("0");
+                        $(this).find("input[name='is_grade_point_hundred[]']").val("0.00");
+                        $(this).find("input[name='is_active_hundred[]']").prop("checked", false);
+                    });
+
+                    // === Reset Table 3 (Fifty Marks) ===
+                    $("#GRADEFIFTYTBD tr").each(function () {
+                        $(this).find("input[name='is_from_marks_fifty[]']").val("0");
+                        $(this).find("input[name='is_to_marks_fifty[]']").val("0");
+                        $(this).find("input[name='is_grade_point_fifty[]']").val("0.00");
+                        $(this).find("input[name='is_active_fifty[]']").prop("checked", false);
+                    });
+
+                    // === Load data if available ===
+                    resp.exam_mode_type_data.forEach(function (item) {
+                        let selector = `input[name='exam_selection[]'][value='${item.def_mode_id}|${item.exam_type_id}']`;
+                        $(selector).prop("checked", true);
+                    });
+
+                    resp.grade_hundred_data.forEach(function (item) {
+                        let row = $(`#GRADEHUNDREDTBD input[name='is_grade_id_hundred[]'][value='${item.grade_id}']`).closest("tr");
+                        row.find("input[name='is_from_marks_hundred[]']").val(item.from_marks);
+                        row.find("input[name='is_to_marks_hundred[]']").val(item.to_marks);
+                        row.find("input[name='is_grade_point_hundred[]']").val(parseFloat(item.grade_point).toFixed(2));
+                        row.find("input[name='is_active_hundred[]']").prop("checked", item.is_active);
+                    });
+
+                    resp.grade_fifty_data.forEach(function (item) {
+                        let row = $(`#GRADEFIFTYTBD input[name='is_grade_id_fifty[]'][value='${item.grade_id}']`).closest("tr");
+                        row.find("input[name='is_from_marks_fifty[]']").val(item.from_marks);
+                        row.find("input[name='is_to_marks_fifty[]']").val(item.to_marks);
+                        row.find("input[name='is_grade_point_fifty[]']").val(parseFloat(item.grade_point).toFixed(2));
+                        row.find("input[name='is_active_fifty[]']").prop("checked", item.is_active);
+                    });
+                }
+            });
+        }
+
+        // Change ইভেন্টে কল হবে
+        $("#id_org, #id_is_class").on("change", loadPolicySetupData);
+        $("input[name='is_version']").on("change", loadPolicySetupData);
+
+
+        $(document).on('focus', '.zero_to_null', function () {
+            if ($(this).val() === '0') {
+                $(this).val('');
+            }
+        });
+
+        $(document).on('blur', '.zero_to_null', function () {
+            if ($(this).val().trim() === '') {
+                $(this).val('0');
+            }
+        });
+
+        $(function () {
+            $('#POLICYFORM').submit(function (e) {
+                e.preventDefault();
+
+                // ---------- Table 1 Data ----------
+                let examSelections = [];
+                $("input[name='exam_selection[]']:checked").each(function () {
+                    let value = $(this).val().split("|");
+                    examSelections.push({
+                        def_mode_id: value[0],
+                        exam_type_id: value[1]
+                    });
+                });
+
+                // ---------- Table 2 Data (Hundred Marks) ----------
+                let hundredGrades = [];
+                $("#GRADEHUNDREDTBD tr").each(function () {
+                    let is_active = $(this).find("input[name='is_active_hundred[]']").is(":checked");
+
+                    if (is_active) { // শুধু checked হলে push হবে
+                        let grade_id = $(this).find("input[name='is_grade_id_hundred[]']").val();
+                        let from_marks = $(this).find("input[name='is_from_marks_hundred[]']").val();
+                        let to_marks = $(this).find("input[name='is_to_marks_hundred[]']").val();
+                        let grade_point = $(this).find("input[name='is_grade_point_hundred[]']").val();
+                        hundredGrades.push({
+                            grade_id: grade_id,
+                            from_marks: from_marks,
+                            to_marks: to_marks,
+                            grade_point: grade_point,
+                            is_active: is_active
+                        });
+                    }
+                });
+
+                // ---------- Table 3 Data (Fifty Marks) ----------
+                let fiftyGrades = [];
+                $("#GRADEFIFTYTBD tr").each(function () {
+                    let is_active = $(this).find("input[name='is_active_fifty[]']").is(":checked");
+
+                    if (is_active) { // শুধু checked হলে push হবে
+                        let grade_id = $(this).find("input[name='is_grade_id_fifty[]']").val();
+                        let from_marks = $(this).find("input[name='is_from_marks_fifty[]']").val();
+                        let to_marks = $(this).find("input[name='is_to_marks_fifty[]']").val();
+                        let grade_point = $(this).find("input[name='is_grade_point_fifty[]']").val();
+                        fiftyGrades.push({
+                            grade_id: grade_id,
+                            from_marks: from_marks,
+                            to_marks: to_marks,
+                            grade_point: grade_point,
+                            is_active: is_active
+                        });
+                    }
+                });
+
+                // ---------- Send to Django ----------
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{ csrf_token }}'
+                    },
+                    url: "{% url 'letter_grade_xm_type_policy_save_update' %}",
+                    type: 'POST',
+                    data: JSON.stringify({
+                        id_org: $("#id_org").val(),
+                        is_class_id: $("#id_is_class").val(),
+                        is_version: $("input[name='is_version']:checked").val(),
+                        examSelections: examSelections,
+                        hundredGrades: hundredGrades,
+                        fiftyGrades: fiftyGrades
+                    }),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (resp) {
+                        if (resp.msg) {
+                            toastr.success(resp.msg);
+                        } else {
+                            toastr.error(resp.errmsg);
+                        }
+                    }
+                });
+            });
+        });
+    });
+
+    function resetClassForm() {
+        $('#POLICYFORM')[0].reset();
+        $('#id_class_id').val('');
+    }
+</script>
+{% endblock %}

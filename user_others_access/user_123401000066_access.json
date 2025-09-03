@@ -1,0 +1,130 @@
+{
+    "class_access": [
+        {
+            "class_id": 123020000007,
+            "class_name": "SIX",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000008,
+            "class_name": "SEVEN",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000009,
+            "class_name": "EIGHT",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000010,
+            "class_name": "NINE",
+            "allow_groups": true,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000011,
+            "class_name": "TEN",
+            "allow_groups": true,
+            "is_defaults": false
+        }
+    ],
+    "section_access": [
+        {
+            "section_id": 123030000016,
+            "section_name": "D",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000017,
+            "section_name": "E",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000018,
+            "section_name": "F",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000019,
+            "section_name": "G",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000020,
+            "section_name": "H",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000021,
+            "section_name": "I",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000022,
+            "section_name": "J",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000023,
+            "section_name": "K",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000024,
+            "section_name": "L",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000025,
+            "section_name": "M",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000013,
+            "section_name": "A",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000014,
+            "section_name": "B",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000015,
+            "section_name": "C",
+            "is_defaults": false
+        }
+    ],
+    "shift_access": [
+        {
+            "shift_id": 1672100000000,
+            "shift_name": "Morning",
+            "is_defaults": false
+        },
+        {
+            "shift_id": 1672100000001,
+            "shift_name": "Day",
+            "is_defaults": false
+        }
+    ],
+    "group_access": [
+        {
+            "groups_id": 1240410000000,
+            "groups_name": "Science",
+            "is_defaults": false
+        },
+        {
+            "groups_id": 1240410000001,
+            "groups_name": "Business Studies",
+            "is_defaults": false
+        },
+        {
+            "groups_id": 1240410000002,
+            "groups_name": "Humanities",
+            "is_defaults": false
+        }
+    ]
+}

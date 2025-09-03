@@ -1,0 +1,177 @@
+{
+    "class_access": [
+        {
+            "class_id": 123020000000,
+            "class_name": "NURSERY",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000001,
+            "class_name": "KG",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000002,
+            "class_name": "ONE",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000003,
+            "class_name": "TWO",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000004,
+            "class_name": "THREE",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000005,
+            "class_name": "FOUR",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000006,
+            "class_name": "FIVE",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000007,
+            "class_name": "SIX",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000008,
+            "class_name": "SEVEN",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000009,
+            "class_name": "EIGHT",
+            "allow_groups": false,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000010,
+            "class_name": "NINE",
+            "allow_groups": true,
+            "is_defaults": false
+        },
+        {
+            "class_id": 123020000011,
+            "class_name": "TEN",
+            "allow_groups": true,
+            "is_defaults": false
+        }
+    ],
+    "section_access": [
+        {
+            "section_id": 123030000000,
+            "section_name": "ALBATROSS",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000001,
+            "section_name": "ASTER",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000002,
+            "section_name": "DAISY",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000003,
+            "section_name": "FLAMINGO",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000004,
+            "section_name": "GLADIOLUS",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000005,
+            "section_name": "KINGFISHER",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000006,
+            "section_name": "LILY",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000007,
+            "section_name": "MAGNOLIA",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000008,
+            "section_name": "MAGPIE",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000009,
+            "section_name": "MARIGOLD",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000010,
+            "section_name": "ROSE",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000011,
+            "section_name": "SKYLARK",
+            "is_defaults": false
+        },
+        {
+            "section_id": 123030000012,
+            "section_name": "SUNFLOWER",
+            "is_defaults": false
+        }
+    ],
+    "shift_access": [
+        {
+            "shift_id": 1672100000000,
+            "shift_name": "Morning",
+            "is_defaults": false
+        },
+        {
+            "shift_id": 1672100000001,
+            "shift_name": "Day",
+            "is_defaults": false
+        },
+        {
+            "shift_id": 1672100000002,
+            "shift_name": "Evening",
+            "is_defaults": false
+        }
+    ],
+    "group_access": [
+        {
+            "groups_id": 1240410000000,
+            "groups_name": "Science",
+            "is_defaults": false
+        },
+        {
+            "groups_id": 1240410000001,
+            "groups_name": "Business Studies",
+            "is_defaults": false
+        },
+        {
+            "groups_id": 1240410000002,
+            "groups_name": "Humanities",
+            "is_defaults": false
+        }
+    ]
+}

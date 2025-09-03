@@ -1,0 +1,474 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_finalization/css/result_finalization.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- Inject safe JSON -->
+{{ listdata|json_script:"smsDataJSON" }}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #455697;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-10 col-md-10 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-6"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bxs-send text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">SMS Send Students Information</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-6" style="display: flex; justify-content: right;">
+                                    <!--  -->
+                                    <button type="button" onClick="navigateTo('/sms_services_lists/')"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #43507e; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        SMS Pending List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <section style="display: flex; width: 100%;">
+                    <!-- form body -->
+                    <section style="width: 100%; margin-left: 0.2rem; margin-right: 0.5rem;">
+                        <form action="" id="SENDINGSMSFORM">
+                            <section>
+                                <div class="row row_item_setup">
+                                    <!-- main entry form -->
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup" style="padding: 0px; padding-left: 4px;">
+                                                <div class="itemsetup_container" style="margin-bottom: 0.5rem;">
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-12">
+                                                            <div class="card main-card">
+                                                                <div class="card-body card-body_item_setup">
+                                                                    <div class="row row_item_setup">
+                                                                        <div class="col-sm-12">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_names_of_exam"
+                                                                                            class="col-sm-1 col-sm-remarks col-form-label font_size_filter"
+                                                                                            style="font-size: 0.76rem;">
+                                                                                            Names of Exam:
+                                                                                        </label>
+                                                                                        <div class="col-sm-11 col-sm-remarks-txt">
+                                                                                            <input type="text" class="form-control item_inputbox"
+                                                                                                id="id_names_of_exam" name="names_of_exam" style="height: 28px; margin-bottom: 5px;" disabled>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 1st row -->
+                                                                    <div class="row row_item_setup">
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_org"
+                                                                                            class="col-sm-4 col_sm_menual col-form-label font_size_filter">
+                                                                                            Organization:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_org"
+                                                                                                name="org_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_branchs"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Branchs:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_branchs"
+                                                                                                name="branch_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_exam_date"
+                                                                                            class="col-sm-3 col_sm_menual col-form-label font_size_filter">
+                                                                                            Exam Date:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <input type="text" id="id_exam_date"
+                                                                                                class="form-control item_inputbox datepicker" name="exam_date"
+                                                                                                autocomplete="off" disabled>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 2nd row -->
+                                                                    <div class="row row_item_setup">
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <!--  -->
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_class"
+                                                                                            class="col-sm-4 col_sm_menual col-form-label font_size_filter">
+                                                                                            Class:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_is_class"
+                                                                                                name="class_name" disabled>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--   -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_section"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Section:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_is_section"
+                                                                                                name="section_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_shifts"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Shifts:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_is_shifts"
+                                                                                                name="shift_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 3rd row -->
+                                                                    <div class="row row_item_setup">
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_groups"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Groups:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_is_groups"
+                                                                                                name="group_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_subjects" class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Subjects:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_is_subjects"
+                                                                                                name="subjects_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--   -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_exam_type" class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Exam Type:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <input type="text" class="form-control item_inputbox" id="id_exam_type"
+                                                                                                name="exam_type_name" disabled>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- submission button -->
+                                                    <section class="pur-submissionBtn" style="margin-top: 0rem;">
+                                                        <div class="row row_item_setup">
+                                                            <div class="col-sm-12">
+                                                                <div class="card main-card"
+                                                                    style="background: #ededed;">
+                                                                    <div class="card-body card-body_item_setup">
+                                                                        <div class="row row_item_setup">
+                                                                            <!-- submit button -->
+                                                                            <div class="submit_button">
+                                                                                <button style="margin-right: 10px; padding: 0.09rem 0.6rem; border-radius: 1.5rem; box-shadow: 3px 4px 10px -2px black;" class="btn btn-success btn-sm text-white" id="id_send_sms" type="submit">
+                                                                                    <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center; padding: 5px;">
+                                                                                        <i class='bx bx-send' style="margin-right: 0.5rem; font-size: 1.5rem;"></i>
+                                                                                        <span style="font-size: 1rem; font-family: serif; font-weight: bold;">Send SMS</span>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                    <!--  -->
+                                                    <!-- finalized results entry -->
+                                                    <section
+                                                        style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem; margin-bottom: 1rem;">
+                                                        <div class="module-table">
+                                                            <table id="SENDSMSTABLE" class="table table-striped table-hover"
+                                                                style="width: 100%; border: 1px solid #6aa2a8;">
+                                                                <thead class="text-center table-header_itemlist" style="height: 2rem;">
+                                                                    <tr>
+                                                                        <th style="text-align:center;">
+                                                                            Sl
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Name
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Roll
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Class
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Section
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Shift
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Groups
+                                                                        </th>
+                                                                        <th style="text-align:center; width: 10%;">
+                                                                            Phone No.
+                                                                        </th>
+                                                                        <th style="text-align:center; width: 30%;">
+                                                                            Messages Body
+                                                                        </th>
+                                                                        <th style="text-align:center;">
+                                                                            Marks
+                                                                        </th>
+                                                                        <th style="text-align:center; width: 10%;">
+                                                                            Status
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="SENDSMSTBODY"
+                                                                    style="text-align:center; font-size: 0.8rem">
+                                                                    <!--  -->
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!--  -->
+                            <!--  -->
+                        </form>
+                    </section>
+                </section>
+                <!--  -->
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    const smsData = JSON.parse(document.getElementById('smsDataJSON').textContent);
+    const tbody = document.getElementById('SENDSMSTBODY');
+    tbody.innerHTML = ''; // Clear any existing rows
+
+    smsData.forEach((data, index) => {
+        const row = document.createElement('tr');
+
+        var smsStatus = data.sms_status ? 'Success' : 'Not Send/Fail';
+        var smsStatuscolor = data.sms_status ? 'green' : 'red';
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>
+                ${data.student_name || ''}
+                <input type="hidden" id="id_res_findtl_id" name="res_findtl_id[]" value="${data.res_findtl_id}">
+            </td>
+            <td>${data.roll_no || ''}</td>
+            <td>${data.dtls_class_name || ''}</td>
+            <td>${data.dtls_section_name || ''}</td>
+            <td>${data.dtls_shift_name || ''}</td>
+            <td>${data.dtls_groups_name || ''}</td>
+            <td>
+                <input type="number" class="form-control item_inputbox" name="phone_number[]" value="${data.mobile_number}" style="text-align: center; border: 0; background: transparent;" readonly>
+            </td>
+            <td>
+                <textarea type="number" class="form-control item_inputbox" name="message_body[]" style="text-align: left; border: 0; background: transparent;" readonly>${data.messages}</textarea>
+            </td>
+            <td>${data.grand_total_marks || 0}</td>
+            <td><span style="color: ${smsStatuscolor}; font-size: 0.9rem; font-weight: bold;">${smsStatus}</span></td>
+        `;
+
+        tbody.appendChild(row);
+    });
+
+    // Optional: populate static form fields from the first item
+    if (smsData.length > 0) {
+        const data = smsData[0];
+        document.getElementById('id_names_of_exam').value = data.names_of_exam || '';
+        document.getElementById('id_org').value = data.org_name || '';
+        document.getElementById('id_branchs').value = data.branch_name || '';
+        document.getElementById('id_exam_date').value = data.exam_date || '';
+        document.getElementById('id_is_class').value = data.class_name || '';
+        document.getElementById('id_is_section').value = data.section_name || '';
+        document.getElementById('id_is_shifts').value = data.shift_name || '';
+        document.getElementById('id_is_groups').value = data.group_name || '';
+        document.getElementById('id_is_subjects').value = data.subjects_name || '';
+        document.getElementById('id_exam_type').value = data.exam_type_name || '';
+    }
+
+    $(function () {
+        $('#SENDINGSMSFORM').submit(function (e) {
+            e.preventDefault();
+
+            $('#id_send_sms').prop('disabled', true).html(`
+                <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center; padding: 5px;">
+                    <i class="bx bx-loader-circle bx-spin" style="margin-right: 0.5rem; font-size: 1.5rem;"></i>
+                    <span style="font-size: 1rem; font-family: serif; font-weight: bold;">Processing...</span>
+                </div>
+            `);
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'sending_sms_api' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.status === 'success') {
+                        toastr.success(resp.msg);
+                        setTimeout(function () {
+                            //location.reload();
+                            //navigateTo("{% url 'sms_services_lists' %}");
+                        }, 300);
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#id_send_sms')
+                            .prop('disabled', false)
+                            .html(`
+                                <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center; padding: 5px;">
+                                    <i class='bx bx-send' style="margin-right: 0.5rem; font-size: 1.5rem;"></i>
+                                    <span style="font-size: 1rem; font-family: serif; font-weight: bold;">Send SMS</span>
+                                </div>
+                            `);
+
+                        navigateTo("{% url 'sms_services_lists' %}");
+                    }, 3000);
+                }
+            });
+        });
+    });
+
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+</script>
+{% endblock %}

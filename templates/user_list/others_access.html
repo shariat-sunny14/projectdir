@@ -1,0 +1,361 @@
+<main>
+    <form id="OTHERSACCESSFORM" action="" method="">
+        <input type="hidden" name="user_id" value="{% if access.pk %}{{access.pk}}{% endif %}">
+        <!--  -->
+        <section>
+            <div class="row row_item_setup" style="margin-top: 1.5rem;">
+                <!--  -->
+                <div class="col-sm-12">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup" style="padding: 0rem 0rem;">
+                            <div class="itemsetup_container">
+                                <div class="store_info_head">
+                                    <h2 class="text-primary">Others Access Info</h2>
+                                </div>
+                                <!--  -->
+                                <div class="row row_item_setup">
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup" style="height: auto;">
+                                                <!-- Class Access -->
+                                                <div class="accordion" id="accordionPanelsStayOpenExample">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="class_access">
+                                                            <button class="accordion-button" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#class-access-tab"
+                                                                aria-expanded="false"
+                                                                aria-controls="class-access-tab">
+                                                                Class Access
+                                                            </button>
+                                                        </h2>
+                                                        <div id="class-access-tab"
+                                                            class="accordion-collapse collapse"
+                                                            aria-labelledby="class_access">
+                                                            <div class="accordion-body type-feature-body">
+                                                                <!-- accordion body -->
+                                                                <table class="table access-featuretable">
+                                                                    <tbody class="class-access-list" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                        {% for cls in classlist %}
+                                                                        <tr>
+                                                                            <td class="access-featureName" style="display: block; text-align: left; width: 16rem;">
+                                                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input" type="checkbox"
+                                                                                                data-class_id="{{ cls.class_id }}"
+                                                                                                name="is_active[]" id="id_{{ cls.class_id }}" {% if cls.class_id in active_class_ids %}checked{% endif %}>
+                                                                                            <input type="hidden" name="is_class_id[]" value="{{ cls.class_id }}">
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="id_{{ cls.class_id }}">
+                                                                                            {{ cls.class_name }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input is-default-radio" type="radio"
+                                                                                                name="is_defaults[]" data-class_id="{{ cls.class_id }}"
+                                                                                                id="default_{{ cls.class_id }}" {% if cls.class_id == default_class_id %}checked{% endif %}>
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="default_{{ cls.class_id }}">
+                                                                                            Is Default
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!-- Section Access -->
+                                                <div class="accordion" id="accordionPanelsStayOpenExample">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="section_access">
+                                                            <button class="accordion-button" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#section-access-tab"
+                                                                aria-expanded="false"
+                                                                aria-controls="section-access-tab">
+                                                                Section Access
+                                                            </button>
+                                                        </h2>
+                                                        <div id="section-access-tab"
+                                                            class="accordion-collapse collapse"
+                                                            aria-labelledby="section_access">
+                                                            <div class="accordion-body type-feature-body">
+                                                                <!-- accordion body -->
+                                                                <table class="table access-featuretable">
+                                                                    <tbody class="section-access-list" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                        {% for sect in sectionlist %}
+                                                                        <tr>
+                                                                            <td class="access-featureName" style="display: block; text-align: left; width: 16rem;">
+                                                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input" type="checkbox"
+                                                                                                data-section_id="{{ sect.section_id }}"
+                                                                                                name="is_active[]" id="id_{{ sect.section_id }}" {% if sect.section_id in active_section_ids %}checked{% endif %}>
+                                                                                            <input type="hidden" name="is_section_id[]" value="{{ sect.section_id }}">
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="id_{{ sect.section_id }}">
+                                                                                            {{ sect.section_name }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input is-default-radio" type="radio"
+                                                                                                name="is_sec_defaults[]" data-section_id="{{ sect.section_id }}"
+                                                                                                id="default_{{ sect.section_id }}" {% if sect.section_id == default_section_id %}checked{% endif %}>
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="default_{{ sect.section_id }}">
+                                                                                            Is Default
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!-- Shifts Access -->
+                                                <div class="accordion" id="accordionPanelsStayOpenExample">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="shifts_access">
+                                                            <button class="accordion-button" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#shifts-access-tab"
+                                                                aria-expanded="false"
+                                                                aria-controls="shifts-access-tab">
+                                                                Shifts Access
+                                                            </button>
+                                                        </h2>
+                                                        <div id="shifts-access-tab"
+                                                            class="accordion-collapse collapse"
+                                                            aria-labelledby="shifts_access">
+                                                            <div class="accordion-body type-feature-body">
+                                                                <!-- accordion body -->
+                                                                <table class="table access-featuretable">
+                                                                    <tbody class="shifts-access-list" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                        {% for shift in shiftslist %}
+                                                                        <tr>
+                                                                            <td class="access-featureName" style="display: block; text-align: left; width: 16rem;">
+                                                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input" type="checkbox"
+                                                                                                data-shift_id="{{ shift.shift_id }}"
+                                                                                                name="is_active[]" id="id_{{ shift.shift_id }}" {% if shift.shift_id in active_shift_ids %}checked{% endif %}>
+                                                                                            <input type="hidden" name="is_shift_id[]" value="{{ shift.shift_id }}">
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="id_{{ shift.shift_id }}">
+                                                                                            {{ shift.shift_name }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input is-default-radio" type="radio"
+                                                                                                name="is_shift_defaults[]" data-shift_id="{{ shift.shift_id }}"
+                                                                                                id="default_{{ shift.shift_id }}" {% if shift.shift_id == default_shift_id %}checked{% endif %}>
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="default_{{ shift.shift_id }}">
+                                                                                            Is Default
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!-- Groups Access -->
+                                                <div class="accordion" id="accordionPanelsStayOpenExample">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="groups_access">
+                                                            <button class="accordion-button" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#groups-access-tab"
+                                                                aria-expanded="false"
+                                                                aria-controls="groups-access-tab">
+                                                                Groups Access
+                                                            </button>
+                                                        </h2>
+                                                        <div id="groups-access-tab"
+                                                            class="accordion-collapse collapse"
+                                                            aria-labelledby="groups_access">
+                                                            <div class="accordion-body type-feature-body">
+                                                                <!-- accordion body -->
+                                                                <table class="table access-featuretable">
+                                                                    <tbody class="groups-access-list" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                        {% for group in groupslist %}
+                                                                        <tr>
+                                                                            <td colspan="3" class="access-featureName" style="display: block; text-align: left; width: 16rem;">
+                                                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; align-content: center;">
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input" type="checkbox"
+                                                                                                data-groups_id="{{ group.groups_id }}"
+                                                                                                name="is_active[]" id="id_{{ group.groups_id }}" {% if group.groups_id in active_group_ids %}checked{% endif %}>
+                                                                                            <input type="hidden" name="is_groups_id[]" value="{{ group.groups_id }}">
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="id_{{ group.groups_id }}">
+                                                                                            {{ group.groups_name }}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="form-check column">
+                                                                                        <span class="input-access">
+                                                                                            <input class="form-check-input is-default-radio" type="radio"
+                                                                                                name="is_group_defaults[]" data-groups_id="{{ group.groups_id }}"
+                                                                                                id="default_{{ group.groups_id }}" {% if group.groups_id == default_group_id %}checked{% endif %}>
+                                                                                        </span>
+                                                                                        <!--  -->
+                                                                                        <label class="form-check-label" for="default_{{ group.groups_id }}">
+                                                                                            Is Default
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- submit button -->
+        <div class="submit_button">
+            <button type="button" class="btn btn-danger modulesubmitBtn btn-sm" data-bs-dismiss="modal"
+                style="margin-right: 10px;">Close</button>
+            <button type="submit" class="btn btn-success modulesubmitBtn btn-sm"
+                style="margin-right: 10px;">Save</button>
+        </div>
+    </form>
+</main>
+<script>
+    //
+    $(document).ready(function () {
+        // ============================
+        // GLOBAL RADIO VALIDATION
+        // ============================
+        let lastCheckedRadios = {};
+
+        $(document).on('focusin', '.is-default-radio', function () {
+            lastCheckedRadios[this.name] = this.checked;
+        });
+
+        $(document).on('change', '.is-default-radio', function () {
+            let row = $(this).closest('tr');
+            let checkbox = row.find('input[name="is_active[]"]');
+
+            if (!checkbox.is(':checked')) {
+                $(this).prop('checked', lastCheckedRadios[this.name]);
+                toastr.error("Please select the corresponding checkbox first!");
+            }
+        });
+
+        // ============================
+        // FORM SUBMIT HANDLER
+        // ============================
+        $('#OTHERSACCESSFORM').on('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData();
+            const userId = $('input[name="user_id"]').val();
+
+            if (!userId) {
+                toastr.error("User ID missing.");
+                return;
+            }
+
+            formData.append("user_id", userId);
+
+            // ===== Class =====
+            $('.class-access-list input[name="is_active[]"]:checked').each(function () {
+                const val = $(this).closest('tr').find('input[name="is_class_id[]"]').val();
+                if (val) formData.append("is_class_id[]", val);
+            });
+            const defaultClass = $('input[name="is_defaults[]"]:checked').data('class_id');
+            if (defaultClass) formData.append("default_class_id", defaultClass);
+
+            // ===== Section =====
+            $('.section-access-list input[name="is_active[]"]:checked').each(function () {
+                const val = $(this).closest('tr').find('input[name="is_section_id[]"]').val();
+                if (val) formData.append("is_section_id[]", val);
+            });
+            const defaultSection = $('input[name="is_sec_defaults[]"]:checked').data('section_id');
+            if (defaultSection) formData.append("default_section_id", defaultSection);
+
+            // ===== Shift =====
+            $('.shifts-access-list input[name="is_active[]"]:checked').each(function () {
+                const val = $(this).closest('tr').find('input[name="is_shift_id[]"]').val();
+                if (val) formData.append("is_shift_id[]", val);
+            });
+            const defaultShift = $('input[name="is_shift_defaults[]"]:checked').data('shift_id');
+            if (defaultShift) formData.append("default_shift_id", defaultShift);
+
+            // ===== Group =====
+            $('.groups-access-list input[name="is_active[]"]:checked').each(function () {
+                const val = $(this).closest('tr').find('input[name="is_groups_id[]"]').val();
+                if (val) formData.append("is_groups_id[]", val);
+            });
+            const defaultGroup = $('input[name="is_group_defaults[]"]:checked').data('groups_id');
+            if (defaultGroup) formData.append("default_group_id", defaultGroup);
+
+            // ===== AJAX Submit =====
+            $.ajax({
+                url: "{% url 'save_update_others_access' %}",
+                method: "POST",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.msg);
+                        location.reload();
+                    } else {
+                        toastr.error(resp.error_message || "Submission failed.");
+                    }
+                },
+                error: function () {
+                    toastr.error("Something went wrong while submitting.");
+                }
+            });
+        });
+    });
+    ////////////////////////////////////////////////////////////
+</script>
