@@ -1,0 +1,156 @@
+{% load static %}
+<section>
+    <div class="col-sm-12">
+        <div class="card main-card">
+            <div class="card-body card-body_item_setup">
+                <form action="" method="" id="addRewardPoint">
+                    <div class="itemsetup_container">
+                        <div class="add_edit_head">
+                            <h2 class="text-primary">Add Reward Points Info</h2>
+                        </div>
+                        <!--  -->
+                        <input type="hidden" id="id_org" name="id_org" value="{{ org_ids.pk }}">
+                        <input type="hidden" id="id_branch" name="id_branch" value="{{ branch_ids.pk }}">
+                        <input type="hidden" id="reg_id" name="reg_id" value="{{ reg_ids.pk }}">
+                        <div class="row row_item_setup">
+                            <div class="card-body card-body_item_setup">
+                                <div class="row row_item_setup" style="margin-bottom: 4px;">
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body item_setup_sub">
+                                                <div class="row cash_point_row">
+                                                    <label for="reward_type"
+                                                        class="col-md-3 col-form-label font_size_filter required">
+                                                        Reward Type:
+                                                    </label>
+                                                    <div class="col-md-9">
+                                                        <select id="reward_type" name="reward_type" class="form-select pos_inputbox" required>
+                                                            <!--  -->
+                                                            <option value="" selected disabled>Choose Reward Type</option>
+                                                            <option value="1">Add Reward</option>
+                                                            <option value="2">Substract Reward</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body item_setup_sub">
+                                                <div class="row cash_point_row">
+                                                    <label for="id_org"
+                                                        class="col-md-3 col-form-label font_size_filter required">
+                                                        Reward Point:
+                                                    </label>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control item_inputbox" style="height: 2rem;"
+                                                            id="reward_balance" name="reward_balance" autocomplete="off" placeholder="Enter Reward Point here ...."
+                                                            required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                            </div>
+                        </div>
+                        <!-- submit button -->
+                        <div class="submit_button">
+                            <button type="button" id="modalClose" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="margin-right: 10px;">
+                                Close
+                            </button>
+                            <button type="submit" value="submit" class="btn btn-success btn-sm" style="margin-right: 10px;">
+                                Add Point
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('#addRewardPoint').submit(function (e) {
+            e.preventDefault();
+    
+            const formData = new FormData(this);
+            const selectedRegisterId = $('#reg_id').val();
+            const orgID = $('#id_org').val();
+    
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'add_reward_point' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.msg);
+                        resetItemsForm();
+                        $('#modalClose').click(); // Close the modal
+    
+                        if (selectedRegisterId && orgID) {
+                            fetchRewardBalanceAmounts(selectedRegisterId, orgID);
+                        }
+                    } else {
+                        toastr.error(resp.errmsg || 'Failed to update reward points.');
+                    }
+                },
+                error: function () {
+                    toastr.error('An unexpected error occurred.');
+                }
+            });
+        });
+    });
+    //
+    function resetItemsForm() {
+        $('#addRewardPoint')[0].reset();
+    }
+
+    function fetchRewardBalanceAmounts(regisID, orgID) {
+        if (regisID && orgID) {
+            $.ajax({
+                url: "{% url 'get_reward_point_balance' %}",
+                type: 'GET',
+                data: {
+                    reg_id: regisID,
+                    org_id: orgID
+                },
+                dataType: 'json',
+                success: function (response) {
+                    let balance = 0;
+    
+                    // Check if response is an array and loop to accumulate reward_balance
+                    if (Array.isArray(response)) {
+                        response.forEach(function (reward) {
+                            balance += parseFloat(reward.reward_balance || 0);
+                        });
+                    } 
+    
+                    // Update input and text fields with formatted balance
+                    $('#id_reg_balances').val(balance.toFixed(2));
+                    $('#reg_balances').text(balance.toFixed(2));
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching transactions:', status, error);
+                    $('#id_reg_balances').val('0.00');
+                    $('#reg_balances').text('0.00');
+                }
+            });
+        } else {
+            console.warn('Required IDs are missing.');
+            $('#id_reg_balances').val('0.00');
+            $('#reg_balances').text('0.00');
+        }
+    }
+</script>

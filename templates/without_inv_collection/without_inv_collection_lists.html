@@ -1,0 +1,353 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'item_pos_style/css/item_pos_style.css' %}">
+<link rel="stylesheet" href="{% static 'credit_management/css/credit_management.css' %}">
+<link rel="stylesheet" href="{% static 'drivers_setup/css/drivers_setup.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'drivers_setup/js/drivers_setup.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 1rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #976345e3;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Without Invoice Collection History/Lists</h1>
+                            <!--  -->
+                        </div>
+                        <div class="col-md-6" style="display: flex; justify-content: right;">
+                            <button type="button" onClick="navigateTo('/without_inv_collection_services/')"
+                                title="Without Invoice Collections List"
+                                class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #7a5038e3; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                Without Invoice Collections
+                            </button>
+                            <!--  -->
+                            <button type="button" onClick="navigateTo('/item_pos_billing/')"
+                                title="Invoice List"
+                                class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #7a5038e3; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                Billing
+                            </button>
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <section>
+                <div class="card po_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element col-sm-12" style="display:flex">
+                                        <!--  -->
+                                        <div class="row g-3 align-items-center col-sm-4" style="flex-grow: 0;">
+                                            <div class="col-auto">
+                                                <!-- all active inactive status -->
+                                                <section>
+                                                    <div class="active-filter">
+                                                        <!--  -->
+                                                        <div class="row store_row col-sm-7"
+                                                            style="display: flex; justify-content: right;">
+                                                            <label for="start_date" class="col-auto col-form-label">
+                                                                From :
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text"
+                                                                    class="form-control item_inputbox datepicker"
+                                                                    id="start_date" name="start_date" autocomplete="off"
+                                                                    style="z-index: 0;">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row store_row col-sm-7"
+                                                            style="display: flex; justify-content: right;">
+                                                            <label for="end_date" class="col-auto col-form-label">
+                                                                To :
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text"
+                                                                    class="form-control item_inputbox datepicker"
+                                                                    id="end_date" name="end_date" autocomplete="off"
+                                                                    style="z-index: 0;">
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-4"
+                                            style="flex-grow: 2; display: flex; justify-content: right;">
+                                            <label for="id_filter_org" class="col-auto col-form-label">
+                                                Org:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-4"
+                                            style="flex-grow: 3; display: flex; justify-content: right;">
+                                            <label for="id_filter_branch" class="col-auto col-form-label">
+                                                Branch:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    <!--  -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                <div class="module-table">
+                    <table id="woinvcoll_table" class="table table-striped table-hover"
+                        style="width: 100%; border: 1px solid #6aa2a8;">
+                        <thead class="text-center table-header_itemlist" style="font-size: 0.8rem;">
+                            <tr>
+                                <th style="text-align:center;">
+                                    Coll. Date
+                                </th>
+                                <th style="text-align:center;">
+                                    Coll. Mode
+                                </th>
+                                <th style="text-align:center;">
+                                    Coll. Type
+                                </th>
+                                <th style="text-align:center;">
+                                    Cus. Name
+                                </th>
+                                <th style="text-align:center;">
+                                    Cus. Mobile
+                                </th>
+                                <th style="text-align:center;">
+                                    Address
+                                </th>
+                                <th style="text-align:center;">
+                                    Emer. Person
+                                </th>
+                                <th style="text-align:center;">
+                                    Emer. Phone
+                                </th>
+                                <th style="text-align:center;">
+                                    Descriptions
+                                </th>
+                                <th style="text-align:center;">
+                                    Coll. Amt.
+                                </th>
+                                <th style="text-align:center;">
+                                    Option
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="woinvcollTB" style="text-align:center; font-size: 0.85rem;">
+                            <!--  -->
+
+                        </tbody>
+
+                        <!-- loader start -->
+                        <div class="loader"></div>
+                        <!-- loader end -->
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<!-- present date show scriptStart  -->
+<script>
+    // get user table data
+    $(document).ready(function () {
+        startLoader();
+        // Set today's date for filters
+        function getTodayDate() {
+            var today = new Date();
+            return today.toISOString().split('T')[0]; // Format YYYY-MM-DD
+        }
+    
+        var todayDate = getTodayDate();
+        if (!$('#start_date').val()) {
+            $('#start_date').val(todayDate);
+        }
+        if (!$('#end_date').val()) {
+            $('#end_date').val(todayDate);
+        }
+    
+        // Ensure that filter values are set before fetching data
+        function getFilterValues() {
+            return {
+                org_id: $('#id_filter_org').val() || '',
+                branch_id: $('#id_filter_branch').val() || '',
+                start_date: $('#start_date').val() || todayDate,
+                end_date: $('#end_date').val() || todayDate
+            };
+        }
+    
+        function filterExpenses() {
+            var filterParams = getFilterValues();
+    
+            $.ajax({
+                url: '/get_without_invoice_collection_data/',
+                type: 'GET',
+                data: filterParams,
+                dataType: 'json',
+                success: function (data) {
+                    console.log("Fetched Data:", data);
+    
+                    // Destroy existing DataTable before updating
+                    if ($.fn.DataTable.isDataTable('#woinvcoll_table')) {
+                        $('#woinvcoll_table').DataTable().destroy();
+                    }
+    
+                    updateTable(data.woinvcoll_val);
+                    endLoader();
+    
+                    // Reinitialize DataTable
+                    $('#woinvcoll_table').DataTable({
+                        "ordering": false,
+                    });
+                },
+                error: function (error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+    
+        function updateTable(woinvcoll_val) {
+            var tableBody = $('#woinvcollTB');
+            tableBody.empty();
+    
+            var collectionModeMap = {
+                1: 'Cash', 2: 'Check', 3: 'Debit Card', 4: 'Credit Card',
+                5: 'Bkash', 6: 'Nagad', 7: 'Upay', 8: 'UCash', 9: 'Bank Deposit'
+            };
+    
+            var collectionTypeMap = { 5: 'Without Invoice Collection' };
+    
+            $.each(woinvcoll_val, function (index, woinvcoll) {
+                var collectionMode = collectionModeMap[woinvcoll.collection_mode] || '';
+                var collectionType = collectionTypeMap[woinvcoll.collection_type] || '';
+    
+                var row = `<tr style="height: 3rem;">
+                    <td>${woinvcoll.coll_date || ''}</td>
+                    <td>${collectionMode}</td>
+                    <td>${collectionType}</td>
+                    <td>${woinvcoll.customer_name || ''}</td>
+                    <td>${woinvcoll.customer_mobile || ''}</td>
+                    <td>${woinvcoll.address || ''}</td>
+                    <td>${woinvcoll.emergency_person || ''}</td>
+                    <td>${woinvcoll.emergency_phone || ''}</td>
+                    <td>${woinvcoll.descriptions || ''}</td>
+                    <td>${woinvcoll.collection_amt.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger delete-btn" style="padding: .15rem .7rem;" data-wo_coll_id="${woinvcoll.wo_coll_id}">X</button>
+                    </td>
+                </tr>`;
+    
+                tableBody.append(row);
+            });
+        }
+    
+        // Event listeners for filter inputs
+        $('#id_filter_org, #id_filter_branch, #start_date, #end_date').change(function () {
+            filterExpenses();
+        });
+    
+        // Delay execution to ensure the filter values are set before fetching data
+        setTimeout(filterExpenses, 100);
+    });    
+
+    //
+    $(document).ready(function () {
+
+        $('#id_filter_org').change(function () {
+            OrgWiseUpdateFilterOptions();
+        });
+
+        OrgWiseUpdateFilterOptions();
+
+        function OrgWiseUpdateFilterOptions() {
+            var selectedOrgId = $('#id_filter_org').val();
+
+            // Branch option value
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: selectedOrgId },
+                success: function (data) {
+                    $('#id_filter_branch').empty();
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_filter_branch').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+                    $('#id_filter_branch').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+    });
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    $(document).on('click', '.delete-btn', function () {
+        lineloaderstart();
+        const wo_coll_id = $(this).data('wo_coll_id'); // Fetch opb_id dynamically
+        const org_id = $('#id_filter_org').val();
+        const branch_id = $('#id_filter_branch').val();
+        modal_md("Delete Confirmation", `{% url 'get_delete_without_inv_coll_model' %}?wo_coll_id=${wo_coll_id}&org_id=${org_id}&branch_id=${branch_id}`);
+        lineloaderstop();
+    });
+</script>
+
+{% endblock %}

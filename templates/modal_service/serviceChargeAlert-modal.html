@@ -1,0 +1,38 @@
+<div class="modal fade" id="serviceChargeAlertModal" role='dialog'>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content alertContent rounded-0">
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.serviceChargeAlertModal = function ($title = '', $url = '', $size = "", $footer) {
+        $.ajax({
+            url: $url,
+            error: err => {
+                console.log()
+                alert("An error occured")
+            },
+            success: function (resp) {
+                if (resp) {
+                    $('#serviceChargeAlertModal .modal-title').html($title)
+                    $('#serviceChargeAlertModal .modal-body').html(resp)
+                    $('#serviceChargeAlertModal .modal-footer').html($footer)
+                    if ($size != '') {
+                        $('#serviceChargeAlertModal .modal-dialog').addClass($size + '  modal-dialog-centered')
+                    } else {
+                        $('#serviceChargeAlertModal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-lg")
+                    }
+                    $('#serviceChargeAlertModal').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        focus: true
+                    })
+                    $('#serviceChargeAlertModal').modal('show')
+                }
+            }
+        })
+    }
+</script>

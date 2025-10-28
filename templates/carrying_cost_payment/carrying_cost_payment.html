@@ -1,0 +1,748 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'item_pos_style/css/item_pos_style.css' %}">
+<link rel="stylesheet" href="{% static 'credit_management/css/credit_management.css' %}">
+<link rel="stylesheet" href="{% static 'drivers_setup/css/drivers_setup.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'drivers_setup/js/drivers_setup.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem; background: #d9e9e3e3;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #459778e3;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Carrying Cost Payment Services</h1>
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <form action="" method="" id="carryingpay-form" enctype="multipart/form-data">
+                <section id="b2b_clients_info"
+                    style="padding: 0 0.5rem 0.5rem 0.5rem; margin-top: 0.3rem; margin-bottom: 0.2rem;">
+                    <div class="card main_pos_card">
+                        <div class="row cash_point_row">
+                            <div class="col-sm-12">
+                                <div class="card pos_card">
+                                    <div class="card-body pos_card_body">
+                                        <div class="row cash_point_row">
+                                            <div class="col-sm-4" style="border-right: 1px solid rgba(0,0,0,.125);">
+                                                <div class="card pos_card">
+                                                    <div class="card-body pos_card_body">
+                                                        <div class="row cash_point_row">
+                                                            <!--  -->
+                                                            <div class="col-sm-12">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_carriers"
+                                                                        class="col-sm-1 col-form-label"
+                                                                        style="display: flex; font-size: 11.5px; flex-direction: row; justify-content: flex-end;">
+                                                                        Carriers:
+                                                                    </label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="search"
+                                                                            class="form-control pos_inputbox"
+                                                                            autocomplete="off"
+                                                                            style="margin-top: 0px; height: 2rem; background: #fffab6;"
+                                                                            id="id_carriers"
+                                                                            placeholder="Search Carrier's/Driver Name ...">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-8">
+                                                <div class="card pos_card">
+                                                    <div class="card-body pos_card_body">
+                                                        <div class="row cash_point_row">
+                                                            <!--  -->
+                                                            <div class="col-sm-6">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_driver_name"
+                                                                        class="col-sm-2 col-form-label">
+                                                                        Carrier's Name:
+                                                                    </label>
+                                                                    <div class="col-sm-8">
+                                                                        <input type="hidden" id="id_driver_id"
+                                                                            name="driver_id">
+                                                                        <input type="text"
+                                                                            class="form-control pos_inputbox"
+                                                                            autocomplete="off" id="id_driver_name"
+                                                                            name="driver_name" readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="col-sm-6">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_driver_mobile"
+                                                                        class="col-sm-2 col-form-label">
+                                                                        Carrier's Mobile:
+                                                                    </label>
+                                                                    <div class="col-sm-8">
+                                                                        <input type="text"
+                                                                            class="form-control pos_inputbox"
+                                                                            autocomplete="off" id="id_driver_mobile"
+                                                                            name="driver_mobile" readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--  -->
+                <section>
+                    <div class="row row_item_setup">
+                        <!--  -->
+                        <div class="col-sm-12">
+                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                <div class="card-body card-body_org_setup">
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-7">
+                                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                                <div class="card-body item_setup_sub">
+                                                    <div class="row cash_point_row">
+                                                        <label for="id_carrying_pay_amt" title="Carrying Payment Amount"
+                                                            class="col-md-3 col-form-label font_size_filter required">
+                                                            Carr. Pay. amt.:
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <input type="number" class="form-control item_inputbox"
+                                                                style="padding: 0.175rem 1rem 0.175rem 0.75rem; text-align: right; z-index: 0;" id="id_carrying_pay_amt"
+                                                                name="carrying_pay_amt" autocomplete="off" step="0.01" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-5">
+                                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                                <div class="card-body item_setup_sub">
+                                                    <div class="row cash_point_row">
+                                                        <label for="id_bill_date" title="Carrying Bill Date"
+                                                            class="col-sm-1 col-form-label font_size_filter required">
+                                                            Bill Date:
+                                                        </label>
+                                                        <div class="col-sm-branch" style="width: 81.6%;">
+                                                            <input type="text" class="form-control item_inputbox datepicker" id="id_bill_date"
+                                                                name="bill_date" autocomplete="off" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-12">
+                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                <div class="card-body card-body_org_setup">
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-7">
+                                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                                <div class="card-body item_setup_sub">
+                                                    <div class="row cash_point_row">
+                                                        <!--  -->
+                                                        <label for="id_org"
+                                                            class="col-md-3 col-form-label font_size_filter required">
+                                                            Organization:
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <select id="id_org" name="org_id" style="z-index: 0;"
+                                                                class="form-select Selectionbox"
+                                                                aria-label="Default select example" required>
+
+                                                                {% for org in org_list %}
+                                                                <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                                    {{org.org_name}}
+                                                                </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <!--  -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-5">
+                                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                                <div class="card-body item_setup_sub">
+                                                    <div class="row cash_point_row">
+                                                        <!--  -->
+                                                        <label for="id_branch_name"
+                                                            class="col-sm-1 col-form-label font_size_filter required">
+                                                            Branch:
+                                                        </label>
+                                                        <div class="col-sm-branch" style="width: 81.6%;">
+                                                            <select id="id_branch_name" name="branch_id"
+                                                                class="form-select Selectionbox" style="z-index: 0;"
+                                                                aria-label="Default select example" required>
+                                                                <!--  -->
+                                                            </select>
+                                                        </div>
+                                                        <!--  -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-12">
+                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                <div class="card-body card-body_org_setup">
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card" style="background: #d9e9e3e3;">
+                                                <div class="card-body item_setup_sub">
+                                                    <div class="row cash_point_row">
+                                                        <label for="id_descriptions" title="Descriptions"
+                                                            class="col-md-1 col-form-label font_size_filter required">
+                                                            Descriptions:
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <textarea type="text" class="form-control item_inputbox"
+                                                                style="margin-top: -4px; height: 8rem; z-index: 0;"
+                                                                id="id_descriptions" name="descriptions"
+                                                                autocomplete="off" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                    </div>
+                </section>
+                <!-- submit button -->
+                <div class="submit_button">
+                    <button type="button" class="btn btn-danger btn-sm clearBtn" style="margin-right: 10px;">
+                        Close
+                    </button>
+                    <button type="submit" value="submit" id="carriersubmitBtn" class="btn btn-success btn-sm"
+                        style="margin-right: 10px;">
+                        Save Payment
+                    </button>
+                </div>
+            </form>
+            <!--  -->
+        </section>
+    </section>
+    <!--  -->
+    <section class="container-fluid" style="margin-top: 1rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #456f97e3;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Carrying Cost Payment History/List</h1>
+                            <!--  -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <section>
+                <div class="card po_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element col-sm-12" style="display:flex">
+                                        <!--  -->
+                                        <div class="row g-3 align-items-center col-sm-4" style="flex-grow: 0;">
+                                            <div class="col-auto">
+                                                <!-- all active inactive status -->
+                                                <section>
+                                                    <div class="active-filter">
+                                                        <!--  -->
+                                                        <div class="row store_row col-sm-7"
+                                                            style="display: flex; justify-content: right;">
+                                                            <label for="start_date" class="col-auto col-form-label">
+                                                                From :
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text"
+                                                                    class="form-control item_inputbox datepicker"
+                                                                    id="start_date" name="start_date" autocomplete="off"
+                                                                    style="z-index: 0;">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row store_row col-sm-7"
+                                                            style="display: flex; justify-content: right;">
+                                                            <label for="end_date" class="col-auto col-form-label">
+                                                                To :
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text"
+                                                                    class="form-control item_inputbox datepicker"
+                                                                    id="end_date" name="end_date" autocomplete="off"
+                                                                    style="z-index: 0;">
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-4"
+                                            style="flex-grow: 2; display: flex; justify-content: right;">
+                                            <label for="id_filter_org" class="col-auto col-form-label">
+                                                Org:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-4"
+                                            style="flex-grow: 3; display: flex; justify-content: right;">
+                                            <label for="id_filter_branch" class="col-auto col-form-label">
+                                                Branch:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    <!--  -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                <div class="module-table">
+                    <table id="carrying_table" class="table table-striped table-hover"
+                        style="width: 100%; border: 1px solid #6aa2a8;">
+                        <thead class="text-center table-header_itemlist" style="font-size: 0.8rem;">
+                            <tr>
+                                <th style="text-align:center;">
+                                    Cost Pay ID
+                                </th>
+                                <th style="text-align:center;">
+                                    Created Date
+                                </th>
+                                <th style="text-align:center;">
+                                    Bill Date
+                                </th>
+                                <th style="text-align:center;">
+                                    Carryier Name
+                                </th>
+                                <th style="text-align:center;">
+                                    Mobile
+                                </th>
+                                <th style="text-align:center;">
+                                    Organization
+                                </th>
+                                <th style="text-align:center;">
+                                    Branch
+                                </th>
+                                <th style="text-align:center;">
+                                    Descriptions
+                                </th>
+                                <th style="text-align:center;">
+                                    Pay Amt.
+                                </th>
+                                <th style="text-align:center;">
+                                    Option
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="carryingpayTB" style="text-align:center; font-size: 0.85rem;">
+                            <!--  -->
+
+                        </tbody>
+
+                        <!-- loader start -->
+                        <div class="loader"></div>
+                        <!-- loader end -->
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<!-- present date show scriptStart  -->
+<script>
+    $(document).ready(function () {
+        $('.clearBtn').click(function () {
+            $('#carryingpay-form')[0].reset(); // Reset the form
+    
+            // Get today's date in YYYY-MM-DD format
+            let today = new Date().toISOString().split('T')[0];
+    
+            // Set today's date to the bill date input field
+            $('#id_bill_date').val(today);
+        });
+    });
+    //
+    $(function () {
+        $('#carryingpay-form').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $('#carriersubmitBtn').prop('disabled', true).html('<i class="bx bx-loader-circle"></i> Processing...');
+            var driver_id = $('#id_driver_id').val();
+            if (!driver_id) {
+                toastr.warning("Carryier Clients Not Found. Please Choose Carryier Client First.");
+                $('#carriersubmitBtn').prop('disabled', false).html('Save Payment');
+                return false;
+            }
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save_carrying_payment_bill' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (success = resp.msg) {
+                        toastr.success(resp.msg);
+                        location.reload();
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#carriersubmitBtn').prop('disabled', false).html('Save Payment');
+                    }, 1500);
+                }
+            });
+        });
+    });
+
+    //======================== bill date today shower ==========================
+    document.addEventListener("DOMContentLoaded", function () {
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById("id_bill_date").value = today;
+    });
+    //==================================================
+    $(document).ready(function () {
+        // Initial population of branch options based on the selected organization
+        updateBranchOptions();
+
+        // Add change event listener to the organization dropdown
+        $('#id_org').on('change', function () {
+            // Update branch options whenever the organization dropdown changes
+            updateBranchOptions();
+        });
+
+        function updateBranchOptions() {
+            // Get the selected organization ID
+            var selectedOrgId = $('#id_org').val();
+
+            // Make an AJAX request to get branch options based on the selected organization
+            $.ajax({
+                url: '/get_branch_options/',  // Replace with your actual URL for fetching branch options
+                method: 'GET',
+                data: { org_id: selectedOrgId },
+                success: function (data) {
+                    // Clear existing options
+                    $('#id_branch_name').empty();
+
+                    // Add default option
+                    //$('#id_branch_name').append('<option value="" selected disabled>Choose Branch ...</option>');
+
+                    // Add fetched branch options
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_branch_name').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+    });
+    //
+    // driver searching
+    $(document).ready(function () {
+        // Define a function to clear and focus the input field
+        function clearDriversInput() {
+            $('#id_carriers').val('').focus();
+        }
+
+        $('#id_carriers').typeahead({
+            source: function (query, result) {
+                var selected_id_org = $('#id_org').val();
+                $.ajax({
+                    url: '/search_get_drivers_list_pos/',
+                    data: {
+                        query: query,
+                        org_filter: selected_id_org,
+                    },
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        result($.map(data.data, function (drivers) {
+                            return { name: drivers.driver_name.toString(), id: drivers.driver_id }; // Return an object with name and id
+                        }));
+                    }
+                });
+            },
+            updater: function (drivers) {
+                var selectedDriverId = drivers.id;
+
+                $.ajax({
+                    url: '/select_drivers_details_pos/',
+                    data: { selectedDriver: selectedDriverId }, // Send the selected item ID to retrieve details
+                    dataType: "json",
+                    type: "GET",
+                    success: function (response) {
+                        var selectedDriverDtl = response.data;
+
+                        // Assign selected data to the corresponding text input fields
+                        $('#id_driver_id').val(selectedDriverDtl[0].driver_id);
+                        $('#id_driver_name').val(selectedDriverDtl[0].driver_name);
+                        $('#id_driver_mobile').val(selectedDriverDtl[0].phone);
+
+                        clearDriversInput();
+                    }
+                });
+
+                // Return the selected item name to fill the input field
+                return drivers.name;
+            },
+            items: 50, // Specify the number of items to display
+            displayText: function (item) {
+                return item.name; // Adjust this if you want to customize the display text
+            },
+        });
+    });
+
+    // get user table data
+    $(document).ready(function () {
+        // Function to get today's date in YYYY-MM-DD format
+        function getTodayDate() {
+            var today = new Date();
+            return today.toISOString().split('T')[0]; // Format YYYY-MM-DD
+        }
+    
+        // Set today's date as default values in the input fields
+        var todayDate = getTodayDate();
+        $('#start_date').val(todayDate);
+        $('#end_date').val(todayDate);
+    
+        // Run filtering immediately after setting default dates
+        filterExpenses();
+    
+        // Attach event listeners to filter inputs
+        $('#id_filter_org, #id_filter_branch, #start_date, #end_date').on('change', function () {
+            filterExpenses();
+        });
+    
+        // Ensure filtering also works when users click on the date fields
+        $('#start_date, #end_date').on('click', function () {
+            $(this).datepicker({
+                dateFormat: 'yy-mm-dd', // Set proper date format for compatibility
+                onSelect: function () {
+                    $(this).trigger('change'); // Manually trigger change event after selection
+                }
+            }).datepicker('show');
+        });
+    
+        // Function to filter expenses based on input values
+        function filterExpenses() {
+            var branch_id = $('#id_filter_branch').val() || '';
+            var org_id = $('#id_filter_org').val() || '';
+            var start_date = $('#start_date').val() || '';
+            var end_date = $('#end_date').val() || '';
+    
+            var filterParams = {
+                'org_id': org_id,
+                'branch_id': branch_id,
+                'start_date': start_date,
+                'end_date': end_date,
+            };
+    
+            console.log("Sending Filter Params:", filterParams);
+    
+            $.ajax({
+                url: '/get_carrier_payment_lists/',
+                type: 'GET',
+                data: filterParams,
+                dataType: 'json',
+                beforeSend: function () {
+                    startLoader(); // Start loader animation before request
+                },
+                success: function (data) {
+                    console.log("Fetched Data:", data);
+    
+                    // Destroy existing DataTable
+                    if ($.fn.DataTable.isDataTable('#carrying_table')) {
+                        $('#carrying_table').DataTable().destroy();
+                    }
+    
+                    // Update the table with the new data
+                    updateTable(data.carrying_val);
+    
+                    // Reinitialize DataTable
+                    $('#carrying_table').DataTable({
+                        "ordering": false,
+                    });
+    
+                    endLoader(); // Stop loader animation
+                },
+                error: function (error) {
+                    console.error('Error fetching data:', error);
+                    endLoader(); // Stop loader in case of error
+                }
+            });
+        }
+    
+        // Function to update the table with new data
+        function updateTable(carrying_val) {
+            var tableBody = $('#carryingpayTB');
+            tableBody.empty(); // Clear existing table rows
+        
+            $.each(carrying_val, function (index, carrying) {
+                var row = '<tr style="height: 3rem;">' +
+                    '<td>' + (carrying.c_cost_id || '') + '</td>' +
+                    '<td>' + (carrying.c_cost_date || '') + '</td>' +
+                    '<td>' + (carrying.pay_inv_date || '') + '</td>' +
+                    '<td>' + (carrying.driver_name || '') + '</td>' +
+                    '<td>' + (carrying.driver_phone || '') + '</td>' +
+                    '<td>' + (carrying.org_name || '') + '</td>' +
+                    '<td>' + (carrying.branch_name || '') + '</td>' +
+                    '<td>' + (carrying.descriptions || '') + '</td>' +
+                    '<td>' + (carrying.c_cost_amt !== null ? carrying.c_cost_amt.toFixed(2) : '0.00') + '</td>' +
+                    '<td>' + 
+                        '<button class="btn btn-sm btn-danger delete-btn" style="padding: .15rem .7rem;" ' +
+                        'data-c_cost_id="' + carrying.c_cost_id + '">X</button>' +
+                    '</td>' + // Fix: Ensure this closes properly
+                    '</tr>';
+        
+                tableBody.append(row);
+            });
+        }        
+    });
+
+    //
+    $(document).ready(function () {
+
+        $('#id_filter_org').change(function () {
+            OrgWiseUpdateFilterOptions();
+        });
+
+        OrgWiseUpdateFilterOptions();
+
+        function OrgWiseUpdateFilterOptions() {
+            var selectedOrgId = $('#id_filter_org').val();
+
+            // Branch option value
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: selectedOrgId },
+                success: function (data) {
+                    $('#id_filter_branch').empty();
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_filter_branch').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+                    $('#id_filter_branch').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+    });
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    $(document).on('click', '.delete-btn', function () {
+        lineloaderstart();
+        const c_cost_id = $(this).data('c_cost_id'); // Fetch opb_id dynamically
+        const org_id = $('#id_filter_org').val();
+        const branch_id = $('#id_filter_branch').val();
+        modal_md("Delete Confirmation", `{% url 'get_delete_carrying_cost_pay_model' %}?c_cost_id=${c_cost_id}&org_id=${org_id}&branch_id=${branch_id}`);
+        lineloaderstop();
+    });
+</script>
+
+{% endblock %}

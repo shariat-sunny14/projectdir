@@ -1,0 +1,290 @@
+{% load static %}
+{% load get_notification_data %}
+<!--========== Notification Panel ==========-->
+<div id="notificationPanel" class="notification-panel">
+    <button class="notify-closeBtn" onclick="togglePanel()">X</button>
+
+    <div class="section">
+        <h2>🔔<span class="gradient-text">Delivery Chalan Info</span></h2>
+        <div class="sectionBody">
+            <table class="notify-dtlTB" id="delChalanTable">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Invoice Date</th>
+                        <th>Invoice No</th>
+                        <th>Customer</th>
+                        <th>Mobile</th>
+                        <th>Address</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        <th>Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% with org_id_str=user.org_id|stringformat:"s" branch_id_str=user.branch_id|stringformat:"s" %}
+                        {% with org_branch_key=org_id_str|add:"_"|add:branch_id_str %}
+                            {% with grouped_invoice|get_invoice_pending_item:org_branch_key as invoice_data %}
+                                {% if invoice_data %}
+                                    {% for item in invoice_data.details %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ item.invoice_date }}</td>
+                                            <td>{{ item.inv_id }}</td>
+                                            <td>{{ item.customer_name }}</td>
+                                            <td>{{ item.mobile_number }}</td>
+                                            <td>{{ item.address }}</td>
+                                            <td>{{ item.branch_name }}</td>
+                                            <td class="status-color">Pending</td>
+                                            <td><button class="btn-view delivery-chalan" data-id="{{ item.inv_id }}">View</button></td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td colspan="9">No pending delivery challan found.</td></tr>
+                                {% endif %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔔<span class="gradient-text">GRN Unapprove Info</span></h2>
+        <div class="sectionBody">
+            <table class="notify-dtlTB" id="grnTable">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>ID</th>
+                        <th>Invoice No</th>
+                        <th>Invoice Date</th>
+                        <th>Store Name</th>
+                        <th>Supplier Name</th>
+                        <th>Created</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        {% if user.is_staff %}
+                            <th>Option</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if grouped_grn %}
+                        {% for org_id, data in grouped_grn.items %}
+                            {% for item in data.details %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ item.wo_grn_id }}</td>
+                                    <td>{{ item.invoice_no }}</td>
+                                    <td>{{ item.invoice_date }}</td>
+                                    <td>{{ item|get_nested:"store_id.store_name" }}</td>
+                                    <td>{{ item|get_nested:"supplier_id.supplier_name" }}</td>
+                                    <td>{{ item.transaction_date }}</td>
+                                    <td>{{ item|get_nested:"branch_id.branch_name" }}</td>
+                                    <td class="status-color">{{ item.status }}</td>
+                                    {% if user.is_staff %}
+                                        <td><button class="btn-view update-wogrn" data-id="{{ item.wo_grn_id }}">View</button></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔔<span class="gradient-text">LP Unapprove Info</span></h2>
+        <div class="sectionBody">
+            <table class="notify-dtlTB" id="lpTable">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>ID</th>
+                        <th>Invoice No</th>
+                        <th>Invoice Date</th>
+                        <th>Store Name</th>
+                        <th>Clients</th>
+                        <th>Created</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        {% if user.is_staff %}
+                            <th>Option</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if grouped_lp %}
+                        {% for org_id, data in grouped_lp.items %}
+                            {% for item in data.details %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ item.lp_id }}</td>
+                                    <td>{{ item.invoice_no }}</td>
+                                    <td>{{ item.invoice_date }}</td>
+                                    <td>{{ item|get_nested:"store_id.store_name" }}</td>
+                                    <td>{{ item|get_nested:"reg_id.full_name" }}</td>
+                                    <td>{{ item.transaction_date }}</td>
+                                    <td>{{ item|get_nested:"branch_id.branch_name" }}</td>
+                                    <td class="status-color">{{ item.status }}</td>
+                                    {% if user.is_staff %}
+                                        <td><button class="btn-view update-lp" data-id="{{ item.lp_id }}">View</button></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔔<span class="gradient-text">Manual Return Receive Approve Info</span></h2>
+        <div class="sectionBody">
+            <table class="notify-dtlTB" id="mretrecTable">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>ID</th>
+                        <th>Invoice No</th>
+                        <th>Invoice Date</th>
+                        <th>Store Name</th>
+                        <th>Clients</th>
+                        <th>Created</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        {% if user.is_staff %}
+                            <th>Option</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if grouped_mretrec %}
+                        {% for org_id, data in grouped_mretrec.items %}
+                            {% for item in data.details %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ item.manu_ret_rec_id }}</td>
+                                    <td>{{ item.invoice_no }}</td>
+                                    <td>{{ item.invoice_date }}</td>
+                                    <td>{{ item|get_nested:"store_id.store_name" }}</td>
+                                    <td>{{ item|get_nested:"reg_id.full_name" }}</td>
+                                    <td>{{ item.transaction_date }}</td>
+                                    <td>{{ item|get_nested:"branch_id.branch_name" }}</td>
+                                    <td class="status-color">{{ item.status }}</td>
+                                    {% if user.is_staff %}
+                                        <td><button class="btn-view update-mrr" data-id="{{ item.manu_ret_rec_id }}">View</button></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔔<span class="gradient-text">Store Transfer Approve Info</span></h2>
+        <div class="sectionBody">
+            <table class="notify-dtlTB" id="mretrecTable">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Trans ID</th>
+                        <th>Trans No</th>
+                        <th>Created Date</th>
+                        <th>From Store</th>
+                        <th>To Store</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        {% if user.is_staff %}
+                            <th>Option</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if grouped_trans %}
+                        {% for org_id, data in grouped_trans.items %}
+                            {% for item in data.details %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ item.stock_trans_id }}</td>
+                                    <td>{{ item.stock_trans_no }}</td>
+                                    <td>{{ item.transaction_date }}</td>
+                                    <td>{{ item|get_nested:"from_store.store_name" }}</td>
+                                    <td>{{ item|get_nested:"to_store.store_name" }}</td>
+                                    <td>{{ item|get_nested:"branch_id.branch_name" }}</td>
+                                    <td class="status-color">{{ item.status }}</td>
+                                    {% if user.is_staff %}
+                                        <td><button class="btn-view update-trans" data-id="{{ item.stock_trans_id }}">View</button></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" style="margin-bottom: 5rem;">
+        <h2>🔔<span class="gradient-text">Stock Reconciliation Approve Info</span></h2>
+        <div class="sectionBody">
+            <table class="notify-dtlTB" id="mretrecTable">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Recon ID</th>
+                        <th>Recon No</th>
+                        <th>Created Date</th>
+                        <th>Recon Type</th>
+                        <th>Store Name</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        {% if user.is_staff %}
+                            <th>Option</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if grouped_stock_recon %}
+                        {% for org_id, data in grouped_stock_recon.items %}
+                            {% for item in data.details %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ item.recon_id }}</td>
+                                    <td>{{ item.recon_no }}</td>
+                                    <td>{{ item.recon_date }}</td>
+                                    <td>
+                                        {% if item.recon_type == 1 %}
+                                            Add Reconciliation
+                                        {% elif item.recon_type == 2 %}
+                                            Subtract Reconciliation
+                                        {% elif item.recon_type == 3 %}
+                                            Damaged Reconciliation
+                                        {% elif item.recon_type == 4 %}
+                                            Expiry Stock Out Reconciliation
+                                        {% else %}
+                                            Unknown
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ item|get_nested:"store_id.store_name" }}</td>
+                                    <td>{{ item|get_nested:"branch_id.branch_name" }}</td>
+                                    <td class="status-color">{{ item.status }}</td>
+                                    {% if user.is_staff %}
+                                        <td><button class="btn-view update-stock_recon" onClick="navigateTo('/stock_reconciliation_service/')">View</button></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

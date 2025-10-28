@@ -1,0 +1,37 @@
+.printBtn {
+    font-size: 1rem;
+}
+
+.btn {
+    line-height: 1;
+    padding: 0.25rem 0.35rem;
+    font-size: 1rem;
+}
+
+.table-row-btn {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.printIcon {
+    line-height: 1;
+}
+
+
+.form-check {
+    min-height: 0rem;
+    margin-bottom: 0rem;
+}
+
+.optionBtn {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.form-check-input {
+    margin-top: 0em;
+}

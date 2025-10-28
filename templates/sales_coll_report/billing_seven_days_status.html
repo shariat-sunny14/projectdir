@@ -1,0 +1,481 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'statistics_style/css/statistics_style.css' %}">
+<link rel="stylesheet" href="{% static 'sales_coll_report_style/css/sales_coll_report_style.css' %}">
+<style>
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .chart-container {
+        position: relative;
+        height: 500px;
+        width: 100%;
+        overflow: hidden;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    .info {
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .loading {
+      text-align: center;
+      color: #3498db;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    canvas {
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .error {
+      color: #e74c3c;
+      text-align: center;
+      font-weight: bold;
+    }
+    .strong-border {
+        border: 1px solid #2e94a1 !important;
+    }
+</style>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<!-- <div class="loader"></div> -->
+<!-- loader end -->
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 0rem; padding-right: 0rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem; margin-bottom: 2rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #395c24;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="border-bottom: 0px solid transparent;">
+                        <div class="d-sm-flex align-items-center" style="margin-left: 1rem;">
+                            <i class='bx bx-scatter-chart text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Seven Days Billing Collections Status</h1>
+                            <!--  -->
+                            <div style="position: absolute; right: 2rem;">
+                                <!--  -->
+                                {% if billingBtn_access %}
+                                <button type="button" onClick="navigateTo('/item_pos_billing/')"
+                                    class="btn col-ms-3 text-white btn-xs item_payment_btn"
+                                    style="display: flex; font-size: 0.8rem; font-weight: bolder; box-shadow: 4px 5px 10px 0px #395c24; border-radius: 0.7rem; border: 1.5px solid #fff; height: 1.7rem; padding: 0.5rem 1.3rem; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                    Billing
+                                </button>
+                                {% endif %}
+                                <!--  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <section style="margin: 0.5rem;">
+                <div class="card" style="align-items: start; margin-bottom: 0.5rem; box-shadow: 0px 5px 5px rgba(97, 97, 97, 0.3)">
+                    <div class="card-body col-sm-12" style="background: #adc9c2;">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element col-sm-12" style="display:flex">
+                                        <!--  -->
+                                        <div class="row g-3 col-sm-12 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="id_filter_org" class="col-form-label">Org :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select item_inputbox store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row g-3 col-sm-12 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="id_filter_branch" class="col-form-label">Branch :</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select item_inputbox store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    <!--  -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-top: 1rem; border-top: 2px solid rgba(0, 0, 0, .125);"></section>
+            <span style="padding: 0.5rem;
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
+                font-size: 2rem;
+                font-weight: bold;
+                font-family: serif;
+                background: linear-gradient(to right, #005f24, #00a03d);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;">
+                Billing Collections Status of Seven Days Graphical Views
+            </span>
+            <section style="border-top: 2px solid rgba(0, 0, 0, .125);"></section>
+            <!--  -->
+            <section style="width: 97.5%; margin-left: 0.5rem;">
+                <!--  -->
+                <div class="container-fluid">
+                    <div class="chart-container" style="position: relative; height: 500px;">
+                        <canvas id="collectionChart"></canvas>
+                    </div>
+                </div>
+                <!--  -->
+            </section>
+            <!--  -->
+            <section style="margin-top: 2rem; border-top: 2px solid rgba(0, 0, 0, .125);"></section>
+            <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center;">
+                <span style="padding: 0.5rem;
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 2rem;
+                    font-weight: bold;
+                    font-family: serif;
+                    background: linear-gradient(to right, #119ff1, #11e2f1);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    color: transparent;">
+                    Billing Collections Status of Seven Days Data Table Views
+                </span>
+                <!--  -->
+                <button type="button"  class="btn col-ms-3 text-white bg-warning btn-xs seven_days_report_btn"
+                    style="position: absolute; display: flex; font-size: 0.8rem; font-weight: bolder; box-shadow: 4px 5px 10px 0px orange; border-radius: 0.7rem; border: 1.5px solid #fff; height: 1.7rem; padding: 0.5rem 1.3rem; flex-direction: row; flex-wrap: nowrap; right: 1rem;">
+                    View Reports
+                </button>
+                <!--  -->
+            </div>
+            <!--  -->
+            <section style="border-top: 2px solid rgba(0, 0, 0, .125);"></section>
+            <!--  -->
+            <table id="collectionTB" class="table table-striped" style="width: 99%; margin-top: 0.5rem; margin-left: 0.4rem; margin-bottom: 0.5rem;">
+                <thead class="text-center table-header" style="border: 1px solid #2e94a1!important;">
+                    <tr style="border-style: solid!important;">
+                        <th style="text-align:center;">Name Of Particulars</th>
+                        <th style="text-align:center;">Previous 7th Days Coll.</th>
+                        <th style="text-align:center;">Previous 6th Days Coll.</th>
+                        <th style="text-align:center;">Previous 5th Days Coll.</th>
+                        <th style="text-align:center;">Previous 4th Days Coll.</th>
+                        <th style="text-align:center;">Previous 3rd Days Coll.</th>
+                        <th style="text-align:center;">Previous 2nd Days Coll.</th>
+                        <th style="text-align:center;">Previous 1st Days Coll.</th>
+                        <th style="text-align:center;">Todays Collection</th>
+                    </tr>
+                </thead>
+                <tbody id="collectionTBody" class="table-body-row">
+                    <!--  -->
+                    
+                    <!--  -->
+                </tbody>
+            </table>
+            <!--  -->
+        </section>
+    </section>
+    <!--  -->
+    <script>
+        $(document).ready(function() {
+
+            // when "View Reports" button clicked
+            $('.seven_days_report_btn').on('click', function() {
+                const orgId = $('#id_filter_org').val();
+                const branchId = $('#id_filter_branch').val();
+
+                // validation
+                if (!orgId || !branchId) {
+                    toastr.warning('⚠️ Please select both Organization and Branch before viewing report.');
+                    return;
+                }
+
+                // build URL with query parameters
+                const reportUrl = `/report_seven_days_billing_status/?org_id=${orgId}&branch_id=${branchId}`;
+
+                // redirect to the report view
+                window.open(reportUrl, '_blank');
+            });
+
+        });
+        ////////////////////////////////////////////////////////////////
+        const API_URL = '/present_to_seven_days_collection_summary_report/';
+        let chart = null;
+
+        $(document).ready(function () {
+            // Load branches initially
+            loadBranches();
+
+            // Org change → load branches
+            $('#id_filter_org').on('change', loadBranches);
+
+            // Org or Branch change → load chart
+            $('#id_filter_org, #id_filter_branch').on('change', function () {
+                const orgId = $('#id_filter_org').val();
+                const branchId = $('#id_filter_branch').val();
+                if (orgId && branchId) {
+                    loadChartData(orgId, branchId);
+                } else {
+                    $('#orgInfo').html('Please select Org and Branch');
+                    if (chart) chart.destroy();
+                }
+            });
+        });
+
+        // ========== Load Branches ==========
+        function loadBranches() {
+            const orgId = $('#id_filter_org').val();
+            const $branch = $('#id_filter_branch');
+
+            if (!orgId) {
+                $branch.html('<option value="">-- Select Branch --</option>');
+                return;
+            }
+
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: orgId },
+                beforeSend: () => showLoading(true),
+                success: (data) => {
+                    $branch.empty().append('<option value="">-- Select Branch --</option>');
+                    $.each(data.branch_list, function (i, b) {
+                        const selected = i === 0 ? 'selected' : '';
+                        $branch.append(`<option value="${b.branch_id}" ${selected}>${b.branch_name}</option>`);
+                    });
+                    showLoading(false);
+
+                    // Auto load chart for first branch
+                    if (data.branch_list.length > 0) {
+                        const firstBranch = data.branch_list[0].branch_id;
+                        loadChartData(orgId, firstBranch);
+                    }
+                },
+                error: () => {
+                    showLoading(false);
+                    showError('Failed to load branches');
+                }
+            });
+        }
+
+        // ========== Load Chart Data ==========
+        function loadChartData(orgId, branchId) {
+            const formData = new URLSearchParams();
+            formData.append('org_id', orgId);
+            formData.append('branch_id', branchId);
+
+            showLoading(true);
+            hideError();
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
+            .then(data => {
+                showLoading(false);
+                renderChart(data);
+                renderCollectionTable(data);
+            })
+            .catch(err => {
+                showLoading(false);
+                showError('Failed to load data: ' + err.message);
+            });
+        }
+
+        // ========== Render Chart ==========
+        function renderChart(data) {
+            $('#orgInfo').html(`
+                <strong>${data.org_name}</strong> - ${data.branch_name}<br>
+                <small>${data.date_range.start} to ${data.date_range.end}</small>
+            `);
+
+            const labels = data.summary_by_date.map(d => d.date);
+            const datasets = [
+                { label: 'Instant Coll', data: data.summary_by_date.map(d => d.total_collection), borderColor: '#3498db', fill: false, tension: 0.4 },
+                { label: 'Due Coll', data: data.summary_by_date.map(d => d.total_due_collection), borderColor: '#e74c3c', fill: false, tension: 0.4 },
+                { label: 'Total Coll', data: data.summary_by_date.map(d => d.total_grand_collection), borderColor: '#f39c12', fill: false, tension: 0.4 },
+                { label: 'Total Refund', data: data.summary_by_date.map(d => d.total_refund_collection), borderColor: '#27ae60', fill: false, borderWidth: 3, tension: 0.4 },
+                { label: 'Net Sub Total Coll', data: data.summary_by_date.map(d => d.grand_total_net_collection), borderColor: '#9b59b6', fill: false, tension: 0.4, borderDash: [8,4] },
+                { label: 'Mobile Bank Coll', data: data.summary_by_date.map(d => d.grand_mobile_bank_coll), borderColor: '#0BF4BD', fill: false, tension: 0.4 },
+                { label: 'Bank Coll', data: data.summary_by_date.map(d => d.grand_total_bank_coll), borderColor: '#09C81C', fill: false, tension: 0.4 },
+                { label: 'Net Sub Tot Coll (Cash)', data: data.summary_by_date.map(d => d.net_sub_total_coll_cash), borderColor: '#0920C8', fill: false, tension: 0.4 },
+                { label: 'Other Expense', data: data.summary_by_date.map(d => d.total_other_exp_amt), borderColor: '#6D891A', fill: false, tension: 0.4 },
+                { label: 'Carrying/Lifting Cost', data: data.summary_by_date.map(d => d.grand_carrying_pay_amt), borderColor: '#303C0B', fill: false, tension: 0.4 },
+                { label: 'Total LP On Cash', data: data.summary_by_date.map(d => d.grand_total_amt), borderColor: '#D6B429', fill: false, tension: 0.4 },
+                { label: 'Total LP Ret On Cash', data: data.summary_by_date.map(d => d.grand_ret_total_amt), borderColor: '#4F6EDE', fill: false, tension: 0.4 },
+                { label: 'Total Manual Ret Rec', data: data.summary_by_date.map(d => d.grand_mrr_total_amt), borderColor: '#9E1E87', fill: false, tension: 0.4 },
+                { label: 'Without Inv Coll (Cash)', data: data.summary_by_date.map(d => d.grand_woinvcoll_amt), borderColor: '#4FDE88', fill: false, tension: 0.4 },
+                { label: 'Reg LC Pay Amt (Cash)', data: data.summary_by_date.map(d => d.grand_regclipay_amt), borderColor: '#C229D6', fill: false, tension: 0.4 },
+                { label: 'Supp/Party Pay Amt(Cash)', data: data.summary_by_date.map(d => d.grand_suppclipay_amt), borderColor: '#DE4F4F', fill: false, tension: 0.4 },
+                { label: 'Daily coll Rec from Sub Branch', data: data.summary_by_date.map(d => d.dep_rec_sub_branch), borderColor: '#4FDE7F', fill: false, tension: 0.4 },
+                { label: 'Total Net Coll (Cash)', data: data.summary_by_date.map(d => d.grand_total_collection), borderColor: '#4F6CDE', fill: false, tension: 0.4 },
+                { label: 'Daily coll Dep from Main Branch', data: data.summary_by_date.map(d => d.deposit_main_branch), borderColor: '#63135B', fill: false, tension: 0.4 },
+                { label: 'Daily Coll Deposit In Bank', data: data.summary_by_date.map(d => d.total_daily_deposit), borderColor: '#F9E234', fill: false, tension: 0.4 },
+                { label: 'Remaining Collection', data: data.summary_by_date.map(d => d.total_remaining_collection), borderColor: '#00750A', fill: false, tension: 0.4, borderDash: [8,4] },
+            ];
+
+            // 🧹 FIX: Remove the old canvas and recreate it
+            const chartContainer = $('#collectionChart').parent();
+            $('#collectionChart').remove();
+            chartContainer.append('<canvas id="collectionChart"></canvas>');
+
+            const ctx = document.getElementById('collectionChart').getContext('2d');
+
+            // 🧠 Recreate the chart cleanly
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Weekly Collection Trend', font: { size: 18 } },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: (ctx) => `${ctx.dataset.label}: ৳${Number(ctx.parsed.y).toLocaleString('en-IN')}`
+                            }
+                        },
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Amount (BDT)' },
+                            ticks: { callback: v => '৳' + Number(v).toLocaleString('en-IN') }
+                        },
+                        x: { title: { display: true, text: 'Date' } }
+                    }
+                }
+            });
+        }
+
+        // ========== Helper Functions ==========
+        function showLoading(show) {
+            $('#loading').toggle(show);
+        }
+        function showError(msg) {
+            $('#error').text(msg).show();
+        }
+        function hideError() {
+            $('#error').hide();
+        }
+
+
+        //////////////////////////////////////////
+        function renderCollectionTable(data) {
+            const tbody = document.getElementById("collectionTBody");
+            tbody.innerHTML = "";
+
+            const days = data.summary_by_date.slice(-8);
+            const fields = [
+                { label: "Instant Coll.", key: "total_collection" },
+                { label: "Due Coll.", key: "total_due_collection" },
+                { label: "Total Coll.", key: "total_grand_collection" },
+                { label: "Total Refund", key: "total_refund_collection" },
+                { label: "Net Sub Total Coll.", key: "grand_total_net_collection" },
+                { label: "Mobile Bank Coll.", key: "grand_mobile_bank_coll" },
+                { label: "Bank Coll.", key: "grand_total_bank_coll" },
+                { label: "Net Sub Tot Coll (Cash)", key: "net_sub_total_coll_cash" },
+                { label: "Other Expense", key: "total_other_exp_amt" },
+                { label: "Carrying/Lifting Cost", key: "grand_carrying_pay_amt" },
+                { label: "Total LP On Cash", key: "grand_total_amt" },
+                { label: "Total LP Ret On Cash", key: "grand_ret_total_amt" },
+                { label: "Total Manual Ret Rec", key: "grand_mrr_total_amt" },
+                { label: "Without Inv Coll (Cash)", key: "grand_woinvcoll_amt" },
+                { label: "Reg LC Pay Amt (Cash)", key: "grand_regclipay_amt" },
+                { label: "Supp/Party Pay Amt(Cash)", key: "grand_suppclipay_amt" },
+                { label: "Daily coll Rec from Sub Branch", key: "dep_rec_sub_branch" },
+                { label: "Total Net Coll (Cash)", key: "grand_total_collection" },
+                { label: "Daily coll Dep from Main Branch", key: "deposit_main_branch" },
+                { label: "Daily Coll Deposit In Bank", key: "total_daily_deposit" },
+                { label: "Remaining Collection", key: "total_remaining_collection" },
+            ];
+
+            fields.forEach(field => {
+                const tr = document.createElement("tr");
+
+                // Label column ("Name" column)
+                const labelTd = document.createElement("td");
+                labelTd.textContent = field.label;
+                labelTd.style.textAlign = "left";
+                labelTd.style.fontWeight = "bold";
+                labelTd.style.border = "1px solid #444";
+                labelTd.style.backgroundColor = "#f8f9fa";
+                tr.appendChild(labelTd);
+
+                // 🟦 Values for 7 previous days
+                days.forEach(day => {
+                    const valueTd = document.createElement("td");
+                    valueTd.textContent = (day[field.key] ?? 0).toLocaleString();
+                    valueTd.style.textAlign = "center";
+                    valueTd.style.border = "1px solid #444";
+                    tr.appendChild(valueTd);
+                });
+
+                tbody.appendChild(tr);
+            });
+        }
+
+
+        // ================= HELPERS ==================
+        function showLoading(show) { $('#loading').toggle(show); }
+        function showError(msg) { $('#error').text(msg).show(); }
+        function hideError() { $('#error').hide(); }
+        
+    </script>
+</main>
+{% endblock %}

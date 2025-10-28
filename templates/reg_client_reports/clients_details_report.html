@@ -1,0 +1,951 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<title>Ledger Account Details Report</title>
+<!--========== CSS ==========-->
+<!--========== Bootstrap link ==========-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- Barcode CDN -->
+<script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+
+<!-- jQuery CDN -->
+<script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+<!-- Then include jQuery UI and the datepicker widget -->
+<link rel="stylesheet" href="{% static 'assets/jquery-ui-1.13.2/jquery-ui.css' %}">
+<script src="{% static 'assets/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'purchase_order/css/purchase_order.css' %}">
+{% endblock %}
+<style>
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-width: 1;
+        border: 1px solid;
+    }
+
+    tr:nth-child(even) {
+        background: None !important;
+    }
+
+    hr {
+        margin: 0.3rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    .com-name {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .com-address {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-address-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .email-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-hotline-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-fax-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-fax-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .software-woner-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-by-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-on-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-page-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .software-woner-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-by-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-on-date {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-page-no {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .mul-items-othrs {
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .mul-items-names {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .receipt-name {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 25px;
+        border: 1px solid #c5c1c1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 15px;
+        font-weight: bolder;
+    }
+
+    .invoice_id {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcodeImg {
+        position: absolute;
+        top: 5rem;
+        right: 2rem;
+        display: flex;
+        margin-top: 4px;
+        margin-left: 21px;
+    }
+
+    .rec-type {
+        display: flex;
+        margin-top: -15px;
+    }
+
+    /* .rec-align {
+        font-size: 9px;
+        margin-top: 2px;
+    } */
+
+    .receipt-logo {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        text-align: left;
+        width: 5%;
+        border-radius: 50%;
+    }
+
+    .receipt-img {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: -8px;
+        left: -6px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .com-receipt-logo {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 0rem;
+        left: 3rem;
+    }
+
+    .paid-due-status {
+        width: 56%;
+        display: flex;
+        align-items: stretch;
+        text-align: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+        background: #9b99998a;
+        font-weight: bolder;
+        border-bottom: 3px solid #8d8a8a;
+        border-right: 3px solid #8d8a8a;
+    }
+
+    .status-DP {
+        text-align: center;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        border-style: hidden !important;
+    }
+
+    .sub-title1 {
+        margin-top: -9px;
+        width: 100%;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: center;
+    }
+
+    .sub-title2 {
+        margin-top: -7px;
+    }
+
+    .sub-title3 {
+        margin-top: -3px;
+    }
+
+    .item_inputbox {
+        position: relative;
+        padding: 0.175rem 0.55rem 0.175rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    /*tbody, td, tfoot, th, thead, tr {
+        border-width: 0;
+        border: 0;
+        border-color: 0;
+        border-style: solid;
+        border-width: 0;
+    }*/
+    .table {
+        margin-bottom: 0rem;
+    }
+
+    /* loader */
+    .loader {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e4e4e4ab;
+        transition: opacity 0.75s, visibility 0.75s;
+        z-index: 3;
+    }
+
+
+    .loader-hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .loader::after {
+        content: "";
+        width: 75px;
+        height: 75px;
+        border: 15px solid #1a8af3;
+        border-top: 15px solid #81c2ff;
+        border-left: 15px solid #81c2ff;
+        border-radius: 50%;
+        animation: loading 0.75s ease infinite;
+    }
+
+    @keyframes loading {
+        from {
+            transform: rotate(0turn);
+        }
+
+        to {
+            transform: rotate(1turn);
+        }
+    }
+</style>
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<main>
+    <!-- loader start -->
+    <div class="loader"></div>
+    <!-- loader end -->
+    <section style="margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <div id="outprint">
+                <input type="number" id="reg_id" value="{{ reg_data.reg_id }}" hidden>
+                <input type="number" id="org_id" value="{{ reg_data.org_id.org_id }}" hidden>
+                <section>
+                    <table class="table"
+                        style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                        {% for org in org_data %}
+                        <tr>
+
+                        </tr>
+                        <tr>
+                            <center>
+                                <label class="com-name">{{ org.org_name }}</label>
+                            </center>
+                            <center class="sub-title1">
+                                <small>
+                                    <span class="com-address">
+                                        <span class="com-address-title">Address: </span>
+                                        <span class="com-address-name">{{ org.address }}</span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title2">
+                                <small>
+                                    <span class="email-address-title">Email: </span>
+                                    <span class="com-address email-address-name">{{ org.email }}</span>
+                                    <span class="website-title">Website: </span>
+                                    <span class="website-name">{{ org.website }}</span>
+                                </small>
+                            </center>
+                            <center class="sub-title3">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">Hotline: </span>
+                                        <span class="com-hotline-name">{{ org.phone }}, {{ org.hotline }}</span>
+                                        <span class="com-fax-title">Fax: </span>
+                                        <span class="com-fax-name">{{ org.fax }}</span>
+                                    </span>
+                                </small>
+                            </center>
+                            <!--  -->
+                            <center class="sub-title3" style="margin-top: 0.2rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">From Date: </span>
+                                        <span class="fromDate"></span>
+                                        <span class="com-fax-title">To Date: </span>
+                                        <span class="toDate"></span>
+                                    </span>
+                                </small>
+                            </center>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+    <section style="margin-bottom: 1rem;">
+        <span
+            style="display: flex; font-size: 1rem; font-weight: bold; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center;">Ledger
+            Account Details Reports</span>
+    </section>
+    <!-- Date Range Selection -->
+    <section id="date_range_field"
+        style="margin-bottom: 1rem; margin-right: 0.5rem; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-end;">
+        <div style="display: flex;">
+            <!-- From Date -->
+            <div
+                style="margin-right: 1rem; display: flex; flex-wrap: nowrap; flex-direction: row; align-items: center;">
+                <label for="from_date" style="margin-right: 0.5rem;">From:</label>
+                <input type="text" id="from_date" name="from_date" class="form-control datepicker item_inputbox"
+                    autocomplete="off">
+            </div>
+            <!-- To Date -->
+            <div style="display: flex; flex-wrap: nowrap; flex-direction: row; align-items: center;">
+                <label for="to_date" style="margin-right: 0.5rem;">To:</label>
+                <input type="text" id="to_date" name="to_date" class="form-control datepicker item_inputbox"
+                    autocomplete="off">
+            </div>
+            <!--  -->
+        </div>
+    </section>
+    <!-- Date Range Selection -->
+    <hr>
+    <!--  -->
+    <section>
+        <div class="requisition-info" style="margin-left: 7.2px; width: 98.9%; border: 1px solid;">
+            <div class="row col-sm-12" style="font-size: 0.75rem; margin-top: 0.5rem;">
+                <div class="col-sm-4" style="display: flex;">
+                    <label class="col-sm-3" style="text-align: right; font-weight: bolder;">Clients No:</label>
+                    <div class="col-sm-9">
+                        <span style="margin-left: 10px;">{{ reg_data.customer_no }}</span>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-sm-4" style="display: flex;">
+                    <label class="col-sm-4" style="text-align: right; font-weight: bolder;">Phone Number:</label>
+                    <div class="col-sm-8">
+                        <span style="margin-left: 10px;">{{ reg_data.mobile_number }}</span>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-sm-4" style="display: flex;">
+                    <label class="col-sm-4" style="text-align: right; font-weight: bolder;">Blood Group:</label>
+                    <div class="col-sm-8">
+                        <span style="margin-left: 10px;">{{ reg_data.blood_group }}</span>
+                    </div>
+                </div>
+                <!--  -->
+            </div>
+            <!--  -->
+            <div class="row col-sm-12" style="font-size: 0.75rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                <div class="col-sm-4" style="display: flex;">
+                    <label class="col-sm-3" style="text-align: right; font-weight: bolder;">Clients Name:</label>
+                    <div class="col-sm-9">
+                        <span style="margin-left: 10px;">{{ reg_data.full_name }}</span>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-sm-8" style="display: flex;">
+                    <label class="col-sm-2" style="text-align: right; font-weight: bolder;">Address:</label>
+                    <div class="col-sm-10">
+                        <span style="margin-left: 10px;">{{ reg_data.address }}</span>
+                    </div>
+                </div>
+                <!--  -->
+            </div>
+            <!--  -->
+        </div>
+    </section>
+    <!--  -->
+    <section style="padding: 0.5rem;">
+        <div class="col-ms-12"
+            style="display: flex; width: 100%; flex-direction: row; flex-wrap: nowrap; justify-content: space-around; align-items: center; align-content: center;">
+            <div class="col-md-12" id="ownerTrnsHis">
+                <table id="ownerTrnstable" class="table" style="width: 100%; overflow-x: auto;">
+                    <thead style="text-align: center;">
+                        <tr style="font-size: 0.8rem; font-weight: bold;">
+                            <th style="width: 6%;" rowspan="2">Date</th>
+                            <th style="width: 6%;" rowspan="2">Transaction ID</th>
+                            <th style="width: 6%;" rowspan="2">Pay Mode</th>
+                            <th style="width: 45%;" colspan="4">Particulars</th>
+                            <th style="width: 10%;" colspan="2">Opening Balance</th>
+                            <th style="width: 10%;" colspan="2">Transaction</th>
+                            <th style="width: 10%;" colspan="2">Closing Balance</th>
+                        </tr>
+                        <tr style="font-size: 0.8rem; font-weight: bold;">
+                            <th style="width: 35%;">Item Details</th>
+                            <th style="width: 5%;">Qty.</th>
+                            <th style="width: 5%;">Rate</th>
+                            <th style="width: 5%;">Dis.(%)</th>
+                            <th>Debit Amt.</th>
+                            <th>Credit Amt.</th>
+                            <th>Debit Amt.</th>
+                            <th>Credit Amt.</th>
+                            <th>Debit Amt.</th>
+                            <th>Credit Amt.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--  -->
+
+                    </tbody>
+                </table>
+                <!--  -->
+            </div>
+        </div>
+    </section>
+</main>
+<section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+    <!-- <hr> -->
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+            onclick="printReceipt()" id="receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+    </div>
+    <!--  -->
+</section>
+<!--  -->
+<script>
+    $(document).ready(function () {
+
+        //startLoader();
+
+        // Initialize datepicker
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeYear: true,
+            changeMonth: true,
+            onSelect: function () {
+                reloadTransactionData(); // Call the function to reload data when a date is selected
+            }
+        });
+
+        // Get current date in 'yyyy-mm-dd' format
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+
+        // Set the current date as the default value for both inputs
+        $("#from_date").val(formattedDate);
+        $("#to_date").val(formattedDate);
+
+        // Fetch initial data on page load
+        reloadTransactionData();
+
+        // Reload data when dates are manually changed
+        $("#from_date, #to_date").on("change", function () {
+            reloadTransactionData();
+        });
+
+        function reloadTransactionData() {
+            var regisID = $('#reg_id').val();
+            var orgID = $('#org_id').val();
+            var fromDate = $('#from_date').val();
+            var toDate = $('#to_date').val();
+
+            startLoader();
+
+            let ajaxCompleted = 0;
+
+            function checkAllAjaxComplete() {
+                ajaxCompleted++;
+                if (ajaxCompleted === 2) {
+                    endLoader();
+                }
+            }
+
+            fetchAndDisplayClientsTrns(regisID, orgID, function (preAllGrandBalance) {
+                fetchAndDisplayClientsDetailsTrns(regisID, orgID, fromDate, toDate, preAllGrandBalance, checkAllAjaxComplete);
+                checkAllAjaxComplete();
+            });
+        }
+
+        function fetchAndDisplayClientsTrns(regisID, orgID, callback) {
+            if (!regisID || regisID === "0" || !orgID) {
+                if (callback) callback(0);
+                return;
+            }
+
+            $.ajax({
+                headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                url: "{% url 'get_summary_due_balance_of_reg_clients' %}",
+                type: "POST",
+                data: JSON.stringify({
+                    reg_id: [regisID],  // Must be a list since API expects list
+                    org_id: orgID
+                }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (response) {
+                    if (response.balances && response.balances[regisID] !== undefined) {
+                        const balanceData = response.balances[regisID];
+                        const pre_all_grand_balance = 
+                            typeof balanceData === 'object' && balanceData.balance !== undefined
+                            ? parseFloat(balanceData.balance)
+                            : parseFloat(balanceData) || 0;
+
+                        if (callback) callback(pre_all_grand_balance);
+                    } else {
+                        if (callback) callback(0);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching transactions:", status, error);
+                    if (callback) callback(0);
+                }
+            });
+        }
+
+        //function fetchAndDisplayClientsTrns(regisID, orgID, callback) {
+        //    if (regisID && regisID !== "0" && orgID) {
+        //        $.ajax({
+        //            url: "{% url 'get_clients_trans_summary_report' %}",
+        //            type: 'GET',
+        //            data: {
+        //                reg_id: regisID,
+        //                org_id: orgID
+        //            },
+        //            dataType: 'json',
+        //            success: function (response) {
+        //                var total_OP_DebitAmt = 0;
+        //                var total_OP_CreditAmt = 0;
+        //                var total_trns_DebitAmt = 0;
+        //                var total_trns_CreditAmt = 0;
+        //                var pre_all_grand_balance = 0;
+    
+        //                if (Array.isArray(response.combined_data)) {
+        //                    response.combined_data.forEach(function (transaction) {
+        //                        total_OP_DebitAmt += parseFloat(transaction.op_debit_amt || 0);
+        //                        total_OP_CreditAmt += parseFloat(transaction.op_credit_amt || 0);
+        //                        total_trns_DebitAmt += parseFloat(transaction.trns_debit_amt || 0);
+        //                        total_trns_CreditAmt += parseFloat(transaction.trns_credit_amt || 0);
+        //                    });
+    
+        //                    pre_all_grand_balance = (total_OP_DebitAmt + total_trns_DebitAmt) - (total_OP_CreditAmt + total_trns_CreditAmt);
+        //                    console.log('Previous All Grand Balance:', pre_all_grand_balance);
+        //                }
+    
+        //                if (callback) {
+        //                    callback(pre_all_grand_balance);
+        //                }
+        //            },
+        //            error: function (xhr, status, error) {
+        //                console.error('Error fetching transactions:', status, error);
+        //                if (callback) {
+        //                    callback(0); // Pass 0 if there's an error
+        //                }
+        //            }
+        //        });
+        //    } else if (callback) {
+        //        callback(0); // Pass 0 if regisID or orgID is invalid
+        //    }
+        //}
+
+        function fetchAndDisplayClientsDetailsTrns(regisID, orgID, fromDate, toDate, preAllGrandBalance, onComplete) {
+            onComplete = onComplete || function () {}; // fallback to empty function
+
+            if (regisID) {
+                $.ajax({
+                    url: "{% url 'get_clients_trans_details_report' %}",
+                    type: 'GET',
+                    data: {
+                        'reg_id': regisID,
+                        'org_id': orgID,
+                        'from_date': fromDate,
+                        'to_date': toDate,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response);
+
+                        // Clear the existing table body
+                        $('#ownerTrnstable tbody').empty();
+                        var total_OP_DebitAmt = 0;
+                        var total_OP_CreditAmt = 0;
+                        var total_trns_DebitAmt = 0;
+                        var total_trns_CreditAmt = 0;
+                        var total_cl_DebitAmt = 0;
+                        var total_cl_CreditAmt = 0;
+                        var total_balance = 0;
+
+                        // Populate the table body with the new data
+                        if (Array.isArray(response)) {
+
+                            response.forEach(function (transaction, index) {
+                                var opdebitId = 'id_op_debit_amt_' + index;
+                                var opcreditId = 'id_op_credit_amt_' + index;
+                                var trnsdebitId = 'id_trns_debit_amt_' + index;
+                                var trnscreditId = 'id_trns_credit_amt_' + index;
+                                var cldebitId = 'id_cl_debit_amt_' + index;
+                                var clcreditId = 'id_cl_credit_amt_' + index;
+
+                                var clDebitAmt = parseFloat(transaction.op_debit_amt) + parseFloat(transaction.trns_debit_amt);
+                                var clCreditAmt = parseFloat(transaction.op_credit_amt) + parseFloat(transaction.trns_credit_amt);
+
+                                var balance = parseFloat(clDebitAmt) - parseFloat(clCreditAmt);
+
+                                // Collect item names, qty, and sales rates from details_data if available
+                                var itemNames = '', itemQtyUoM = '', itemSalesRate = '', itemDisPer = '';
+
+                                if (transaction.details_data && Array.isArray(transaction.details_data)) {
+                                    transaction.details_data.forEach(function (detail, idx) {
+                                        itemNames += (idx + 1) + '. ' + detail.item_name + '<br>';
+
+                                        // Ensure qty is a valid number and has a default value if undefined or null
+                                        // Concatenate quantity with UoM
+                                        var qty = parseFloat(detail.qty) || 0;
+                                        var uom = detail.uom || '';  // Ensure UoM is a string
+                                        itemQtyUoM += qty.toFixed(1) + '/' + uom + '<br>';
+
+                                        // Ensure sales_rate is a valid number and has a default value if undefined or null
+                                        var salesRate = parseFloat(detail.sales_rate) || 0;
+                                        itemSalesRate += salesRate.toFixed(1) + '<br>';
+
+                                        // Ensure dis_perc is a valid number and has a default value if undefined or null
+                                        var disPerc = parseFloat(detail.dis_perc) || 0;
+                                        itemDisPer += disPerc.toFixed(1) + '<br>';
+                                    });
+                                }
+
+                                var IsPurchase = transaction.is_purchase ? transaction.is_purchase : '';
+                                var IsPurchaseTextAlign = IsPurchase === '1' ? 'right' : 'left';
+                                var purAdditionalStyle = '';
+                                if (IsPurchase === '1') {
+                                    purAdditionalStyle = 'display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: flex-end; align-content: flex-end;';
+                                }
+                                var saleAdditionalStyle = '';
+                                if (IsPurchase === '0') {
+                                    saleAdditionalStyle = 'display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start;';
+                                }
+                                var purchaseAndsalesAlign = IsPurchase === '1' ? purAdditionalStyle : saleAdditionalStyle;
+
+                                var descriptions = transaction.description ? transaction.description : '';
+                                var carrying_head = transaction.carrying_head ? transaction.carrying_head : '';
+                                var carrying_cost = transaction.carrying_cost ? transaction.carrying_cost : '';
+                                var cost_br = transaction.carrying_cost ? '<br>' : '';
+                                var branch_trans = transaction.branch ? '<span><br>' + transaction.branch + '</span>' : '';
+                                var branch_br = transaction.branch ? '<br>' : '';
+                                var dateParts = transaction.trans_date.split('-'); // Split the date by '-'
+                                var formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Rearrange to dd-mm-yyyy
+
+                                // pay Mode
+                                var payMode = transaction.pay_mode;
+                                if (payMode == 1) {
+                                    payMode = 'Cash';
+                                } else if (payMode == 2) {
+                                    payMode = 'Cheque';
+                                } else if (payMode == 3) {
+                                    payMode = 'Debit Card';
+                                } else if (payMode == 4) {
+                                    payMode = 'Credit Card';
+                                } else if (payMode == 5) {
+                                    payMode = 'Bkash';
+                                } else if (payMode == 6) {
+                                    payMode = 'Nagad';
+                                } else if (payMode == 7) {
+                                    payMode = 'Upay';
+                                } else if (payMode == 8) {
+                                    payMode = 'UCash';
+                                } else if (payMode == 9) {
+                                    payMode = 'Bank Deposit';
+                                } else {
+                                    payMode = 'N/A';
+                                }
+                                // Create the row
+                                var row = $('<tr style="font-size: 0.8rem;">');
+                                row.append(
+                                    $('<td style="text-align: center;">').text(formattedDate),
+                                    $('<td style="text-align: center;">').text(transaction.trans_id),
+                                    $('<td style="text-align: center;">').text(payMode),
+                                    $('<td style="text-align: left;">').html(
+                                        '<span class="debit-payment-input" style="' + purchaseAndsalesAlign + '"><span style="font-weight: bold; text-align: ' + IsPurchaseTextAlign + ';">' + transaction.ac_head + branch_trans + '</span>' + itemNames + descriptions + carrying_head + '</span>'
+                                    ),
+                                    $('<td style="text-align: center;">').html('<span><br>' + branch_br + itemQtyUoM + cost_br + '</span>'),
+                                    $('<td style="text-align: center;">').html('<span><br>' + branch_br + itemSalesRate + carrying_cost + '</span>'),
+                                    $('<td style="text-align: center;">').html('<span><br>' + branch_br + itemDisPer + cost_br + '</span>'),
+                                    $('<td>').html('<input type="number" class="debit-payment-input" id="' + opdebitId + '" value="' + (transaction.op_debit_amt || '0') + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: 500; background: transparent;" readonly>'),
+                                    $('<td>').html('<input type="number" class="debit-payment-input" id="' + opcreditId + '" value="' + (transaction.op_credit_amt || '0') + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: 500; background: transparent;" readonly>'),
+                                    $('<td>').html('<input type="number" class="debit-payment-input" id="' + trnsdebitId + '" value="' + (transaction.trns_debit_amt || '0') + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: 500; background: transparent;" readonly>'),
+                                    $('<td>').html('<input type="number" class="debit-payment-input" id="' + trnscreditId + '" value="' + (transaction.trns_credit_amt || '0') + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: 500; background: transparent;" readonly>'),
+                                    $('<td>').html('<input type="number" class="debit-payment-input" id="' + cldebitId + '" value="' + clDebitAmt + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: 500; background: transparent;" readonly>'),
+                                    $('<td>').html('<input type="number" class="debit-payment-input" id="' + clcreditId + '" value="' + clCreditAmt + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: 500; background: transparent;" readonly>')
+                                );
+                                $('#ownerTrnstable tbody').append(row);
+
+                                // Accumulate totals
+                                if (!isNaN(transaction.op_debit_amt)) {
+                                    total_OP_DebitAmt += parseFloat(transaction.op_debit_amt);
+                                }
+
+                                if (!isNaN(transaction.op_credit_amt)) {
+                                    total_OP_CreditAmt += parseFloat(transaction.op_credit_amt);
+                                }
+
+                                if (!isNaN(transaction.trns_debit_amt)) {
+                                    total_trns_DebitAmt += parseFloat(transaction.trns_debit_amt);
+                                }
+
+                                if (!isNaN(transaction.trns_credit_amt)) {
+                                    total_trns_CreditAmt += parseFloat(transaction.trns_credit_amt);
+                                }
+
+                                if (!isNaN(clDebitAmt)) {
+                                    total_cl_DebitAmt += parseFloat(clDebitAmt);
+                                }
+
+                                if (!isNaN(clCreditAmt)) {
+                                    total_cl_CreditAmt += parseFloat(clCreditAmt);
+                                }
+
+                                if (!isNaN(balance)) {
+                                    total_balance += parseFloat(balance);
+                                }
+                            });
+                        }
+
+                        // Append the total row after the loop
+                        var totalRow = $('<tr style="font-size: 0.8rem;">').append(
+                            $('<td style="text-align: right; font-weight: bold; font-size: 0.9rem;" colspan="7">').text('Total Debit/Credit Amt.:'),
+                            $('<td>').html('<input type="number" class="debit-payment-input" value="' + total_OP_DebitAmt.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: bold; background: transparent;" readonly>'),
+                            $('<td>').html('<input type="number" class="debit-payment-input" value="' + total_OP_CreditAmt.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: bold; background: transparent;" readonly>'),
+                            $('<td>').html('<input type="number" class="debit-payment-input" value="' + total_trns_DebitAmt.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: bold; background: transparent;" readonly>'),
+                            $('<td>').html('<input type="number" class="debit-payment-input" value="' + total_trns_CreditAmt.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: bold; background: transparent;" readonly>'),
+                            $('<td>').html('<input type="number" class="debit-payment-input" value="' + total_cl_DebitAmt.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: bold; background: transparent;" readonly>'),
+                            $('<td>').html('<input type="number" class="debit-payment-input" value="' + total_cl_CreditAmt.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: center; font-weight: bold; background: transparent;" readonly>')
+                        );
+
+                        $('#ownerTrnstable tbody').append(totalRow);
+
+                        // Append the grand total row after the loop
+                        var grandRow = $('<tr style="font-size: 0.8rem;">').append(
+                            $('<td style="text-align: right; font-weight: bold; font-size: 0.9rem;" colspan="7">').text('Total Balance:'),
+                            $('<td colspan="7">').html('<input type="number" class="debit-payment-input" value="' + total_balance.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: right; font-weight: bold; background: transparent;" readonly>')
+                        );
+
+                        $('#ownerTrnstable tbody').append(grandRow);
+
+                        // Append the previous grand total row after the loop
+                        var preGrandRow = $('<tr style="font-size: 0.8rem;">').append(
+                            $('<td style="text-align: right; font-weight: bold; font-size: 0.9rem;" colspan="7">').text('Grand Total Previous Balance:'),
+                            $('<td colspan="7">').html('<input type="number" class="debit-payment-input" value="' + preAllGrandBalance.toFixed(2) + '" style="width: 100%; outline: 0; border: none; text-align: right; font-weight: bold; background: transparent;" readonly>')
+                        );
+
+                        $('#ownerTrnstable tbody').append(preGrandRow);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX request failed:', error);
+                    },
+                    complete: function () {
+                        onComplete(); // safe to call now
+                    }
+                });
+            } else {
+                console.warn("Invalid regID in details.");
+                onComplete(); // still call fallback
+            }
+        }
+    });
+
+    function printReceipt() {
+        // Save the values of the date fields
+        const fromDate = $("#from_date").val();
+        const toDate = $("#to_date").val();
+    
+        // Set the values in the respective span elements
+        $(".fromDate").text(fromDate);
+        $(".toDate").text(toDate);
+    
+        // Hide the date range field
+        $("#date_range_field").hide();
+    
+        const footerText = 'TBOX, Contact: +8801309-994317,';
+        const now = new Date();
+        const formattedDateTime = now.toLocaleString();
+        const pageNumber = 1; // Update this dynamically if needed
+    
+        // Append your footer content
+        const footerContent =
+            `<div class="footer">
+                <span class="software-woner-title">Software By: </span>
+                <span class="software-woner-name">${footerText}</span>
+                <span class="printed-by-title">- Printed By: </span>
+                <span class="printed-by-name"></span>
+                <span class="printed-on-title">- Printed on: </span>
+                <span class="printed-on-date">${formattedDateTime}</span>
+                <!-- <span class="printed-page-title">- Page </span> -->
+                <!-- <span class="printed-page-no">${pageNumber}</span> -->
+            </div>`;
+    
+        // Get the main content for printing
+        let printContents = document.querySelector('main').innerHTML;
+        const originalContents = document.body.innerHTML;
+    
+        // Append footer content to the end of the print contents
+        printContents += footerContent;
+    
+        // Replace the body content with the print contents
+        document.body.innerHTML = printContents;
+        window.print();
+    
+        // Restore the original body content after printing
+        document.body.innerHTML = originalContents;
+    
+        // Restore the values of the date fields
+        $("#from_date").val(fromDate);
+        $("#to_date").val(toDate);
+    
+        // Reinitialize any necessary scripts or events if required
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeYear: true,
+            changeMonth: true
+        });
+    
+        // Re-show the date range field after printing
+        $("#date_range_field").show();
+    
+        // Use setTimeout to delay the page reload after print
+        location.reload();
+    }
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+    
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+</script>
+{% endblock %}

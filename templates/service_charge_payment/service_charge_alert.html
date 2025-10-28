@@ -1,0 +1,290 @@
+{% load humanize %} {% load static %}
+<style>
+    .alert-content {
+        background: linear-gradient(135deg, #ffe4e1, #f0fff4, #e0f2fe);
+        width: 100%;
+        max-width: 900px;
+        padding: 30px;
+        border-radius: 1.5rem;
+        box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        max-height: 90%;
+        animation: slideIn 0.3s ease;
+        font-family: 'Segoe UI', sans-serif !important;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .alert-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .alert-header h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .gradient-text {
+        background: linear-gradient(to right, #f12711, #f5af19); /* red to orange */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* fallback */
+        color: transparent;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    .startupdate {
+        background: linear-gradient(to right, #f12711, #f5af19); /* red to orange */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* fallback */
+        color: transparent;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    .bkash-example-caption {
+        background: linear-gradient(to right, #f12711, #f5af19); /* red to orange */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* fallback */
+        color: transparent;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .close-btn {
+        background: #ff4d4d;
+        color: white;
+        border: none;
+        font-size: 22px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Add continuous movement */
+        animation: bounceClose 3s ease-in-out infinite;
+    }
+
+    /* Hover: scale up */
+    .close-btn:hover {
+        transform: scale(1.2);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Click: bounce */
+    .close-btn:active {
+        animation: bounceClose 0.3s;
+    }
+
+    /* Continuous movement animation */
+    @keyframes floatMove {
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-6px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    /* Bounce when clicked */
+    @keyframes bounceClose {
+        0% {
+            transform: scale(1.2);
+        }
+
+        50% {
+            transform: scale(0.9);
+        }
+
+        100% {
+            transform: scale(1.1);
+        }
+    }
+
+    .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-radius: 15px;
+        color: #222;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h3 {
+        margin-top: 0;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .due-section {
+        background: #fff7ed;
+        border-left: 8px solid #f97316;
+    }
+
+    .shutdown-section {
+        background: #fef2f2;
+        border-left: 8px solid #ef4444;
+    }
+
+    .bkash-section {
+        background: #eef2ff;
+        border-left: 8px solid #6366f1;
+    }
+
+    .highlight {
+        background: linear-gradient(to right, #f12711, #f5af19); /* red to orange */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* fallback */
+        color: transparent;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    .highlight_service {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .bkash-steps {
+        margin-top: 10px;
+        line-height: 1.6;
+    }
+
+    .bkash-steps li {
+        margin-bottom: 6px;
+    }
+
+    .bkash-image {
+        margin-top: 15px;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: #f3f4f6;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bkash-image img {
+        max-width: 100%;
+        height: 20rem;
+        border-radius: 10px;
+        border: 2px solid #ddd;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .bkash-steps {
+        padding-left: 2.2rem;
+    }
+
+    @media (max-width: 600px) {
+        .alert-content {
+            padding: 20px;
+        }
+
+        .section h3 {
+            font-size: 18px;
+        }
+
+        .bkash-steps {
+            font-size: 14px;
+        }
+    }
+</style>
+<div class="container-fluid">
+    <div id="paymentModal" class="alert-body">
+        <div class="alert-content">
+            <div class="alert-header">
+                <h2>📢 <span class="gradient-text">Software Service Charge Alert</span></h2>
+                <button class="close-btn" type="button" data-bs-dismiss="modal">
+                    X
+                </button>
+            </div>
+
+            <!-- Section 1: Due Amount -->
+            <div class="section due-section">
+                <h3>1️⃣ Software Service Charge Due Amount</h3>
+                <p>
+                    Your Software Started On: <span class="startupdate"> {{ is_start_up_date }} </span>
+                </p>
+                <p>
+                    Your Current Monthly Service Charge is: <span class="highlight_service">৳ {{ service_charge }}</span>
+                </p>
+                <p style="font-size: 1.1rem;">
+                    Your Current <span class="highlight">Due Amount</span> is: <span class="highlight">৳ {{ due_amount }}</span>
+                </p>
+                <p>
+                    Please Make Your Payment Before The Deadline To Continue Uninterrupted Access.
+                </p>
+            </div>
+
+            <!-- Section 2: Software Shut Down Info -->
+            <div class="section shutdown-section">
+                <h3>2️⃣ Software Shut Down Info</h3>
+                <p>
+                    If not paid within <span class="highlight">{{ remaining_alert_days }} days</span>, the software
+                    will be <span class="highlight">Shut Down on {{ is_alert_end }}.</span>
+                </p>
+                <p>Don't lose your access — pay on time!</p>
+            </div>
+
+            <!-- Section 3: bKash Payment -->
+            <div class="section bkash-section">
+                <h3>3️⃣ How to Pay via bKash</h3>
+                <ul class="bkash-steps">
+                    <li>✅ Open your bKash App or dial *247#</li>
+                    <li>✅ Choose "Send Money"</li>
+                    <li>✅ Bkash Number: <strong style="font-size: 1.2rem; font-weight: bolder; background: linear-gradient(to right, #f12711, #f5af19); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">01681332576</strong></li>
+                    <li>✅ Pay Amount: <strong style="font-size: 1.2rem; font-weight: bolder; background: linear-gradient(to right, #f12711, #f5af19); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">৳ {{ due_amount }}</strong></li>
+                    <li>✅ Reference: <strong style="background: linear-gradient(to right, #f12711, #f5af19); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; font-weight: bold;">Your Business Name</strong></li>
+                    <li>✅ Confirm and send</li>
+                </ul>
+
+                <!-- Screenshot -->
+                <div class="bkash-image">
+                    <img src="{% static 'images/bkash_send_money/bkash_1.png' %}" alt="">
+                    <img src="{% static 'images/bkash_send_money/bkash_2.jpg' %}" alt="">
+                    <img src="{% static 'images/bkash_send_money/bkash_3.png' %}" alt="">
+                    <img src="{% static 'images/bkash_send_money/bkash_4.png' %}" alt="">
+                    <img src="{% static 'images/bkash_send_money/bkash_5.png' %}" alt="">
+                    <img src="{% static 'images/bkash_send_money/bkash_6.png' %}" alt="">
+                    <img src="{% static 'images/bkash_send_money/bkash_7.png' %}" alt="">
+                    <p>
+                        📷 <span class="bkash-example-caption">Example Screenshot of bKash Payment</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+{% if alert_data %}
+<div class="notification-toast" id="toast" data-toast>
+    <button class="toast-close-btn" data-toast-close style="border: none; background: none; outline: none;">
+        <i class='bx bx-x' style="font-size: 2rem; color: red;"></i>
+    </button>
+    <div class="toast-detail" id="toast-detail"></div>
+</div>
+
+{{ alert_data|json_script:"toast-json" }}
+
+<script>
+    const toastData = JSON.parse(document.getElementById("toast-json").textContent);
+    const toast = document.getElementById("toast");
+    const detail = document.getElementById("toast-detail");
+    let currentIndex = 0;
+
+    function showNextToast() {
+        if (!toastData || toastData.length === 0) return;
+
+        const data = toastData[currentIndex];
+        detail.innerHTML = `
+            <p class="toast-message" style="text-align: center; margin-top: 5px; margin-left: 0px; margin-bottom: 5px;"><span style="font-size: 1rem; font-weight: bolder; color: green;">Re-Order Items</span></p>
+            <p class="toast-message" style="margin-top: 5px; margin-left: 0px; margin-bottom: 5px;"><span style="font-weight: bolder;">Item :</span> ${data.item_name}</p>
+            <p class="toast-title" style="margin-top: 5px; margin-left: 0px; margin-bottom: 5px;"><span style="font-weight: bolder;">Store :</span> ${data.store_name}</p>
+            <p class="toast-meta" style="margin-top: 5px; margin-left: 0px; margin-bottom: 5px;"><span style="font-weight: bolder;">Stock Qty :</span> ${data.total_stockQty}</p>
+        `;
+
+        // Restart animation
+        toast.classList.remove("slideInOut");
+        void toast.offsetWidth;
+        toast.classList.add("slideInOut");
+
+        currentIndex = (currentIndex + 1) % toastData.length;
+    }
+
+    function closeToast() {
+        toast.style.display = "none"; // Hide the toast when the close button is clicked
+
+        // Show the toast again after 10 seconds (or adjust this duration as needed)
+        setTimeout(() => {
+            toast.style.display = "block";
+            showNextToast(); // Show the next toast
+        }, 10000);
+    }
+
+    // First show
+    showNextToast();
+
+    // Repeat every 10 seconds, even if it's not closed
+    setInterval(() => {
+        if (toast.style.display !== "none") { // Only show the toast if it's not closed
+            showNextToast();
+        }
+    }, 10000); // Match the animation duration (10 seconds in this case)
+</script>
+{% endif %}

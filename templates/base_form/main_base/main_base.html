@@ -1,0 +1,528 @@
+{% load static %}
+{% load get_notification_data %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== FAVICON ICONS ==========-->
+    <link rel="shortcut icon" href="{% static 'fav_icon/favicon.ico' %}">
+
+    <!----===== Boxicons CSS ===== -->
+    <link rel="stylesheet" href="{% static 'assets/boxicons-2.1.4/css/boxicons.min.css' %}">
+
+    <!--========== Bootstrap link ==========-->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+    <!-- datatable -->
+    <link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+    <!-- <script src="{% static 'assets/DataTables_1.13.6/js/dataTables.dataTables.min.js' %}"></script> -->
+
+    <!-- *************************** chart js ***************************** -->
+    <!-- Include Chart.js -->
+    <script src="{% static 'assets/chart_cdn/chart_js/chart.min.js' %}"></script>
+    
+    <!-- Include chartjs-plugin-datalabels AFTER Chart.js -->
+    <script src="{% static 'assets/chart_cdn/chartjs-plugin-datalabels/plugin-datalabels.js' %}"></script>
+    <!-- *************************** chart js ***************************** -->
+
+    <!-- *************************** Report ***************************** -->
+    <!-- jsPDF -->
+    <script src="{% static 'assets/jspdf/jspdf-1.5.3/jspdf.min.js' %}"></script>
+
+    <!-- jspdf-autotable -->
+    <script src="{% static 'assets/jspdf/jspdf-autotable-3.5.6/jspdf.plugin.autotable.min.js' %}"></script>
+    <!-- *************************** Report ***************************** -->
+
+    <!--==========Bootstap MAIN JS ==========-->
+    <!--Jquery Cdn -->
+    <script src="{% static 'assets/bootstrap-5.0.2/dist/js/bootstrap.min.js' %}"></script>
+    <!-- <script src="{% static 'assets/bootstrap-5.0.2/dist/js/bootstrap.bundle.min.js' %}"></script> -->
+
+    <!-- ajax googleapis libs jquery -->
+    <script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+
+    <!-- datatables CDN javascript / CSS -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'assets/jquery_dataTables/css/jquery.dataTables.1.13.6.css' %}">
+    <!-- js -->
+    <script src="{% static 'assets/jquery_dataTables/js/jquery.dataTables.1.13.6.js' %}" defer></script>
+
+    <!-- toastr js -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'assets/toastr/css/toastr.min.css' %}">
+    <!-- JS -->
+    <script src="{% static 'assets/toastr/js/toastr.min.js' %}"></script>
+
+    <!-- jQuery CDN -->
+    <script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+    <!-- Then include jQuery UI and the datepicker widget -->
+    <link rel="stylesheet" href="{% static 'assets/jquery-ui-1.13.2/jquery-ui.css' %}">
+    <script src="{% static 'assets/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+
+    <!-- Bootstrap Typeahead library -->
+    <script src="{% static 'assets/bootstrap-3-typeahead-4.0.2/typeahead.min.js' %}"></script>
+
+    <!-- Barcode CDN -->
+    <script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+
+    <!-- tom-select -->
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'assets/tom_select_2.0.0/css/tom_select.css' %}">
+    <!-- js -->
+    <script src="{% static 'assets/tom_select_2.0.0/js/tom_select.complete.min.js' %}"></script>
+
+    <!-- ======== main base from style CSS ======== -->
+    <link rel="stylesheet" type="text/css" href="{% static 'base_form_style/main_base_style/css/main_base_style.css' %}">
+
+    <title>TBOX</title>
+
+    {% block extra_link %} {% endblock %}
+</head>
+
+<body>
+    <!--========== HEADER ==========-->
+    <header class="header">
+        <div class="header__container">
+            {% if user.is_authenticated %}
+            <!--  -->
+            <div style="width: 35%;">
+                <a class="header__nane">{{ user_org_name }}</a>
+                <span class="branch__nane">{{ user_branch_name }}</span>
+                <span class="branch__address">{{ user_branch_address }}</span>
+            </div>
+            <!--  -->
+            <div id="scrollNotification" class="scroll-notifications-wrapper">
+                <div class="scroll-notifications">
+                    <span id="scrollText">
+                        <span style="color: green; font-size: 0.85rem;">📢 প্রিয় গ্রাহক,</span>
+                        সফটওয়্যার সেবা চালু রাখতে প্রতি মাসের ১০ তারিখের মধ্যে নির্ধারিত সার্ভিস চার্জ পরিশোধ করুন। 🔒 নির্ধারিত সময়ের মধ্যে পরিশোধ না হলে
+                        <span style="color: red;">সেবা সাময়িকভাবে বন্ধ হতে পারে।</span> 
+                        💳 পেমেন্টের ২০ মিনিটের মধ্যে সেবা স্বয়ংক্রিয়ভাবে পুনরায় চালু হবে। আপনার সহযোগিতায় আমরা কৃতজ্ঞ।
+                        <span style="color: green; font-size: 0.9rem;">— টিবক্স টিম</span>
+                    </span>
+                </div>
+            </div>
+            <!--  -->
+            <div class="title_user_name">
+                <div class="body_user_name">
+                    <div class="user__name">
+                        <h3>
+                            {{ user_first_name }}
+                            {{ user_last_name }}
+                            <div class="designation">
+                                ({{ user_designation }})
+                            </div>
+                            <span class="software-balance previewDetails show">
+                                Service Charge Due:
+                                <span style="color: orangered; font-size: 0.8rem; margin-left: 0.2rem;">৳ {{ due_amount }}</span>
+                                <input type="hidden" id="service_due_amt" value="{{ due_amount }}"> 
+                            </span>
+                        </h3>
+                    </div>
+                    <!-- notification btn -->
+                    <button class="notifications-body" style="border: none;">
+                        {% with org_id_str=user.org_id|stringformat:"s" branch_id_str=user.branch_id|stringformat:"s" %}
+                            {% with org_branch_key=org_id_str|add:"_"|add:branch_id_str %}
+                                {% with total_count=total_data_count|get_total_notifications:org_branch_key %}
+                                    <button class="notificationsBtn" onclick="togglePanel()">
+                                        {% if total_count > 99 %}
+                                            99+
+                                        {% else %}
+                                            {{ total_count }}
+                                        {% endif %}
+                                    </button>
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                    </button>
+                    <!-- notification btn -->
+                    <a href="#logout/confirmation">
+                        <!-- User Profile Image -->
+                        {% if user_profile_img %}
+                        <img src="{{ user_profile_img }}" alt="" class="header__img">
+                        {% else %}
+                        <!-- Provide a default image or leave it empty -->
+                        <img src="{% static 'images/profile_img/user.png' %}" alt="" class="header__img">
+                        {% endif %}
+                    </a>
+                </div>
+                {% if user.is_superuser %}
+                <!-- voice assistant btn -->
+                <div class="voice-assistant" title="Voice Assistant">
+                    <div id="voice_assistant" class="assistant-icon">
+                        <i class='bx bxs-microphone speech'></i>
+                    </div>
+                </div>
+                <!-- command info btn -->
+                <div class="command-infoBtn" title="Command Info">
+                    <button class="command-icon">
+                        <i class='bx bx-terminal command'></i>
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- <a href="#logout/confirmation">
+                <i class='bx bxs-cog logout__icon'></i>
+            </a> -->
+
+            <div class="header__toggle">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    {% include 'base_form/navbar/nav_bar.html' %}
+    <!-- Item Re Order alert -->
+    <!-- {% include 'base_form/notification_alert/notification_alert.html' %} -->
+    <!-- Item Re Order alert -->
+    <!--========== CONTENTS ==========-->
+
+    <main>
+        <section>
+            <div class="block_body">
+                <!--========== CONTENTS ==========-->
+                {% block body %} {% endblock %}
+            </div>
+        </section>
+    </main>
+
+    {% include 'base_form/notification_details/notification_details.html' %}
+
+    <!-- log out modal start -->
+    <div id="logout/confirmation" class="modal_body">
+        <div class="modalcontent">
+            <div class="toggle">
+                <h1></h1>
+            </div>
+            <ul>
+                <!--  -->
+                <li>
+                    <a href="/accounts/profile/" class="nav__link" style="padding: 0; border-bottom: 0;">
+                        <span class="icon"><i class='bx bx-home' aria-hidden="true"></i></span>
+                        <span class="title">Home</span>
+                    </a>
+                </li>
+                <!--  -->
+                <li>
+                    {% if user.is_authenticated %}
+                    <a href="#" class="useInfoChanging_by_user" data-id="{{ user.user_id }}">
+                        <span class="icon"><i class="bx bx-user" aria-hidden="true"></i></span>
+                        <span class="title">User Info</span>
+                    </a>
+                    {% endif %}
+                </li>
+                <!--  -->
+                <li>
+                    {% if user.is_authenticated %}
+                    <a href="#" class="passwordChanging_by_user" data-id="{{ user.user_id }}">
+                        <span class="icon"><i class="bx bx-lock" aria-hidden="true"></i></span>
+                        <span class="title">Password</span>
+                    </a>
+                    {% endif %}
+                </li>
+                <!--  -->
+                <li>
+                    <a href="{% url 'logout' %}" id="logout-link">
+                        <span class="icon"><i class='bx bx-log-out bx-flip-horizontal' aria-hidden="true"></i></span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+                <!--  -->
+                <li>
+                    <a href="{% url 'logout_all_users' %}">
+                        <span class="icon"><i class='bx bx-bolt-circle bx-flip-horizontal' aria-hidden="true"></i></span>
+                        <span class="title">Sys Down For 6hrs</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="modalclose">&times;</a>
+        </div>
+    </div>
+
+    <!-- modal including start -->
+    {% include 'modal_service/uni_modal.html' %}
+    {% include 'modal_service/confirmation_modal.html' %}
+    {% include 'modal_service/modal-lg.html' %}
+    {% include 'modal_service/modal-xl.html' %}
+    {% include 'modal_service/modal-md.html' %}
+    {% include 'modal_service/serviceChargeAlert-modal.html' %}
+    <!-- modal including end -->
+
+    <!-- main loader start -->
+    {% include 'loader_service/circle_loader.html' %}
+    {% include 'loader_service/line_loader.html' %}
+    <!-- main loader end -->
+
+    <!--========== main base from js file ==========-->
+    <script src="{% static 'base_form_style/main_base_style/js/script.js' %}"></script>
+
+    <!-- password changing by user -->
+    <script>
+        const el = document.querySelector('.software-balance');
+
+        function toggleSlide() {
+            if (!el) return;
+
+            // Hide it first (slide right)
+            el.classList.remove('show');
+            el.classList.add('hide');
+
+            // After 2 seconds, show it again (slide left)
+            setTimeout(() => {
+                el.classList.remove('hide');
+                el.classList.add('show');
+            }, 5000); // 2 seconds hidden time
+        }
+
+        // Optional: first animation after 10 seconds
+        setTimeout(toggleSlide, 10000);
+
+        // Repeat every 2 minutes
+        setInterval(toggleSlide, 1000 * 60 * 2);
+
+        /////////////////////////////////////////////////////////////////
+
+        $(function () {
+            // delevery chalan create //// it's manual anr automated chalan
+            $(document).on('click', '.delivery-chalan', function (e) {
+                e.preventDefault(); // Prevent the default action of the click event
+                circleloaderstart();
+                var invsID = $(this).attr('data-id');
+                var updateChalanUrl = "{% url 'update_delivery_chalan' 0 %}".replace('0', invsID);
+                navigateTo(updateChalanUrl);
+            });
+
+            // GRN create
+            $(document).on('click', '.update-wogrn', function (e) {
+                e.preventDefault(); // Prevent the default action of the click event
+                circleloaderstart();
+                var wogrnId = $(this).attr('data-id');
+                var updateWithoutGRNUrl = "{% url 'edit_receive_stock_withoutgrn' 0 %}".replace('0', wogrnId);
+                navigateTo(updateWithoutGRNUrl);
+            });
+
+            // LP create
+            $(document).on('click', '.update-lp', function (e) {
+                e.preventDefault(); // Prevent the default action of the click event
+                circleloaderstart();
+                var LPId = $(this).attr('data-id');
+                var updateLPUrl = "{% url 'edit_update_local_purchase' 0 %}".replace('0', LPId);
+                navigateTo(updateLPUrl);
+            });
+
+            $(document).on('click', '.update-mrr', function (e) {
+                e.preventDefault(); // Prevent the default action of the click event
+                circleloaderstart();
+                var MRRId = $(this).attr('data-id');
+                var updateMRRUrl = "{% url 'edit_pdate_receive_manual_return' 0 %}".replace('0', MRRId);
+                navigateTo(updateMRRUrl);
+            });
+
+            $(document).on('click', '.update-trans', function (e) {
+                e.preventDefault(); // Prevent the default action of the click event
+                circleloaderstart();
+                var transId = $(this).attr('data-id');
+                var updatetransUrl = "{% url 'edit_update_store_transfer_form' %}?stock_trans_id=" + transId;
+                navigateTo(updatetransUrl);
+            });
+
+            //////////////////////
+            $(document).on('click', '.previewDetails', function (e) {
+                e.preventDefault();
+                var serviceDueAmt = $('#service_due_amt').val();
+                if (serviceDueAmt > 0) {
+                    serviceChargeAlertModal("Alert Modal", "{% url 'get_service_charge_payment_alert' %}");
+                }
+            });
+        });
+        ////////////////////////////////////////////////////////////////
+        function togglePanel() {
+            document.getElementById('notificationPanel').classList.toggle('show');
+        }
+        ////////////////////////////////////////////////////////////////
+        //1. present date onujayee previous month a jodi due_amount > 0 hoy tahole serviceChargeAlertModal show hobe.
+        //2. present date onujayee alert_start_isoformat jodi over hoye jay (I mean present date > alert_start_isoformat) tahole  serviceChargeAlertModal show hobe.
+        //3. serviceChargeAlertModal show hobe 1 time. 1 time ar por page reload dileo serviceChargeAlertModal show hobe.
+        //4. alert_end_isoformat ar 5 days age theke alert_end_isoformat 1 previous day porjonto serviceChargeAlertModal show hobe 3 hours por por
+        //5. alert_end_isoformat day tey serviceChargeAlertModal show hobe 30 minute por por
+
+        document.addEventListener("DOMContentLoaded", function () {
+            ////////////////////// Session Check & Inactivity //////////////////////
+
+            function checkSessionTimeout() {
+                fetch("{% url 'check_session' %}")
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.is_authenticated) {
+                            sessionStorage.clear();
+                            localStorage.clear();
+
+                            // Clear cookies
+                            document.cookie.split(";").forEach(function (cookie) {
+                                const eqPos = cookie.indexOf("=");
+                                const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                            });
+
+                            window.location.href = "{% url 'login' %}";
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Session check failed:", err);
+                    });
+            }
+
+            // Call every 31 minutes
+            setInterval(checkSessionTimeout, 1000 * 60 * 31);
+
+            // Track last active time before tab/window close
+            window.addEventListener("beforeunload", () => {
+                sessionStorage.setItem("lastActiveTime", Date.now());
+            });
+
+            // Clear sessionStorage if returning after 1 hour of inactivity
+            window.addEventListener("load", () => {
+                const lastActive = sessionStorage.getItem("lastActiveTime");
+                const timeoutLimit = 1000 * 60 * 60; // 1 hour
+
+                if (lastActive && Date.now() - parseInt(lastActive, 10) > timeoutLimit) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    // Clear cookies
+                    document.cookie.split(";").forEach(function (cookie) {
+                        const eqPos = cookie.indexOf("=");
+                        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                    });
+                }
+            });
+
+            // Clear localStorage manually on logout
+            const logoutLink = document.getElementById("logout-link");
+            if (logoutLink) {
+                logoutLink.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    // Clear cookies
+                    document.cookie.split(";").forEach(function (cookie) {
+                        const eqPos = cookie.indexOf("=");
+                        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                    });
+                    window.location.href = logoutLink.href;
+                });
+            }
+
+            ////////////////////// Service Charge Alert Logic //////////////////////
+
+            const serviceData = {
+                ser_char_alert: {{ ser_char_alert|yesno:"true,false"|lower }},
+                due_amount: {{ due_amount|default:0 }},
+                alert_start: "{{ alert_start_isoformat }}",
+                alert_end: "{{ alert_end_isoformat }}",
+                unpaid_months: {{ unpaid_months|safe }}
+            };
+
+            if (serviceData.ser_char_alert !== true) {
+                return;
+            }
+
+            const today = new Date();
+            const alertStartDate = new Date(serviceData.alert_start);
+            const alertEndDate = new Date(serviceData.alert_end);
+
+            const MONTHS_LIST = [
+                "january", "february", "march", "april", "may", "june",
+                "july", "august", "september", "october", "november", "december"
+            ];
+
+            function isSameDate(d1, d2) {
+                return d1.getFullYear() === d2.getFullYear() &&
+                    d1.getMonth() === d2.getMonth() &&
+                    d1.getDate() === d2.getDate();
+            }
+
+            function showModalWithInterval(intervalKey, intervalMs) {
+                const lastShown = localStorage.getItem(intervalKey);
+                const now = Date.now();
+
+                if (!lastShown || now - parseInt(lastShown) > intervalMs) {
+                    localStorage.setItem(intervalKey, now);
+                    serviceChargeAlertModal("Alert Modal", "{% url 'get_service_charge_payment_alert' %}");
+                }
+            }
+
+            // 1. Check previous month's due
+            const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            const hasPrevMonthDue = serviceData.unpaid_months.some(([y, m]) => {
+                const mIndex = MONTHS_LIST.indexOf(m.toLowerCase());
+                return mIndex === prevMonth.getMonth() && y === prevMonth.getFullYear();
+            });
+
+            if (hasPrevMonthDue && serviceData.due_amount > 0) {
+                if (!localStorage.getItem("modal_prev_due_shown")) {
+                    localStorage.setItem("modal_prev_due_shown", Date.now());
+                    serviceChargeAlertModal("Alert Modal", "{% url 'get_service_charge_payment_alert' %}");
+                }
+                return;
+            }
+
+            // 2. If today > alert start date → show every 24h
+            if (today > alertStartDate) {
+                showModalWithInterval("modal_once", 1000 * 60 * 60 * 24);
+                return;
+            }
+
+            // 4. From 5 days before alertEndDate until 1 day before → show every 3h
+            const daysBeforeAlertEnd = Math.floor((alertEndDate - today) / (1000 * 60 * 60 * 24));
+            if (daysBeforeAlertEnd >= 1 && daysBeforeAlertEnd <= 5) {
+                showModalWithInterval("modal_3hr", 1000 * 60 * 60 * 3);
+                return;
+            }
+
+            // 5. On alertEndDate → show every 30 minutes
+            if (isSameDate(today, alertEndDate)) {
+                showModalWithInterval("modal_30min", 1000 * 60 * 30);
+                return;
+            }
+        });
+        /////////////////////////////////////////////////
+
+        // User Info Change Modal
+        $('.useInfoChanging_by_user').click(function () {
+            // main loader
+            lineloaderstart();
+            // main loader
+            modal_xl("edit user setup", "{% url 'user_info_update_by_user' %}?user_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        })
+        // password change modal
+        $('.passwordChanging_by_user').click(function () {
+            // main loader
+            lineloaderstart();
+            // main loader
+            modal_md("Password Change Info", "{% url 'password_changing_by_user' %}?user_id=" + $(this).attr('data-id'));
+            lineloaderstop();
+        })
+    </script>
+
+    <!--========== from doctor setup js file ==========-->
+    <!-- <script src="{% static 'doctor_setup_style/js/doctor_setup_script.js' %}"></script> -->
+
+</body>
+<!-- Footer -->
+<!-- <footer class="footer"> -->
+<!-- <li class="list-inline-item"><a href="#"><i class='bx bxl-linkedin-square'></i></a></li> -->
+<!-- <p class="text-muted">Copyright &copy;Shariat Sunny 2023. All Rights Reserved. Software Versions: 1.0.0</p> -->
+<!-- </footer> -->
+<!-- Footer End -->
+
+</html>

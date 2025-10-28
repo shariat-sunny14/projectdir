@@ -1,0 +1,1220 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'reg_client_collections/css/reg_client_collections.css' %}">
+<link rel="stylesheet" href="{% static 'credit_management/css/credit_management.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #96603e;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-window-alt text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Reg. Clients Collection Services</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+
+            <section>
+                <div class="card po_card"
+                    style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <!--  -->
+                                        <div class="store_row col-sm-4" style="flex-grow: 1; display: flex; justify-content: left;">
+                                            <label for="id_filter_org" class="col-auto col-form-label">
+                                                Organization:
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="store_row col-sm-4" style="flex-grow: 1; display: flex; justify-content: right;">
+                                            <label for="id_filter_branch" class="col-auto col-form-label">
+                                                Branch:
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-control item_inputbox"
+                                                    aria-label="Default select example">
+                                                    <!--  -->
+                                                    {% for branch in branch_options %}
+                                                    <option id="{{branch.branch_id}}" value="{{branch.branch_id}}">
+                                                        {{branch.branch_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section>
+                <div class="row row_item_setup">
+                    <div class="col-sm-4">
+                        <!-- List of Clients -->
+                        <div class="card main-card">
+                            <div class="card-body card-body_item_setup">
+                                <div class="itemfilter_container">
+                                    <div class="filter_head">
+                                        <h2 class="text-success">List of Reg</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <!--  -->
+                                                    <div class="dueInvCollTb">
+                                                        <table id="" class="table table-striped table-hover"
+                                                            style="width: 100%;">
+                                                            <thead class="text-center table-header_itemlist"
+                                                                style="background: #64936c;">
+                                                                <tr>
+                                                                    <th style="text-align:center; width: 25%;">C/N</th>
+                                                                    <th style="text-align:center; width: 50%;">Name</th>
+                                                                    <th style="text-align:center; width: 25%;">Phone No
+                                                                    </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th colspan="3"
+                                                                        style="text-align:center; background: #fff !important;">
+                                                                        <input type="search" id="regis_search"
+                                                                            class="form-control search_control item_inputbox"
+                                                                            style="margin-left: 4px; background:#fffab6;"
+                                                                            placeholder="Searching ..."
+                                                                            autocomplete="off">
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody id="regis_Tbody" class="table-body-row"
+                                                                style="text-align:center; cursor: pointer;">
+                                                                <!--  -->
+
+                                                            </tbody>
+                                                            <!-- loader start -->
+                                                            <section class="loader-section">
+                                                                <div class="loader-body">
+                                                                    <div class="loader">
+                                                                        <div class="upper ball"></div>
+                                                                        <div class="right ball"></div>
+                                                                        <div class="lower ball"></div>
+                                                                        <div class="left ball"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                            <!-- loader end -->
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- List of Clients -->
+
+                    <!--  -->
+                    <div class="col-sm-8">
+                        <!-- Clients Information -->
+                        <div class="card main-card">
+                            <div class="card-body card-body_item_setup">
+                                <div class="itemsetup_container" style="padding: 0.5rem;">
+                                    <div class="add_edit_head">
+                                        <h2 class="text-primary">Clients Information</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div id="trans_client_info" id="supplier_info">
+                                        <!-- 1st row -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_customer_no"
+                                                                class="col-sm-s3 col-form-label font_size_filter">C/N:</label>
+                                                            <div class="col-sm-s8">
+                                                                <input type="text" value=""
+                                                                    class="form-control item_inputbox"
+                                                                    id="id_customer_no" name="customer_no" required
+                                                                    autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_mobile_number"
+                                                                class="col-sm-4 col-form-label font_size_filter">Mobile:</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="number" class="form-control item_inputbox"
+                                                                    id="id_mobile_number" name="mobile_number"
+                                                                    autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 2nd row -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_name"
+                                                                class="col-sm-s3 col-form-label font_size_filter">
+                                                                Name:
+                                                            </label>
+                                                            <div class="col-sm-s8">
+                                                                <input type="text" value=""
+                                                                    class="form-control item_inputbox" id="id_name"
+                                                                    name="name" autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_marital_status"
+                                                                class="col-sm-4 col-form-label font_size_filter">Marital
+                                                                Status:</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control item_inputbox"
+                                                                    id="id_marital_status" name="marital_status"
+                                                                    autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 3rd row -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_gender"
+                                                                class="col-sm-s3 col-form-label font_size_filter">Gender:</label>
+                                                            <div class="col-sm-s8">
+                                                                <input type="text" value=""
+                                                                    class="form-control item_inputbox" id="id_gender"
+                                                                    name="gender" required autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_dateofbirth"
+                                                                class="col-sm-4 col-form-label font_size_filter">Date of
+                                                                Birth:</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" value=""
+                                                                    class="form-control item_inputbox"
+                                                                    id="id_dateofbirth" name="dateofbirth"
+                                                                    autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 4th row -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_blood_group"
+                                                                class="col-sm-s3 col-form-label font_size_filter">Blood
+                                                                Group:</label>
+                                                            <div class="col-sm-s8">
+                                                                <input type="text" value=""
+                                                                    class="form-control item_inputbox"
+                                                                    id="id_blood_group" name="blood_group"
+                                                                    autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-6">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_reg_balances"
+                                                                class="col-sm-4 col-form-label text-danger font_size_filter"
+                                                                style="font-weight: bold;">Balance:</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" value=""
+                                                                    class="form-control text-center text-danger item_inputbox"
+                                                                    style="font-weight: bold;" id="id_reg_balances"
+                                                                    name="reg_balances" autocomplete="off" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 5th row -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-12">
+                                                <div class="card main-card">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="row cash_point_row">
+                                                            <label for="id_address"
+                                                                class="col-sm-s1 col-form-label font_size_filter">Address:</label>
+                                                            <div class="col-sm-s10">
+                                                                <textarea class="form-control item_inputbox"
+                                                                    id="id_address" name="address" value=""
+                                                                    style="height: 28px; margin-bottom: 5px;"
+                                                                    autocomplete="off" readonly></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="" method="" id="regDueCollform">
+                            <input type="number" id="id_reg_id" name="reg_id" value="" hidden>
+                            <!-- due invoice details informations -->
+                            <div class="card main-card">
+                                <div class="card-body card-body_item_setup">
+                                    <div class="itemsetup_container" style="padding: 0.5rem; height: 20rem;">
+                                        <div class="add_edit_head">
+                                            <h2 style="color: #8d3d0c">Due Invoice Details Info</h2>
+                                        </div>
+                                        <!--  -->
+                                        <!-- 1st row -->
+                                        <div class="table-body" id="dueInvColl"
+                                            style="width: 99%; margin-left: 0.4rem; height: 18rem; overflow-y: auto; border: 1px solid #ccc;">
+                                            <table id="invList" class="table table-striped" style="width: 100%;">
+                                                <thead class="text-center table-header"
+                                                    style="position: sticky; top: 0; z-index: 10;">
+                                                    <tr style="border-style: hidden!important;">
+                                                        <th style="text-align:center;">SL</th>
+                                                        <th style="text-align:center;">Inv Date</th>
+                                                        <th style="text-align:center;">Inv ID</th>
+                                                        <th style="text-align:center;">Tot Bill</th>
+                                                        <th style="text-align:center;">C. Cost</th>
+                                                        <th style="text-align:center; width: 11%;">Dis</th>
+                                                        <th style="text-align:center;">VAT Tax</th>
+                                                        <th style="text-align:center;">Cancel</th>
+                                                        <th style="text-align:center;">Net Tot</th>
+                                                        <th style="text-align:center;">Paid</th>
+                                                        <th style="text-align:center;">Refund</th>
+                                                        <th style="text-align:center;">Due</th>
+                                                        <th style="text-align:center; width: 15%;">Coll. Amt.</th>
+                                                        <th style="text-align:center;">Opt</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-body-row" id="invTablebody">
+                                                    <!-- load table body value with Ajax -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- due invoice details informations end -->
+                            <!-- Credit Payments -->
+                            <div class="card main-card">
+                                <div class="card-body card-body_item_setup">
+                                    <div class="itemsetup_container" style="padding: 0.5rem;">
+                                        <div class="add_edit_head">
+                                            <h2 class="text-info">Collections Info</h2>
+                                        </div>
+                                        <!--  -->
+                                        <!-- 1st row -->
+                                        <div class="row row_item_setup">
+                                            <div
+                                                style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: center; align-items: center;">
+                                                <div class="col-sm-12" style="display: flex;">
+                                                    <div class="col-sm-6">
+                                                        <div class="card main-card">
+                                                            <div class="card-body item_setup_sub">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_collection_amount"
+                                                                        class="col-sm-4 col-form-label font_size_filter">
+                                                                        Collection Amt.:
+                                                                    </label>
+                                                                    <div class="col-sm-8">
+                                                                        <input type="number"
+                                                                            class="form-control reset_input item_inputbox"
+                                                                            style="text-align: right; padding-right: 1rem; background: #fffab6;"
+                                                                            id="id_collection_amount" step="0.01"
+                                                                            name="collection_amount" autocomplete="off"
+                                                                            placeholder="Enter Your Collections Amt."
+                                                                            required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-6">
+                                                        <div class="card main-card">
+                                                            <div class="card-body item_setup_sub">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_discount_amt"
+                                                                        class="col-sm-4 col-form-label font_size_filter">
+                                                                        Discount Amt.:
+                                                                    </label>
+                                                                    <div class="col-sm-8" style="display: flex;">
+                                                                        <input type="number"
+                                                                            class="form-control reset_input item_inputbox"
+                                                                            style="text-align: right; padding-right: 1rem; height: 1.7rem;"
+                                                                            id="id_discount_amt" name="discount_amt" step="0.01"
+                                                                            autocomplete="off" placeholder="Dis. Amt.">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" style="display: flex;">
+                                                    <div class="col-sm-12">
+                                                        <div class="card main-card">
+                                                            <div class="card-body item_setup_sub">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_descriptions"
+                                                                        class="col-sm-deslab col-form-label font_size_filter">
+                                                                        Descriptions:
+                                                                    </label>
+                                                                    <div class="col-sm-des">
+                                                                        <textarea type="number"
+                                                                            class="form-control reset_input item_inputbox"
+                                                                            style="padding-right: 1rem;"
+                                                                            id="id_descriptions" name="descriptions"
+                                                                            autocomplete="off"
+                                                                            placeholder="Descriptions here ..."
+                                                                            required></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- due payment also submit with supplier -->
+                            <div class="card main-card">
+                                <div class="card-body card-body_item_setup">
+                                    <div class="itemsetup_container" style="padding: 0.5rem;">
+                                        <div class="add_edit_head" style="width: 50%;">
+                                            <h2 class="text-danger">Integration Due Collection to Supplier Payment Info</h2>
+                                        </div>
+                                        <!--  -->
+                                        <!-- 1st row -->
+                                        <div class="row row_item_setup" style="margin-top: 1rem;">
+                                            <div
+                                                style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: center; align-items: center;">
+                                                <div class="col-sm-12" style="display: flex;">
+                                                    <div class="col-sm-8">
+                                                        <div class="card main-card">
+                                                            <div class="card-body item_setup_sub">
+                                                                <div class="row cash_point_row">
+                                                                    <label for="id_supplier"
+                                                                        class="col-sm-3 col-form-label font_size_filter">
+                                                                        Supplier:
+                                                                    </label>
+                                                                    <div class="col-sm-8">
+                                                                        <select id="id_supplier" name="supplier" class="form-select item_inputbox" required>
+                                                                            <!--  -->
+                                                                            <!-- <option value="" selected>Choose </option> -->
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-4">
+                                                        <div class="card main-card">
+                                                            <div class="card-body item_setup_sub">
+                                                                <!--  -->
+                                                                <!--  -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; margin-top: 1rem;">
+                                                    <div class="col-sm-12">
+                                                        <span>
+                                                            <span class="text-danger" style="font-size: 1rem; font-weight: bolder;">**Note:</span>
+                                                            <span class="text-success" style="font-size: 0.9rem; font-weight: bolder; width: 80%;">If you need to show this due collection to any supplier collection, then track the supplier here.</span>
+                                                        </span>
+                                                    </div class="col-sm-12">
+                                                    <!--  -->
+                                                    <div>
+                                                        <span>
+                                                            <span class="text-danger" style="font-size: 1rem; font-weight: bolder;">**মন্তব্য:</span>
+                                                            <span class="text-success" style="font-size: 0.9rem; font-weight: bolder; width: 80%;">আপনি যদি কোনো সরবরাহকারী সংগ্রহের কাছে এই প্রাপ্য সংগ্রহটি দেখাতে চান, তাহলে সরবরাহকারীকে এখানে ট্র্যাক করুন।</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <!-- payment methord -->
+                            <div class="card main-card">
+                                <div class="card-body card-body_item_setup">
+                                    <div class="itemsetup_container" style="padding: 0.5rem;">
+                                        <div class="add_edit_head">
+                                            <h2 class="text-second">Collections Methord Info</h2>
+                                        </div>
+                                        <!--  -->
+                                        <!-- 1st row -->
+                                        <div class="row row_item_setup" style="font-size: 13px;">
+                                            <div
+                                                style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: center; align-items: center;">
+                                                <!-- payment body -->
+                                                <table id="" class="table paymode_table" style="width: 100%;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align:center;width: 20%;">
+                                                                Collections Mode
+                                                            </td>
+                                                            <td style="text-align:center;width: 20%;">
+                                                                Collections Type
+                                                            </td>
+                                                            <td style="text-align:center;width: 20%;">
+                                                                Comments
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr style="border-style: hidden!important;">
+                                                            <td style="text-align:center;width: 20%;">
+                                                                <div class="col-sm-12">
+                                                                    <select id="pay_mode" name="pay_mode"
+                                                                        class="form-select pos_inputbox"
+                                                                        aria-label="Default select example">
+                                                                        <option value="1">Cash</option>
+                                                                        <option value="2">Check</option>
+                                                                        <option value="3">Debit Card</option>
+                                                                        <option value="4">Credit Card</option>
+                                                                        <option value="5">Bkash</option>
+                                                                        <option value="6">Nagad</option>
+                                                                        <option value="7">Upay</option>
+                                                                        <option value="8">UCash</option>
+                                                                        <option value="9">Bank Deposit</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align:center; width: 20%;">
+                                                                <div class="col-sm-12">
+                                                                    <select id="pay_type" name="pay_type"
+                                                                        class="form-select pos_inputbox"
+                                                                        aria-label="Default select example">
+                                                                        <option value="2" id="dueOption">Due Collection
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align:center; width: 20%;">
+                                                                <div class="col-sm-12" id="comments">
+                                                                    <input type="text" class="form-control pos_inputbox"
+                                                                        id="id_comments" name="comments"
+                                                                        style="text-align:center" autocomplete="off">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!--  -->
+                                                </table>
+                                                <!--  -->
+                                                <table id="otherType" class="table paymode_table"
+                                                    style="width: 100%; display: block;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align:center;width: 20%;">
+                                                                CQ/CC/DC/DD/MB/OP
+                                                            </td>
+                                                            <td style="text-align:center;width: 20%;">
+                                                                Mobile Number
+                                                            </td>
+                                                            <td style="text-align:center; width: 20%;">
+                                                                Reference
+                                                            </td>
+                                                            <td style="text-align:center;width: 20%;">
+                                                                Bank Name
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr style="border-style: hidden!important;">
+                                                            <td style="text-align:center; width: 20%;">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" class="form-control pos_inputbox"
+                                                                        id="card_info" name="card_info"
+                                                                        style="text-align:center" autocomplete="off">
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align:center; width: 20%;">
+                                                                <div class="col-sm-12">
+                                                                    <input type="number"
+                                                                        class="form-control pos_inputbox"
+                                                                        id="pay_mob_number" name="pay_mob_number"
+                                                                        style="text-align:center" autocomplete="off">
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align:center; width: 20%;">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" class="form-control pos_inputbox"
+                                                                        id="pay_reference" name="pay_reference"
+                                                                        style="text-align:center" autocomplete="off">
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align:center; width: 20%;">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" class="form-control pos_inputbox"
+                                                                        id="bank_name" name="bank_name"
+                                                                        style="text-align:center" autocomplete="off">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <!--  -->
+                                                <div class="col-sm-12"
+                                                    style="margin-top: 2rem; margin-bottom: 1rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                    <div class="col-sm-4">
+                                                        <div class="card main-card">
+                                                            <div class="card-body item_setup_sub">
+                                                                <!-- submit button -->
+                                                                <div class="submit_button">
+                                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                                        style="margin-right: 10px; padding: 0.5rem 1rem; font-size: 0.9rem;"
+                                                                        onclick="$('.reset_input').val('');">
+                                                                        Clear
+                                                                    </button>
+                                                                    <button type="submit" id="submitBtn"
+                                                                        class="btn btn-success btn-sm"
+                                                                        style="margin-right: 10px; padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                                                        Submit Payment
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- payment methord -->
+                    </div>
+                    <!--  -->
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<script>
+    $(function () {
+        $(document).on('click', '.view-data', function () {
+            var org_id = $('#id_filter_org').val();
+            lineloaderstart();
+            var receiptUrl = "{% url 'reg_client_dueinvoice_details' %}?id=" + $(this).attr('data-id');
+            modal_lg("Due Invoice Details", receiptUrl);
+            lineloaderstop();
+        });
+    })
+
+    //==============================================================================
+    $(document).ready(function () {
+        function updateTable(filterOrg, filterBranch, regID) {
+            const dataToSend = {
+                org_id: filterOrg,
+                branch_id: filterBranch,
+                reg_id: regID,
+            };
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: '/get_reg_client_due_invoice/',
+                type: 'POST',
+                data: dataToSend,
+                dataType: 'json',
+                success: function (response) {
+                    var data = response.invoices;
+                    var tableBody = $('#invTablebody');
+                    tableBody.empty();
+
+                    if (Array.isArray(data)) {
+                        data.forEach(function (item, index) {
+                            var invdtlInputs = item.invdtl_ids.map(function (id, idx) {
+                                // Assuming `gross_discs` is an array that corresponds to each invoice detail ID
+                                let grossDisc = (item.gross_discs && item.gross_discs[idx] !== undefined) ? item.gross_discs[idx] : '';
+                                return `
+                                    <input type="number" class="invdtl_input" name="invoice_dtls_id[]" value="${id}" style="width: 60px; text-align: center;" readonly>
+                                    <input type="number" class="gross_disc_input" name="gross_disc[]" value="${grossDisc}" style="width: 60px; text-align: center;" readonly>
+                                `;
+                            }).join(' ');  // Join the inputs with a space or any separator if needed
+
+                            const tableBody = document.querySelector('#dueInvColl table tbody');
+                            const tr = document.createElement('tr');
+
+                            tr.innerHTML = `
+                                <tr style="border-style: hidden!important;">
+                                <td style="text-align:center;">${index + 1}</td>
+                                <td style="text-align:center;">${item.invoice.invoice_date}</td>
+                                <td style="text-align:center;">
+                                    ${item.invoice.inv_id}
+                                    <div style="display: none;">${invdtlInputs}</div>
+                                </td>
+                                <td style="text-align:center;">${item.grand_total}</td>
+                                <td style="text-align:center;">${item.total_cost_amt ? item.total_cost_amt : ''}</td>
+                                <td style="text-align:center;">
+                                    <input type="hidden" name="previous_discount[]" id="id_previous_discount" value="${item.total_discount_sum ? item.total_discount_sum : ''}">
+                                    <input type="number" name="total_discount_amt[]" id="id_total_discount_amt" value="${item.total_discount_sum ? item.total_discount_sum : ''}" class="coll_input_trans" readonly>
+                                </td>
+                                <td style="text-align:center;">${item.grand_vat_tax}</td>
+                                <td style="text-align:center;">${item.grand_cancel_amt}</td>
+                                <td style="text-align:center;">${item.total_net_bill}</td>
+                                <td style="text-align:center;">${item.total_payment_collection}</td>
+                                <td style="text-align:center;">${item.total_refund_amt}</td>
+                                <td style="text-align:center;">
+                                    <input type="hidden" name="due_amount[]" id="due_amount_id" value="${item.total_due_amount}">
+                                    ${item.total_due_amount}
+                                </td>
+                                <td style="text-align:center;">
+                                    <input type="number" name="coll_due_amount[]" id="id_coll_due_amount" value="" class="coll_input_trans" readonly>
+                                </td>
+                                <td style="text-align:center;">
+                                    <div class="optionBtn">
+                                        <button type="button" class="btn btn-success printBtn table-row-btn btn-xs text-white view-data" data-id="${item.invoice.inv_id}" style="line-height: 0;">
+                                            <i title='Print Invoice Receipt' class='bx bxs-show printIcon text-white'></i>
+                                        </button>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="${item.invoice.inv_id}" name="due_invoice_id[]" id="due_invoice_id" data-id="${item.invoice.inv_id}" style="height: 1.5rem; width: 1.5rem; cursor: pointer;">
+                                        </div>
+                                    </div>
+                                </td>
+                            `;
+
+                            tableBody.appendChild(tr);
+
+                        });
+                    } else {
+                        console.error('Data format is invalid:', response);
+                    }
+                },
+                error: function (error) {
+                    console.log('Error during AJAX call:', error);
+                }
+            });
+        }
+
+        //===============================================================================================
+        // Update the sum in the pay_amount field
+        function updatePayAmount() {
+            let totalAmount = 0; // Total due amount of all selected rows
+            let totalInvdtlCount = 0; // Total count of invoice details across all selected rows
+            const discountAmt = parseFloat($('[name="discount_amt"]').val()) || 0; // Total discount amount
+        
+            // Collect checked rows only
+            const checkedRows = $('input[name="due_invoice_id[]"]:checked');
+        
+            // Calculate total due amount and total invoice detail count
+            checkedRows.each(function () {
+                const row = $(this).closest('tr');
+                const rowDueAmount = parseFloat(row.find('input[name="due_amount[]"]').val()) || 0;
+                const invdtlCount = row.find('input[name="invoice_dtls_id[]"]').length;
+        
+                totalInvdtlCount += invdtlCount;
+                totalAmount += rowDueAmount;
+        
+                // Clear `gross_disc[]` and `coll_due_amount[]` initially
+                row.find('input[name="gross_disc[]"]').val('');
+                row.find('input[name="coll_due_amount[]"]').val('');
+            });
+        
+            const collectionInput = $('#id_collection_amount');
+            let collectionAmt = parseFloat(collectionInput.val()) || 0;
+        
+            if (collectionAmt > totalAmount) {
+                toastr.warning(`Collection amount (${collectionAmt.toFixed(2)}) cannot exceed the total due amount (${totalAmount.toFixed(2)}).`);
+                collectionAmt = totalAmount;
+                collectionInput.val(collectionAmt.toFixed(2));
+            }
+        
+            let remainingCollectionAmt = collectionAmt - discountAmt;
+        
+            checkedRows.each(function () {
+                const row = $(this).closest('tr');
+                const rowDueAmount = parseFloat(row.find('input[name="due_amount[]"]').val()) || 0;
+                const previousDiscount = parseFloat(row.find('input[name="previous_discount[]"]').val()) || 0;
+        
+                const rowProportion = rowDueAmount / totalAmount;
+                const rowDiscountAmt = discountAmt * rowProportion;
+                let collDueAmount = remainingCollectionAmt * rowProportion;
+        
+                if (collDueAmount > rowDueAmount) {
+                    collDueAmount = rowDueAmount;
+                }
+        
+                // Get all invoice detail IDs for the current row
+                const invdtlInputs = row.find('input[name="invoice_dtls_id[]"]');
+                const invdtlSum = invdtlInputs.length;
+        
+                // Calculate gross_disc[] values proportionally for each invoice detail ID
+                const grossDiscPerInvDtl = rowDiscountAmt / invdtlSum;
+                invdtlInputs.each(function () {
+                    $(this).siblings('input[name="gross_disc[]"]').val(grossDiscPerInvDtl.toFixed(2));
+                });
+        
+                const totalRowDiscount = previousDiscount + rowDiscountAmt;
+                row.find('input[name="total_discount_amt[]"]').val(totalRowDiscount.toFixed(2));
+                row.find('input[name="coll_due_amount[]"]').val(collDueAmount.toFixed(2));
+            });
+        
+            // Reset fields for unchecked rows
+            $('input[name="due_invoice_id[]"]:not(:checked)').each(function () {
+                const row = $(this).closest('tr');
+                const previousDiscount = parseFloat(row.find('input[name="previous_discount[]"]').val()) || 0;
+                row.find('input[name="total_discount_amt[]"]').val(previousDiscount.toFixed(2));
+                row.find('input[name="gross_disc[]"]').val('');
+                row.find('input[name="coll_due_amount[]"]').val('');
+            });
+        
+            console.log('Total Discount Amount:', discountAmt.toFixed(2));
+            console.log('Total Collection Amount:', collectionAmt.toFixed(2));
+            console.log('Remaining Collection Amount:', remainingCollectionAmt.toFixed(2));
+        }
+        
+        // Attach event listeners to checkboxes and input fields
+        $(document).on('change', 'input[name="due_invoice_id[]"]', updatePayAmount);
+        $(document).on('input', '[name="discount_amt"]', updatePayAmount);
+        $(document).on('input', '#id_collection_amount', updatePayAmount);
+
+        //===============================================================================================
+
+        // Trigger API call when the dropdown value changes
+        $('#id_filter_org').on('change', function () {
+            var filterOrg = $(this).val();
+            var filterBranch = $('#id_filter_branch').val();
+            var regID = localStorage.getItem("selectedRegId");
+            updateTable(filterOrg, filterBranch, regID);
+        });
+
+        // Initial call to populate table
+        var initialFilterOrg = $('#id_filter_org').val();
+        var initialfilterBranch = $('#id_filter_branch').val();
+        var initialRegID = localStorage.getItem("selectedRegId");
+        updateTable(initialFilterOrg, initialfilterBranch, initialRegID);
+
+        //==============================================================================
+
+        // Function to fetch clients list
+        function fetchRegistrationList() {
+            var orgFilter = $('#id_filter_org').val();
+            var searchQuery = $('#regis_search').val();
+
+            // Show the loader
+            $('.loader-section').show();
+
+            // Make the AJAX request
+            $.ajax({
+                url: "{% url 'get_registration_list' %}",
+                type: 'GET',
+                data: {
+                    'org_filter': orgFilter,
+                    'search_query': searchQuery
+                },
+                dataType: 'json',
+                success: function (response) {
+                    // Hide the loader
+                    $('.loader-section').hide();
+
+                    // Clear the existing table body
+                    $('#regis_Tbody').empty();
+
+                    // Populate the table body with the new data
+                    response.data.forEach(function (regis) {
+                        var row = $('<tr>').attr("data-reg_id", regis.reg_id).append(
+                            $('<td>').text(regis.customer_no),
+                            $('<td>').css("text-align", "left").text(regis.full_name),
+                            $('<td>').css("text-align", "center").text(regis.mobile_number)
+                        ).addClass("regis-row");
+                        $('#regis_Tbody').append(row);
+                    });
+
+                    // Highlight selected row if applicable
+                    highlightSelectedRowOnInit();
+
+                    // Call handleClientRowSelection after adding rows
+                    handleClientRowSelection();
+
+                    // Check if there is a selected supplier ID in local storage and populate details
+                    var selectedRegId = localStorage.getItem("selectedRegId");
+                    if (selectedRegId) {
+                        populateRegistrationDetails(selectedRegId);
+                        fetchAndDisplayClientsTrns(selectedRegId, orgFilter);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Hide the loader
+                    $('.loader-section').hide();
+                    console.error('Error fetching clients list:', status, error);
+                }
+            });
+        }
+
+        // Bind fetchRegistrationList function to input events
+        $('#id_filter_org, #regis_search').on('change keyup', fetchRegistrationList);
+
+        // Bind an event handler to the change event of #id_filter_org
+        $('#id_filter_org').on('change', function () {
+            // Remove the "selected-row" class from all elements with the class ".regis-row"
+            $('.regis-row').removeClass('selected-row');
+
+            // Clear the supplier details
+            reg_populateTable({});
+
+            // Clear the selected supplier ID from local storage
+            localStorage.removeItem("selectedRegId");
+
+            // Check if there is a selected supplier ID in local storage and populate details
+            var selectedRegId = localStorage.getItem("selectedRegId");
+            if (selectedRegId) {
+                populateRegistrationDetails(selectedRegId);
+            }
+        });
+
+        // Initial fetch
+        fetchRegistrationList();
+
+
+        $('#submitBtn').on('click', function (event) {
+            event.preventDefault();
+        
+            // Check if at least one checkbox is checked
+            if ($('input[name="due_invoice_id[]"]:checked').length === 0) {
+                toastr.error('Please check at least one checkbox first!...');
+                return; // Stop execution if no checkbox is checked
+            }
+            
+            const dueInvoiceData = [];
+            const invoiceDetailData = [];
+            let isValid = true; // Flag to track validation
+        
+            // Collect data for payment_list (due invoices)
+            $('input[name="due_invoice_id[]"]:checked').each(function () {
+                const row = $(this).closest('tr');
+                const invoiceId = $(this).val();
+                const collDueAmount = parseFloat(row.find('input[name="coll_due_amount[]"]').val()) || 0;
+        
+                // Validation check
+                if (collDueAmount <= 0) {
+                    toastr.error("Collection Amount Less than Zero '0' Not Allowed!...");
+                    isValid = false;
+                    return false; // Break out of each loop
+                }
+
+                dueInvoiceData.push({
+                    inv_id: invoiceId,
+                    pay_mode: $('#pay_mode').val(),
+                    pay_type: $('#pay_type').val(),
+                    pay_amt: collDueAmount,
+                    id_comments: $('#id_comments').val(),
+                    card_info: $('#card_info').val(),
+                    pay_mob_number: $('#pay_mob_number').val(),
+                    pay_reference: $('#pay_reference').val(),
+                    bank_name: $('#bank_name').val(),
+                    id_descriptions: $('#id_descriptions').val(),
+                    org_ids: $('#id_filter_org').val(),
+                    branch_ids: $('#id_filter_branch').val(),
+                    supplier_ids: $('#id_supplier').val(),
+                });
+            });
+
+            // Stop submission if validation fails
+            if (!isValid) return;
+        
+            // Collect data for invoicedtl_list (gross discounts)
+            $('input[name="invoice_dtls_id[]"]').each(function () {
+                const row = $(this).closest('tr');
+                const invoiceDtlId = $(this).val();
+                const grossDisc = parseFloat(row.find('input[name="gross_disc[]"]').val()) || 0;
+        
+                invoiceDetailData.push({
+                    invdtl_id: invoiceDtlId,
+                    gross_dis: grossDisc,
+                });
+            });
+        
+            // Prepare the data to send to the backend
+            const dataToSend = {
+                dueInvoiceData: dueInvoiceData,
+                invoiceDetailData: invoiceDetailData,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            };
+
+            // Disable button and show loader
+            $('#submitBtn').prop('disabled', true).html('<i class="bx bx-loader-circle"></i> Processing...');
+        
+            // Send the data via AJAX
+            $.ajax({
+                url: '/save_regclient_duecoll_amt/', // Replace with your actual backend URL
+                type: 'POST',
+                data: JSON.stringify(dataToSend),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.msg);
+                        $('.loader-section').show();
+                        $('#regDueCollform')[0].reset();
+                        setTimeout(function () {
+                            $('.loader-section').hide();
+                        }, 1100);
+                        var selectedRegId = localStorage.getItem("selectedRegId");
+                        if (selectedRegId) {
+                            populateRegistrationDetails(selectedRegId);
+                        }
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        // Hide loader and re-enable button after delay (e.g., 1.5 seconds)
+                        $('#submitBtn').prop('disabled', false).html('Submit Payment');
+                    }, 3000); // Delay in milliseconds (1000ms = 1s)
+                }
+            });
+        });
+
+        // Function to handle row selection
+        function handleClientRowSelection() {
+            $(document).on("click", ".regis-row", function () {
+                var clickedRegId = $(this).data("reg_id");
+                var orgID = $('#id_filter_org').val();
+                var BranchID = $('#id_filter_branch').val();
+
+                $(".regis-row").removeClass("selected-row");
+                $(this).addClass("selected-row");
+                localStorage.setItem("selectedRegId", clickedRegId);
+
+                populateRegistrationDetails(clickedRegId);
+                fetchAndDisplayClientsTrns(clickedRegId, orgID);
+                updateTable(orgID, BranchID, clickedRegId);
+            });
+        }
+
+        // Function to populate the table with supplier details
+        function populateRegistrationDetails(regisId) {
+            var orgID = $('#id_filter_org').val();
+            var BranchID = $('#id_filter_branch').val();
+            if (regisId) {
+                $.ajax({
+                    type: "GET",
+                    url: "/select_registration_list/" + regisId + "/",
+                    dataType: "json",
+                    success: function (data) {
+                        reg_populateTable(data);
+                        fetchAndDisplayClientsTrns(regisId, orgID);
+                        updateTable(orgID, BranchID, regisId);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("AJAX Error:", error);
+                    }
+                });
+            }
+        }
+
+        function reg_populateTable(data) {
+            $('#id_reg_id, #id_customer_no, #id_mobile_number, #id_name, #id_address, #id_gender, #id_marital_status, #id_blood_group, #id_dateofbirth').val("");
+
+            if (data.hasOwnProperty('regis_Dtls') && data.regis_Dtls.length > 0) {
+                var regis = data.regis_Dtls[0];
+                $('#id_reg_id').val(regis.reg_id);
+                $('#id_customer_no').val(regis.customer_no);
+                $('#id_mobile_number').val(regis.mobile_number);
+                $('#id_name').val(regis.full_name);
+                $('#id_address').val(regis.address);
+                $('#id_gender').val(regis.gender);
+                $('#id_marital_status').val(regis.marital_status);
+                $('#id_blood_group').val(regis.blood_group);
+                $('#id_dateofbirth').val(regis.dateofbirth);
+            }
+        }
+
+        function highlightSelectedRowOnInit() {
+            var selectedRegId = localStorage.getItem("selectedRegId");
+            if (selectedRegId) {
+                $(".regis-row").each(function () {
+                    if ($(this).data("reg_id").toString() === selectedRegId) {
+                        $(this).addClass("selected-row");
+                        return false;
+                    }
+                });
+            }
+        }
+
+        function fetchAndDisplayClientsTrns(regisID, orgID) {
+            if (regisID && orgID) {
+                $.ajax({
+                    url: "{% url 'get_clients_trans_summary_report' %}",
+                    type: 'GET',
+                    data: {
+                        reg_id: regisID,
+                        org_id: orgID
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        var total_OP_DebitAmt = 0;
+                        var total_OP_CreditAmt = 0;
+                        var total_trns_DebitAmt = 0;
+                        var total_trns_CreditAmt = 0;
+                        var balance = 0;
+
+                        if (Array.isArray(response.combined_data)) {
+                            response.combined_data.forEach(function (transaction) {
+                                // Accumulate totals
+                                if (!isNaN(transaction.op_debit_amt)) {
+                                    total_OP_DebitAmt += parseFloat(transaction.op_debit_amt);
+                                }
+                                if (!isNaN(transaction.op_credit_amt)) {
+                                    total_OP_CreditAmt += parseFloat(transaction.op_credit_amt);
+                                }
+                                if (!isNaN(transaction.trns_debit_amt)) {
+                                    total_trns_DebitAmt += parseFloat(transaction.trns_debit_amt);
+                                }
+                                if (!isNaN(transaction.trns_credit_amt)) {
+                                    total_trns_CreditAmt += parseFloat(transaction.trns_credit_amt);
+                                }
+
+                                // Calculate balance
+                                balance = (total_OP_DebitAmt + total_trns_DebitAmt) - (total_OP_CreditAmt + total_trns_CreditAmt);
+                            });
+
+                            // Set balance or 0 if undefined
+                            $('#id_reg_balances').val(balance.toFixed(2) || 0);
+                        } else {
+                            // No transaction data, set balance to 0
+                            $('#id_reg_balances').val(0);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching transactions:', status, error);
+                    }
+                });
+            }
+        }
+
+        // Initial fetch and display
+        var regisID = $('#id_reg_id').val();
+        var orgID = $('#id_filter_org').val();
+        fetchAndDisplayClientsTrns(regisID, orgID);
+        //updateTable(orgID, regisId);
+    });
+
+    $(document).ready(function () {
+
+        $('#id_filter_org').change(function () {
+            getSupplierOptions();
+        });
+
+        getSupplierOptions();
+
+        function getSupplierOptions() {
+            var selectedOrgId = $('#id_filter_org').val();
+
+            // supplier options update Function
+            $.ajax({
+                url: '/get_list_of_supplier/',
+                method: 'GET',
+                data: { org_id: selectedOrgId },
+                success: function (data) {
+                    $('#id_supplier').empty();
+                    $('#id_supplier').append('<option value="" selected>N/A</option>');
+                    $.each(data.supp_list, function (index, supp) {
+                        $('#id_supplier').append('<option value="' + supp.supplier_id + '" id="' + supp.supplier_id + '">' + supp.supplier_name + '</option>');
+                    });
+                    $('#id_supplier').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching suppliers:', error);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

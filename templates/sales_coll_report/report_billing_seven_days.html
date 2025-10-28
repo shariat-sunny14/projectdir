@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Collections Status of Seven Days</title>
+    <!-- ✅ jQuery included -->
+     <!--========== Bootstrap link ==========-->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        .strong-border {
+            border: 1px solid black;
+        }
+        table {
+            border-collapse: collapse;
+            width: 99%;
+            margin: 0.5rem;
+        }
+        caption {
+            caption-side: top;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h2 class="text-center mb-3" style="display: flex; font-size: 1.8rem; text-align: center; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center; margin: 2rem 0.5rem 0.5rem 0.5rem;">Collection Summary (Last 7 Days + Today)</h2>
+        <!-- Organization Info -->
+        <div class="info text-center mb-3 fw-bold" id="orgInfo" style="display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: center; align-items: center;">Loading data...</div>
+        <!--  -->
+        <table id="COLLTABLE" class="table table-striped" style="width: 99%; border: 1px solid black; table-layout: fixed;">
+            <thead class="text-center table-header" style="border: 1px solid black; font-size: 0.75rem;">
+                <tr>
+                    <th style="text-align:center; border: 1px solid black;">Name Of Particulars</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 7th Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 6th Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 5th Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 4th Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 3rd Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 2nd Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Previous 1st Days Coll.</th>
+                    <th style="text-align:center; border: 1px solid black;">Todays Collection</th>
+                </tr>
+            </thead>
+            <tbody id="COLLTABLEBODY" style="font-size: 0.7rem;"></tbody>
+        </table>
+
+        <!-- Print Button -->
+        <section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+            <!-- <hr> -->
+            <div class="clear-fix py-3"></div>
+            <!--  -->
+            <div class="d-flex w-100 justify-content-end">
+                <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+                    onclick="printReceipt()" id="receipt_print">
+                    <i class='bx bxs-printer'></i>
+                    Print
+                </button>
+            </div>
+            <!--  -->
+        </section>
+        <!--  -->
+    </main>
+    <!--  -->
+    <!--  -->
+
+    <script>
+        const API_URL = '/present_to_seven_days_collection_summary_report/';
+
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orgId = urlParams.get('org_id');
+            const branchId = urlParams.get('branch_id');
+
+            if (!orgId || !branchId) {
+                showError('❌ Missing org_id or branch_id in URL');
+                return;
+            }
+
+            loadTableData(orgId, branchId);
+        });
+
+        // 🔄 Load Data
+        function loadTableData(orgId, branchId) {
+            const formData = new URLSearchParams();
+            formData.append('org_id', orgId);
+            formData.append('branch_id', branchId);
+
+            showLoading(true);
+            hideError();
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                showLoading(false);
+                updateOrgInfo(data);
+                renderCollectionTable(data);
+            })
+            .catch(err => {
+                showLoading(false);
+                showError('Failed to load data: ' + err.message);
+            });
+        }
+
+        // 🏢 Update Organization Info
+        function updateOrgInfo(data) {
+            const infoDiv = document.getElementById("orgInfo");
+            const orgName = data.org_name || "Unknown Org";
+            const branchName = data.branch_name || "Unknown Branch";
+            const dateRange = data.date_range ? `${data.date_range.start} → ${data.date_range.end}` : "Date Range N/A";
+
+            infoDiv.innerHTML = `
+                <span style="padding: 2px; font-size: 1.2rem; color:#2c3e50;"><strong>${orgName}</strong></span>
+                <span style="padding: 2px; color:#34495e;"><strong>${branchName}</strong></span>
+                <span style="padding: 2px; color:#16a085;"><strong>${dateRange}</strong></span>
+            `;
+        }
+
+        // 🧾 Render Table
+        function renderCollectionTable(data) {
+            const tbody = document.getElementById("COLLTABLEBODY");
+            tbody.innerHTML = "";
+
+            const days = data.summary_by_date.slice(-8);
+            const fields = [
+                { label: "Instant Coll.", key: "total_collection" },
+                { label: "Due Coll.", key: "total_due_collection" },
+                { label: "Total Coll.", key: "total_grand_collection" },
+                { label: "Total Refund", key: "total_refund_collection" },
+                { label: "Net Sub Total Coll.", key: "grand_total_net_collection" },
+                { label: "Mobile Bank Coll.", key: "grand_mobile_bank_coll" },
+                { label: "Bank Coll.", key: "grand_total_bank_coll" },
+                { label: "Net Sub Tot Coll (Cash)", key: "net_sub_total_coll_cash" },
+                { label: "Other Expense", key: "total_other_exp_amt" },
+                { label: "Carrying/Lifting Cost", key: "grand_carrying_pay_amt" },
+                { label: "Total LP On Cash", key: "grand_total_amt" },
+                { label: "Total LP Ret On Cash", key: "grand_ret_total_amt" },
+                { label: "Total Manual Ret Rec", key: "grand_mrr_total_amt" },
+                { label: "Without Inv Coll (Cash)", key: "grand_woinvcoll_amt" },
+                { label: "Reg LC Pay Amt (Cash)", key: "grand_regclipay_amt" },
+                { label: "Supp/Party Pay Amt(Cash)", key: "grand_suppclipay_amt" },
+                { label: "Daily coll Rec from Sub Branch", key: "dep_rec_sub_branch" },
+                { label: "Total Net Coll (Cash)", key: "grand_total_collection" },
+                { label: "Daily coll Dep from Main Branch", key: "deposit_main_branch" },
+                { label: "Daily Coll Deposit In Bank", key: "total_daily_deposit" },
+                { label: "Remaining Collection", key: "total_remaining_collection" },
+            ];
+
+            fields.forEach(field => {
+                const tr = document.createElement("tr");
+
+                // Label column ("Name Of Particulars")
+                const labelTd = document.createElement("td");
+                labelTd.textContent = field.label;
+                labelTd.style.textAlign = "left";
+                labelTd.style.fontWeight = "bold";
+                labelTd.style.border = "1px solid #444";
+                labelTd.style.backgroundColor = "#f8f9fa";
+                tr.appendChild(labelTd);
+
+                // Values for each day
+                days.forEach(day => {
+                    const valueTd = document.createElement("td");
+                    valueTd.textContent = (day[field.key] ?? 0).toLocaleString();
+                    valueTd.style.textAlign = "center";
+                    valueTd.style.border = "1px solid #444";
+                    tr.appendChild(valueTd);
+                });
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ✅ Helpers
+        function showLoading(show) { $('#loading').toggle(show); }
+        function showError(msg) { $('#error').text(msg).show(); }
+        function hideError() { $('#error').hide(); }
+
+        // ✅ Django CSRF Helper
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // 🖨️ Print Only Table Area
+        function printReceipt() {
+            const printButton = document.getElementById("receipt_print");
+            printButton.style.display = "none"; // 🔹 Hide Print button before printing
+
+            const footerText = 'TBOX, Contact: +8801309-994317,';
+            const now = new Date();
+            const formattedDateTime = now.toLocaleString();
+            const pageNumber = 1; // Update dynamically if needed
+
+            // Footer content
+            const footerContent = `
+                <div class="footer" style="text-align:center; margin-top:20px; font-size:12px;">
+                    <span class="software-woner-title">Software By: </span>
+                    <span class="software-woner-name">${footerText}</span>
+                    <span class="printed-by-title">- Printed By: </span>
+                    <span class="printed-by-name"></span>
+                    <span class="printed-on-title">- Printed on: </span>
+                    <span class="printed-on-date">${formattedDateTime}</span>
+                    <span class="printed-page-title">- Page </span>
+                    <span class="printed-page-no">${pageNumber}</span>
+                </div>
+            `;
+
+            const mainContent = document.querySelector('main').innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            // Append footer
+            const printContents = mainContent + footerContent;
+
+            document.body.innerHTML = printContents;
+
+            // 🖨️ Trigger print
+            window.print();
+
+            // ⏳ When print dialog closes, restore original content & show button again
+            window.onafterprint = function() {
+                document.body.innerHTML = originalContent;
+                printButton.style.display = "inline-block"; // 🔹 Show Print button again
+            };
+        }
+
+    </script>
+</body>
+</html>

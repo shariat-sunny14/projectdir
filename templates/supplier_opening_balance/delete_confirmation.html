@@ -1,0 +1,58 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container" style="border: 0;">
+                <form enctype="multipart/form-data">
+                    <!--  -->
+                    <div class="alert_box">
+                        <div class="icon" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-evenly; align-items: center;">
+                            <i class='bx bx-user' style="font-size: 4.5rem;"></i>
+                        </div>
+                        <header style="color: red;">Confirm</header>
+                        <p>Are you want to permanently Delete?</p>
+                        <div class="btns">
+                            <button id="deleteBtn" type="button" data-credit_id="{{ opb_data.pk }}" class="btn btn-danger">
+                                Confirm Delete?
+                            </button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '#deleteBtn', function() {
+        var credit_id = $(this).data('credit_id');
+    
+        $.ajax({
+            type: 'DELETE',
+            url: `/supplier_opbal_dtls_delete/${credit_id}/`,
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            },
+            success: function(resp) {
+                if (resp.success) {
+                    toastr.success(resp.msg);
+                    location.reload();
+                } else {
+                    toastr.error(resp.errmsg);
+                    location.reload();
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                alert('Error occurred while deleting: ' + err);
+            }
+        });
+    });
+
+    // Reload page when modal is dismissed
+    $('#modal_md').on('hide.bs.modal', function () {
+        location.reload();
+    });
+</script>

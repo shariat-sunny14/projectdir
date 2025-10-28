@@ -1,0 +1,294 @@
+{% load static %}
+<style>
+    @media (min-width: 500px) {
+        .d-sm-flex {
+            display: flex !important;
+        }
+    }
+    
+    /* .row {
+        margin-left: calc(var(--bs-gutter-x)/ 2);
+    } */
+    
+    .container-fluid {
+        cursor: pointer;
+    }
+    
+    .card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        margin: 0;
+        box-shadow: 0 0.25rem 0.5rem #e6edef;
+        color: #495057;
+    }
+
+    .form-control {
+        padding: 0.175rem 0.25rem 0.175rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .font_size {
+        font-size: 0.89rem;
+    }
+    
+    .btn-user-info {
+        line-height: 1;
+        padding: 0.175rem 0.5rem;
+        font-size: 1.2rem;
+        --bs-btn-padding-x: 0.75rem;
+        --bs-btn-padding-y: 0.325rem;
+        --bs-btn-font-size: 0.8rem;
+    }
+
+    .g-3,
+    .gy-3 {
+        --bs-gutter-y: 0rem;
+    }
+
+    .add_user_card {
+        border: 0;
+        background: none;
+        box-shadow: none;
+    }
+
+    .add_user_card_other {
+        border: 0;
+        /* border-left: 1px solid rgba(0, 0, 0, .125); */
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+    }
+
+    @media (min-width: 576px) {
+        .col-sm-2 {
+            flex: 0 0 auto;
+            width: 20%;
+        }
+    }
+
+    .profile-container {
+        position: relative;
+        margin-left: 2.5rem;
+    }
+
+    .user-profile {
+        position: absolute;
+        display: flex;
+        inset: 0;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-profile-img {
+        position: relative;
+        inset: 0;
+        display: contents;
+    }
+
+    .user-img {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        /* background: #dfdfdf36; */
+        margin-right: 0.5rem;
+        border-radius: 50%;
+    }
+
+    #display_image {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        /* background: #dfdfdf36; */
+        margin-right: 0.5rem;
+        border-radius: 50%;
+    }
+
+    .profile-pic {
+        width: 100%;
+        height: 100%;
+        border: 5px solid #def7f3;
+        border-radius: 50%;
+    }
+
+    .profile-icon {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 20px;
+        right: 0;
+        left: 7.8rem;
+        background: rgba(112, 112, 112, 0.692);
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    .profile-upload-icon {
+        position: absolute;
+        display: flex;
+        top: 0;
+        left: 1.5px;
+        right: 0;
+        bottom: 1.5px;
+        font-size: 20px;
+        color: rgb(231, 231, 231);
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .img-viewer {
+        position: relative;
+        margin-top: 1px;
+        margin-left: -3px;
+        width: 148px;
+        height: 147.5px;
+        margin-right: 0.5rem;
+        border-radius: 50%;
+        outline: 1px solid #fff;
+    }
+
+    .profile-icon>input {
+        display: none;
+    }
+
+    .sec_prt_font_s {
+        font-size: 0.89rem;
+    }
+
+    .form-control {
+        border: 1px solid rgb(133, 196, 255);
+    }
+    
+    .form-control:hover {
+        background: #d3ffef;
+    }
+
+    .main-card {
+        border: 0;
+        box-shadow: none;
+    }
+
+    .card-body_item_setup {
+        flex: 1 1 auto;
+        padding: 0.5rem 0.2rem;
+    }
+
+    .itemsetup_container {
+        position: relative;
+        /* height: 70vh; */
+        margin-top: 8px;
+        border: 1px solid rgb(211, 211, 211);
+        /* background: rgba(216, 216, 216, 0.767); */
+    }
+
+    .add_edit_head {
+        position: relative;
+        display: flex;
+        margin-top: -17px;
+        margin-left: 25px;
+        width: 25%;
+        height: 33px;
+        background: #fff;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        border-radius: 35px;
+    }
+
+    .add_edit_head h2 {
+        position: absolute;
+        display: flex;
+        font-size: 14px;
+        color: rgb(126, 126, 126);
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+    }
+
+
+</style>
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container">
+                <form action="" method="" id="due_invdetails">
+                    <div class="add_edit_head">
+                        <h2 class="text-primary">Invoice Details Info</h2>
+                    </div>
+                    <!--  -->
+                    <div class="table-body" style="width: 99%; margin-left: 0.25rem;">
+                        <table id="dueinvlist" class="table table-striped" style="width: 100%;">
+                            <thead class="text-center table-header">
+                                <tr style="border-style: hidden!important;">
+                                    <th style="text-align:center;">SL</th>
+                                    <th style="text-align:center;">Item Name</th>
+                                    <th style="text-align:center;">Qty</th>
+                                    <th style="text-align:center;">Sales Rate</th>
+                                    <th style="text-align:center;">Dis.</th>
+                                    <th style="text-align:center;">SubTotal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body-row" id="dueinvTB">
+                                <!-- load table body value with Ajax -->
+                                {% for item in salesItems %}
+                                <tr style="border-width: 1px !important;">
+                                    <td class="mul-items-othrs" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">{{ forloop.counter }}</td>
+                                    <td class="mul-items-names" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">
+                                        {{item.item_id.item_name}}
+                                    </td>
+                                    <td class="mul-items-othrs" style="text-align: left; border-width: 1px !important;">
+                                        <span style="margin-left: 0.3rem; font-size: 0.7rem; font-weight: bold;">{{item.qty_cancelQty}} {{item.Item_uom}}</span>
+                                    </td>
+                                    <td class="mul-items-othrs" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">
+                                        {{item.sales_rate}}
+                                    </td>
+                                    <td class="mul-items-othrs" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">
+                                        {{item.item_wise_disc|floatformat:"3"}}
+                                    </td>
+                                    <td class="mul-items-othrs" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">
+                                        {{ item.total_amount|floatformat:"0" }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr style="border-width: 1px !important;">
+                                    <td class="mul-items-names" colspan="5" style="font-size: 0.7rem; text-align: right; font-weight: bold; border-width: 1px !important;">
+                                        Carring Cost:
+                                    </td>
+                                    <td class="mul-items-othrs" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">
+                                        {{ total_cost_buyer_amt }}
+                                    </td>
+                                </tr>
+                                <tr style="border-width: 1px !important;">
+                                    <td class="mul-items-names" colspan="5" style="font-size: 0.7rem; text-align: right; font-weight: bold; border-width: 1px !important;">
+                                        Total Amount:
+                                    </td>
+                                    <td class="mul-items-othrs" style="font-size: 0.7rem; font-weight: bold; border-width: 1px !important;">
+                                        {{ net_total_amt }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="usersetup_modal-footer" style="display: flex; justify-content: right; align-items: center; text-align: center; margin-top: 2rem; margin-bottom: 1rem;">
+                        <button type="button" class="btn btn-height btn-danger" data-bs-dismiss="modal" style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+</script>

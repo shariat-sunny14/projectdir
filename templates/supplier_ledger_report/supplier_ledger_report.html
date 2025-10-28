@@ -1,0 +1,259 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'opening_stock/css/opening_stock_style.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'opening_stock/js/opening_stock.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #459793e0;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                        <div class="d-sm-flex align-items-center mb-2" style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Suppliers Ledger Report Lists</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <section>
+                <div class="card po_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <!--  -->
+                                        <div class="row store_row col-sm-6" style="flex-grow: 0; display: flex; justify-content: left;">
+                                            <label for="id_filter_org" class="col-auto col-form-label">
+                                                Org:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                <div class="module-table">
+                    <table id="suppl_table" class="table table-striped table-hover" style="width: 100%; border: 1px solid #6aa2a8;">
+                        <thead class="text-center table-header_itemlist">
+                            <tr>
+                                <th style="text-align:center; width: 6%;">
+                                    Sl
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Supplier No
+                                </th>
+                                <th style="text-align:center; width: 20%;">
+                                    Supplier Name
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Phone
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Company Name
+                                </th>
+                                <th style="text-align:center; width: 15%;">
+                                    Org Name
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Status
+                                </th>
+                                <th style="text-align:center; width: 11%;">
+                                    Option
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppl_TBody" style="text-align:center; font-size: 0.8rem">
+                            <!--  -->
+                            
+                        </tbody>
+
+                        <!-- loader start -->
+                        <div class="loader"></div>
+                        <!-- loader end -->
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<!-- present date show scriptStart  -->
+<script>
+    $(document).ready(function () {
+        handlePORowSelection();
+    
+        $('#id_filter_org').change(() => {
+            // Save the selected organization filter value to local storage
+            orgFilterValue = $('#id_filter_org').val();
+            // Load items
+            loadPOlist();
+        });
+    
+        function loadPOlist() {
+            var orgFilterValue = $('#id_filter_org').val();  // Correct variable usage
+    
+            // Ensure filter value is not empty before making the request
+            if (orgFilterValue) {
+                startLoader();
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_supplier_ledger_report_lists/',
+                    data: {
+                        'filter_org': orgFilterValue,
+                    },
+                    success: function (data) {
+                        console.log('Data Received:', data); // Debugging output
+    
+                        // Destroy the existing DataTable instance before updating
+                        if ($.fn.DataTable.isDataTable('#suppl_table')) {
+                            $('#suppl_table').DataTable().destroy();
+                        }
+    
+                        // Update the table with filtered data
+                        updatePOTable(data);
+    
+                        // Re-initialize DataTable after updating the table data
+                        $('#suppl_table').DataTable({
+                            "ordering": false,
+                        });
+    
+                        highlightSelectedRowOnInit();
+                        endLoader();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Ajax Error:', xhr.responseText);
+                        console.error('Status:', status);
+                        console.error('Error:', error);
+                        endLoader();
+                    }
+                });
+            }
+        }
+    
+        function updatePOTable(data) {
+            var tableBody = $('#suppl_TBody');
+            tableBody.empty();  // Clear existing table rows
+    
+            if (!data.data || data.data.length === 0) {
+                $('#noDataFoundRow').show();
+            } else {
+                $('#noDataFoundRow').hide();
+    
+                $.each(data.data, function (index, poDtls) {
+                    var statusText = poDtls.is_active ? 'Active' : 'Inactive';
+                    var statusColor = poDtls.is_active ? '#27d127' : '#ff5959';
+    
+                    var rowHtml = `<tr class="wogrnr-row" data-id="${poDtls.supplier_id}">
+                                        <td style="text-align:center;">${index + 1}</td>
+                                        <td style="text-align:center;">${poDtls.supplier_no || ''}</td>
+                                        <td style="text-align:left;">${poDtls.supplier_name || ''}</td>
+                                        <td style="text-align:left;">${poDtls.phone || ''}</td>
+                                        <td style="text-align:left;">${poDtls.company_name || ''}</td>
+                                        <td style="text-align:left;">${poDtls.org_name || ''}</td>
+                                        <td style="text-align:center; font-weight: bolder; color: ${statusColor};">${statusText}</td>
+                                        <td style="text-align:center;">
+                                            <button type="button" class="btn btn-info printBtn table-row-btn btn-xs text-white ledger_report" style="cursor: pointer; margin: 0.25rem; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; justify-content: space-between;" data-id="${poDtls.supplier_id}">
+                                                <i class='bx bx-printer printIcon text-white'></i>
+                                                <span style="margin-left: 0.5rem; font-size: 0.85rem;">Ledger Report</span>
+                                            </button>
+                                        </td>
+                                    </tr>`;
+    
+                    tableBody.append(rowHtml);
+                });
+            }
+        }
+    
+        // Call `loadPOlist()` on page load
+        loadPOlist();
+    });    
+    //
+    function handlePORowSelection() {
+        // Attach click event listener to all rows
+        $(document).on("click", ".wogrnr-row", function () {
+            var clickedWOGRNRId = $(this).data("id");
+            
+            // Remove highlighting from other rows
+            $(".wogrnr-row").removeClass("selected-row");
+            
+            // Highlight the selected row
+            $(this).addClass("selected-row");
+
+            // Save the selected PO ID to local storage
+            localStorage.setItem("selectedWOGRNRID", clickedWOGRNRId);
+        });
+    }
+
+    function highlightSelectedRowOnInit() {
+        var selectedWOGRNRID = localStorage.getItem("selectedWOGRNRID");
+        if (selectedWOGRNRID) {
+            $(".wogrnr-row").each(function() {
+                if ($(this).data("id").toString() === selectedWOGRNRID) {
+                    $(this).addClass("selected-row");
+                    return false; // Break the loop once the match is found
+                }
+            });
+        }
+    }
+    //
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+    
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    $(document).on('click', '.ledger_report', function (e) {
+        e.preventDefault(); // Prevent the default action of the click event
+        var supplierID = $(this).attr('data-id');
+        var supplierLedgerReportUrl = "{% url 'supplier_clients_details_reports' 0 %}".replace('0', supplierID);
+        
+        // Open the page in a new tab
+        window.open(supplierLedgerReportUrl, '_blank');
+    });
+</script>
+
+{% endblock %}

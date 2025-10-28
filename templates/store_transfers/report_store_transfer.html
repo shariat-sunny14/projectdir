@@ -1,0 +1,661 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<title>Stock Transfer Report</title>
+<!--========== CSS ==========-->
+<!--========== Bootstrap link ==========-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- Barcode CDN -->
+<script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'purchase_order/css/purchase_order.css' %}">
+{% endblock %}
+<style>
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-width: 1;
+        border: 1px solid;
+    }
+
+    tr:nth-child(even) {
+        background: None !important;
+    }
+
+    hr {
+        margin: 0.3rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    .com-name {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .com-address {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-address-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .email-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-hotline-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-fax-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-fax-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .software-woner-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-by-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-on-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-page-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .software-woner-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-by-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-on-date {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-page-no {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .mul-items-othrs {
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .mul-items-names {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .receipt-name {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 25px;
+        border: 1px solid #c5c1c1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 15px;
+        font-weight: bolder;
+    }
+
+    .invoice_id {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcodeImg {
+        position: absolute;
+        top: 5rem;
+        right: 2rem;
+        display: flex;
+        margin-top: 4px;
+        margin-left: 21px;
+    }
+
+    .rec-type {
+        display: flex;
+        margin-top: -15px;
+    }
+
+    /* .rec-align {
+        font-size: 9px;
+        margin-top: 2px;
+    } */
+
+    .receipt-logo {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        text-align: left;
+        width: 5%;
+        border-radius: 50%;
+    }
+
+    .receipt-img {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: -8px;
+        left: -6px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .com-receipt-logo {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 0rem;
+        left: 3rem;
+    }
+
+    .paid-due-status {
+        width: 56%;
+        display: flex;
+        align-items: stretch;
+        text-align: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+        background: #9b99998a;
+        font-weight: bolder;
+        border-bottom: 3px solid #8d8a8a;
+        border-right: 3px solid #8d8a8a;
+    }
+
+    .status-DP {
+        text-align: center;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        border-style: hidden !important;
+    }
+
+    .sub-title1 {
+        margin-top: -9px;
+        width: 100%;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: center;
+    }
+
+    .sub-title2 {
+        margin-top: -7px;
+    }
+
+    .sub-title3 {
+        margin-top: -3px;
+    }
+</style>
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section style="margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <div id="outprint">
+                <section>
+                    <table class="table"
+                        style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                        <tr>
+                            <div class="receipt-logo">
+                                <img class="com-receipt-logo" src="" alt="logo">
+                            </div>
+                        </tr>
+                        <tr>
+                            <center>
+                                <label class="com-name">
+                                    <!-- Company Name Here -->
+                                    <!-- org_name -->
+                                </label>
+                            </center>
+                            <center class="sub-title1">
+                                <small>
+                                    <span class="com-address">
+                                        <span class="com-address-title">Address: </span>
+                                        <span class="com-address-name">
+                                            <!-- branch address -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title2">
+                                <small>
+                                    <span class="email-address-title">Email: </span>
+                                    <span class="com-address email-address-name">
+                                        <!--branch Email -->
+                                    </span>
+                                    <span class="website-title">Website: </span>
+                                    <span class="website-name">
+                                        <!-- branch Website -->
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">Hotline: </span>
+                                        <span class="com-hotline-name">
+                                            <!-- branch phone  -->,
+                                            <!-- branch Hotline -->
+                                        </span>
+                                        <span class="com-fax-title">Fax: </span>
+                                        <span class="com-fax-name">
+                                            <!-- branch Fax -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="com-branch-title"
+                                            style="font-size: 0.75rem; font-weight: bolder;">
+                                            {{ wogrn_Data.branch_id.branch_name }}
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <!--  -->
+                            <center class="sub-title3" style="margin-top: 0.1rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span style="font-size: 1rem; font-weight: bold; margin-right: 0.5rem;">From Store:
+                                            <span class="from_store_name-title" style="font-size: 0.98rem; font-weight: 500;"></span>
+                                        </span>
+                                        ----
+                                        <span style="font-size: 1rem; font-weight: bold; margin-left: 0.5rem;">To Store:
+                                            <span class="to_store_name-title" style="font-size: 0.98rem; font-weight: 500;"></span>
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <!--  -->
+                            <center class="sub-title3" style="margin-top: 0.1rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title" style="font-size: 1.5rem;">
+                                            Stock Transfer Reports
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <!--  -->
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <hr>
+    <!--  -->
+    <section style="margin-bottom: 10rem;">
+        <div class="row row_item_setup">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <!--  -->
+                        <section>
+                            <div id="STOCKTRNSTB">
+                                <table class="table" style="width: 100%; text-align:center;">
+                                    <thead class="text-center por_tb_header">
+                                        <tr>
+                                            <th style="text-align:center; width: 3%;">Sl</th>
+                                            <th style="text-align:center;">Item No</th>
+                                            <th style="text-align:center; width: 25%;">Item Name</th>
+                                            <th style="text-align:center;">Type</th>
+                                            <th style="text-align:center;">UoM</th>
+                                            <th style="text-align:center; width: 8%;">Stock Qty</th>
+                                            <th style="text-align:center; width: 10%;">Transfer Qty</th>
+                                            <th style="text-align:center; width: 10%;">Batch No</th>
+                                            <th style="text-align:center; width: 10%;">Expiry Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="STOCKTRNSTBody">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        style="position: fixed; right: 1rem; text-align: center; font-size: 1rem; font-weight: bolder; border-top: 1px solid; width: 15%;">
+        <span>Signature</span>
+        <!--  -->
+    </section>
+</main>
+<section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+    <!-- <hr> -->
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+            onclick="printReceipt()" id="receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+    </div>
+    <!--  -->
+</section>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const stock_trans_id = urlParams.get('stock_trans_id');
+
+        if (stock_trans_id) {
+            loadStockTransferData(stock_trans_id);
+        }
+
+        function loadStockTransferData(stock_trans_id) {
+            $.ajax({
+                url: '/get_stock_transfer_edit_from_data/',
+                method: 'GET',
+                data: { stock_trans_id: stock_trans_id },
+                success: function (res) {
+                    if (res.success) {
+                        // Company Info বসানো
+                        $('.com-name').text(res.master.org_name);
+                        $('.com-branch_name').text(res.master.branch_name);
+                        $('.com-address-name').text(res.master.branch_address);
+                        $('.email-address-name').text(res.master.branch_email);
+                        $('.website-name').text(res.master.branch_website);
+                        $('.com-hotline-name').text(res.master.branch_phone + ', ' + res.master.branch_hotline);
+                        $('.com-fax-name').text(res.master.branch_fax);
+                        $('.com-branch-title').text(res.master.branch_name);
+                        $('.from_store_name-title').text(res.master.from_store_name);
+                        $('.to_store_name-title').text(res.master.to_store_name);
+
+                        // Company Logo চাইলে dynamically বসানো যাবে (ধরে নিচ্ছি API থেকে logo url আসছে)
+                        if (res.master.org_logo) {
+                            $('.com-receipt-logo').attr('src', res.master.org_logo);
+                        }
+
+                        ////////////////////////////////////////////
+                        $('#draft-copy').remove();  // পুরাতন ডিভ মুছে ফেলো
+
+                        if (!res.master.is_approved) {
+                            $('body').append(`
+                                <div id="draft-copy" style="position: fixed; top: 50%; left: 50%; 
+                                    transform: translate(-50%, -50%) rotate(-30deg); 
+                                    z-index: 1000; opacity: 0.1; font-size: 4rem; color: rgb(54, 54, 54); 
+                                    font-weight: bold; pointer-events: none; user-select: none; white-space: nowrap;">
+                                    Draft Copy
+                                </div>
+                            `);
+                        } else {
+                            $('body').append(`
+                                <div id="draft-copy" style="position: fixed; top: 50%; left: 50%; 
+                                    transform: translate(-50%, -50%) rotate(-30deg); 
+                                    z-index: 1000; opacity: 0.1; font-size: 4rem; color: rgb(54, 54, 54); 
+                                    font-weight: bold; pointer-events: none; user-select: none; white-space: nowrap;">
+                                    Approved Copy
+                                </div>
+                            `);
+                        }
+                        ////////////////////////////////////////////
+
+
+                        // First load dropdowns, then set values
+                        loadOrgWiseDropdowns(res.master.org_id, res.master.branch_id, res.master.from_store_id, res.master.to_store_id)
+                            .then(function () {
+                                // Populate master form
+                                $('#id_stock_trans_id').val(res.master.stock_trans_id)
+                                $('#id_stock_trans_no').val(res.master.stock_trans_no);
+                                $('#id_transaction_date').val(res.master.transaction_date);
+                                $('#remarks').val(res.master.remarks);
+
+                                // Populate details table
+                                var tbody = $('#STOCKTRNSTBody');
+                                tbody.empty();
+
+                                $.each(res.details, function (index, d) {
+                                    var row = `
+                                        <tr style="font-size: 0.75rem;">
+                                            <td class="serial-number inputbox_tdrow" style="text-align:center;">
+                                                ${index + 1}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <input type="hidden" value="${d.item_id}" class="inputbox_tdrow" id="item_id"
+                                                    name="item_id[]" readonly>
+                                                ${d.item_no}
+                                            </td>
+                                            <td style="position: relative; margin-top: 2.5px; text-align: left;"
+                                                class="inputbox_tdrow items_name_id">
+                                                ${d.item_name}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                ${d.type_name}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                ${d.uom_name}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                ${d.stock_qty}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                ${d.transfer_qty}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                ${d.item_batch}
+                                            </td>
+                                            <td style="text-align:center;">
+                                                ${d.item_exp_date}
+                                            </td>
+                                        </tr>
+                                    `;
+                                    tbody.append(row);
+                                });
+
+                                
+                            });
+
+                    } else {
+                        toastr.error(res.error || 'Failed to load data.');
+                    }
+                },
+                error: function () {
+                    toastr.error('Error loading data.');
+                }
+            });
+        }
+
+        // Function to load dropdowns sequentially and return Promise
+        function loadOrgWiseDropdowns(orgId, branchId, fromStoreId, toStoreId) {
+            return new Promise(function (resolve, reject) {
+                // Load Branch
+                $.ajax({
+                    url: '/get_branch_options/',
+                    method: 'GET',
+                    data: { org_id: orgId },
+                    success: function (data) {
+                        $('#id_branchs').empty();
+                        $.each(data.branch_list, function (index, branch) {
+                            $('#id_branchs').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                        });
+
+                        $('#id_org').val(orgId);
+                        $('#id_branchs').val(branchId);
+
+                        // Load User Stores
+                        $.ajax({
+                            url: "{% url 'get_user_stores' %}",
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response.stores) {
+                                    var select = $('#id_from_store');
+                                    var select_to_store = $('#id_to_store');
+                                    select.empty();
+                                    $('#id_from_store').append('<option selected disabled>Choose From Store ...</option>');
+                                    select_to_store.empty();
+                                    $('#id_to_store').append('<option selected disabled>Choose To Store ...</option>');
+
+                                    $.each(response.stores, function (index, store) {
+                                        select.append($('<option>', {
+                                            value: store.store_id,
+                                            id: store.store_id,
+                                            text: store.store_name
+                                        }));
+
+                                        select_to_store.append($('<option>', {
+                                            value: store.store_id,
+                                            id: store.store_id,
+                                            text: store.store_name
+                                        }));
+                                    });
+
+                                    $('#id_from_store').val(fromStoreId);
+                                    $('#id_to_store').val(toStoreId);
+                                    resolve();
+                                } else {
+                                    reject('Error fetching stores');
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                reject(error);
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
+    });
+
+    //
+    function printReceipt() {
+        const footerText = 'TBOX, Contact: +8801309-994317,';
+        const now = new Date();
+        const formattedDateTime = now.toLocaleString();
+        const pageNumber = 1; // Update this dynamically if needed
+
+        // পেজ থেকে #draft-copy এর HTML পাবে
+        const draftCopyHtml = document.querySelector('#draft-copy') ? document.querySelector('#draft-copy').outerHTML : '';
+
+        // Append your footer content
+        const footerContent =
+            `<div class="footer">
+                <span class="software-woner-title">Software By: </span>
+                <span class="software-woner-name">${footerText}</span>
+                <span class="printed-by-title">- Printed By: </span>
+                <span class="printed-by-name"></span>
+                <span class="printed-on-title">- Printed on: </span>
+                <span class="printed-on-date">${formattedDateTime}</span>
+                <span class="printed-page-title">- Page </span>
+                <span class="printed-page-no">${pageNumber}</span>
+            </div>`;
+
+        var printContents = document.querySelector('main').innerHTML;
+
+        // draft-copy HTML টা যোগ করলাম
+        printContents += draftCopyHtml;
+
+        // Append footer content to the end of the print contents
+        printContents += footerContent;
+
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+    //<!--  -->
+    //
+</script>
+{% endblock %}

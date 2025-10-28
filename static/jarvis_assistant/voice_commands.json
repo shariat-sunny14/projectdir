@@ -1,0 +1,10 @@
+[
+  {
+    "command_name": "store transfer list",
+    "feature_page_link": "/stock_store_transfer_list_services/"
+  },
+  {
+    "command_name": "add new store transfer",
+    "feature_page_link": "/add_new_store_transfer_services/"
+  }
+]
