@@ -1,0 +1,277 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Georgia', serif;
+            background: white;
+        }
+
+        .content-wrapper {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .main-body {
+            position: relative;
+            z-index: 2;
+            /*border: 3px dashed black;
+            padding: 7px;*/
+            background: white;
+        }
+
+        .hologram img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            opacity: 0.15;
+            z-index: 3;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .transcript-header {
+            display: grid;
+            grid-template-columns: 2fr 0fr;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        header .logo {
+            width: 80px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .head-line {
+            width: 20rem;
+            font-size: 1.5rem;
+            border: 1px solid #000;
+            display: inline-block;
+            padding: 7px 10px;
+            margin: 0;
+            border-radius: 0.5rem;
+            font-family: 'Georgia', serif;
+            font-weight: 600;
+        }
+
+        .strong-fonts {
+            font-family: 'Georgia', serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .grading-scale table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+
+        .grading-scale {
+            font-size: 1rem;
+            margin-left: 3rem;
+        }
+
+        .grading-scale th,
+        .grading-scale td {
+            border: 1px solid #000;
+            padding: 0px;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 250px auto;
+            gap: 8px 20px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        #gradingScale th {
+            border: 1px solid #000;
+            padding: 0px;
+            text-align: center;
+        }
+
+        #gradingScale td {
+            border: 1px solid #000;
+            padding: 2px 6px;
+            text-align: center;
+        }
+
+        #studentReportInfo th {
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+        #studentReportInfo td {
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+        #subGradeReportInfo th {
+            border: 1px solid #000;
+            padding: 2px 6px;
+            text-align: center;
+        }
+
+        #subGradeReportInfo td {
+            border: 1px solid #000;
+            padding: 5px 6px;
+            text-align: center;
+        }
+
+        .subject-marks h3 {
+            padding-top: 0rem;
+            margin-bottom: 1px;
+            text-align: center;
+            font-family: 'Georgia', serif !important;
+            font-size: 2rem;
+            font-weight: bolder;
+        }
+
+        .total td {
+            font-weight: bold;
+        }
+
+        .remarks {
+            margin-top: 30px;
+            font-size: 16px;
+            border: 1px solid #000;
+            padding: 10px;
+            font-family: 'Georgia', serif;
+            text-align: left; /* parent aligns all text to left */
+        }
+
+        .remarksLabel {
+            display: inline-block; /* or block */
+            text-align: left;
+            font-family: 'Georgia', serif;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .date {
+            margin-top: 0px !important;
+            font-size: 11px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+            margin-bottom: 0.2rem;
+            margin-left: 2px;
+        }
+
+        #subGradeReportInfo tr:nth-child(even) {
+            background-color: transparent !important;
+        }
+
+        #studentReportInfo {
+            background-color: transparent !important;
+        }
+
+        #studentReportInfo td.left {
+            text-align: left !important;
+            vertical-align: middle;
+            padding: 3px 6px;
+            font-size: 14px;
+        }
+
+        #studentReportInfo td.strong {
+            font-weight: bold;
+            font-family: Arial, sans-serif !important;
+        }
+
+        .subjectsName {
+            text-align: left !important;
+        }
+
+        .totalMarksCol {
+            text-align: right !important;
+        }
+
+        .spanSubjectsName {
+            margin-left: 0rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Georgia', serif;
+        }
+
+        .defaultSizeAlign {
+            font-size: 0.85rem !important;
+            font-weight: bold !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        .defaultSizeAlignBody {
+            font-size: 1rem !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        .defaultSizeAlignBody strong {
+            font-weight: normal; /* remove bold */
+        }
+
+        .defaultFronts {
+            font-size: 1.2rem !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        .blank_td_first {
+            text-align: left; width: 30%;
+            border-style: hidden !important;
+        }
+
+        .middle_td {
+            text-align: center; 
+            width: 40%;
+            border-style: hidden !important;
+        }
+
+        .blank_td_second {
+            text-align: left; width: 30%;
+            border-style: hidden !important;
+        }
+
+        .page-break { page-break-after: always; }
+        .page-break:last-child { page-break-after: auto; }
+    </style>
+</head>
+<body>
+    {% for t in transactions %}
+        {% include "result_card_entry/for_pdfkit_report/print_result_card_half_yearly_report_pdfkit.html" with transaction=t table_data=table_data printed_on=printed_on %}
+    {% endfor %}
+</body>
+</html>

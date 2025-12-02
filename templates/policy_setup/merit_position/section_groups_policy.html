@@ -1,0 +1,653 @@
+<style>
+    /* Table container overflow handle করবে */
+    .module-table {
+        overflow-x: auto;
+        position: relative; /* sticky কাজ করার জন্য */
+    }
+
+    /*for bangla table*/
+    /* প্রথম column freeze */
+    #FORENGTABLE th:nth-child(1) {
+        position: sticky;
+        left: 0;
+        background: #85acb1;
+        z-index: 3; /* header এর উপর রাখতে */
+    }
+
+    #FORENGTABLE td:nth-child(1) {
+        position: sticky;
+        left: 0;
+        background: #002603; /* background দিতে হবে না হলে overlapping দেখাবে */
+        z-index: 2; /* header এর উপর রাখতে */
+        color: #fff; /* text color white করতে হবে */
+    }
+
+    /* দ্বিতীয় column freeze */
+    #FORENGTABLE th:nth-child(2) {
+        position: sticky;
+        left: 36px; /* প্রথম column width অনুযায়ী adjust করতে হবে */
+        background: #85acb1;
+        z-index: 3;
+    }
+
+    #FORENGTABLE td:nth-child(2) {
+        position: sticky;
+        left: 36px; /* প্রথম column width অনুযায়ী adjust করতে হবে */
+        background: #002603;
+        z-index: 2;
+        color: #fff; /* text color white করতে হবে */
+    }
+
+    /*for bangla table*/
+    /* প্রথম column freeze */
+    #FORBANTABLE th:nth-child(1) {
+        position: sticky;
+        left: 0;
+        background: #85acb1;
+        z-index: 3; /* header এর উপর রাখতে */
+    }
+
+    #FORBANTABLE td:nth-child(1) {
+        position: sticky;
+        left: 0;
+        background: #002603; /* background দিতে হবে না হলে overlapping দেখাবে */
+        z-index: 2; /* header এর উপর রাখতে */
+        color: #fff; /* text color white করতে হবে */
+    }
+
+    /* দ্বিতীয় column freeze */
+    #FORBANTABLE th:nth-child(2) {
+        position: sticky;
+        left: 36px; /* প্রথম column width অনুযায়ী adjust করতে হবে */
+        background: #85acb1;
+        z-index: 3;
+    }
+
+    #FORBANTABLE td:nth-child(2) {
+        position: sticky;
+        left: 36px; /* প্রথম column width অনুযায়ী adjust করতে হবে */
+        background: #002603;
+        z-index: 2;
+        color: #fff; /* text color white করতে হবে */
+    }
+</style>
+<section  class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+    <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+        <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #455697;">
+            <!-- Main Heading -->
+            <div class="row" style="display: flex; justify-content: center; text-align: center; align-items: center;">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2" style="margin-left: 0.5rem;">
+                        <i class='bx bx-book-alt text-white req-head-icon'></i>
+                        <h1 class="h3 text-white req-head">Class wise Section Groups Policy</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <section>
+            <div class="row row_item_setup">
+                <!-- form 1 -->
+                <div class="col-sm-12">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemsetup_container">
+                                <form action="" method="" id="FORENGCLASSSECGRUPFORM">
+                                    <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 2rem;">For English Version Class/Section Grouping Information</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="col-sm-12">
+                                                    <div class="card main-card">
+                                                        <div class="card-body card-body_item_setup" style="padding: 0rem 0rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                            <div class="item_setupflag" style="display: flex; margin-right: 1rem; justify-content: right;">
+                                                                <label class="form-check-label setupflag_label" for="id_is_english">
+                                                                    Is English:
+                                                                </label>
+                                                                <input class="form-check-input" type="radio" id="id_is_english" name="is_english_version" value="english" checked>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-6">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_org"
+                                                                            class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Org:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_org" name="org" class="form-select item_inputbox" aria-label="Default select example" required>
+                                                                                {% for org in user_org_list %}
+                                                                                <option value="{{org.org_id}}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                    </div>
+                                                    <!--  -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <!--  -->
+                                    <div class="itemsetup_container" style="margin: 1rem 10px 10px 10px;">
+                                        <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 2rem;">For English Version Class Wise Section Grouping</h2>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-12">
+                                                <div class="card main-card">
+                                                    <div class="card-body card-body_item_setup" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                        <!--  -->
+                                                        <section style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem;">
+                                                            <div class="module-table" style="overflow-x: auto; white-space: nowrap;">
+                                                                <table id="FORENGTABLE" class="table table-striped table-hover" style="min-width: 350rem; border: 1px solid #6aa2a8; table-layout: fixed;">
+                                                                    <thead class="text-center table-header_itemlist">
+                                                                        <tr>
+                                                                            <th style="text-align:center; width: 5%;">
+                                                                                Sl
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 20%;">
+                                                                                Sections
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 10%; color: rgb(165, 0, 41);">
+                                                                                Ord by
+                                                                            </th>
+                                                                            {% for clss in classes %}
+                                                                            <th style="text-align:center; width: 13%; color: rgb(165 62 0); font-weight: bold; font-size: 0.9rem;">
+                                                                                {{ clss.class_name }}
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 8%;">
+                                                                                Group No
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 20%;">
+                                                                                Group Name
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 8%;">
+                                                                                Grg Flag
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 8%;">
+                                                                                Ind Flag
+                                                                            </th>
+                                                                            {% endfor %}
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="FORENGTABLEBDY" style="text-align:center; font-size: 0.8rem">
+                                                                        <!--  -->
+                                                                        {% for eng_sec in english_section %}
+                                                                        <tr>
+                                                                            <td>{{ forloop.counter }}</td>
+                                                                            <td style="text-align: left;">{{ eng_sec.section_name }}</td>
+                                                                            <td style="text-align: left;"><input type="number" class="form-control item_inputbox zero_to_null" name="is_order_by[]" value="0" autocomplete="off" style="text-align: center;" required></td>
+
+                                                                            {% for clss in classes %}
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="section_selection[]" value="{{ clss.class_id }}|{{ eng_sec.section_id }}">
+                                                                            </td>
+                                                                            <td style="text-align: left;">
+                                                                                <input type="number" class="form-control item_inputbox zero_to_null" name="is_group_no[]" value="0" data-class="{{ clss.class_id }}" data-section="{{ eng_sec.section_id }}" autocomplete="off" style="text-align: center;">
+                                                                            </td>
+                                                                            <td style="text-align: left;">
+                                                                                <input type="text" class="form-control item_inputbox" name="is_group_name[]" data-class="{{ clss.class_id }}" data-section="{{ eng_sec.section_id }}" autocomplete="off" style="text-align: left;">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="is_grouping_flag[]" data-class="{{ clss.class_id }}" data-section="{{ eng_sec.section_id }}">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="is_individual_flag[]" data-class="{{ clss.class_id }}" data-section="{{ eng_sec.section_id }}">
+                                                                            </td>
+                                                                            {% endfor %}
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    
+                                    <!--  -->
+                                    <!--  -->
+                                    <!-- submit button -->
+                                    <div class="submit_button" style="margin-top: 5rem;">
+                                        <button type="submit" value="submit" class="btn btn-success btn-sm"
+                                            style="margin-right: 10px;">
+                                            Save & Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End of Section -->
+        <section>
+            <div class="row row_item_setup">
+                <!-- form 1 -->
+                <div class="col-sm-12">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemsetup_container">
+                                <form action="" method="" id="FORBANCLASSSECGRUPFORM">
+                                    <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 2rem;">For Bangla Version Class/Section Grouping Information</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="col-sm-12">
+                                                    <div class="card main-card">
+                                                        <div class="card-body card-body_item_setup" style="padding: 0rem 0rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                            <!--  -->
+                                                            <div class="item_setupflag" style="display: flex; margin-right: 1rem; justify-content: right;">
+                                                                <label class="form-check-label setupflag_label" for="id_is_bangla">
+                                                                    Is Bangla:
+                                                                </label>
+                                                                <input class="form-check-input" type="radio" id="id_is_bangla" name="is_bangla_version" value="bangla" checked>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-6">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_org"
+                                                                            class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Org:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_org" name="org" class="form-select item_inputbox" aria-label="Default select example" required>
+                                                                                {% for org in user_org_list %}
+                                                                                <option value="{{org.org_id}}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                    </div>
+                                                    <!--  -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <!--  -->
+                                    <div class="itemsetup_container" style="margin: 1rem 10px 10px 10px;">
+                                        <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 2rem;">For Bangla Version Class Wise Section Grouping</h2>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row row_item_setup">
+                                            <div class="col-sm-12">
+                                                <div class="card main-card">
+                                                    <div class="card-body card-body_item_setup" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                        <!--  -->
+                                                        <section style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem;">
+                                                            <div class="module-table" style="overflow-x: auto; white-space: nowrap;">
+                                                                <table id="FORBANTABLE" class="table table-striped table-hover" style="min-width: 350rem; border: 1px solid #6aa2a8; table-layout: fixed;">
+                                                                    <thead class="text-center table-header_itemlist">
+                                                                        <tr>
+                                                                            <th style="text-align:center; width: 5%;">
+                                                                                Sl
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 20%;">
+                                                                                Sections
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 10%; color: rgb(165, 0, 41);">
+                                                                                Ord by
+                                                                            </th>
+                                                                            {% for clss in classes %}
+                                                                            <th style="text-align:center; width: 13%; color: rgb(165 62 0); font-weight: bold; font-size: 0.9rem;">
+                                                                                {{ clss.class_name }}
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 8%;">
+                                                                                Group No
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 20%;">
+                                                                                Group Name
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 8%;">
+                                                                                Grg Flag
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 8%;">
+                                                                                Ind Flag
+                                                                            </th>
+                                                                            {% endfor %}
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="FORBANTABLEBDY" style="text-align:center; font-size: 0.8rem">
+                                                                        <!--  -->
+                                                                        {% for ban_sec in bangla_section %}
+                                                                        <tr>
+                                                                            <td>{{ forloop.counter }}</td>
+                                                                            <td style="text-align: left;">{{ ban_sec.section_name }}</td>
+                                                                            <td style="text-align: left;"><input type="number" class="form-control item_inputbox zero_to_null" name="is_order_by[]" value="0" autocomplete="off" style="text-align: center;" required></td>
+
+                                                                            {% for clss in classes %}
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="section_selection[]" value="{{ clss.class_id }}|{{ ban_sec.section_id }}">
+                                                                            </td>
+                                                                            <td style="text-align: left;">
+                                                                                <input type="number" class="form-control item_inputbox zero_to_null" name="is_group_no[]" value="0" data-class="{{ clss.class_id }}" data-section="{{ ban_sec.section_id }}" autocomplete="off" style="text-align: center;">
+                                                                            </td>
+                                                                            <td style="text-align: left;">
+                                                                                <input type="text" class="form-control item_inputbox" name="is_group_name[]" data-class="{{ clss.class_id }}" data-section="{{ ban_sec.section_id }}" autocomplete="off" style="text-align: left;">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="is_grouping_flag[]" data-class="{{ clss.class_id }}" data-section="{{ ban_sec.section_id }}">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" style="cursor: pointer; height: 1.6rem; width: 1.6rem;"
+                                                                                    class="form-check-input" name="is_individual_flag[]" data-class="{{ clss.class_id }}" data-section="{{ ban_sec.section_id }}">
+                                                                            </td>
+                                                                            {% endfor %}
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    
+                                    <!--  -->
+                                    <!--  -->
+                                    <!-- submit button -->
+                                    <div class="submit_button" style="margin-top: 5rem;">
+                                        <button type="submit" value="submit" class="btn btn-success btn-sm"
+                                            style="margin-right: 10px;">
+                                            Save & Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        loadEnglishVersionClassSectionGrouping();
+        loadBanglaVersionClassSectionGrouping();
+
+        $("#id_org, input[name='is_english_version']").change(function () {
+            loadEnglishVersionClassSectionGrouping();
+        });
+
+        $("#id_org, input[name='is_bangla_version']").change(function () {
+            loadBanglaVersionClassSectionGrouping();
+        });
+
+
+        $(document).on('focus', '.zero_to_null', function () {
+            if ($(this).val() === '0') {
+                $(this).val('');
+            }
+        });
+
+        $(document).on('blur', '.zero_to_null', function () {
+            if ($(this).val().trim() === '') {
+                $(this).val('0');
+            }
+        });
+    });
+    
+    // load existing data for english version
+    function loadEnglishVersionClassSectionGrouping() {
+        $.ajax({
+            url: "{% url 'get_class_section_grouping_for_english' %}",
+            type: "GET",
+            data: {
+                org_id: $("#id_org").val(),
+                is_english_version: $("input[name='is_english_version']:checked").val()
+            },
+            success: function (resp) {
+                let data = resp.data;
+
+                // Reset সব input
+                $("#FORENGTABLEBDY tr").each(function () {
+                    let $row = $(this);
+
+                    $row.find("input[name='is_order_by[]']").val(0);
+                    $row.find("input[name='is_group_no[]']").val(0);
+                    $row.find("input[name='is_group_name[]']").val('');
+                    $row.find("input[name='section_selection[]']").prop("checked", false);
+                    $row.find("input[name='is_grouping_flag[]']").prop("checked", false);
+                    $row.find("input[name='is_individual_flag[]']").prop("checked", false);
+                });
+
+                // এখন existing data বসানো
+                data.forEach(function(m){
+                    // Checkbox select
+                    let $checkbox = $("input[name='section_selection[]'][value='"+ m.class_id +"|"+ m.section_id +"']");
+                    if($checkbox.length){
+                        $checkbox.prop("checked", true);
+
+                        // order_by → section-wise (row-level)
+                        $checkbox.closest("tr").find("input[name='is_order_by[]']").val(m.is_order_by);
+
+                        // group_no → class + section wise
+                        $("input[name='is_group_no[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").val(m.is_group_no);
+                        $("input[name='is_group_name[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").val(m.is_group_name);
+
+                        // flags → class + section wise
+                        $("input[name='is_grouping_flag[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").prop("checked", m.is_grouping_flag);
+                        $("input[name='is_individual_flag[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").prop("checked", m.is_individual_flag);
+                    }
+                });
+            }
+        });
+    }
+
+
+
+    // load existing data for bangla version
+    function loadBanglaVersionClassSectionGrouping() {
+        $.ajax({
+            url: "{% url 'get_class_section_grouping_for_bangla' %}",
+            type: "GET",
+            data: {
+                org_id: $("#id_org").val(),
+                is_bangla_version: $("input[name='is_bangla_version']:checked").val()
+            },
+            success: function (resp) {
+                let data = resp.data;
+
+                // Reset সব input
+                $("#FORBANTABLEBDY tr").each(function () {
+                    let $row = $(this);
+
+                    $row.find("input[name='is_order_by[]']").val(0);
+                    $row.find("input[name='is_group_no[]']").val(0);
+                    $row.find("input[name='is_group_name[]']").val('');
+                    $row.find("input[name='section_selection[]']").prop("checked", false);
+                    $row.find("input[name='is_grouping_flag[]']").prop("checked", false);
+                    $row.find("input[name='is_individual_flag[]']").prop("checked", false);
+                });
+
+                // এখন existing data বসানো
+                data.forEach(function(m){
+                    // Checkbox select
+                    let $checkbox = $("input[name='section_selection[]'][value='"+ m.class_id +"|"+ m.section_id +"']");
+                    if($checkbox.length){
+                        $checkbox.prop("checked", true);
+
+                        // order_by → section-wise (row-level)
+                        $checkbox.closest("tr").find("input[name='is_order_by[]']").val(m.is_order_by);
+
+                        // group_no → class + section wise
+                        $("input[name='is_group_no[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").val(m.is_group_no);
+                        $("input[name='is_group_name[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").val(m.is_group_name);
+
+                        // flags → class + section wise
+                        $("input[name='is_grouping_flag[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").prop("checked", m.is_grouping_flag);
+                        $("input[name='is_individual_flag[]'][data-class='"+m.class_id+"'][data-section='"+m.section_id+"']").prop("checked", m.is_individual_flag);
+                    }
+                });
+            }
+        });
+    }
+
+
+    //for english submission
+    $(function () {
+        $('#FORENGCLASSSECGRUPFORM').submit(function (e) {
+            e.preventDefault();
+
+            let sectionMappings = [];
+            $("#FORENGTABLEBDY tr").each(function(){
+                let $row = $(this);
+                let order_by = $row.find("input[name='is_order_by[]']").val();
+
+                $row.find("input[name='section_selection[]']:checked").each(function(){
+                    let val = $(this).val().split("|");
+                    let class_id = val[0];
+                    let section_id = val[1];
+
+                    let group_no = $("input[name='is_group_no[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").val();
+                    let group_name = $("input[name='is_group_name[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").val();
+                    let is_grouping_flag = $("input[name='is_grouping_flag[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").is(":checked");
+                    let is_individual_flag = $("input[name='is_individual_flag[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").is(":checked");
+
+                    sectionMappings.push({
+                        class_id: parseInt(class_id),
+                        section_id: parseInt(section_id),
+                        order_by: parseInt(order_by),
+                        group_no: parseInt(group_no),
+                        group_name: group_name,
+                        is_grouping_flag: is_grouping_flag,
+                        is_individual_flag: is_individual_flag
+                    });
+                });
+            });
+
+            $.ajax({
+                url: "{% url 'save_class_section_grouping' %}",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    id_org: $("#id_org").val(),
+                    is_english_version: $("input[name='is_english_version']:checked").val(),
+                    sectionMappings: sectionMappings
+                }),
+                success: function(resp){
+                    toastr.success(resp.msg);
+                    // Reload the table data
+                    window.location.reload();
+                }
+            });
+        });
+    });
+
+    //for bangla submition
+    $(function () {
+        $('#FORBANCLASSSECGRUPFORM').submit(function (e) {
+            e.preventDefault();
+
+            let sectionMappings = [];
+            $("#FORBANTABLEBDY tr").each(function(){
+                let $row = $(this);
+                let order_by = $row.find("input[name='is_order_by[]']").val();
+
+                $row.find("input[name='section_selection[]']:checked").each(function(){
+                    let val = $(this).val().split("|");
+                    let class_id = val[0];
+                    let section_id = val[1];
+
+                    let group_no = $("input[name='is_group_no[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").val();
+                    let group_name = $("input[name='is_group_name[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").val();
+                    let is_grouping_flag = $("input[name='is_grouping_flag[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").is(":checked");
+                    let is_individual_flag = $("input[name='is_individual_flag[]'][data-class='"+class_id+"'][data-section='"+section_id+"']").is(":checked");
+
+                    sectionMappings.push({
+                        class_id: parseInt(class_id),
+                        section_id: parseInt(section_id),
+                        order_by: parseInt(order_by),
+                        group_no: parseInt(group_no),
+                        group_name: group_name,
+                        is_grouping_flag: is_grouping_flag,
+                        is_individual_flag: is_individual_flag
+                    });
+                });
+            });
+
+            $.ajax({
+                url: "{% url 'save_class_section_grouping' %}",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    id_org: $("#id_org").val(),
+                    is_bangla_version: $("input[name='is_bangla_version']:checked").val(),
+                    sectionMappings: sectionMappings
+                }),
+                success: function(resp){
+                    toastr.success(resp.msg);
+                    // Reload the table data
+                    window.location.reload();
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,531 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<title>Merit Position Report</title>
+<!--========== CSS ==========-->
+<!--========== Bootstrap link ==========-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- Barcode CDN -->
+<script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+{% endblock %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .card {
+        border: 0px solid transparent !important;
+    }
+
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-width: 1;
+        border: 1px solid;
+    }
+
+    tr:nth-child(even) {
+        background: None !important;
+    }
+
+    hr {
+        margin: 0.3rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    .com-name {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .com-address {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-address-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .email-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-hotline-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-fax-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-fax-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .software-woner-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-by-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-on-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-page-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .software-woner-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-by-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-on-date {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-page-no {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .mul-items-othrs {
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .mul-items-names {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .receipt-name {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 25px;
+        border: 1px solid #c5c1c1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 15px;
+        font-weight: bolder;
+    }
+
+    .invoice_id {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcodeImg {
+        position: absolute;
+        top: 5rem;
+        right: 2rem;
+        display: flex;
+        margin-top: 4px;
+        margin-left: 21px;
+    }
+
+    .rec-type {
+        display: flex;
+        margin-top: -15px;
+    }
+
+    /* .rec-align {
+        font-size: 9px;
+        margin-top: 2px;
+    } */
+
+    .receipt-logo {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        text-align: left;
+        width: 5%;
+        border-radius: 50%;
+    }
+
+    .receipt-img {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: -8px;
+        left: -6px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .com-receipt-logo {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 0rem;
+        left: 3rem;
+    }
+
+    .paid-due-status {
+        width: 56%;
+        display: flex;
+        align-items: stretch;
+        text-align: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+        background: #9b99998a;
+        font-weight: bolder;
+        border-bottom: 3px solid #8d8a8a;
+        border-right: 3px solid #8d8a8a;
+    }
+
+    .status-DP {
+        text-align: center;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        border-style: hidden !important;
+    }
+
+    .sub-title1 {
+        margin-top: -9px;
+        width: 100%;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: center;
+    }
+
+    .sub-title2 {
+        margin-top: -7px;
+    }
+
+    .sub-title3 {
+        margin-top: -3px;
+    }
+</style>
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section style="margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <div id="outprint">
+                <section>
+                    <table class="table"
+                        style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                        <tr>
+                            <div class="receipt-logo">
+                                <img class="com-receipt-logo" src="" alt="logo">
+                            </div>
+                        </tr>
+                        <tr>
+                            <center>
+                                <label class="com-name">
+                                    <!-- Company Name Here -->
+                                    
+                                </label>
+                            </center>
+                            <center class="sub-title1">
+                                <small>
+                                    <span class="com-address">
+                                        <span class="com-address-title">Address: </span>
+                                        <span class="com-address-name">
+                                            <!-- Address -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title2">
+                                <small>
+                                    <span class="email-address-title">Email: </span>
+                                    <span class="com-address email-address-name">
+                                        <!-- Email -->
+                                    </span>
+                                    <span class="website-title">Website: </span>
+                                    <span class="website-name">
+                                        <!-- Website -->
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">Hotline: </span>
+                                        <span class="com-hotline-name">
+                                            <!-- Phone and Hotline -->
+                                        </span>
+                                        <span class="com-fax-title">Fax: </span>
+                                        <span class="com-fax-name">
+                                            <!-- Fax -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="com-branch-title"
+                                            style="font-size: 0.75rem; font-weight: bolder;">
+                                            <!-- Branch Name -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="exam_type-version-year" style="font-size: 0.75rem; font-weight: bolder;">
+                                            <!-- Exam Type - Version - Year -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0.1rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title" style="font-size: 0.98rem;">
+                                            Merit Position Report
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <hr>
+    <!--  -->
+    <section style="margin-bottom: 10rem;">
+        <div class="row row_item_setup">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <!--  -->
+                        <section>
+                            <div id="MERITPOSTB">
+                                <table class="table" style="width: 100%; text-align:center;">
+                                    <thead class="text-center por_tb_header" style="font-size: 0.8rem;">
+                                        <tr style="border: 1px solid;">
+                                            <th style="text-align:center; width: 5%;">Sl</th>
+                                            <th style="text-align:center; width: 32%;">Name</th>
+                                            <th style="text-align:center; width: 10%;">Roll</th>
+                                            <th style="text-align:center; width: 10%;">Class</th>
+                                            <th style="text-align:center; width: 10%;">Section</th>
+                                            <th style="text-align:center; width: 10%;">Shift</th>
+                                            <th style="text-align:center; width: 10%;">Groups</th>
+                                            <th style="text-align:center; width: 5%;">GPA</th>
+                                            <th style="text-align:center; width: 8%;">Merit Position</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="MERITPOSTBODY" style="font-size: 0.8rem;">
+                                        <!-- Table body will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        style="position: fixed; right: 1rem; text-align: center; font-size: 1rem; font-weight: bolder; border-top: 1px solid; width: 15%;">
+        <span>Signature</span>
+        <!--  -->
+    </section>
+</main>
+<section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+    <!-- <hr> -->
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+            onclick="printReceipt()" id="receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+    </div>
+    <!--  -->
+</section>
+<!--  -->
+<script>
+    //<!--  -->
+    $(document).ready(function () {
+
+        // Get parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+
+        var merit_id = urlParams.get("merit_id");
+        var org_id = urlParams.get("org_id");
+        var branch_id = urlParams.get("branch_id");
+
+        $.ajax({
+            url: "/get_merit_position_report_data/",
+            type: "GET",
+            data: {
+                merit_id: merit_id,
+                org_id: org_id,
+                branch_id: branch_id,
+            },
+            success: function (response) {
+                if (response.status === "success") {
+
+                    /** ----------------------
+                    * Fill Header Data
+                    * ---------------------- **/
+                    $(".com-receipt-logo").attr("src", response.header.logo);
+                    $(".com-name").text(response.header.org_name);
+                    $(".com-address-name").text(response.header.address);
+                    $(".email-address-name").text(response.header.email);
+                    $(".website-name").text(response.header.website);
+                    $(".com-hotline-name").text(response.header.hotline);
+                    $(".com-fax-name").text(response.header.fax);
+                    $(".com-branch-title").text(response.header.branch_name);
+                    $(".exam_type-version-year").text(response.header.exam_type_version_year);
+
+                    /** ----------------------
+                    * Fill Table
+                    * ---------------------- **/
+                    let tbody = "";
+                    response.table.forEach(function (item) {
+                        tbody += `
+                            <tr>
+                                <td>${item.sl}</td>
+                                <td style="text-align: left;">${item.name}</td>
+                                <td>${item.roll}</td>
+                                <td>${item.class}</td>
+                                <td>${item.section}</td>
+                                <td>${item.shift}</td>
+                                <td>${item.groups}</td>
+                                <td>${item.gpa}</td>
+                                <td>${item.merit_position}</td>
+                            </tr>
+                        `;
+                    });
+
+                    $("#MERITPOSTBODY").html(tbody);
+                }
+            }
+        });
+
+    });
+    //<!--  -->
+
+    //
+    function printReceipt() {
+        const footerText = 'TECHROOT (Pvt.) Ltd';
+        const now = new Date();
+        const formattedDateTime = now.toLocaleString();
+        const pageNumber = 1; // Update this dynamically if needed
+
+        // Append your footer content
+        const footerContent =
+            `<div class="footer">
+                <span class="software-woner-title">Software By: </span>
+                <span class="software-woner-name">${footerText}</span>
+                <span class="printed-by-title">- Printed By: </span>
+                <span class="printed-by-name"></span>
+                <span class="printed-on-title">- Printed on: </span>
+                <span class="printed-on-date">${formattedDateTime}</span>
+                <span class="printed-page-title">- Page </span>
+                <span class="printed-page-no">${pageNumber}</span>
+            </div>`;
+
+        var printContents = document.querySelector('main').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        // Append footer content to the end of the print contents
+        printContents += footerContent;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+    //<!--  -->
+    //
+</script>
+{% endblock %}

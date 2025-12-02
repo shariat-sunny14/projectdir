@@ -1,0 +1,1733 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'statistics_style/css/statistics_style.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #455697;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head">
+                        <div class="d-sm-flex align-items-center mb-2" style="margin-left: 1rem;">
+                            <i class='bx bx-scatter-chart text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Status of Statistics </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <section>
+                <div class="card date_range-card"
+                    style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.3rem;">
+                    <div class="card-body" style="padding: 0.3rem 1rem; background: #5d6a9b; color: #fff;">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <!--  -->
+                                        <div class="row store_row" style="flex-grow: 1;">
+                                            <div class="date_range-element col-sm-12"
+                                                style="display: flex; justify-content: space-between; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                                <!--  -->
+                                                <div class="filter_between col-sm-8">
+                                                    <div class="form-check formcheckradio">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="date_range_filter" id="id_todate" checked>
+                                                        <label class="form-check-label" for="id_todate">
+                                                            Today
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check formcheckradio">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="date_range_filter" id="id_lastweek">
+                                                        <label class="form-check-label" for="id_lastweek">
+                                                            Last Week
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check formcheckradio">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="date_range_filter" id="id_lastmonth">
+                                                        <label class="form-check-label" for="id_lastmonth">
+                                                            Last Month
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check formcheckradio">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="date_range_filter" id="id_thisyear">
+                                                        <label class="form-check-label" for="id_thisyear">
+                                                            This Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check formcheckradio">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="date_range_filter" id="id_datebetween">
+                                                        <label class="form-check-label" for="id_datebetween">
+                                                            Date Between
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="filter_between col-sm-4">
+                                                    <!-- start date -->
+                                                    <div class="col-sm-6 align-items-center" style="display: flex;">
+                                                        <div class="col-auto">
+                                                            <label for="from_date" class="col-form-label">From:</label>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <input type="text"
+                                                                class="form-control item_inputbox datepicker"
+                                                                id="from_date" name="from_date" autocomplete="off"
+                                                                disabled required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- end date -->
+                                                    <div class="col-sm-6 align-items-center" style="display: flex;">
+                                                        <div class="col-auto">
+                                                            <label for="end_date" class="col-form-label">To:</label>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <input type="text"
+                                                                class="form-control item_inputbox datepicker"
+                                                                id="end_date" name="end_date" autocomplete="off"
+                                                                disabled required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section>
+                <div class="card date_range-card"
+                    style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1.2rem;">
+                    <div class="card-body" style="padding: 0.5rem 1rem;">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <div class="col-sm-12"
+                                            style="display:flex;flex-direction: row;flex-wrap: wrap;align-content: center;align-items: center;justify-content: space-between;">
+                                            <div class="date_range-element col-sm-12"
+                                                style="display: flex; justify-content: space-between; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_filter_org" class="col-form-label">Orga.:</label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_filter_org" name="filter_org"
+                                                            class="form-select item_inputbox store_Selectbox"
+                                                            aria-label="Default select example">
+                                                            {% for org in user_org_list %}
+                                                            <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                                {{org.org_name}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_filter_branch" class="col-form-label">
+                                                            Branch:
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <select id="id_filter_branch" name="filter_branch"
+                                                            class="form-select item_inputbox store_Selectbox" aria-label="Default select example">
+                                                            <!--  -->
+                                                            {% for branch in user_branch_list %}
+                                                            <option id="{{ branch.branch_id }}" value="{{ branch.branch_id }}">
+                                                                {{ branch.branch_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_is_class" class="col-form-label">Class:</label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_is_class" name="is_class"
+                                                            class="form-select item_inputbox store_Selectbox" aria-label="Default select example">
+                                                            {% for cls in user_others_access.class_access %}
+                                                            <option value="{{ cls.class_id }}" data-class_name="{{ cls.class_name }}"
+                                                                data-allow_group="{{ cls.allow_groups }}" {% if cls.is_defaults %}selected{% endif %}>
+                                                                {{ cls.class_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_is_section"
+                                                            class="col-form-label">Section:</label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_is_section" name="is_section" class="form-select item_inputbox store_Selectbox"
+                                                            aria-label="Default select example">
+                                                            {% for sect in user_others_access.section_access %}
+                                                            <option value="{{ sect.section_id }}" data-section_name="{{ sect.section_name }}" {% if sect.is_defaults %}selected{% endif %}>
+                                                                {{ sect.section_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <!--  -->
+                                            <div class="date_range-element col-sm-12"
+                                                style="display: flex; justify-content: space-between; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_is_shifts" class="col-form-label">Shifts:</label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_is_shifts" name="is_shifts"
+                                                            class="form-select item_inputbox store_Selectbox" aria-label="Default select example">
+                                                            {% for shift in user_others_access.shift_access %}
+                                                            <option value="{{ shift.shift_id }}" data-shift_name="{{ shift.shift_name }}" {% if shift.is_defaults %}selected{% endif %}>
+                                                                {{ shift.shift_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div id="group_section" class="col-sm-12" id="groups_block" style="display: flex;">
+                                                        <div class="col-auto">
+                                                            <label for="id_is_groups" class="col-form-label">
+                                                                Groups:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <select id="id_is_groups" name="is_groups" class="form-select item_inputbox store_Selectbox"
+                                                                aria-label="Default select example">
+                                                                {% for group in user_others_access.group_access %}
+                                                                <option value="{{ group.groups_id }}" data-groups_name="{{ group.groups_name }}" {% if group.is_defaults %}selected{% endif %}>
+                                                                    {{ group.groups_name }}
+                                                                </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_is_subjects"
+                                                            class="col-form-label">Subje:</label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_is_subjects" name="is_subjects"
+                                                            class="form-select item_inputbox store_Selectbox"
+                                                            aria-label="Default select example">
+                                                            <!--  -->
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <div class="col-sm-3 align-items-center" style="display: flex;">
+                                                    <div class="col-auto">
+                                                        <label for="id_exam_type" class="col-form-label">Exam
+                                                            T.:</label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_exam_type" name="exam_type"
+                                                            class="form-select item_inputbox store_Selectbox"
+                                                            aria-label="Default select example">
+                                                            {% for examtype in examtypelist %}
+                                                            <option value="{{ examtype.exam_type_id }}"
+                                                                data-type_name="{{ examtype.exam_type_name }}">
+                                                                {{ examtype.exam_type_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <!-- app summary status -->
+            {% if user.is_superuser %}
+                <section style="margin-left: 0.3rem; margin-bottom: 1rem;">
+                    <div class="display-flex col-sm-12">
+                        <!--  -->
+                        <!--  -->
+                        <div class="col-sm-12">
+                            <div class="card centralHeight" id="showfullscreenTotSMSStatus" style="height: 37rem; margin-left: 0.6rem;">
+                                <div class="card-body">
+                                    <div style="display: flex;">
+                                        <h5 class="card-title title-font text-success">Apps Summary History</h5>
+                                        <div class="fullexitBtn">
+                                            <i id="fullscreenIconTotSMSStatus" class='bx bx-fullscreen'
+                                                style="cursor: pointer;"></i>
+                                            <i id="exitFullscreenTotSMSStatus" class='bx bx-cross'
+                                                style="display: none; cursor: pointer;"></i>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div>
+                                        <hr class="w-100 hr-body">
+                                    </div>
+                                    <!-- body -->
+                                    <div style="display: flex; width: 100%; margin: auto; justify-content: center; flex-direction: row; flex-wrap: wrap;">
+                                        <!--  -->
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-sm-4">
+                                                <div class="card mini-card">
+                                                    <div class="card-body text-center">
+                                                        <h6>Total Sessions</h6>
+                                                        <h3 id="totalSessions">0</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="card mini-card">
+                                                    <div class="card-body text-center">
+                                                        <h6>Active Sessions</h6>
+                                                        <h3 id="activeSessions">0</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="card mini-card">
+                                                    <div class="card-body text-center">
+                                                        <h6>Expired Sessions</h6>
+                                                        <h3 id="expiredSessions">0</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="table-wrapper custom-scroll" style="width: 100%;">
+                                            <!--  -->
+                                            <table id="apps-summary-status" class="table appsSummaryStatus stylish-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl</th>
+                                                        <th style="text-align: left;">Model Name</th>
+                                                        <th>Total Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="modelStatsTableBody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <p class="tx-12 card-footer-size"
+                                        style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                        Over All Apps Summary History Status</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <!--  -->
+                    </div>
+                </section>
+            {% endif %}
+            <!-- total students info -->
+            <section style="margin-left: 0.3rem; margin-bottom: 1rem;">
+                <div class="display-flex col-sm-12">
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card centralHeight" id="showfullscreenTotClssStd"
+                            style="height: 25rem; margin-right: 1.5rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Total & Class Wise Students History</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconTotClssStd" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenTotClssStd" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div class="piechartbody" id="totClssStdpiechartBD">
+                                    <canvas class="particulartopmarks" id="totClassStdPieChart"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Total & Class Wise Students History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-8">
+                        <div class="card centralHeight" id="showfullscreenTotSecShiGrp" style="height: 25rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Total Section Wise Students History</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconTotSecShiGrp" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenTotSecShiGrp" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div style="display: flex; width: 100%; margin: auto; justify-content: center;">
+                                    <canvas class="SectionInformation" id="sectionShiftGroups"
+                                        style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 280px;"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Section Wise Students History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                </div>
+            </section>
+            <!-- shift and groups data visualization  -->
+            <section style="margin-left: 0.3rem; margin-bottom: 1rem;">
+                <div class="display-flex col-sm-12">
+                    <!--  -->
+                    <div class="col-sm-6">
+                        <div class="card centralHeight" id="showfullscreenTotShifts" style="height: 25rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Total Shift Wise Students History</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconTotShifts" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenTotShifts" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div style="display: flex; width: 100%; margin: auto; justify-content: center;">
+                                    <canvas class="ShiftsInformation" id="Shiftsinfo"
+                                        style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 280px;"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Shift Wise Students History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-6">
+                        <div class="card centralHeight" id="showfullscreenTotGroups" style="height: 25rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Total Groups Wise Students History</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconTotGroups" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenTotGroups" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div style="display: flex; width: 100%; margin: auto; justify-content: center;">
+                                    <canvas class="GroupsInformation" id="Groupsinfo"
+                                        style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 280px;"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Groups Wise Students History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-left: 0.3rem; margin-bottom: 1rem;">
+                <div class="display-flex col-sm-12">
+                    <!--  -->
+                    <!--  -->
+                    <div class="col-sm-12">
+                        <div class="card centralHeight" id="showfullscreenTotSMSStatus" style="height: 25rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Total SMS Sent History</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconTotSMSStatus" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenTotSMSStatus" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div style="display: flex; width: 100%; margin: auto; justify-content: center;">
+                                    <canvas class="totalSMSStatusInfo" id="totalSMSStatus"
+                                        style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 280px;"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Total SMS Sent History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                </div>
+            </section>
+            <!--  -->
+            <!--  -->
+            <section style="margin-left: 0.3rem; margin-bottom: 1rem;">
+                <div class="display-flex col-sm-12">
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card centralHeight" id="showfullscreenDsales"
+                            style="height: 25rem; margin-right: 1.5rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">
+                                        Subject Wise Student and SMS History
+                                    </h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconDsales" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenDsales" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div style="display: flex; width: 100%; margin: auto; justify-content: center;">
+                                    <canvas class="examsmsstatusinfo" id="barChart"
+                                        style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 280px;"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Subject Wise Student and SMS History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card centralHeight" id="showfullscreenItemWise" style="height: 25rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Students Marks History</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconItemWise" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenItemWise" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div style="display: flex; width: 100%; margin: auto; justify-content: center;">
+                                    <canvas class="studentmarkshistory" id="marksBarChart"
+                                        style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 280px;"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Students Marks History Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="col-sm-4">
+                        <div class="card centralHeight" id="showfullscreenXMTypeTopM"
+                            style="height: 25rem; margin-right: 1.5rem; margin-left: 0.6rem;">
+                            <div class="card-body">
+                                <div style="display: flex;">
+                                    <h5 class="card-title title-font text-success">Exam Type Wise Top Marks</h5>
+                                    <div class="fullexitBtn">
+                                        <i id="fullscreenIconXMTypeTopM" class='bx bx-fullscreen'
+                                            style="cursor: pointer;"></i>
+                                        <i id="exitFullscreenXMTypeTopM" class='bx bx-cross'
+                                            style="display: none; cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div>
+                                    <hr class="w-100 hr-body">
+                                </div>
+                                <!-- body -->
+                                <div class="piechartbody" id="piechartBD">
+                                    <canvas class="particulartopmarks" id="parMarksPieChart"></canvas>
+                                </div>
+                                <p class="tx-12 card-footer-size"
+                                    style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                                    Over All Exam Type Wise Top Marks Status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                </div>
+            </section>
+            <!-- map -->
+            <div class="col-sm-12">
+                <div class="card centralHeight" id="showfullscreenMap" style="height: 25rem; margin-left: 0.6rem;">
+                    <div class="card-body">
+                        <div style="display: flex;">
+                            <h5 class="card-title title-font text-success">Students Address Wise Locations</h5>
+                            <div class="fullexitBtn">
+                                <i id="fullscreenIconMap" class='bx bx-fullscreen' style="cursor: pointer;"></i>
+                                <i id="exitFullscreenMap" class='bx bx-cross'
+                                    style="display: none; cursor: pointer;"></i>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div>
+                            <hr class="w-100 hr-body">
+                        </div>
+                        <!-- body -->
+                        <div class="map-body address_map">
+                            <div id="map"></div>
+                        </div>
+                        <!--  -->
+                        <p class="tx-12 card-footer-size" style="margin-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                            Over All Students Address Wise Locations Status</p>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <div style="margin-top: 2rem;">
+                <hr class="w-100">
+            </div>
+            <!--  -->
+            <section>
+
+            </section>
+        </section>
+    </section>
+    <!--  -->
+</main>
+<script>
+    $(document).ready(function () {
+        loadDashboardData();
+
+        // checkbox / date change হলে reload
+        $('input[type=checkbox], #from_date, #end_date').on('change', function () {
+            loadDashboardData();
+        });
+    });
+
+    /* MODEL NAME MAPPING */
+    const modelNameMap = {
+        "others_access_list": "Others Access List",
+        "access_list": "Access List",
+        "in_letter_grade_mode": "Letter Grade Mode",
+        "in_letter_gradeHundredMap": "Grade Map (100)",
+        "in_letter_gradeFiftyMap": "Grade Map (50)",
+        "in_result_finalizationdtls": "Result Finalization Details",
+        "in_result_finalization": "Result Finalization",
+        "in_registrations": "Student Registrations",
+        "organizationlst": "Organization",
+        "branchslist": "Branch List",
+        "in_exam_type": "Exam Types",
+        "in_subjects": "Subjects",
+        "in_section": "Sections",
+        "in_shifts": "Shifts",
+        "in_groups": "Groups",
+        "in_class": "Class",
+        "module_list": "Module List",
+        "module_type": "Module Type",
+        "feature_list": "Features",
+        "in_results_card_entry": "Results Card Entry",
+        "in_student_attendants": "Student Attendance",
+        "in_student_attendantdtls": "Student Attendance Details",
+        "in_class_wise_merit_policy": "Class Wise Merit Policy",
+        "in_subject_wise_merit_policy": "Subject Wise Merit Policy",
+        "classSectionGroupingMap": "Class Section Grouping Map",
+        "half_year_roll_section_change_policy": "Half Year Roll Section Change Policy",
+        "annual_exam_percentance_policy": "Annual Exam Percentance Policy",
+        "in_merit_position_approval": "Merit Position Approval",
+        "lookup_values": "Lookup Values",
+        "defaults_exam_modes": "Default Exam Modes",
+        "in_exam_modes": "Exam Modes",
+        "ExamModeTypeMap": "Exam Mode Type Map",
+        "in_student_attendant": "Student Attendance",
+        "in_merit_position_approvaldtls": "Merit Position Approval Details",
+        "in_half_yearly_roll_sec_change_info": "Half Yearly Roll Section Change Info",
+        "in_half_yearly_roll_sec_change_history": "Half Yearly Roll Section Change History",
+        "in_half_yearly_rollsecchange_rollback_history": "Half Yearly Roll Section Change Rollback History",
+        "SystemShutdown": "System Shut Down"
+    };
+
+
+    /* LOAD DASHBOARD DATA */
+    function loadDashboardData() {
+        const dateRange = getDateRange();
+
+        $.ajax({
+            url: "/statistics_app_summary/",
+            type: "GET",
+            data: {
+                start_date: dateRange.start_date,
+                end_date: dateRange.end_date
+            },
+            dataType: "json",
+            success: function (response) {
+
+                // SESSION PANEL UPDATE
+                $("#totalSessions").text(response.total_sessions);
+                $("#activeSessions").text(response.active_sessions);
+                $("#expiredSessions").text(response.expired_sessions);
+
+                // TABLE UPDATE
+                updateModelTable(response);
+            },
+            error: function (xhr) {
+                console.log("Error:", xhr.responseText);
+            }
+        });
+    }
+
+
+    /* UPDATE TABLE */
+    function updateModelTable(response) {
+        let tbody = $("#modelStatsTableBody");
+        tbody.empty();
+        // -------------------------------
+        // SECOND: Add All Model Rows
+        // -------------------------------
+        $.each(response.model_stats, function (index, row) {
+
+            // Model name mapping apply
+            let readableName = modelNameMap[row.model] || row.model;
+
+            tbody.append(`
+                <tr>
+                    <td>${index + 1}</td>
+                    <td style="text-align: left;">${readableName}</td>
+                    <td>${row.submit}</td>
+                </tr>
+            `);
+        });
+    }
+
+    ///////////////////////////////
+    function loadYearlyMonthWiseSMSStatusChart() {
+        $.ajax({
+            url: '{% url "get_yearly_month_wise_sms_tatus" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                const ctx = document.getElementById('totalSMSStatus').getContext('2d');
+
+                // Destroy existing chart if any
+                if (window.totalSMSStatusChart && typeof window.totalSMSStatusChart.destroy === 'function') {
+                    window.totalSMSStatusChart.destroy();
+                }
+
+                // Create new chart
+                window.totalSMSStatusChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: '',  // hide label
+                            data: data.datasets[0].data,
+                            fill: true,
+                            backgroundColor: hexToRgba('#36a2eb', 0.2),
+                            borderColor: '#36a2eb',
+                            pointBackgroundColor: '#36a2eb',
+                            pointBorderColor: "#fff",
+                            pointHoverBackgroundColor: "#fff",
+                            pointHoverBorderColor: '#36a2eb',
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            tension: 0.4,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: false  // hide legend entirely
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `SMS Sent: ${context.raw}`;  // optional: custom tooltip text
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)',
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    font: { size: 13 },
+                                    color: '#444'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0,
+                                    font: { size: 13 },
+                                    color: '#444'
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)',
+                                    borderDash: [5, 5]
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+    ///////////////////////////////
+    function loadTotalClassWiseStudentsChart() {
+        $.ajax({
+            url: '{% url "get_class_wise_student_summary" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                const labels = Object.keys(data.classes);
+                const values = Object.values(data.classes);
+                const colors = labels.map(() => generateRandomColor(0.7));
+
+                if (window.totClassStdPieChart && typeof totClassStdPieChart.destroy === 'function') {
+                    window.totClassStdPieChart.destroy();
+                }
+
+                const ctx = document.getElementById('totClassStdPieChart').getContext('2d');
+                window.totClassStdPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: colors,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false  // No legend
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.label}: ${context.raw}`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                display: true,   // Show inside the pie chart
+                                color: '#fff',
+                                font: {
+                                    weight: 'bold',
+                                    size: 13
+                                },
+                                formatter: function (value, context) {
+                                    return `${context.chart.data.labels[context.dataIndex]}`; // Show class name only
+                                }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+        });
+    }
+    ///////////////////
+    function loadSectionShiftGroupsInfoSummaryChart() {
+        $.ajax({
+            url: '{% url "get_section_wise_student_info" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                const labelsSet = new Set();
+
+                // Collect all labels
+                data.datasets.forEach(dataset => {
+                    Object.keys(dataset.data).forEach(label => {
+                        labelsSet.add(label);
+                    });
+                });
+
+                const labels = Array.from(labelsSet);
+
+                // Prepare datasets
+                const datasets = data.datasets.map(dataset => {
+                    const color = generateRandomColor(1);
+                    return {
+                        label: dataset.label,
+                        data: labels.map(label => dataset.data[label] || 0),
+                        fill: false, // No background fill under line
+                        borderColor: color,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.4, // Smooth bezier curves
+                        borderWidth: 2
+                    };
+                });
+
+                // Destroy old chart
+                if (window.sectionShiftGroupsChart && typeof window.sectionShiftGroupsChart.destroy === 'function') {
+                    window.sectionShiftGroupsChart.destroy();
+                }
+
+                const ctx = document.getElementById('sectionShiftGroups').getContext('2d');
+                window.sectionShiftGroupsChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 14 },
+                                    color: '#222'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.dataset.label}: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)',
+                                    borderDash: [4, 4]
+                                },
+                                ticks: {
+                                    font: { size: 13 },
+                                    color: '#444'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0,
+                                    font: { size: 13 },
+                                    color: '#444'
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)',
+                                    borderDash: [4, 4]
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+    /////////////////////////////
+    function loadShiftsInfoSummaryChart() {
+        $.ajax({
+            url: '{% url "get_shift_wise_student_info" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                const labelsSet = new Set();
+
+                // Collect all class names (X-axis)
+                data.datasets.forEach(dataset => {
+                    Object.keys(dataset.data).forEach(label => {
+                        labelsSet.add(label);
+                    });
+                });
+
+                const labels = Array.from(labelsSet);
+
+                // Prepare datasets with smooth lines and unique color
+                const datasets = data.datasets.map(dataset => {
+                    const color = generateRandomColor(1); // Full opacity for stroke color
+                    return {
+                        label: dataset.label,
+                        data: labels.map(label => dataset.data[label] || 0),
+                        fill: false, // No background fill under line
+                        borderColor: color,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.4, // Smooth bezier curves
+                        borderWidth: 2
+                    };
+                });
+
+                // Destroy previous chart if exists
+                if (window.ShiftChart && typeof window.ShiftChart.destroy === 'function') {
+                    window.ShiftChart.destroy();
+                }
+
+                const ctx = document.getElementById('Shiftsinfo').getContext('2d');
+                window.ShiftChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 14 },
+                                    color: '#222'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.dataset.label}: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)',
+                                    borderDash: [4, 4]
+                                },
+                                ticks: {
+                                    font: { size: 13 },
+                                    color: '#444'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0,
+                                    font: { size: 13 },
+                                    color: '#444'
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)',
+                                    borderDash: [4, 4]
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+    /////////////////////////////
+    function loadGroupsInfoSummaryChart() {
+        $.ajax({
+            url: '{% url "get_group_wise_student_info" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                const labelsSet = new Set();
+
+                // Collect all class names (X-axis)
+                data.datasets.forEach(dataset => {
+                    Object.keys(dataset.data).forEach(label => {
+                        labelsSet.add(label);
+                    });
+                });
+
+                const labels = Array.from(labelsSet);
+
+                // Prepare datasets with smooth lines and unique color
+                const datasets = data.datasets.map(dataset => {
+                    const color = generateRandomColor(1); // Full opacity for stroke color
+                    return {
+                        label: dataset.label,
+                        data: labels.map(label => dataset.data[label] || 0),
+                        fill: false, // No background fill under line
+                        borderColor: color,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.4, // Smooth bezier curves
+                        borderWidth: 2
+                    };
+                });
+
+                // Destroy previous chart if exists
+                if (window.Groupsinfo && typeof window.Groupsinfo.destroy === 'function') {
+                    window.Groupsinfo.destroy();
+                }
+
+                const ctx = document.getElementById('Groupsinfo').getContext('2d');
+                window.Groupsinfo = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 14 },
+                                    color: '#222'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.dataset.label}: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)',
+                                    borderDash: [4, 4]
+                                },
+                                ticks: {
+                                    font: { size: 13 },
+                                    color: '#444'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0,
+                                    font: { size: 13 },
+                                    color: '#444'
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)',
+                                    borderDash: [4, 4]
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Utility function: Convert hex color to rgba with opacity
+    function hexToRgba(hex, opacity) {
+        let c;
+        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+            c = hex.substring(1).split('');
+            if (c.length === 3) {
+                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c = '0x' + c.join('');
+            return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')}, ${opacity})`;
+        }
+        return hex;
+    }
+
+    ///////////////////
+    function loadExamSMSSummaryChart() {
+        const dateRange = getDateRange();
+
+        $.ajax({
+            url: '{% url "get_exam_sms_summary_status" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+                is_class: $('#id_is_class').val(),
+                is_section: $('#id_is_section').val(),
+                is_shifts: $('#id_is_shifts').val(),
+                is_groups: $('#id_is_groups').val(),
+                is_subjects: $('#id_is_subjects').val(),
+                exam_type: $('#id_exam_type').val(),
+                start_date: dateRange.start_date,
+                end_date: dateRange.end_date
+            },
+            dataType: 'json',
+            success: function (data) {
+                const labels = ["Total Students", "SMS Sent", "SMS Not Sent", "Absent Students"];
+                const values = [
+                    data.total_students,
+                    data.sms_sent_count,
+                    data.sms_not_sent_count,
+                    data.absent_students
+                ];
+                const colors = labels.map(() => generateRandomColor(0.7));
+
+                if (barChart && typeof barChart.destroy === 'function') {
+                    barChart.destroy();
+                }
+
+                var ctx = document.getElementById('barChart').getContext('2d');
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Subject Wise Status',
+                            data: values,
+                            backgroundColor: colors,
+                            borderColor: colors,
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            barThickness: 60,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true },
+                            x: { grid: { display: false } }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.label + ': ' + context.raw;
+                                    }
+                                }
+                            },
+                            legend: { display: true }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    ///////////////////
+    function loadStudentsTotalMarksChart() {
+        const dateRange = getDateRange();
+
+        $.ajax({
+            url: '{% url "get_students_total_marks" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+                is_class: $('#id_is_class').val(),
+                is_section: $('#id_is_section').val(),
+                is_shifts: $('#id_is_shifts').val(),
+                is_groups: $('#id_is_groups').val(),
+                is_subjects: $('#id_is_subjects').val(),
+                exam_type: $('#id_exam_type').val(),
+                start_date: dateRange.start_date,
+                end_date: dateRange.end_date
+            },
+            dataType: 'json',
+            success: function (response) {
+                const ctx = document.getElementById('marksBarChart').getContext('2d');
+
+                if (marksBarChart && typeof marksBarChart.destroy === 'function') {
+                    marksBarChart.destroy();
+                }
+
+                marksBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: response.labels,  // student names
+                        datasets: response.datasets.map(ds => ({
+                            ...ds,
+                            backgroundColor: generateRandomColor(0.7),
+                            borderRadius: 4,
+                            barThickness: 30
+                        }))
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true },
+                            x: {
+                                ticks: { autoSkip: false, maxRotation: 45, minRotation: 0 },
+                                stacked: false,
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: ctx => `${ctx.dataset.label}: ${ctx.raw}`
+                                }
+                            },
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /////////////////////////////////
+    function loadParticularTopMarksChart() {
+        const dateRange = getDateRange();
+
+        $.ajax({
+            url: '{% url "get_students_particular_tops_marks" %}',
+            method: 'GET',
+            data: {
+                filter_org: $('#id_filter_org').val(),
+                filter_branch: $('#id_filter_branch').val(),
+                is_class: $('#id_is_class').val(),
+                is_section: $('#id_is_section').val(),
+                is_shifts: $('#id_is_shifts').val(),
+                is_groups: $('#id_is_groups').val(),
+                is_subjects: $('#id_is_subjects').val(),
+                exam_type: $('#id_exam_type').val(),
+                start_date: dateRange.start_date,
+                end_date: dateRange.end_date
+            },
+            dataType: 'json',
+            success: function (data) {
+                const labels = ["CQ", "MCQ", "Written", "Practical", "Oral"];
+                const values = [
+                    data.cq_top || 0,
+                    data.mcq_top || 0,
+                    data.written_top || 0,
+                    data.practical_top || 0,
+                    data.oral_top || 0
+                ];
+                const colors = labels.map(() => generateRandomColor(0.7));
+
+                if (parMarksPieChart && typeof parMarksPieChart.destroy === 'function') {
+                    parMarksPieChart.destroy();
+                }
+
+                const ctx = document.getElementById('parMarksPieChart').getContext('2d');
+                parMarksPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Top Marks by Category',
+                            data: values,
+                            backgroundColor: colors,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.label + ': ' + context.raw;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: '#fff',
+                                font: {
+                                    weight: 'bold',
+                                    size: 13
+                                },
+                                formatter: function (value, context) {
+                                    const label = context.chart.data.labels[context.dataIndex];
+                                    return `${label}: ${value}`;
+                                }
+                            }
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0,
+                                shadowOffsetX: -2,
+                                shadowOffsetY: 2,
+                                shadowBlur: 4,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+        });
+    }
+
+    /////////////////////////////////////////
+    function generateRandomColor(opacity = 0.7) {
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity + ')';
+    }
+
+    function formatToISO(dateStr) {
+        // Convert "dd-mm-yyyy" to "yyyy-mm-dd"
+        if (!dateStr || !dateStr.includes('-')) return '';
+        const [dd, mm, yyyy] = dateStr.split('-');
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function getDateRange() {
+        const today = new Date();
+        const formatDate = (date) => date.toISOString().split('T')[0]; // yyyy-mm-dd
+
+        if ($('#id_todate').is(':checked')) {
+            return { start_date: formatDate(today), end_date: formatDate(today) };
+        } else if ($('#id_lastweek').is(':checked')) {
+            const lastWeek = new Date(today);
+            lastWeek.setDate(today.getDate() - 7);
+            return { start_date: formatDate(lastWeek), end_date: formatDate(today) };
+        } else if ($('#id_lastmonth').is(':checked')) {
+            const lastMonth = new Date(today);
+            lastMonth.setMonth(today.getMonth() - 1);
+            return { start_date: formatDate(lastMonth), end_date: formatDate(today) };
+        } else if ($('#id_thisyear').is(':checked')) {
+            const startOfYear = new Date(today.getFullYear(), 0, 1);
+            return { start_date: formatDate(startOfYear), end_date: formatDate(today) };
+        } else if ($('#id_datebetween').is(':checked')) {
+            return {
+                start_date: formatToISO($('#from_date').val()),
+                end_date: formatToISO($('#end_date').val())
+            };
+        }
+        return {};
+    }
+
+    $(document).ready(function () {
+        var barChart = null;
+        var marksBarChart = null;
+        var parMarksPieChart = null;
+        var totalStudent = null;
+        var sectionShiftGroups = null;
+        var totClassStdPieChart = null;
+
+        // Filter change listener
+        $('#id_filter_org, #id_filter_branch, #id_is_class, #id_is_section, #id_is_shifts, #id_is_groups, #id_is_subjects, #id_exam_type, input[name="date_range_filter"], #from_date, #end_date').change(function () {
+            loadExamSMSSummaryChart();
+            loadStudentsTotalMarksChart();
+            loadParticularTopMarksChart();
+        });
+
+
+        $('#id_filter_org, #id_filter_branch').change(function () {
+            loadSectionShiftGroupsInfoSummaryChart();
+            loadTotalClassWiseStudentsChart();
+            loadYearlyMonthWiseSMSStatusChart();
+            loadShiftsInfoSummaryChart();
+            loadGroupsInfoSummaryChart();
+        });
+
+        loadSectionShiftGroupsInfoSummaryChart();
+        loadTotalClassWiseStudentsChart();
+        loadYearlyMonthWiseSMSStatusChart();
+        loadShiftsInfoSummaryChart();
+        loadGroupsInfoSummaryChart();
+
+
+        // Initialize datepickers
+        const currentDate = new Date();
+        $('#from_date, #end_date').datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            maxDate: currentDate
+        });
+
+        // Set today's date as default
+        $('#from_date, #end_date').datepicker('setDate', currentDate);
+
+        // Handle enabling/disabling date fields
+        $('input[name="date_range_filter"]').on('change', function () {
+            if ($('#id_datebetween').is(':checked')) {
+                $('#from_date, #end_date').prop('disabled', false);
+            } else {
+                $('#from_date, #end_date').prop('disabled', true);
+            }
+        });
+    });
+
+    function setupFullscreenHandlers(triggerId, exitBtnId, targetId, optionalClassSelector = null) {
+        const trigger = document.getElementById(triggerId);
+        const exitBtn = document.getElementById(exitBtnId);
+        const target = document.getElementById(targetId);
+
+        if (!trigger || !exitBtn || !target) {
+            console.warn(`One or more elements not found for fullscreen setup: ${triggerId}, ${exitBtnId}, ${targetId}`);
+            return;
+        }
+
+        trigger.addEventListener('click', () => {
+            if (target.requestFullscreen) target.requestFullscreen();
+            else if (target.mozRequestFullScreen) target.mozRequestFullScreen();
+            else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
+            else if (target.msRequestFullscreen) target.msRequestFullscreen();
+        });
+
+        exitBtn.addEventListener('click', () => {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            const isFullscreen = document.fullscreenElement === target;
+
+            exitBtn.style.display = isFullscreen ? 'block' : 'none';
+            trigger.style.display = isFullscreen ? 'none' : 'block';
+
+            if (optionalClassSelector) {
+                const element = document.querySelector(optionalClassSelector);
+                if (!element) return;
+
+                if (element.classList.contains('centralHeight')) {
+                    element.style.height = isFullscreen ? '90vh' : '280px';
+                } else {
+                    if (isFullscreen) {
+                        element.classList.add('fullScreenCanvas');
+                    } else {
+                        element.classList.remove('fullScreenCanvas');
+                        element.style.height = '280px';
+                        element.style.width = '100%';
+                    }
+                }
+            } else {
+                if (targetId === 'showfullscreenMap') {
+                    const mapDiv = document.getElementById('map');
+                    if (mapDiv) {
+                        target.style.height = isFullscreen ? '90vh' : '25rem';
+                        mapDiv.style.height = isFullscreen ? '82vh' : '46.5vh';
+                    }
+                }
+
+                if (targetId === 'showfullscreenXMTypeTopM') {
+                    const pieDiv = document.getElementById('piechartBD');
+                    if (pieDiv) {
+                        target.style.height = isFullscreen ? '90vh' : '25rem';
+                        pieDiv.style.height = isFullscreen ? '84vh' : '46.5vh';
+                        pieDiv.style.width = isFullscreen ? '48%' : '78%';
+                    }
+                }
+
+                if (targetId === 'showfullscreenTotClssStd') {
+                    const clssStdpieDiv = document.getElementById('totClssStdpiechartBD');
+                    if (clssStdpieDiv) {
+                        target.style.height = isFullscreen ? '90vh' : '25rem';
+                        clssStdpieDiv.style.height = isFullscreen ? '84vh' : '46.5vh';
+                        clssStdpieDiv.style.width = isFullscreen ? '48%' : '78%';
+                    }
+                }
+            }
+        });
+    }
+
+    // Setup handlers for each section
+    document.addEventListener('DOMContentLoaded', function () {
+        setupFullscreenHandlers('fullscreenIconMap', 'exitFullscreenMap', 'showfullscreenMap');
+        setupFullscreenHandlers('fullscreenIconDsales', 'exitFullscreenDsales', 'showfullscreenDsales', '.examsmsstatusinfo');
+        setupFullscreenHandlers('fullscreenIconItemWise', 'exitFullscreenItemWise', 'showfullscreenItemWise', '.studentmarkshistory');
+        setupFullscreenHandlers('fullscreenIconTotSecShiGrp', 'exitFullscreenTotSecShiGrp', 'showfullscreenTotSecShiGrp', '.SectionInformation');
+        setupFullscreenHandlers('fullscreenIconTotShifts', 'exitFullscreenTotShifts', 'showfullscreenTotShifts', '.ShiftsInformation');
+        setupFullscreenHandlers('fullscreenIconTotGroups', 'exitFullscreenTotGroups', 'showfullscreenTotGroups', '.GroupsInformation');
+        setupFullscreenHandlers('fullscreenIconTotSMSStatus', 'exitFullscreenTotSMSStatus', 'showfullscreenTotSMSStatus', '.totalSMSStatusInfo');
+        setupFullscreenHandlers('fullscreenIconXMTypeTopM', 'exitFullscreenXMTypeTopM', 'showfullscreenXMTypeTopM');
+        setupFullscreenHandlers('fullscreenIconTotClssStd', 'exitFullscreenTotClssStd', 'showfullscreenTotClssStd');
+    });
+
+    $(document).ready(function () {
+
+        $('#id_filter_org').change(function () {
+            OrgWiseSubOptions();
+        });
+
+        $('#id_is_class').change(function () {
+            OrgWiseSubOptions();
+        });
+
+        $('#id_is_groups').change(function () {
+            OrgWiseSubOptions();
+        });
+
+        OrgWiseSubOptions();
+
+        function OrgWiseSubOptions() {
+            var selectedOrgId = $('#id_filter_org').val();
+            var selectedClassId = $('#id_is_class').val();
+            var selectedGroupId = $('#id_is_groups').val();
+
+            // Branch option value
+            $.ajax({
+                url: '/get_subjects_options/',
+                method: 'GET',
+                data: {
+                    org_id: selectedOrgId,
+                    class_id: selectedClassId,
+                    groups_id: selectedGroupId,
+                },
+                success: function (data) {
+                    $('#id_is_subjects').empty();
+                    // Append subject options
+                    $.each(data.subOptions, function (index, subject) {
+                        $('#id_is_subjects').append('<option value="' + subject.subjects_id + '" data-subjects_name="' + subject.subjects_name + '">' + subject.subjects_name + '</option>');
+                    });
+
+                    $('#id_is_subjects').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching subject options:', error);
+                }
+            });
+        }
+    });
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+
+    //////////////////////////////////////////////// map /////////////////////////////////////
+
+</script>
+{% endblock %}

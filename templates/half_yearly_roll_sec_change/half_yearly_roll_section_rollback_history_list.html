@@ -1,0 +1,398 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_entry/css/result_card_entry_list.css' %}">
+<!--========== from js file ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #5a5926e0;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Half Yearly Roll Section Rollback and Report List</h1>
+                        </div>
+                        <div style="width: 18%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-evenly;">
+                            <!--  -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <section>
+                <div class="card po_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="font-size: 0.8rem;">
+                                    <div class="date_range-element col-sm-12" style="display:flex">
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 1; display: flex; justify-content: left;">
+                                            <label for="id_filter_org" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Org:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in user_org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                            <label for="id_filter_branch" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Branch:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select store_Selectbox" aria-label="Default select example">
+                                                    <!--  -->
+                                                    {% for branch in user_branch_list %}
+                                                    <option id="{{ branch.branch_id }}" value="{{ branch.branch_id }}">
+                                                        {{ branch.branch_name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                            <label for="id_is_year" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Year:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control item_inputbox datepicker" style="margin-left: 0.5rem; text-align: center;" id="id_is_year" name="is_year" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                            <label for="id_english_fil" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Version:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                {% if user.is_english %}
+                                                    <div class="form-check form-check-inline inline_item">
+                                                        <input class="form-check-input" type="radio" name="is_version"
+                                                            value="english" id="id_english_fil" checked>
+                                                        <label class="form-check-label" for="id_english_fil">English</label>
+                                                    </div>
+                                                {% endif %}
+                                                {% if user.is_bangla %}
+                                                    <div class="form-check form-check-inline inline_item">
+                                                        <input class="form-check-input" type="radio" name="is_version"
+                                                            value="bangla" id="id_bangla_fil" checked>
+                                                        <label class="form-check-label" for="id_bangla_fil">Bangla</label>
+                                                    </div>
+                                                {% endif %}
+                                                {% if not user.is_english and not user.is_bangla %}
+                                                    <span style="color: red; font-size: 0.8rem;">
+                                                        Please let the user select version first from user setup !..
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="date_range-element col-sm-12" style="display:flex">
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                            <label for="id_is_class" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Class:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_is_class" name="is_class" class="form-select item_inputbox store_Selectbox"
+                                                    aria-label="Default select example" required>
+                                                    <!-- <option value="" selected disabled>Choose Class Name ...</option> -->
+                                                    {% for clss in user_others_access.class_access %}
+                                                    <option value="{{clss.class_id}}" data-allow_group="{{ clss.allow_groups }}" {% if clss.is_defaults %}selected{% endif %}>
+                                                        {{ clss.class_name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                            <label for="id_is_shift" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Shifts:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_is_shift" name="is_shift" class="form-select item_inputbox store_Selectbox"
+                                                    aria-label="Default select example" required>
+                                                    <!-- <option value="" selected disabled>Choose Class Name ...</option> -->
+                                                    {% for shift in user_others_access.shift_access %}
+                                                        <option value="{{ shift.shift_id }}" data-shift_name="{{ shift.shift_name }}" {% if shift.is_defaults %}selected{% endif %}>
+                                                            {{ shift.shift_name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                            <label for="id_is_groups" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                Groups:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_is_groups" name="is_groups" class="form-select item_inputbox store_Selectbox">
+                                                    <option value="" selected>Select Groups</option>
+                                                    {% for group in user_others_access.group_access %}
+                                                        <option value="{{ group.groups_id }}" data-groups_name="{{ group.groups_name }}" {% if group.is_defaults %}selected{% endif %}>
+                                                            {{ group.groups_name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <!--  -->
+            <section style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem; margin-bottom: 1rem;">
+                <div class="module-table">
+                    <table id="HYROLLSECROLLBACKTABLE" class="table table-hover" style="width: 100%; border: 1px solid #6aa2a8;">
+                        <thead class="text-center table-header_itemlist">
+                            <tr>
+                                <th style="text-align:center;">
+                                    Sl
+                                </th>
+                                <th style="text-align:center;">
+                                    Creater Date
+                                </th>
+                                <th style="text-align:center;">
+                                    Class
+                                </th>
+                                <th style="text-align:center;">
+                                    Section
+                                </th>
+                                <th style="text-align:center;">
+                                    Shift
+                                </th>
+                                <th class="display-hide"style="text-align:center;">
+                                    Groups
+                                </th>
+                                <th style="text-align:center;">
+                                    Is Rollbacked By
+                                </th>
+                                <th style="text-align:center;">
+                                    Is Rollbacked Date
+                                </th>
+                                <th class="display-hide" style="text-align:center; width: 10%;">
+                                    Options
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="HYROLLSECROLLBACKBODY" style="text-align:center; font-size: 0.8rem">
+                           <!--  -->
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<!-- present date show scriptStart  -->
+<script>
+    function loadHalfYearlyRollSecChangeRollbackList() {
+        var org_id = $("#id_filter_org").val();
+        var branch_id = $("#id_filter_branch").val();
+        var year = $("#id_is_year").val();
+        var version = $("input[name='is_version']:checked").val();
+        var class_id = $("#id_is_class").val();
+        var shift_id = $("#id_is_shift").val();
+        var groups_id = $("#id_is_groups").val();
+
+        $.ajax({
+            url: "{% url 'get_half_yearly_roll_sec_change_rollback_history_list' %}",
+            data: {
+                org_id: org_id,
+                branch_id: branch_id,
+                year: year,
+                version: version,
+                class_id: class_id,
+                shift_id: shift_id,
+                groups_id: groups_id,
+            },
+            success: function(response) {
+                var tbody = $("#HYROLLSECROLLBACKBODY");
+                tbody.empty();
+
+                if (response.success && response.data.length > 0) {
+
+                    $.each(response.data, function(i, item) {
+
+                        // Handle new_section_list
+                        let sectionNames = "";
+
+                        if (item.new_section_list && item.new_section_list.length > 0) {
+                            
+                            // Unique section_name নেবো (duplicate remove)
+                            let uniqueSections = [...new Map(
+                                item.new_section_list.map(s => [s.section_id, s.section_name])
+                            ).values()];
+
+                            // একাধিক হলে comma separated
+                            sectionNames = uniqueSections.join(", ");
+                        }
+                        else {
+                            sectionNames = "";
+                        }
+
+                        var row = "<tr>";
+
+                        row += "<td>" + (i + 1) + "</td>";
+                        row += "<td>" + item.created_on + "</td>";
+                        row += "<td>" + item.class_id + "</td>";
+                        row += "<td>" + sectionNames + "</td>";
+                        row += "<td>" + item.shift_id + "</td>";
+                        row += "<td>" + (item.groups_id ?? "") + "</td>";
+                        row += "<td>" + item.is_rollback_by + "</td>";
+                        row += "<td>" + item.is_rollback_date + "</td>";
+
+                        row += `<td>`;
+                        
+                        row += `
+                            <button type="button" 
+                                class="btn btn-sm btn-warning hyHistoryReportBtn" 
+                                data-hyrscinfo_id="${item.hyrscinfo_id}">
+                                Report
+                            </button>
+                        `;
+
+                        row += `</td>`;
+
+                        row += "</tr>";
+                        tbody.append(row);
+                    });
+
+                } else {
+                    tbody.append("<tr><td colspan='9'>No data found</td></tr>");
+                }
+            }
+        });
+    }
+
+    // Load table on page load
+    $(document).ready(function(){
+        loadHalfYearlyRollSecChangeRollbackList();
+
+        // Reload table on filter change
+        $("#id_filter_org, #id_filter_branch, #id_is_year, #id_is_class, #id_is_shift, #id_is_groups").change(loadHalfYearlyRollSecChangeRollbackList);
+        $("input[name='is_version']").change(loadHalfYearlyRollSecChangeRollbackList);
+    });
+    ////////////////////////////////
+    $(document).ready(function () {
+        const currentYear = new Date().getFullYear();
+        $('#id_is_year').val(currentYear);
+
+        // Initialize the datepicker
+        $('#id_is_year').datepicker({
+            dateFormat: 'yy',
+            changeYear: true,
+            showButtonPanel: true,
+            yearRange: '2000:2035',
+            onClose: function (dateText, inst) {
+                const selectedYear = $('#ui-datepicker-div .ui-datepicker-year :selected').val();
+                if (selectedYear) {
+                    $(this).val(selectedYear);
+                    $(this).datepicker('setDate', new Date(selectedYear, 0, 1));
+                    $(this).trigger('change');
+                }
+            },
+            beforeShow: function (input, inst) {
+                setTimeout(function () {
+                    $('.ui-datepicker-calendar').hide();
+                    $('.ui-datepicker-month').hide();
+                    $('.ui-datepicker-buttonpane').hide();
+                }, 0);
+
+                // Add hide-calendar class dynamically
+                $(input).datepicker("widget").addClass("hide-calendar");
+            }
+        });
+
+        // Only show datepicker if initialized
+        $('#id_is_year').on('click', function () {
+            if ($(this).data('datepicker')) {
+                $(this).datepicker('show');
+            }
+        });
+    });
+    ////////////////////////////////
+    ///report button click
+    $(document).on('click', '.hyHistoryReportBtn', function (e) {
+        e.preventDefault();
+
+        var hyrscinfoID = $(this).attr('data-hyrscinfo_id');
+
+        var orgId = $('#id_filter_org').val();
+        var branchId = $('#id_filter_branch').val();
+        var year = $('#id_is_year').val();
+        var version = $('input[name="is_version"]:checked').val();
+        var classId = $('#id_is_class').val();
+        var shiftId = $('#id_is_shift').val();
+        var groupId = $('#id_is_groups').val();
+
+        // ✅ Build URL with all query parameters
+        var rollbackHisReportUrl = "{% url 'Report_half_yearly_roll_section_change_rollback_history' %}" +
+            "?hyrscinfo_id=" + encodeURIComponent(hyrscinfoID) +
+            "&org_id=" + encodeURIComponent(orgId) +
+            "&branch_id=" + encodeURIComponent(branchId) +
+            "&year=" + encodeURIComponent(year) +
+            "&version=" + encodeURIComponent(version) +
+            "&class_id=" + encodeURIComponent(classId) +
+            "&shift_id=" + encodeURIComponent(shiftId) +
+            "&group_id=" + encodeURIComponent(groupId); // pass as comma-separated IDs
+
+        window.open(rollbackHisReportUrl, "_blank");
+    });
+
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+</script>
+
+{% endblock %}

@@ -1,0 +1,202 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_half_yearly/css/result_card_half_yearly.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #455697;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-2-modfy"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bx-credit-card text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">Add New Bill</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-11-modfy" style="display: flex; justify-content: right;">
+                                    <!--  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <section style="display: flex; width: 100%;">
+                    <!--  -->
+                    <!-- favorite list navbar -->
+                    <section id="id_myfavBtn" style="display: block;">
+                        <div style="height: 99%;">
+                            <button class="btn text-white vertical-text myFavBtn" type="button">
+                                Favorite List
+                            </button>
+                        </div>
+                    </section>
+                    <section id="id_myfavList"
+                        style="width: 30%; display: none; margin-left: 0.3rem; margin-bottom: 0.5rem; background: rgb(212, 220, 255); border: 1px solid rgb(182 196 255); border-radius: 0.25rem;">
+                        <!--  -->
+                        <section>
+                            <div>
+                                <div class="favlist-header">
+                                    <h5 class="fav-title" id="id_fav_title">Favorite List</h5>
+                                    <button type="button" class="btn-close text-white fav-close-btn"></button>
+                                </div>
+                                <div class="favlist-body" style="height: 130vh;">
+                                    <div class="fav-itemTable">
+                                        <table id="listOfItem" class="table table-striped table-hover"
+                                            style="width: 100%;">
+                                            <thead class="text-center fav-table-header" style="border-style: none;">
+                                                <tr>
+                                                    <th colspan="3"
+                                                        style="text-align:center; background: #d4dcff !important;">
+                                                        <input type="search" id="searchfavlist"
+                                                            class="form-control search_control fav-search-input"
+                                                            style="background:#fffab6;" placeholder="Searching Item ..."
+                                                            autocomplete="off">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="favItemTB" class="table-body-row favItemTbody"
+                                                style="border-style: none !important;">
+                                                <!-- load ajax value -->
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+                    <!--  -->
+                    <!-- form body -->
+                    <section style="width: 100%; margin-left: 0.5rem; margin-right: 0.5rem;">
+                        <form action="" id="pos-form">
+
+                            <!-- -------------------------------------------------------------------- -->
+                            <section style="margin-top: 1rem; margin-bottom: 1rem;">
+                                <div class="payment-submitBtn">
+                                    <button type="button" style="text-align:center; width: 5rem;" id="resetButton"
+                                        onclick="resetAndRemoveRows()"
+                                        class="btn btn-danger col-sm-4 text-white btn-xs item_payment_btn">
+                                        Clear
+                                    </button>
+                                    <button type="button" style="text-align:center; width: 8rem;"
+                                        onClick="navigateTo('/item_pos_billing/')"
+                                        class="btn btn-primary col-sm-4 text-white btn-xs item_payment_btn">
+                                        New Invoice
+                                    </button>
+                                    <button type="submit" style="text-align:center; width: 8rem;" id="check_out"
+                                        class="btn btn-success col-sm-4 text-white btn-xs item_payment_btn">
+                                        Save & Print
+                                    </button>
+                                </div>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+                <!--  -->
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    $(document).ready(function () {
+
+        // Set initial visibility from localStorage
+        function setVisibility() {
+            const favListDisplay = localStorage.getItem('favListDisplay') || 'none';
+            const favBtnDisplay = localStorage.getItem('favBtnDisplay') || 'block';
+    
+            $('#id_myfavList').css('display', favListDisplay);
+            $('#id_myfavBtn').css('display', favBtnDisplay);
+    
+            adjustWidthsBasedOnFavListState();
+        }
+    
+        // Adjust widths based on visibility of favorite list
+        function adjustWidthsBasedOnFavListState() {
+            const isVisible = $('#id_myfavList').is(':visible');
+            if (isVisible) {
+                updateWidths("23rem", "4rem", "3rem");
+            } else {
+                updateWidths("32rem", "6rem", "4rem");
+            }
+        }
+    
+        // Update widths of related fields
+        function updateWidths(itemNameWidth, itemOtherNameWidth, itemQtyNameWidth) {
+            $('.itemName').css('width', itemNameWidth);
+            $('.itemOtherName').css('width', itemOtherNameWidth);
+            $('.itemQtyName').css('width', itemQtyNameWidth);
+        }
+    
+        // Toggle Favorite List on button click
+        $('.myFavBtn').on('click', function () {
+            $('#id_myfavList').show();
+            $('#id_myfavBtn').hide();
+    
+            // Store state
+            localStorage.setItem('favListDisplay', 'block');
+            localStorage.setItem('favBtnDisplay', 'none');
+    
+            adjustWidthsBasedOnFavListState();
+        });
+    
+        // Close Favorite List on close button click
+        $('.fav-close-btn').on('click', function () {
+            $('#id_myfavList').hide();
+            $('#id_myfavBtn').show();
+    
+            // Store state
+            localStorage.setItem('favListDisplay', 'none');
+            localStorage.setItem('favBtnDisplay', 'block');
+    
+            adjustWidthsBasedOnFavListState();
+        });
+    
+        // Initialize on page load
+        setVisibility();
+    });
+
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+</script>
+{% endblock %}

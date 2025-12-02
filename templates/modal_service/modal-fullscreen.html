@@ -1,0 +1,39 @@
+<div class="modal fade" id="modal_fullscreen" role='dialog'>
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content rounded-0">
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.modal_fullscreen = function ($title = '', $url = '', $size = "", $footer) {
+        $.ajax({
+            url: $url,
+            error: err => {
+                console.log()
+                alert("An error occured")
+            },
+            success: function (resp) {
+                if (resp) {
+                    $('#modal_fullscreen .modal-title').html($title)
+                    $('#modal_fullscreen .modal-body').html(resp)
+                    $('#modal_fullscreen .modal-footer').html($footer)
+                    if ($size != '') {
+                        $('#modal_fullscreen .modal-dialog').addClass($size + '  modal-dialog-centered')
+                    } else {
+                        $('#modal_fullscreen .modal-dialog').removeAttr("class").addClass("modal-dialog modal-fullscreen")
+                    }
+                    $('#modal_fullscreen').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        focus: true
+                    })
+                    $('#modal_fullscreen').modal('show')
+                }
+            }
+        })
+    }
+</script>

@@ -1,0 +1,75 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'base_setup/css/base_setup.css' %}">
+<!--========== from type_category js file ==========-->
+<script src="{% static 'base_setup/js/base_setup.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section style="margin-top: 10px;">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <!--  -->
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="class_setup-tab" href="#class_setup" type="button" role="tab">Class Setup</a>
+            </li>
+            <!--  -->
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="section_setup-tab" href="#section_setup" type="button" role="tab">Section Setup</a>
+            </li>
+            <!--  -->
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="groups_setup-tab" href="#groups_setup" type="button" role="tab">Groups Setup</a>
+            </li>
+            <!--  -->
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="subject_setup-tab" href="#subject_setup" type="button" role="tab">Subject Setup</a>
+            </li>
+            <!--  -->
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="exam_type-tab" href="#exam_type" type="button" role="tab">Exam Type Setup</a>
+            </li>
+            <!--  -->
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="shift_setup-tab" href="#shift_setup" type="button" role="tab">Shifts Setup</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <!-- class_setup -->
+            <div class="tab-pane show active" id="class_setup" role="tabpanel">
+                <!-- class_setup Setup content here -->
+                {% include 'base_setup/class_setup.html' %}
+            </div>
+            <!-- section_setup -->
+            <div class="tab-pane" id="section_setup" role="tabpanel">
+                <!-- section_setup Setup content here -->
+                {% include 'base_setup/section_setup.html' %}
+            </div>
+            <!-- groups_setup -->
+            <div class="tab-pane" id="groups_setup" role="tabpanel">
+                <!-- groups_setup Setup content here -->
+                {% include 'base_setup/groups_setup.html' %}
+            </div>
+            <!-- subject_setup -->
+            <div class="tab-pane" id="subject_setup" role="tabpanel">
+                <!-- subject_setup Setup content here -->
+                {% include 'base_setup/subject_setup.html' %}
+            </div>
+            <!-- exam_type_setup -->
+            <div class="tab-pane" id="exam_type" role="tabpanel">
+                <!-- exam_type_setup Setup content here -->
+                {% include 'base_setup/exam_type_setup.html' %}
+            </div>
+            <!-- shift_setup -->
+            <div class="tab-pane" id="shift_setup" role="tabpanel">
+                <!-- shift_setup Setup content here -->
+                {% include 'base_setup/shift_setup.html' %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

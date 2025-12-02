@@ -1,0 +1,660 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'sms_services/css/sms_services.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #455697;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-10 col-md-10 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-6"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bxs-send text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">SMS Completed List</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-6" style="display: flex; justify-content: right;">
+                                    <!--  -->
+                                    <button type="button" onClick="navigateTo('/result_finalize_services/')"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #43507e; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        Result Finalize Form
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <section style="display: flex; width: 100%;">
+                    <!--  -->
+                    <!-- form body -->
+                    <section style="width: 100%; margin-left: 0.5rem; margin-right: 0.5rem;">
+                        <form action="" id="RESULTFINFORM">
+                            <section>
+                                <div class="row row_item_setup">
+                                    <!-- main entry form -->
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup"
+                                                style="padding: 0px; padding-left: 4px;">
+                                                <div class="itemsetup_container" style="margin-bottom: 0.7rem;">
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-12">
+                                                            <div class="card main-card">
+                                                                <div class="card-body card-body_item_setup">
+                                                                    <!-- 1st row -->
+                                                                    <div class="row row_item_setup">
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_org_com" class="col_sm_menual col-form-label font_size_filter">
+                                                                                            Organization:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <select id="id_org_com"
+                                                                                                name="org_com"
+                                                                                                class="form-select item_inputbox">
+                                                                                                {% for org in user_org_list %}
+                                                                                                <option value="{{ org.org_id }}">
+                                                                                                    {{ org.org_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_branchs_com" class="col_sm_menual col-form-label font_size_filter">
+                                                                                            Branchs:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual">
+                                                                                            <select id="id_branchs_com"
+                                                                                                name="branchs_com" class="form-select item_inputbox">
+                                                                                                <!-- branch List -->
+                                                                                                {% for branch in user_branch_list %}
+                                                                                                <option id="{{ branch.branch_id }}" value="{{ branch.branch_id }}">
+                                                                                                    {{ branch.branch_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_branchs" class="col_sm_menual col-form-label font_size_filter">
+                                                                                            Is Version:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8 col-sm-9_manual" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; justify-content: flex-start;">
+                                                                                            <!--  -->
+                                                                                            {% if user.is_english %}
+                                                                                                <div class="form-check form-check-inline inline_item">
+                                                                                                    <input class="form-check-input" type="radio" name="is_version"
+                                                                                                        value="english" id="id_english_fil" checked>
+                                                                                                    <label class="form-check-label" for="id_english_fil">English</label>
+                                                                                                </div>
+                                                                                            {% endif %}
+                                                                                            {% if user.is_bangla %}
+                                                                                                <div class="form-check form-check-inline inline_item">
+                                                                                                    <input class="form-check-input" type="radio" name="is_version"
+                                                                                                        value="bangla" id="id_bangla_fil" checked>
+                                                                                                    <label class="form-check-label" for="id_bangla_fil">Bangla</label>
+                                                                                                </div>
+                                                                                            {% endif %}
+                                                                                            {% if not user.is_english and not user.is_bangla %}
+                                                                                                <span style="color: red; font-size: 0.8rem;">
+                                                                                                    Please let the user select version first from user setup !..
+                                                                                                </span>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 2nd row -->
+                                                                    <div class="row row_item_setup">
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <!--  -->
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_class_com"
+                                                                                            class="col-sm-4 col_sm_menual col-form-label font_size_filter">
+                                                                                            Class:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <select id="id_is_class_com"
+                                                                                                name="is_class_com"
+                                                                                                class="form-select item_inputbox">
+                                                                                                <!--  -->
+                                                                                                {% for cls in user_others_access.class_access %}
+                                                                                                <option value="{{ cls.class_id }}" data-class_name="{{ cls.class_name }}"
+                                                                                                    data-allow_group="{{ cls.allow_groups }}" {% if cls.is_defaults %}selected{% endif %}>
+                                                                                                    {{ cls.class_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--   -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_section_com"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Section:
+                                                                                        </label>
+                                                                                        <div
+                                                                                            class="col-sm-8 col-sm-9_manual">
+                                                                                            <select id="id_is_section_com" name="is_section_com"
+                                                                                                class="form-select item_inputbox">
+                                                                                                {% for sect in user_others_access.section_access %}
+                                                                                                <option value="{{ sect.section_id }}"
+                                                                                                    data-section_name="{{ sect.section_name }}" {% if sect.is_defaults %}selected{% endif %}>
+                                                                                                    {{ sect.section_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_shifts_com"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Shifts:
+                                                                                        </label>
+                                                                                        <div
+                                                                                            class="col-sm-8 col-sm-9_manual">
+                                                                                            <select id="id_is_shifts_com" name="is_shifts_com" class="form-select item_inputbox">
+                                                                                                {% for shift in user_others_access.shift_access %}
+                                                                                                <option value="{{ shift.shift_id }}"
+                                                                                                    data-shift_name="{{ shift.shift_name }}" {% if shift.is_defaults %}selected{% endif %}>
+                                                                                                    {{ shift.shift_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- 3rd row -->
+                                                                    <div class="row row_item_setup">
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card"
+                                                                                id="com_groups_block"
+                                                                                style="display: none;">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_groups_com"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Groups:
+                                                                                        </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <select id="id_is_groups_com" name="is_groups" class="form-select item_inputbox">
+                                                                                                {% for group in user_others_access.group_access %}
+                                                                                                <option value="{{ group.groups_id }}"
+                                                                                                    data-groups_name="{{ group.groups_name }}" {% if group.is_defaults %}selected{% endif %}>
+                                                                                                    {{ group.groups_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_is_subjects_com"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Subjects:
+                                                                                        </label>
+                                                                                        <div
+                                                                                            class="col-sm-8 col-sm-9_manual">
+                                                                                            <select id="id_is_subjects_com"
+                                                                                                name="is_subjects"
+                                                                                                class="form-select item_inputbox">
+                                                                                                <!--  -->
+
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--   -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="card main-card">
+                                                                                <div class="card-body item_setup_sub">
+                                                                                    <div class="row cash_point_row">
+                                                                                        <label for="id_exam_type_com"
+                                                                                            class="col-sm-2 col_sm_menual col-form-label font_size_filter">
+                                                                                            Exam Type:
+                                                                                        </label>
+                                                                                        <div
+                                                                                            class="col-sm-8 col-sm-9_manual">
+                                                                                            <select id="id_exam_type_com"
+                                                                                                name="exam_type_com"
+                                                                                                class="form-select item_inputbox">
+                                                                                                {% for examtype in examtypelist %}
+                                                                                                <option
+                                                                                                    value="{{ examtype.exam_type_id }}"
+                                                                                                    data-type_name="{{ examtype.exam_type_name }}">
+                                                                                                    {{ examtype.exam_type_name }}
+                                                                                                </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <!--  -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!--  -->
+                            <!-- finalized results entry -->
+                            <section
+                                style="width: 99.5%; margin-left: 0.2rem; margin-right: 0.2rem; margin-bottom: 1rem;">
+                                <div class="module-table">
+                                    <table id="SMSSENDCOMTABLE"
+                                        class="table table-striped table-hover" style="width: 100%; border: 1px solid #6aa2a8;">
+                                        <thead class="text-center table-header_itemlist" style="height: 2.3rem; font-size: 0.76rem;">
+                                            <tr>
+                                                <th style="text-align:center;">
+                                                    Sl
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Created
+                                                </th>
+                                                <th style="text-align:center; width: 35%;">
+                                                    Names of Exam
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Exam Date
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Class
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Section
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Shift
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Groups
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Exam Type
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Tot. Student
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Success
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Not Send/Fail
+                                                </th>
+                                                <th style="text-align:center;">
+                                                    Option
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="SMSSENDCOMTBODY"
+                                            style="text-align:center; font-size: 0.8rem">
+                                            <!--  -->
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            <!--  -->
+                        </form>
+                    </section>
+                </section>
+                <!--  -->
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        handleCOMRowSelection(); // Assuming this is defined elsewhere
+        loadCOMlist();
+
+        // Re-fetch data on filter change
+        $('#id_org_com, #id_branchs_com, #id_is_class_com, #id_is_section_com, #id_is_shifts_com, #id_is_groups_com, #id_is_subjects_com, #id_exam_type_com').change(() => {
+            loadCOMlist();
+        });
+
+        function loadCOMlist() {
+            const orgcomFilter = $('#id_org_com').val();
+            const branchcomFilter = $('#id_branchs_com').val();
+            const isClasscomFilter = $('#id_is_class_com').val();
+            const isSectioncomFilter = $('#id_is_section_com').val();
+            const isShiftcomFilter = $('#id_is_shifts_com').val();
+            const isGroupscomFilter = $('#id_is_groups_com').val();
+            const issubjectscomFilter = $('#id_is_subjects_com').val();
+            const isExamTypecomFilter = $('#id_exam_type_com').val();
+
+            if (!branchcomFilter) return;
+
+            if (issubjectscomFilter) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_sms_complete_list/',
+                    data: {
+                        'filter_org': orgcomFilter,
+                        'filter_branch': branchcomFilter,
+                        'filter_class': isClasscomFilter,
+                        'filter_section': isSectioncomFilter,
+                        'filter_shift': isShiftcomFilter,
+                        'filter_groups': isGroupscomFilter,
+                        'filter_subjects': issubjectscomFilter,
+                        'filter_examtype': isExamTypecomFilter,
+                    },
+                    success: function (data) {
+                        // Update table with new data
+                        updateCOMTable(data);
+
+                        highlightSelectedCOMRowOnInit(); // Assuming this is defined
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Ajax Error:', xhr.responseText);
+                    }
+                });
+            }
+        }
+
+        function updateCOMTable(data) {
+            const tableBody = $('#SMSSENDCOMTBODY');
+            tableBody.empty();
+
+            if (!data.data || data.data.length === 0) {
+                tableBody.append(`<tr><td colspan="11" class="text-center">No data found</td></tr>`);
+                return;
+            }
+
+            $.each(data.data, function (index, item) {
+                const rowHtml = `
+                    <tr class="SMSCOM-row" data-res_fin_id="${item.res_fin_id}">
+                        <td>${index + 1}</td>
+                        <td>${item.created_date || ''}</td>
+                        <td style="text-align:left; font-weight: bold; color: #78e582;">${item.names_of_exam || ''}</td>
+                        <td>${item.exam_date || ''}</td>
+                        <td>${item.class_name || ''}</td>
+                        <td>${item.section_name || ''}</td>
+                        <td>${item.shift_name || ''}</td>
+                        <td>${item.group_name || ''}</td>
+                        <td>${item.exam_type_name || ''}</td>
+                        <td style="text-align:center; font-size: 1rem; font-weight: bold; color: #ffa700;">${item.total_students || 0}</td>
+                        <td style="text-align:center; font-size: 1rem; font-weight: bold; color: #00ff00;">${item.sms_success || 0}</td>
+                        <td style="text-align:center; font-size: 1rem; font-weight: bold; color: #cd0000;">${item.sms_fail || 0}</td>
+                        <td>
+                            <button type="button" class="btn btn-info text-white btn-sm sms_complete" data-res_fin_id="${item.res_fin_id}">
+                                View
+                            </button>
+                        </td>
+                    </tr>`;
+                tableBody.append(rowHtml);
+            });
+        }
+    });
+
+    //
+    function handleCOMRowSelection() {
+        // Attach click event listener to all rows
+        $(document).on("click", ".SMSCOM-row", function () {
+            var clickedcomId = $(this).data("id");
+
+            // Remove highlighting from other rows
+            $(".SMSCOM-row").removeClass("selected-row");
+
+            // Highlight the selected row
+            $(this).addClass("selected-row");
+
+            // Save the selected PO ID to local storage
+            localStorage.setItem("selectedcomID", clickedcomId);
+        });
+    }
+
+    function highlightSelectedCOMRowOnInit() {
+        var selectedcomID = localStorage.getItem("selectedcomID");
+        if (selectedcomID) {
+            $(".SMSCOM-row").each(function () {
+                if ($(this).data("res_fin_id").toString() === selectedcomID) {
+                    $(this).addClass("selected-row");
+                    return false; // Break the loop once the match is found
+                }
+            });
+        }
+    }
+
+    $(function () {
+        $(document).on('click', '.sms_complete', function (e) {
+            e.preventDefault();
+            var resFinCOMId = $(this).attr('data-res_fin_id');
+            var sendSMScomUrl = "{% url 'send_sms_completed_services' %}?res_fin_id=" + resFinCOMId;
+            navigateTo(sendSMScomUrl);
+        });
+    });
+    //////////////////////////////////////////////////////////////////////
+
+    // Define globally so it's accessible in both blocks
+    function toggleComplGroupsBlock() {
+        const classSelect = document.getElementById("id_is_class_com");
+        const groupsBlock = document.getElementById("com_groups_block");
+
+        const selectedOption = classSelect.options[classSelect.selectedIndex];
+        const allowGroup = selectedOption.getAttribute("data-allow_group");
+
+        if (allowGroup === "1" || allowGroup === "True" || allowGroup === "true") {
+            groupsBlock.style.display = "block";
+            $('#id_is_groups_com').prop('required', true);
+            // Optionally: preserve or sync with filter, but do NOT reset
+        } else {
+            groupsBlock.style.display = "none";
+            $('#id_is_groups_com').prop('required', false);
+            $('#id_is_groups_com').val(""); // Only reset when hiding the block
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const classSelect = document.getElementById("id_is_class_com");
+
+        // Bind class change event
+        classSelect.addEventListener("change", toggleComplGroupsBlock);
+
+        // Sync group select when filter changes
+        $('#id_is_groups_com').on('change', function () {
+            const selectedGroup = $(this).val();
+            $('#id_is_groups_com').val(selectedGroup);
+        });
+
+        // Optional: Initial sync
+        $('#id_is_groups_com').val($('#id_is_groups_com').val());
+
+        // Initial check on load
+        toggleComplGroupsBlock();
+    });
+
+    /////////////
+
+    $(document).ready(function () {
+
+        $('#id_org_com').change(function () {
+            OrgWiseSubcomOptions();
+        });
+
+        $('#id_is_class_com').change(function () {
+            OrgWiseSubcomOptions();
+        });
+
+        $('#id_is_class_com_filter').change(function () {
+        });
+
+        $('#id_is_groups_com').change(function () {
+            OrgWiseSubcomOptions();
+        });
+
+        $('#id_is_groups_com_filter').change(function () {
+        });
+
+        OrgWiseSubcomOptions();
+
+        function OrgWiseSubcomOptions() {
+            var selectedOrgId = $('#id_org_com').val();
+            var selectedClassId = $('#id_is_class_com').val();
+            var selectedClassFilterId = $('#id_is_class_com_filter').val();
+            var selectedGroupId = $('#id_is_groups_com').val();
+            var selectedIsVersionId = $('input[name="is_version"]:checked').val();
+
+            // Branch option value
+            $.ajax({
+                url: '/get_subjects_options/',
+                method: 'GET',
+                data: {
+                    org_id: selectedOrgId,
+                    class_id: selectedClassId,
+                    groups_id: selectedGroupId,
+                    is_version: selectedIsVersionId,
+                },
+                success: function (data) {
+                    $('#id_is_subjects_com').empty();
+                    // Add default "Choose here" option
+                    //$('#id_is_subjects_com').append('<option value="" selected disabled>Choose Subject here</option>');
+
+                    // Append subject options
+                    $.each(data.subOptions, function (index, subject) {
+                        $('#id_is_subjects_com').append('<option value="' + subject.subjects_id + '" data-subjects_name="' + subject.subjects_name + '">' + subject.subjects_name + '</option>');
+                    });
+
+                    $('#id_is_subjects_com').trigger('change');
+                    
+                    toggleComplGroupsBlock();
+                },
+                error: function (error) {
+                    console.error('Error fetching subject options:', error);
+                }
+            });
+        }
+    });
+    /////////////
+    document.addEventListener('DOMContentLoaded', function () {
+        const pubDateInput = document.getElementById('id_exam_date');
+
+        if (pubDateInput) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${dd}-${mm}-${yyyy}`; // Format: yyyy-mm-dd
+
+            pubDateInput.value = formattedDate;
+        }
+    });
+    ///////////////////////////////////////////
+    $(document).ready(function () {
+
+        $('#id_org_com').change(function () {
+            OrgWiseUpdateFiltercomOptions();
+        });
+
+        OrgWiseUpdateFiltercomOptions();
+
+        function OrgWiseUpdateFiltercomOptions() {
+            var selectedOrgId = $('#id_org_com').val();
+
+            // Branch option value
+            $.ajax({
+                url: '/get_branch_options/',
+                method: 'GET',
+                data: { org_id: selectedOrgId },
+                success: function (data) {
+                    $('#id_branchs_com').empty();
+                    // Add default "Choose here" option
+                    //$('#id_branchs_com').append('<option value="" selected disabled>Choose Branch here</option>');
+
+                    // Append branch options
+                    $.each(data.branch_list, function (index, branch) {
+                        $('#id_branchs_com').append('<option value="' + branch.branch_id + '">' + branch.branch_name + '</option>');
+                    });
+
+                    $('#id_branchs_com').trigger('change');
+                },
+                error: function (error) {
+                    console.error('Error fetching branch options:', error);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

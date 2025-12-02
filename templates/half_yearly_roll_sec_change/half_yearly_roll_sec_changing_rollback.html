@@ -1,0 +1,357 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_entry/css/result_card_entry_list.css' %}">
+<!--========== from js file ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #26575ae0;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bx-folder-open text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Half Yearly Roll Section Rollback Info</h1>
+                        </div>
+                        <div style="width: 30%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-evenly;">
+                            <!--  -->
+                            <div style="width: 10%; float: right; display: flex; justify-content: center; text-align: center; align-items: center; flex-direction: row; flex-wrap: nowrap;">
+                                <button id="addmodulesetup" class="btn text-white btn-xs moduleBtn" onClick="navigateTo('/half_yearly_roll_sec_change_rollback/')"
+                                    style="width: 17rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #26575ae0; border-radius: 0.7rem; border: 1.5px solid #fff; font-size: 0.8rem;">
+                                    Half Yearly Roll Section Rollback List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <form action="" id="SECTIONROLLROLLBACKFORM">
+                <section>
+                    <div class="card po_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                        <div class="card-body">
+                            <div class="report-filter">
+                                <!-- Date Range Filter -->
+                                <div class="date-range">
+                                    <div class="row date_range-body" style="font-size: 0.8rem;">
+                                        <div class="date_range-element col-sm-12" style="display:flex">
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 1; display: flex; justify-content: left;">
+                                                <label for="id_filter_org" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Org:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_org" name="filter_org" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                    <input type="hidden" id="id_filter_org_id" name="filter_org_id">
+                                                    <input type="hidden" id="id_hyrscinfo_id" name="hyrscinfo_id">
+                                                    <input type="hidden" id="id_merit_id" name="merit_id">
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                                <label for="id_filter_branch" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Branch:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_branch" name="filter_branch" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                    <input type="hidden" id="id_filter_branch_id" name="filter_branch_id">
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                                <label for="id_is_year" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Year:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_year" name="filter_year" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                                <label for="id_english_fil" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Version:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_version" name="filter_version" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="date_range-element col-sm-12" style="display:flex">
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                                <label for="id_is_class" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Class:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_class" name="filter_class" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                    <input type="hidden" id="id_filter_class_id" name="filter_class_id">
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                                <label for="id_is_shift" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Shifts:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_shifts" name="filter_shifts" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                    <input type="hidden" id="id_filter_shift_id" name="filter_shift_id">
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+                                                <label for="id_is_groups" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                    Groups:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control item_inputbox store_Selectbox" id="id_filter_groups" name="filter_groups" style="height: 28px; margin-bottom: 5px;" autocomplete="off" readonly>
+                                                    <input type="hidden" id="id_filter_group_id" name="filter_group_id">
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-3" style="flex-grow: 2; display: flex; justify-content: left;">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- submission button -->
+                <section class="pur-submissionBtn">
+                    <div class="row row_item_setup">
+                        <div class="col-sm-12">
+                            <div class="card main-card" style="background: #ededed; margin-top: 0.3rem; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem;">
+                                <div class="card-body card-body_item_setup">
+                                    <div class="row row_item_setup">
+                                        <!-- submit button -->
+                                        <div class="submit_button">
+                                            <!--  -->
+                                            <button style="margin-right: 10px; padding: 0.09rem 0.6rem;"
+                                                class="btn btn-success btn-sm" type="submit" id="saveBtn">
+                                                Rollback Half Yearly Roll & Section
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--  -->
+                <!--  -->
+                <section>
+                    <table id="HYRRSCRBTABLE" class="table table-hover" style="width: 98.7%; margin-left: 0.5rem; margin-right: 0.5rem; border: 1px solid #6aa2a8;">
+                        <thead class="text-center table-header_itemlist">
+                            <tr>
+                                <th rowspan="2">Sl</th>
+                                <th rowspan="2">Name</th>
+                                <th rowspan="2">New Roll</th>
+                                <th rowspan="2">Class</th>
+                                <th rowspan="2">New Section</th>
+                                <th rowspan="2">Shift</th>
+                                <th rowspan="2">Groups</th>
+                                <th rowspan="2">Merit Position</th>
+                                <th colspan="2">Rollback Half Yearly Roll and Sections</th>
+                            </tr>
+                            <tr style="color: #fff; background: #85acb1; font-size: 0.73rem;">
+                                <!-- Additional headers can be added here if needed -->
+                                <th>Rollback Section</th>
+                                <th>Rollback Roll</th>
+                            </tr>
+                        </thead>
+                        <tbody id="HYRRSCRBTABLEBDY" style="text-align:center; font-size: 0.85rem;">
+                            <!-- Data will be populated here via AJAX -->
+
+                        </tbody>
+                    </table>
+                </section>
+            </form>
+            <!--  -->
+        </section>
+        <!--  -->
+        
+    </section>
+</main>
+<!-- scriptStart  -->
+<script>
+    $(document).ready(function () {
+        function getUrlParameter(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        const hyrscinfo_id = getUrlParameter('hyrscinfo_id');
+        const org_id = getUrlParameter('org_id');
+        const branch_id = getUrlParameter('branch_id');
+        const year = getUrlParameter('year');
+        const version = getUrlParameter('version');
+        const class_id = getUrlParameter('class_id');
+        const shift_id = getUrlParameter('shift_id');
+        const group_id = getUrlParameter('group_id');
+
+        if (hyrscinfo_id) {
+            $.ajax({
+                url: "{% url 'get_details_for_half_yearly_roll_sec_change_rollback' %}",
+                type: "GET",
+                data: { 
+                    hyrscinfo_id: hyrscinfo_id,
+                    org_id: org_id,
+                    branch_id: branch_id,
+                    year: year,
+                    version: version,
+                    class_id: class_id,
+                    shift_id: shift_id,
+                    group_id: group_id
+                },
+                beforeSend: function () {
+                    $("#HYRRSCRBTABLEBDY").html(
+                        `<tr><td colspan="8" class="text-center text-muted">Loading...</td></tr>`
+                    );
+                },
+                success: function (response) {
+                    if (response.success) {
+
+                        // 🟢 Header Info Fill
+                        const h = response.header;
+                        if (h) {
+                            $('#id_hyrscinfo_id').val(h.hyrscinfo_id);
+                            $('#id_merit_id').val(h.merit_id);
+                            $('#id_filter_org').val(h.org_name);
+                            $('#id_filter_org_id').val(h.org_id);
+                            $('#id_filter_branch').val(h.branch_name);
+                            $('#id_filter_branch_id').val(h.branch_id);
+                            $('#id_filter_year').val(h.merit_year);
+
+                            // Version determine
+                            let versionText = "";
+                            if (h.is_english) versionText = "English Version";
+                            else if (h.is_bangla) versionText = "Bangla Version";
+                            else versionText = "";
+
+                            $('#id_filter_version').val(versionText);
+                            $('#id_filter_class').val(h.class_name);
+                            $('#id_filter_class_id').val(h.class_id);
+                            $('#id_filter_shifts').val(h.shift_name);
+                            $('#id_filter_shift_id').val(h.shift_id);
+                            $('#id_filter_groups').val(h.group_name);
+                            $('#id_filter_group_id').val(h.group_id);
+                        }
+
+                        // 🟢 Student Table Fill
+                        if (response.data && response.data.length > 0) {
+                            let rows = "";
+                            $.each(response.data, function (i, item) {
+                                rows += `
+                                    <tr>
+                                        <td style="text-align: center; padding: 5px;">
+                                            ${item.sl}
+                                            <input type="hidden" class="form-control" name="reg_id[]" value="${item.reg_id}">
+                                        </td>
+                                        <td style="text-align: left; padding: 5px;">${item.full_name}</td>
+                                        <td style="text-align: center; padding: 5px;">
+                                            ${item.new_roll_no || '-'}
+                                            <input type="hidden" class="form-control" name="new_roll_no[]" value="${item.new_roll_no || ''}">
+                                        </td>
+                                        <td style="text-align: center; padding: 5px;">
+                                            ${item.class_name}
+                                            <input type="hidden" class="form-control" name="class_id[]" value="${item.class_id}">
+                                        </td>
+                                        <td style="text-align: center; padding: 5px;">
+                                            ${item.new_section_name || '-'}
+                                            <input type="hidden" class="form-control" name="new_section_id[]" value="${item.new_section_id || ''}">
+                                        </td>
+                                        <td style="text-align: center; padding: 5px;">
+                                            ${item.shift_name}
+                                            <input type="hidden" class="form-control" name="shift_id[]" value="${item.shift_id}">
+                                        </td>
+                                        <td style="text-align: center; padding: 5px;">
+                                            ${item.group_name}
+                                            <input type="hidden" class="form-control" name="group_id[]" value="${item.group_id}">
+                                        </td>
+                                        <td style="text-align: center; padding: 5px;">${item.merit_position}</td>
+                                        <td>
+                                            ${item.section_name}
+                                            <input type="hidden" class="form-control" name="rollback_section_id[]" value="${item.section_id}">
+                                        </td>
+                                        <td>
+                                            ${item.roll_no}
+                                            <input type="hidden" class="form-control" name="rollback_roll_no[]" value="${item.roll_no}">
+                                        </td>
+                                    </tr>`;
+                            });
+                            $("#HYRRSCRBTABLEBDY").html(rows);
+                        } else {
+                            $("#HYRRSCRBTABLEBDY").html(
+                                `<tr><td colspan="10" class="text-center text-danger" style="font-weight: bold; padding: 10px; font-size: 1.1rem;">No data found.</td></tr>`
+                            );
+                        }
+                    } else {
+                        $("#HYRRSCRBTABLEBDY").html(
+                            `<tr><td colspan="10" class="text-center text-danger" style="font-weight: bold; padding: 10px; font-size: 1.1rem;">${response.message}</td></tr>`
+                        );
+                    }
+                },
+                error: function () {
+                    $("#HYRRSCRBTABLEBDY").html(
+                        `<tr><td colspan="10" class="text-center text-danger" style="font-weight: bold; padding: 10px; font-size: 1.1rem;">Error loading data!</td></tr>`
+                    );
+                }
+            });
+        } else {
+            $("#HYRRSCRBTABLEBDY").html(
+                `<tr><td colspan="10" class="text-center text-warning" style="font-weight: bold; padding: 10px; font-size: 1.1rem;">Merit ID missing in URL!</td></tr>`
+            );
+        }
+    });
+
+    // Save Button AJAX
+    $(function () {
+        $('#SECTIONROLLROLLBACKFORM').submit(function (e) {
+            e.preventDefault();
+            
+            var formData = new FormData(this);
+
+            $.ajax({
+                headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                url: "{% url 'rollback_half_yearly_roll_section_change' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.message || "Saved successfully!");
+                        // Optionally, you can refresh the data or redirect the user here
+                        navigateTo("{% url 'half_yearly_roll_section_changes_list' %}");
+                    } else {
+                        toastr.error(resp.message || "An error occurred");
+                    }
+                },
+                error: function () {
+                    toastr.error("Server error occurred");
+                }
+            });
+        });
+    });
+
+</script>
+
+{% endblock %}
