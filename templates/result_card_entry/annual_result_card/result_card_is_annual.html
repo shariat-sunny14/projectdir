@@ -1,0 +1,686 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_entry/css/result_card_entry.css' %}">
+<style>
+    .table>:not(:last-child)>:last-child>* {
+        border-bottom: 1px solid #24326a !important;
+    }
+</style>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #258832ff;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-6"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bx-credit-card text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">Result Card Annual Examination</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-6" style="display: flex; justify-content: right;">
+                                    <!--  -->
+                                    <button type="button" onClick="navigateTo('/result_card_entry_services/')"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #258832ff; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        Card Entry List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <section style="display: flex; width: 100%;">
+                    <!--  -->
+                    <!-- form body -->
+                    <section style="width: 100%; margin-left: 0.5rem; margin-right: 0.5rem;">
+                        <form action="" id="ANNUALRESULTSFORM">
+                            <div class="transcript-container">
+                                <div class="transcript-header" style="display: none;">
+                                    <header>
+                                        <div class="header-bottom">
+                                            <section class="grading-scale-body">
+                                                <table>
+                                                    <thead style="background: rgb(172, 172, 172);">
+                                                        <tr>
+                                                            <th style="text-align: center; width: 5%;">Letter Grade</th>
+                                                            <th style="text-align: center; width: 5%;">Marks Interval</th>
+                                                            <th style="text-align: center; width: 5%;">Grade Point</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center;">A+</td>
+                                                            <td style="text-align: center;">80-100</td>
+                                                            <td style="text-align: center;">5.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">A</td>
+                                                            <td style="text-align: center;">70-79</td>
+                                                            <td style="text-align: center;">4.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">A-</td>
+                                                            <td style="text-align: center;">60-69</td>
+                                                            <td style="text-align: center;">3.50</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">B</td>
+                                                            <td style="text-align: center;">50-59</td>
+                                                            <td style="text-align: center;">3.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">C</td>
+                                                            <td style="text-align: center;">40-49</td>
+                                                            <td style="text-align: center;">2.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">D</td>
+                                                            <td style="text-align: center;">33-39</td>
+                                                            <td style="text-align: center;">1.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">F</td>
+                                                            <td style="text-align: center;">00-32</td>
+                                                            <td style="text-align: center;">0.00</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </section>
+                                        </div>
+                                    </header>
+                                </div>
+
+                                <section>
+                                    <input type="hidden" value="{{ org_list.org_id|default:'' }}" name="is_org_id" id="id_is_org_id">
+                                    <input type="hidden" value="{{ branch_list.branch_id|default:'' }}" name="is_branch_id" id="id_is_branch_id">
+                                    <input type="hidden" value="{{ registration.reg_id|default:'' }}" name="is_reg_id" id="id_is_reg_id">
+                                    <input type="hidden" value="{{ registration.class_id|default:'' }}" name="is_class_id" id="id_is_class_id">
+                                    <input type="hidden" value="{{ registration.section_id|default:'' }}" name="is_section_id" id="id_is_section_id">
+                                    <input type="hidden" value="{{ registration.shift_id|default:'' }}" name="is_shifts_id" id="id_is_shifts_id">
+                                    <input type="hidden" value="{{ registration.groups_id|default:'' }}" name="is_groups_id" id="id_is_groups_id">
+                                    <input type="hidden" value="{{ registration.is_english }}" name="is_english_id" id="id_is_english_id">
+                                    <input type="hidden" value="{{ registration.is_bangla }}" name="is_bangla_id" id="id_is_bangla_id">
+                                    <input type="hidden" value="{{ is_year|default:'' }}" name="is_year" id="id_is_year"> <!-- for half-yearly, yearly results generation -->
+                                    <div class="card main_pos_card">
+                                        <div class="row cash_point_row">
+                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                                                <div class="col-sm-8">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_students_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Student’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox" id="id_students_name" value="{{ registration.full_name|default:'' }}"
+                                                                        name="students_name" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_father_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Father’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.father_name|default:'' }}"
+                                                                        autocomplete="off" id="id_father_name" name="father_name" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_mother_name:" class="col-sm-2 col-form-label">
+                                                                    Mother’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.mother_name|default:'' }}"
+                                                                        id="id_mother_name" autocomplete="off" name="mother_name" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_classes"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Class:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.class_name|default:'' }}"
+                                                                        id="id_is_classes" name="is_class" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_roll_no" class="col-sm-2 col-form-label">
+                                                                    Roll No:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.roll_no|default:'' }}"
+                                                                        id="id_roll_no" name="roll_no" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_section_id" class="col-sm-2 col-form-label">
+                                                                    Section:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.section_name|default:'' }}"
+                                                                        id="id_is_section_id" name="is_section" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_shift_id" class="col-sm-2 col-form-label">
+                                                                    Shift:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.shift_name|default:'' }}"
+                                                                        id="id_is_shift_id" name="is_shift" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                                <!--  -->
+                                                <div class="col-sm-4">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_average_gpa" class="col-sm-8 fontsize col-form-label">
+                                                                    GPA:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox" id="id_is_average_gpa" name="is_average_gpa" step="0.01" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_average_letter_grade" class="col-sm-8 fontsize col-form-label">
+                                                                    Letter Grade:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_average_letter_grade" name="average_letter_grade" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_obtained_marks" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Obtained Marks:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_obtained_marks" name="total_obtained_marks" step="0.01" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_result_status" class="col-sm-8 fontsize col-form-label">
+                                                                    Result Status:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_result_status" name="result_status" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_merit_position" class="col-sm-8 fontsize col-form-label">
+                                                                    Merit Position:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_merit_position" name="merit_position" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_working_days" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Working Days:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_working_days" name="total_working_days" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_present_days" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Present Days:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_present_days" name="total_present_days" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </section>
+                                <!--  -->
+                                <section class="subject-marks" style="margin-top: 1rem; margin-bottom: 1rem;">
+                                    <h3>Subject-wise Annual Grade & Marks</h3>
+                                    <section>
+                                        <div class="col-xl-12">
+                                            <div class="table-body item_table_body">
+                                                <div class="d-flex w-100 annual-results" id="Annual-field">
+                                                    <table class="table table-striped" style="width: 100%;" id="ANNUALEXMTABLE">
+                                                        <thead class="text-center table-header_itemlist"></thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <section>
+                                    <div class="card main_pos_card" style="padding: 20px;">
+                                        <div class="row cash_point_row col-sm-12">
+                                            <div class="col-sm-8" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center;">
+                                                <strong class="col-sm-2REMKS" style="margin-right: 1rem;">Remarks:</strong> 
+                                                <div class="col-sm-10REMKS">
+                                                    <textarea type="text" class="form-control pos_inputbox" id="id_is_remarks" name="is_remarks" autocomplete="off"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4" style="display: flex; flex-wrap: nowrap; flex-direction: row; align-items: center;">
+                                                <strong class="col-sm-4" style="margin-right: 1rem; font-size: 13px;">Date of Publication:</strong> 
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control pos_inputbox datepicker" id="id_date_of_publication" name="date_of_publication" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <!-- -------------------------------------------------------------------- -->
+                            <section style="margin-top: 5rem; margin-bottom: 1rem;">
+                                <div class="payment-submitBtn">
+                                    <button type="submit" style="text-align:center; width: 8rem;" id="ANNUALSUBMISSIONBTN"
+                                        class="btn btn-success col-sm-4 text-white btn-xs item_payment_btn">
+                                        Approve & Show
+                                    </button>
+                                </div>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+                <!--  -->
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const org_id = urlParams.get('org_id');
+        const branch_id = urlParams.get('branch_id');
+        const year = urlParams.get('is_year');
+        const version = urlParams.get('is_version');
+        const class_id = urlParams.get('class_id');
+        const section_id = urlParams.get('section_id');
+        const shift_id = urlParams.get('shift_id');
+        const groups_id = urlParams.get('groups_id');
+        // get reg_id safely
+        var reg_id = $('#id_is_reg_id').val();
+
+
+        loadIsAnnualResults(org_id, branch_id, reg_id, class_id, shift_id, groups_id, year, version);
+        getStudentAttendance(org_id, branch_id, class_id, shift_id, groups_id, reg_id, year, version);
+
+        function loadIsAnnualResults(org_id, branch_id, reg_id, class_id, shift_id, groups_id, year, version) {
+
+            // Number formatter
+            function fmt(v) {
+                v = Number(v ?? 0);
+                return (v % 1 === 0) ? parseInt(v) : v.toFixed(2);
+            }
+
+            $.ajax({
+                url: "/get_is_annual_details_result_api/",
+                type: "GET",
+                data: {
+                    org_id: org_id,
+                    branch_id: branch_id,
+                    reg_id: reg_id,
+                    class_id: class_id,
+                    shift_id: shift_id,
+                    groups_id: groups_id,
+                    is_year: year,
+                    is_version: version
+                },
+                success: function (response) {
+
+                    if (!response.success) {
+                        toastr.error(response.message || "No data found!");
+                        return;
+                    }
+
+                    const modeNames = response.mode_names;
+                    const subjects = response.final_subjects;
+
+                    // ===================================
+                    // HEADER BUILD
+                    // ===================================
+                    let thead = `
+                        <tr>
+                            <th rowspan="2" style="text-align:center; border:1px solid #24326a; width:20%;">Name of Subjects</th>
+                            <th rowspan="2" style="text-align:center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">Full Marks</th>
+
+                            <th colspan="${modeNames.length + 1}" style="text-align:center; border:1px solid #24326a;">Half Yearly Exam</th>
+                            <th colspan="${modeNames.length + 1}" style="text-align:center; border:1px solid #24326a;">Annual Exam</th>
+                            <th colspan="${modeNames.length}" style="text-align:center; border:1px solid #24326a;">${response.half_percent}% of Half Yearly Exam</th>
+                            <th colspan="${modeNames.length}" style="text-align:center; border:1px solid #24326a;">${response.annual_percent}% of Annual Exam</th>
+                            <th colspan="${modeNames.length}" style="text-align:center; border:1px solid #24326a;">Total Particular Marks</th>
+
+                            <th rowspan="2" style="padding: 5px;text-align:center; border:1px solid #24326a;">Total Obtained Marks (Subject Wise)</th>
+                            <th rowspan="2" style="padding: 5px;text-align:center; border:1px solid #24326a;">Letter Grade</th>
+                            <th rowspan="2" style="width: 4%; text-align:center; border:1px solid #24326a;">GP</th>
+                        </tr>
+
+                        <tr>
+                            ${modeNames.map(m => `<th style="padding: 7px;text-align: center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">${m}</th>`).join("")}
+                            <th style="padding: 7px;text-align: center; border:1px solid #24326a; font-weight:bold; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">Total</th>
+
+                            ${modeNames.map(m => `<th style="padding: 7px;text-align: center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">${m}</th>`).join("")}
+                            <th style="padding: 7px;text-align: center; border:1px solid #24326a; font-weight:bold; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">Total</th>
+                            ${modeNames.map(m => `<th style="padding: 7px;text-align: center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">${m}</th>`).join("")}
+                            ${modeNames.map(m => `<th style="padding: 7px;text-align: center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">${m}</th>`).join("")}
+                            ${modeNames.map(m => `<th style="padding: 7px;text-align: center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">${m}</th>`).join("")}
+                        </tr>
+                    `;
+
+                    $("#ANNUALEXMTABLE thead").html(thead);
+
+                    // ===================================
+                    // BODY BUILD
+                    // ===================================
+                    let tbody = "";
+                    let grandTotalFull = 0;
+                    let grandTotalObtained = 0;
+
+                    subjects.forEach(sub => {
+
+                        let halfTotal = 0;
+                        let annualTotal = 0;
+                        let finalTotal = 0;
+
+                        let row = `
+                            <tr style="height: 2.5rem; font-size: 0.9rem;">
+                                <td style="text-align:left; border:1px solid #ccc;">
+                                    <span style="
+                                        margin-left:10px;
+                                        font-size:15px;
+                                        font-weight:500;
+                                        font-family:'Georgia', serif;
+                                        color:${sub.is_optional ? "#d7a900" : sub.is_not_countable ? "red" : "black"};
+                                    ">
+                                        <input type="hidden" name="subjects_id[]" value="${sub.id}">
+                                        ${sub.name}${sub.is_optional ? " (Optional)" : sub.is_not_countable ? " (Not Countable)" : ""}
+                                    </span>
+                                </td>
+
+                                <td style="text-align:center; border:1px solid #ccc;">${fmt(sub.full_marks)}</td>
+                        `;
+
+                        // ---------------------------
+                        // 1️⃣ Half Actual
+                        // ---------------------------
+                        modeNames.forEach(mode => {
+                            const o = sub.modes[mode] || {};
+                            const v = Number(o.half_actual ?? 0);
+                            halfTotal += v;
+                            row += `<td style="text-align:center; border:1px solid #ccc;">${fmt(v)}</td>`;
+                        });
+                        row += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(halfTotal)}</td>`;
+
+                        // ---------------------------
+                        // 2️⃣ Annual Actual
+                        // ---------------------------
+                        modeNames.forEach(mode => {
+                            const o = sub.modes[mode] || {};
+                            const v = Number(o.annual_actual ?? 0);
+                            annualTotal += v;
+                            row += `<td style="text-align:center; border:1px solid #ccc;">${fmt(v)}</td>`;
+                        });
+                        row += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(annualTotal)}</td>`;
+
+                        // ---------------------------
+                        // 3️⃣ Half %
+                        // ---------------------------
+                        modeNames.forEach(mode => {
+                            const o = sub.modes[mode] || {};
+                            const v = Number(o["40% of Half Yearly Exam"] ?? 0);
+                            row += `<td style="text-align:center; border:1px solid #ccc;">${fmt(v)}</td>`;
+                        });
+
+                        // ---------------------------
+                        // 4️⃣ Annual %
+                        // ---------------------------
+                        modeNames.forEach(mode => {
+                            const o = sub.modes[mode] || {};
+                            const v = Number(o["60% of Annual Exam"] ?? 0);
+                            row += `<td style="text-align:center; border:1px solid #ccc;">${fmt(v)}</td>`;
+                        });
+
+                        // ---------------------------
+                        // 5️⃣ Final (Per Mode)
+                        // ---------------------------
+                        modeNames.forEach(mode => {
+                            const o = sub.modes[mode] || {};
+                            const v = Number(o["Total mode_names Marks"] ?? 0);
+                            finalTotal += v;
+                            row += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(v)}</td>`;
+                        });
+
+                        const gpDisplay =
+                            typeof sub.gp === "number" ? fmt(sub.gp) : sub.gp;
+
+                        // ---------------------------
+                        // Close row
+                        // ---------------------------
+                        row += `
+                            <td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(finalTotal)}</td>
+                            <td style="text-align:center; border:1px solid #ccc;">${sub.letter_grade}</td>
+                            <td style="text-align:center; border:1px solid #ccc;">${gpDisplay}</td>
+                        </tr>
+                        `;
+
+                        tbody += row;
+
+                        grandTotalFull += sub.full_marks;
+                        grandTotalObtained += finalTotal;
+                    });
+
+                    // ===================================
+                    // TOTAL ROW
+                    // ===================================
+                    tbody += `
+                        <tr style="font-weight:bold; height: 2.5rem; font-size: 0.95rem;">
+                            <td style="text-align:right; border:1px solid #ccc;">Total Marks:</td>
+                            <td style="text-align:center; border:1px solid #ccc;">${fmt(grandTotalFull)}</td>
+                            <td colspan="${modeNames.length + 1 + modeNames.length + 1 + (modeNames.length * 3)}" style="border:1px solid #ccc;"></td>
+                            <td style="text-align:center; border:1px solid #ccc;">${fmt(grandTotalObtained)}</td>
+                            <td style="border:1px solid #ccc;"></td>
+                            <td style="border:1px solid #ccc;"></td>
+                        </tr>
+                    `;
+
+                    $("#ANNUALEXMTABLE tbody").html(tbody);
+
+                    // ===================================
+                    // FORM FIELDS
+                    // ===================================
+                    $("#id_total_obtained_marks").val(
+                        fmt(response.total_obtained_marks ?? 0)
+                    );
+
+                    $("#id_is_average_gpa").val(
+                        typeof response.average_gpa === "number"
+                            ? fmt(response.average_gpa)
+                            : response.average_gpa
+                    );
+
+                    $("#id_average_letter_grade").val(response.average_letter_grade);
+                    $("#id_result_status").val(response.result_status);
+                    $("#id_is_remarks").val(response.remarks_status);
+                },
+
+                error: function () {
+                    toastr.error("Error loading results.");
+                }
+            });
+        }
+
+        function getStudentAttendance(org_id, branch_id, class_id, shift_id, groups_id, reg_id, year, version) {
+            $.ajax({
+                url: '/get_student_attendance_annual_examination/',
+                type: 'GET',
+                data: {
+                    org_id: org_id,
+                    branch_id: branch_id,
+                    class_id: class_id,
+                    shift_id: shift_id,
+                    groups_id: groups_id,
+                    reg_id: reg_id,
+                    is_version: version,
+                    is_year: year,
+                    is_yearly: true
+                },
+                success: function(response) {
+                    $('#id_total_working_days').val(response.total_working_days || 0);
+                    $('#id_total_present_days').val(response.total_present_days || 0);
+                },
+                error: function() {
+                    $('#id_total_working_days').val(0);
+                    $('#id_total_present_days').val(0);
+                }
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const pubDateInput = document.getElementById('id_date_of_publication');
+        
+        if (pubDateInput) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${dd}-${mm}-${yyyy}`; // Format: yyyy-mm-dd  ${yyyy}-${mm}-${dd}
+
+            pubDateInput.value = formattedDate;
+        }
+    });
+
+    // Initialize jQuery UI Datepicker
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd-mm-yy', // Desired format: dd-mm-yyyy
+            changeYear: true,
+            changeMonth: true
+        });
+    });
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+
+
+    $(document).ready(function () {
+        $('#ANNUALRESULTSFORM').submit(function (e) {
+            e.preventDefault();
+    
+            $('#ANNUALSUBMISSIONBTN').prop('disabled', true).html('Processing...');
+    
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'save_annual_results_card_entry' %}",
+                data: new FormData(this),  // direct reference to the form
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.status === 'success') {
+                        var class_id = $('#id_is_class_id').val();
+                        var org_id = $('#id_is_org_id').val();
+                        var is_english = $('#id_is_english_id').val();
+                        var is_bangla = $('#id_is_bangla_id').val();
+                        var receiptUrl = "{% url 'annual_results_card_entry_viewer' %}?id=" + resp.res_card_id + "&org_id=" + org_id + "&class_id=" + class_id + "&is_english=" + is_english + "&is_bangla=" + is_bangla;
+                        modal_fullscreen("Annual Results Card Report", receiptUrl);
+        
+                        $('#modal_fullscreen').on('hide.bs.modal', function () {
+                            navigateTo("{% url 'result_card_entry_services' %}");
+                        });
+                        toastr.success("Annual Results Card Entry Successful!..");
+                    } else {
+                        toastr.error(resp.msg || "An error occurred", 'Error');
+                        console.error(resp);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("Network error! Please try again.");
+                    console.error('AJAX Error:', status, error);
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#ANNUALSUBMISSIONBTN').prop('disabled', false).html('Approve & Show');
+                    }, 1000); // shorter delay for better UX
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

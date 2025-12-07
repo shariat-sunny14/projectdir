@@ -1,0 +1,539 @@
+<section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+    <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+        <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #455697;">
+            <!-- Main Heading -->
+            <div class="row" style="display: flex; justify-content: center; text-align: center; align-items: center;">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2" style="margin-left: 0.5rem;">
+                        <i class='bx bx-book-alt text-white req-head-icon'></i>
+                        <h1 class="h3 text-white req-head">Groups Setup</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <section>
+            <div class="row row_item_setup">
+                <div class="col-sm-5">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemfilter_container">
+                                <div class="filter_head">
+                                    <h2 class="text-warning">Filtering</h2>
+                                </div>
+                                <!--  -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup" style="display: flex; justify-content: center; border-bottom: 1px solid rgb(211, 211, 211);">
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio2" type="radio" name="groupsoption"
+                                                        value="true" id="groupsActive">
+                                                    <label class="form-check-label" for="groupsActive">Active</label>
+                                                </div>
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio3" type="radio" name="groupsoption"
+                                                        value="false" id="groupsInactive">
+                                                    <label class="form-check-label" for="groupsInactive">Inactive</label>
+                                                </div>
+                                                <div class="form-check form-check-inline inline_item">
+                                                    <input class="form-check-input radio1" type="radio" name="groupsoption"
+                                                        value="1" id="groupsAll">
+                                                    <label class="form-check-label" for="groupsAll">All</label>
+                                                </div>
+                                                <div class="form-check form-check-inline"
+                                                    style="position: relative; z-index: 1; margin-bottom: 6px;">
+                                                    <a href="/examination_category_setup_services/"
+                                                        class="btn btn-danger text-white btn-xs item_del_btn">
+                                                        Clear
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="container col-sm-12" style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                <div class="row org-filterRow">
+                                                    <label for="id_groups_org_filter" class="col-org_filter col-form-label font_size_filter">
+                                                        Org Name:
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select id="id_groups_org_filter" name="groups_org_filter" class="form-select item_inputbox"
+                                                            aria-label="Default select example" required>
+                                                            {% for org in user_org_list %}
+                                                            <option value="{{org.org_id}}">
+                                                                {{ org.org_name }}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemfilter_container">
+                                <div class="filter_head">
+                                    <h2 class="text-success">List of Groups</h2>
+                                </div>
+                                <!--  -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card main-card">
+                                            <div class="card-body card-body_item_setup">
+                                                <div class="type_type">
+                                                    <table id="" class="table table-striped table-hover" style="width: 100%;">
+                                                        <thead class="text-center table-header_itemlist">
+                                                            <tr>
+                                                                <th style="text-align:center; width: 20%;">Groups No.</th>
+                                                                <th style="text-align:center; width: 30%;">Groups Name</th>
+                                                                <th style="text-align:center; width: 35%;">Organizations</th>
+                                                                <th style="text-align:center; width: 15%;">Status</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="4"
+                                                                    style="text-align:center; background: #fff !important;">
+                                                                    <input type="search" id="groupsearch"
+                                                                        class="form-control search_control item_inputbox"
+                                                                        style="margin-left: 4px; background:#fffab6;"
+                                                                        placeholder="Searching ..." autocomplete="off">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody id="groupsTB" class="table-body-row"
+                                                            style="text-align:center; cursor: pointer;">
+
+                                                        </tbody>
+                                                        <!-- loader start -->
+                                                        <section class="loader_groups">
+                                                            <div class="loader-body_groups">
+                                                                <div class="loader_section">
+                                                                    <div class="upper ball"></div>
+                                                                    <div class="right ball"></div>
+                                                                    <div class="lower ball"></div>
+                                                                    <div class="left ball"></div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <!-- loader end -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item UoM main entry form -->
+                <div class="col-sm-7">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemsetup_container">
+                                <form action="" method="" id="groups_form">
+                                    <input type="hidden" id="id_groups_id" name="groups_id" value="">
+                                    <div class="add_edit_head">
+                                        <h2 class="text-primary">Add/Update Groups Setup Info</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row_item_setup">
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="item_setupflag"
+                                                        style="display: flex; justify-content: right;">
+                                                        <label class="form-check-label text-danger setupflag_label"
+                                                            for="id_is_active_groups">
+                                                            Active?
+                                                        </label>
+                                                        <input class="form-check-input" type="checkbox" id="id_is_active_groups"
+                                                            name="is_active" value="1" aria-label="..." checked>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <div class="row row_item_setup">
+                                                        <!--  -->
+                                                        <div class="col-sm-5">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_groups_no" class="col-sm-4 col-form-label font_size_filter required" title="Groups No.">
+                                                                            Gro. No:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text"
+                                                                                class="form-control item_inputbox"
+                                                                                id="id_groups_no" name="groups_no" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="col-sm-7">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row">
+                                                                        <label for="id_groups_name" title="Groups Name"
+                                                                            class="col-sm-3 col-form-label font_size_filter required">
+                                                                            Gro. Name:
+                                                                        </label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text"
+                                                                                class="form-control item_inputbox" id="id_groups_name" 
+                                                                                name="groups_name" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-12">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_groups_org"
+                                                                            class="col-sm-orgName col-form-label font_size_filter required">
+                                                                            Org Name:
+                                                                        </label>
+                                                                        <div class="col-orgInput">
+                                                                            <select id="id_groups_org" name="groups_org" class="form-select item_inputbox"
+                                                                                aria-label="Default select example" required>
+                                                                                <option value="" selected disabled>Choose Organization ...</option>
+                                                                                {% for org in user_org_list %}
+                                                                                <option value="{{org.org_id}}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- submit button -->
+                                    <div class="submit_button">
+                                        <button type="button" class="btn btn-primary btn-sm" style="margin-right: 10px;" onclick="location.href='/examination_category_setup_services';">
+                                            New
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;"
+                                            onclick="resetGroupsForm();">
+                                            Clear
+                                        </button>
+                                        <button type="submit" value="submit" class="btn btn-success btn-sm"
+                                            style="margin-right: 10px;">
+                                            Save & Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        // Define a function to populate the table with data
+        function groups_populateTable(data) {
+
+            // item history
+            for (var i = 0; i < data.groups_Dtls.length; i++) {
+                var groupsData = data.groups_Dtls[i];
+
+                var groups_id = groupsData.groups_id;
+                var groups_no = groupsData.groups_no;
+                var groups_name = groupsData.groups_name;
+                var org_name = groupsData.org_name;
+                var is_active_groups = groupsData.is_active;
+
+                // Get the checkbox input element by its ID
+                var is_activeCheckbox_groups = document.getElementById("id_is_active_groups");
+
+                // Set the checked attribute based on the is_active value
+                is_activeCheckbox_groups.checked = is_active_groups;
+
+                $("#id_groups_id").val(groups_id);
+                $("#id_groups_no").val(groups_no);
+                $("#id_groups_name").val(groups_name);
+
+                var groupsOrgSelect = $("#id_groups_org");
+                groupsOrgSelect.find('option:contains("' + org_name + '")').prop('selected', true);
+
+                console.log("groups_list:", groupsData);
+            }
+        }
+
+        // Fetch data from your Django view using AJAX
+        $(document).on("click", ".groups_editBtn", function () {
+            var groupsID = $(this).data("groups-id"); // Get the item_id from the data attribute
+
+            $.ajax({
+                type: "GET",
+                url: "/select_groups_data/" + groupsID + "/",
+                dataType: "json",
+                success: function (data) {
+                    groups_populateTable(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error:", error);
+                    toastr.warning("Failed to fetch Item UoM details");
+                }
+            });
+        });
+
+    });
+
+    //<!--  -->
+    $(document).ready(function () {
+        // Load initial data based on the initially checked radio button
+        loadInitialGroupsData();
+        handleGroupsRowSelection();
+
+        // Add event listeners to radio buttons
+        $('input[name="groupsoption"]').change(function () {
+            localStorage.setItem('groupslistOption', $('input[name="groupsoption"]:checked').val());
+
+            // Load items
+            loadGroupslist();
+        });
+
+        $('#id_groups_org_filter').change(() => {
+            // Save the selected organization filter value to local storage
+            groupsOrgFilterValue = $('#id_groups_org_filter').val();
+            // Load items
+            loadGroupslist();
+        });
+
+
+        // Load items based on the search query
+        loadGroupsFromSearch();
+
+        // Function to load items based on the search query
+        function loadGroupsFromSearch() {
+            // Get the search query from local storage if it exists
+            var savedGroupsSearchQuery = localStorage.getItem("GroupsSearchQuery");
+            var groupsListsearch = $('#groupsearch');
+
+            // Check if there's a saved search query
+            if (savedGroupsSearchQuery) {
+                // Set the search input value
+                groupsListsearch.val(savedGroupsSearchQuery);
+            }
+
+            // Add an event listener to the search input field
+            groupsListsearch.on('input', function () {
+                var query = $(this).val();
+                localStorage.setItem("GroupsSearchQuery", query);
+                loadGroupslist();
+            });
+
+            // Trigger the search on page load
+            loadGroupslist();
+        }
+
+        function loadInitialGroupsData() {
+            // Retrieve the selected option from local storage
+            var groupsinitialOption = localStorage.getItem('groupslistOption') || 'true';
+
+            // Check the corresponding radio button
+            $('input[name="groupsoption"][value="' + groupsinitialOption + '"]').prop('checked', true);
+
+            // Load items
+            loadGroupslist();
+        }
+
+        function loadGroupslist() {
+            // Get the current search query and option from local storage
+            var GroupsSearchQuery = localStorage.getItem("GroupsSearchQuery") || '';
+            var groupsoption = localStorage.getItem('groupslistOption') || 'true';
+            var groupsOrgFilterValue = $('#id_groups_org_filter').val();
+
+            // Make Ajax request
+            $.ajax({
+                type: 'GET',
+                url: '/get_list_of_groups_data/',
+                data: {
+                    'groupsoption': groupsoption,
+                    'groups_search_query': GroupsSearchQuery,
+                    'groups_org_filter': groupsOrgFilterValue,
+                },
+                success: function (data) {
+                    // Update the table with filtered data
+                    updateSectionTable(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Ajax Error:', xhr.responseText);
+                    console.log('Status:', status);
+                    console.log('Error:', error);
+                }
+            });
+        }
+
+        function updateSectionTable(data) {
+            var tableBody = $('#groupsTB');
+            tableBody.empty();
+
+            if (data.data && data.data.length === 0) {
+                $('#noDataFoundRow').show();
+            } else {
+                $('#noDataFoundRow').hide();
+
+                if (data.data) {
+                    $.each(data.data, function (index, groupsL) {
+                        var groupsstatusText = groupsL.is_active ? 'Active' : 'Inactive';
+                        var groupstatusClass = groupsL.is_active ? 'active-status' : 'inactive-status';
+
+                        tableBody.append(`<tr class="groups_editBtn" data-groups-id="${groupsL.groups_id}">
+                            <td style="text-align: center;">${groupsL.groups_no}</td>
+                            <td style="text-align: left;">${groupsL.groups_name}</td>
+                            <td style="text-align: left;">${groupsL.org_name}</td>
+                            <td class="status_act_inac ${groupstatusClass}" style="text-align: center;">${groupsstatusText}</td>
+                        </tr>`);
+                    });
+                }
+            }
+            // Check if there is a selected item ID in local storage and highlight the row
+            handleGroupsRowSelection();
+        }
+
+        $(function () {
+            $('#groups_form').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: "{% url 'groups_save_and_update' %}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (resp) {
+                        if (success = resp.msg) {
+                            toastr.success(resp.msg);
+                            loadGroupslist();
+                            showgroupsLoader();
+                            resetGroupsForm();
+                            // Hide loader
+                            setTimeout(function () {
+                                hidegroupsLoader();
+                            }, 1100);
+
+                        } else {
+                            toastr.error(resp.errmsg);
+                        }
+                    }
+                });
+            });
+        });
+    });
+
+    function handleGroupsRowSelection() {
+        // Check if there is a selected item ID in local storage and highlight the row
+        var selectedGroupsID = localStorage.getItem("selectedGroupsID");
+        if (selectedGroupsID) {
+            $(".groups_editBtn").removeClass("selected-row");
+            $(".groups_editBtn[data-groups-id='" + selectedGroupsID + "']").addClass("selected-row");
+        }
+
+        // Add an event listener to the item rows
+        $(document).on("click", ".groups_editBtn", function () {
+            var clickedGroupsID = $(this).data("groups-id");
+            $(".groups_editBtn").removeClass("selected-row");
+            $(this).addClass("selected-row");
+
+            // Save the selected item ID to local storage
+            localStorage.setItem("selectedGroupsID", clickedGroupsID);
+        });
+    }
+
+    //==========================================
+    //loader 
+    const loader_groups = document.querySelector(".loader_groups");
+    const loaderBody_groups = document.querySelector(".loader-body_groups");
+
+    // Function to show the loader
+    function showgroupsLoader() {
+        loader_groups.style.display = "block";
+        loaderBody_groups.style.display = "block";
+        loader_groups.style.left = "50%"; // Set left position to center
+        loader_groups.style.top = "50%"; // Set top position to center
+    }
+
+    // Function to hide the loader
+    function hidegroupsLoader() {
+        loader_groups.style.display = "none";
+        loaderBody_groups.style.display = "none";
+    }
+
+    // Function to check and show loader based on local storage
+    function checkAndshowgroupsLoader() {
+        const loaderVisible = localStorage.getItem("loaderVisible");
+        if (loaderVisible === "true") {
+            showgroupsLoader();
+        }
+    }
+
+    // Event listener for radio button change
+    document.querySelectorAll('input[name="groupsoption"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            showgroupsLoader(); // Show loader when radio button changes
+            // Add logic to handle the radio button change if needed
+            setTimeout(() => {
+                hidegroupsLoader(); // Hide loader after a delay (you can adjust this)
+            }, 1100); // Example: hide loader after 2 seconds
+        });
+    });
+
+    // Check and show loader on page load
+    checkAndshowgroupsLoader();
+
+    window.addEventListener("load", () => {
+        // Adjust the delay in milliseconds (e.g., 2000 for 2 seconds)
+        setTimeout(() => {
+            hidegroupsLoader();
+        }, 1100);
+    });
+    //loader
+    //==========================================
+
+    function resetGroupsForm() {
+        $('#groups_form')[0].reset();
+        $('#id_groups_id').val('');
+    }
+</script>

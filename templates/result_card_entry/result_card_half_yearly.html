@@ -1,0 +1,589 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_card_entry/css/result_card_entry.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<section>
+    <div class="loader-body">
+        <div class="loader">
+            <div class="upper ball"></div>
+            <div class="right ball"></div>
+            <div class="lower ball"></div>
+            <div class="left ball"></div>
+        </div>
+    </div>
+</section>
+<!-- loader end -->
+<main>
+    <section style="display: flex; background: #f6f6f6bf;">
+        <!-- main pos body -->
+        <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+                <div style="border: 1px solid rgba(0, 0, 0, .125);
+                    margin-bottom: 0.5rem;
+                    border-left: none;
+                    border-right: none;
+                    border-top-left-radius: 0.3rem;
+                    border-top-right-radius: 0.3rem;
+                    background: #455697;">
+                    <!-- Main Heading -->
+                    <div class="row">
+                        <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                            <div class="d-sm-flex align-items-center mb-2"
+                                style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                                <div class="col-md-6"
+                                    style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                    <i class='bx bx-credit-card text-white req-head-icon'></i>
+                                    <h1 class="h3 text-white req-head">Result Card Half Yearly</h1>
+                                </div>
+                                <!--  -->
+                                <div class="col-md-6" style="display: flex; justify-content: right;">
+                                    <!--  -->
+                                    <button type="button" onClick="navigateTo('/result_card_entry_services/')"
+                                        class="btn bg-gradient col-ms-3 text-white btn-xs item_payment_btn"
+                                        style="margin-right: 1rem; font-weight: bolder; box-shadow: 4px 2px 5px 2px #43507e; border-radius: 0.7rem; border: 1.5px solid #fff;">
+                                        Card Entry List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <section style="display: flex; width: 100%;">
+                    <!--  -->
+                    <!-- form body -->
+                    <section style="width: 100%; margin-left: 0.5rem; margin-right: 0.5rem;">
+                        <form action="" id="resultsCardEntForm">
+                            <div class="transcript-container">
+                                <div class="transcript-header" style="display: none;">
+                                    <header>
+                                        <div class="header-bottom">
+                                            <section class="grading-scale-body">
+                                                <table>
+                                                    <thead style="background: rgb(172, 172, 172);">
+                                                        <tr>
+                                                            <th style="text-align: center; width: 5%;">Letter Grade</th>
+                                                            <th style="text-align: center; width: 5%;">Marks Interval</th>
+                                                            <th style="text-align: center; width: 5%;">Grade Point</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center;">A+</td>
+                                                            <td style="text-align: center;">80-100</td>
+                                                            <td style="text-align: center;">5.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">A</td>
+                                                            <td style="text-align: center;">70-79</td>
+                                                            <td style="text-align: center;">4.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">A-</td>
+                                                            <td style="text-align: center;">60-69</td>
+                                                            <td style="text-align: center;">3.50</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">B</td>
+                                                            <td style="text-align: center;">50-59</td>
+                                                            <td style="text-align: center;">3.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">C</td>
+                                                            <td style="text-align: center;">40-49</td>
+                                                            <td style="text-align: center;">2.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">D</td>
+                                                            <td style="text-align: center;">33-39</td>
+                                                            <td style="text-align: center;">1.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;">F</td>
+                                                            <td style="text-align: center;">00-32</td>
+                                                            <td style="text-align: center;">0.00</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </section>
+                                        </div>
+                                    </header>
+                                </div>
+
+                                <section>
+                                    <input type="hidden" value="{{ org_list.org_id|default:'' }}" name="is_org_id" id="id_is_org_id">
+                                    <input type="hidden" value="{{ branch_list.branch_id|default:'' }}" name="is_branch_id" id="id_is_branch_id">
+                                    <input type="hidden" value="{{ registration.reg_id|default:'' }}" name="is_reg_id" id="id_is_reg_id">
+                                    <input type="hidden" value="{{ registration.class_id|default:'' }}" name="is_class_id" id="id_is_class_id">
+                                    <input type="hidden" value="{{ registration.section_id|default:'' }}" name="is_section_id" id="id_is_section_id">
+                                    <input type="hidden" value="{{ registration.shift_id|default:'' }}" name="is_shifts_id" id="id_is_shifts_id">
+                                    <input type="hidden" value="{{ registration.groups_id|default:'' }}" name="is_groups_id" id="id_is_groups_id">
+                                    <input type="hidden" value="{{ registration.is_english }}" name="is_english_id" id="id_is_english_id">
+                                    <input type="hidden" value="{{ registration.is_bangla }}" name="is_bangla_id" id="id_is_bangla_id">
+                                    <input type="hidden" value="{{ is_year|default:'' }}" name="is_year" id="id_is_year"> <!-- for half-yearly, yearly results generation -->
+                                    <div class="card main_pos_card">
+                                        <div class="row cash_point_row">
+                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                                                <div class="col-sm-8">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_students_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Student’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text"
+                                                                        class="form-control reg_wise_disable pos_inputbox" id="id_students_name" value="{{ registration.full_name|default:'' }}"
+                                                                        name="students_name" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_father_name"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Father’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.father_name|default:'' }}"
+                                                                        autocomplete="off" id="id_father_name" name="father_name" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_mother_name:" class="col-sm-2 col-form-label">
+                                                                    Mother’s Name:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.mother_name|default:'' }}"
+                                                                        id="id_mother_name" autocomplete="off" name="mother_name" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_classes"
+                                                                    class="col-sm-2 col-form-label">
+                                                                    Class:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.class_name|default:'' }}"
+                                                                        id="id_is_classes" name="is_class" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_roll_no" class="col-sm-2 col-form-label">
+                                                                    Roll No:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.roll_no|default:'' }}"
+                                                                        id="id_roll_no" name="roll_no" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_section_id" class="col-sm-2 col-form-label">
+                                                                    Section:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.section_name|default:'' }}"
+                                                                        id="id_is_section_id" name="is_section" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_shift_id" class="col-sm-2 col-form-label">
+                                                                    Shift:
+                                                                </label>
+                                                                <div class="col-sm-10M">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox" value="{{ registration.shift_name|default:'' }}"
+                                                                        id="id_is_shift_id" name="is_shift" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                                <!--  -->
+                                                <div class="col-sm-4">
+                                                    <div class="card pos_card">
+                                                        <div class="card-body pos_card_body">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_is_average_gpa" class="col-sm-8 fontsize col-form-label">
+                                                                    GPA:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox" id="id_is_average_gpa" name="is_average_gpa" step="0.01" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_average_letter_grade" class="col-sm-8 fontsize col-form-label">
+                                                                    Letter Grade:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox"
+                                                                        autocomplete="off" id="id_average_letter_grade" name="average_letter_grade" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_obtained_marks" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Obtained Marks:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_obtained_marks" name="total_obtained_marks" step="0.01" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_result_status" class="col-sm-8 fontsize col-form-label">
+                                                                    Result Status:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_result_status" name="result_status" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_merit_position" class="col-sm-8 fontsize col-form-label">
+                                                                    Merit Position:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_merit_position" name="merit_position" autocomplete="off" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_working_days" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Working Days:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_working_days" name="total_working_days" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_total_present_days" class="col-sm-8 fontsize col-form-label">
+                                                                    Total Present Days:
+                                                                </label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control reg_wise_disable pos_inputbox"
+                                                                        id="id_total_present_days" name="total_present_days" autocomplete="off" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                </section>
+                                <!--  -->
+                                <section class="subject-marks" style="margin-top: 1rem; margin-bottom: 1rem;">
+                                    <h3>Subject-wise Grade & Marks</h3>
+                                    <section>
+                                        <div class="col-xl-12">
+                                            <div class="table-body item_table_body">
+                                                <div class="d-flex w-100" id="POS-field">
+                                                    <table class="table table-striped" style="width: 100%;" id="subWGTBL">
+                                                        <thead class="text-center table-header_itemlist"></thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <section>
+                                    <div class="card main_pos_card" style="padding: 20px;">
+                                        <div class="row cash_point_row col-sm-12">
+                                            <div class="col-sm-8" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center;">
+                                                <strong class="col-sm-2REMKS" style="margin-right: 1rem;">Remarks:</strong> 
+                                                <div class="col-sm-10REMKS">
+                                                    <textarea type="text" class="form-control pos_inputbox" id="id_is_remarks" name="is_remarks" autocomplete="off"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4" style="display: flex; flex-wrap: nowrap; flex-direction: row; align-items: center;">
+                                                <strong class="col-sm-4" style="margin-right: 1rem; font-size: 13px;">Date of Publication:</strong> 
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control pos_inputbox datepicker" id="id_date_of_publication" name="date_of_publication" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <!-- -------------------------------------------------------------------- -->
+                            <section style="margin-top: 5rem; margin-bottom: 1rem;">
+                                <div class="payment-submitBtn">
+                                    <button type="submit" style="text-align:center; width: 8rem;" id="cardEntrySubmission"
+                                        class="btn btn-success col-sm-4 text-white btn-xs item_payment_btn">
+                                        Approve & Show
+                                    </button>
+                                </div>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+                <!--  -->
+            </section>
+        </section>
+    </section>
+</main>
+<!--  -->
+<script>
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const org_id = urlParams.get('org_id');
+        const branch_id = urlParams.get('branch_id');
+        const year = urlParams.get('is_year');
+        const version = urlParams.get('is_version');
+        const class_id = urlParams.get('class_id');
+        const section_id = urlParams.get('section_id');
+        const shift_id = urlParams.get('shift_id');
+        const groups_id = urlParams.get('groups_id');
+        // get reg_id safely
+        var reg_id = $('#id_is_reg_id').val();
+
+
+        loadHalfYearlyResults(org_id, branch_id, reg_id, class_id, section_id, year, version);
+        getStudentAttendance(org_id, branch_id, class_id, section_id, shift_id, groups_id, reg_id);
+
+        function loadHalfYearlyResults(org_id, branch_id, reg_id, class_id, section_id, year, version) {
+            $.ajax({
+                url: "/get_half_yearly_result/",
+                type: "GET",
+                data: {
+                    org_id: org_id,
+                    branch_id: branch_id,
+                    reg_id: reg_id,
+                    class_id: class_id,
+                    section_id: section_id,
+                    is_year: year,
+                    is_version: version
+                },
+                success: function (response) {
+                    if (response.success) {
+                        const modeNames = response.mode_names;
+                        const subjects = response.subjects;
+
+                        // Table Head
+                        let thead = `
+                            <tr>
+                                <th rowspan="2" style="text-align:center; width:30%;">Name of Subjects</th>
+                                <th rowspan="2" style="text-align:center; width:8%;">Full Marks</th>
+                                <th rowspan="2" style="text-align:center; width:8%;">Pass Marks</th>
+                                <th colspan="${modeNames.length + 1}" style="text-align:center;">Obtained Marks</th>
+                                <th rowspan="2" style="text-align:center; width:10%;">Letter Grade</th>
+                                <th rowspan="2" style="text-align:center; width:10%;">GP</th>
+                            </tr>
+                            <tr>
+                                ${modeNames.map(m => `<th style="text-align:center;">${m}</th>`).join("")}
+                                <th style="text-align:center;">Total</th>
+                            </tr>
+                        `;
+                        $("#subWGTBL thead").html(thead);
+
+                        // Table Body
+                        let tbody = "";
+                        let grandTotalFull = 0;
+                        let grandTotalObtained = 0;
+
+                        subjects.forEach(sub => {
+                            let row = `<tr style="height: 2.5rem;">
+                                <td style="text-align:left;">
+                                    <span style="margin-left:10px; font-size:15px; font-weight:500; font-family:'Georgia', serif; color: ${sub.is_optional ? '#d7a900' : sub.is_not_countable ? 'red' : 'black'};">
+                                    <input type="hidden" name="subjects_id[]" value="${sub.id}">    
+                                    ${sub.name}${sub.is_optional ? ' (Optional)' : sub.is_not_countable ? ' (Not Countable)' : ''}
+                                    </span>
+                                </td>
+                                <td style="text-align:center; font-size: 0.9rem;">${sub.full_marks || 0}</td>
+                                <td style="text-align:center; font-size: 0.9rem;">${sub.pass_marks || 0}</td>
+                            `;
+
+                            let total = 0;
+                            modeNames.forEach(m => {
+                                let modeObj = sub.modes[m] || {};
+                                let defModeId = modeObj.def_mode_id || "";
+                                let mark = sub.modes[m] ? parseFloat(sub.modes[m].actual) || 0 : 0;
+                                total += mark;
+                                row += `<td style="text-align:center; font-size: 0.9rem;">
+                                    <input type="hidden" name="def_mode_id[]" value="${defModeId}">
+                                    <input type="hidden" name="is_mode_name[]" value="${m}">
+                                    <input type="hidden" name="is_modes_marks[]" value="${mark}">
+                                    ${mark}</td>`;
+                            });
+
+                            let gpDisplay = (typeof sub.gp === "number") ? sub.gp.toFixed(2) : sub.gp;
+
+                            row += `<td style="text-align:center; font-size: 0.9rem;">
+                                <input type="hidden" name="is_modes_total[]" value="${total}">
+                                ${total}</td>`; // Total
+                            row += `<td style="text-align:center; font-size: 0.9rem;">
+                                <input type="hidden" name="is_letter_grade[]" value="${sub.letter_grade}">
+                                ${sub.letter_grade}</td>
+                            <td style="text-align:center; font-size: 0.9rem;">
+                                <input type="hidden" name="is_gp[]" value="${gpDisplay}">
+                                ${gpDisplay}</td></tr>`;
+                            tbody += row;
+
+                            grandTotalFull += sub.full_marks || 0;
+                            grandTotalObtained += total;
+                        });
+
+                        // Total Marks row (bottom) — only Full Marks and Total
+                        tbody += `<tr style="height: 2.5rem; font-size: 0.9rem;">
+                            <td style="text-align:right;" colspan="1"><strong>Total Marks:</strong></td>
+                            <td style="text-align:center;"><strong>${grandTotalFull}</strong></td>
+                            <td></td>
+                            <td colspan="${modeNames.length}"></td>
+                            <td style="text-align:center;"><strong>${grandTotalObtained}</strong></td>
+                            <td colspan="2"></td>
+                        </tr>`;
+
+                        $("#subWGTBL tbody").html(tbody);
+
+                        $("#id_total_obtained_marks").val(response.total_obtained_marks);
+                        $("#id_is_average_gpa").val(
+                            typeof response.average_gpa === "number" 
+                                ? response.average_gpa.toFixed(2) 
+                                : response.average_gpa
+                        );
+                        $("#id_average_letter_grade").val(response.average_letter_grade);
+                        $("#id_result_status").val(response.result_status);
+                        $("#id_is_remarks").val(response.remarks_status);
+                    } else {
+                        toastr.error(response.message || "No data found!");
+                    }
+                },
+                error: function () {
+                    toastr.error("Error loading results.");
+                }
+            });
+        }
+
+        function getStudentAttendance(org_id, branch_id, class_id, section_id, shift_id, groups_id, reg_id) {
+            $.ajax({
+                url: '/get_student_attendance/',
+                type: 'GET',
+                data: {
+                    org_id: org_id,
+                    branch_id: branch_id,
+                    class_id: class_id,
+                    section_id: section_id,
+                    shift_id: shift_id,
+                    groups_id: groups_id,
+                    reg_id: reg_id,
+                    is_half_yearly: true
+                },
+                success: function(response) {
+                    $('#id_total_working_days').val(response.total_working_days || 0);
+                    $('#id_total_present_days').val(response.total_present_days || 0);
+                },
+                error: function() {
+                    $('#id_total_working_days').val(0);
+                    $('#id_total_present_days').val(0);
+                }
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const pubDateInput = document.getElementById('id_date_of_publication');
+        
+        if (pubDateInput) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${dd}-${mm}-${yyyy}`; // Format: yyyy-mm-dd  ${yyyy}-${mm}-${dd}
+
+            pubDateInput.value = formattedDate;
+        }
+    });
+
+    // Initialize jQuery UI Datepicker
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd-mm-yy', // Desired format: dd-mm-yyyy
+            changeYear: true,
+            changeMonth: true
+        });
+    });
+
+    //loader 
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const loaderBody = document.querySelector(".loader-body");
+
+        setTimeout(() => {
+            loader.style.display = "none"; // Hide the loader
+            loaderBody.style.display = "none"; // Hide the loader-body
+        }, 1100); // Hide the loader after 0.75 seconds
+    });
+
+
+    $(document).ready(function () {
+        $('#resultsCardEntForm').submit(function (e) {
+            e.preventDefault();
+    
+            $('#cardEntrySubmission').prop('disabled', true).html('Processing...');
+    
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'save_results_card_entry' %}",
+                data: new FormData(this),  // direct reference to the form
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.status === 'success') {
+                        var class_id = $('#id_is_class_id').val();
+                        var org_id = $('#id_is_org_id').val();
+                        var is_english = $('#id_is_english_id').val();
+                        var is_bangla = $('#id_is_bangla_id').val();
+                        var receiptUrl = "{% url 'results_card_entry_report' %}?id=" + resp.res_card_id + "&org_id=" + org_id + "&class_id=" + class_id + "&is_english=" + is_english + "&is_bangla=" + is_bangla;
+                        modal_lg("Results Card Report", receiptUrl);
+        
+                        $('#modal_lg').on('hide.bs.modal', function () {
+                            navigateTo("{% url 'result_card_entry_services' %}");
+                        });
+                        toastr.success("Results Card Entry Successful!..");
+                    } else {
+                        toastr.error(resp.msg || "An error occurred", 'Error');
+                        console.error(resp);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("Network error! Please try again.");
+                    console.error('AJAX Error:', status, error);
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#cardEntrySubmission').prop('disabled', false).html('Approve & Show');
+                    }, 1000); // shorter delay for better UX
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

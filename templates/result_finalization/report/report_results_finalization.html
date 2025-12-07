@@ -1,0 +1,596 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<title>Results Finaliazation Report</title>
+<!--========== CSS ==========-->
+<!--========== Bootstrap link ==========-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/DataTables_1.13.6/css/dataTables.bootstrap5.css' %}">
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- Barcode CDN -->
+<script src="{% static 'assets/jsbarcode.3.8.0/js/JsBarcode.all.min.js' %}"></script>
+{% endblock %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .card {
+        border: 0px solid transparent !important;
+    }
+
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+        border-width: 1;
+        border: 1px solid;
+    }
+
+    tr:nth-child(even) {
+        background: None !important;
+    }
+
+    hr {
+        margin: 0.3rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    .com-name {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .com-address {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-address-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .email-address-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .website-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline {
+        margin-top: 10px;
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-hotline-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-hotline-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .com-fax-title {
+        font-size: 10px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .com-fax-name {
+        font-size: 9px;
+        font-family: serif;
+    }
+
+    .software-woner-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-by-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-on-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .printed-page-title {
+        font-size: 9px;
+        font-family: serif;
+        font-weight: bold;
+    }
+
+    .software-woner-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-by-name {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-on-date {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .printed-page-no {
+        font-size: 8.5px;
+        font-family: serif;
+    }
+
+    .mul-items-othrs {
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .mul-items-names {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .receipt-name {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 25px;
+        border: 1px solid #c5c1c1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 15px;
+        font-weight: bolder;
+    }
+
+    .invoice_id {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcodeImg {
+        position: absolute;
+        top: 5rem;
+        right: 2rem;
+        display: flex;
+        margin-top: 4px;
+        margin-left: 21px;
+    }
+
+    .rec-type {
+        display: flex;
+        margin-top: -15px;
+    }
+
+    /* .rec-align {
+        font-size: 9px;
+        margin-top: 2px;
+    } */
+
+    .receipt-logo {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        text-align: left;
+        width: 5%;
+        border-radius: 50%;
+    }
+
+    .receipt-img {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: -8px;
+        left: -6px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .com-receipt-logo {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 0rem;
+        left: 3rem;
+    }
+
+    .paid-due-status {
+        width: 56%;
+        display: flex;
+        align-items: stretch;
+        text-align: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+        background: #9b99998a;
+        font-weight: bolder;
+        border-bottom: 3px solid #8d8a8a;
+        border-right: 3px solid #8d8a8a;
+    }
+
+    .status-DP {
+        text-align: center;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        border-style: hidden !important;
+    }
+
+    .sub-title1 {
+        margin-top: -9px;
+        width: 100%;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: center;
+    }
+
+    .sub-title2 {
+        margin-top: -7px;
+    }
+
+    .sub-title3 {
+        margin-top: -3px;
+    }
+
+    .table>thead {
+        vertical-align: middle;
+    }
+</style>
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section style="margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <div id="outprint">
+                <section>
+                    <table class="table"
+                        style="width: 100%; margin-bottom: 0.2rem!important; margin-top: 0.2rem!important;">
+                        <tr>
+                            <div class="receipt-logo">
+                                <img class="com-receipt-logo" src="" alt="logo">
+                            </div>
+                        </tr>
+                        <tr>
+                            <center>
+                                <label class="com-name">
+                                    <!-- Company Name Here -->
+                                    
+                                </label>
+                            </center>
+                            <center class="sub-title1">
+                                <small>
+                                    <span class="com-address">
+                                        <span class="com-address-title">Address: </span>
+                                        <span class="com-address-name">
+                                            <!-- Address -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title2">
+                                <small>
+                                    <span class="email-address-title">Email: </span>
+                                    <span class="com-address email-address-name">
+                                        <!-- Email -->
+                                    </span>
+                                    <span class="website-title">Website: </span>
+                                    <span class="website-name">
+                                        <!-- Website -->
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title">Hotline: </span>
+                                        <span class="com-hotline-name">
+                                            <!-- Phone and Hotline -->
+                                        </span>
+                                        <span class="com-fax-title">Fax: </span>
+                                        <span class="com-fax-name">
+                                            <!-- Fax -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="com-branch-title"
+                                            style="font-size: 0.75rem; font-weight: bolder;">
+                                            <!-- Branch Name -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0px;">
+                                <small>
+                                    <span class="com-branch">
+                                        <span class="exam_type-version-year" style="font-size: 0.75rem; font-weight: bolder;">
+                                            <!-- class - shift - Exam Type - Version - Year -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                            <center class="sub-title3" style="margin-top: 0.1rem;">
+                                <small>
+                                    <span class="com-hotline">
+                                        <span class="com-hotline-title report-name" style="font-size: 0.98rem;">
+                                            <!-- report-name -->
+                                        </span>
+                                    </span>
+                                </small>
+                            </center>
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <hr>
+    <!--  -->
+    <section style="margin-bottom: 10rem;">
+        <div class="row row_item_setup">
+            <div class="col-sm-12">
+                <div class="card main-card">
+                    <div class="card-body card-body_item_setup">
+                        <!--  -->
+                        <section>
+                            <div id="finalizedReport">
+                                <table class="table" id="finalizedReportTable" style="width: 100%; text-align:center;">
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        style="position: fixed; right: 1rem; text-align: center; font-size: 1rem; font-weight: bolder; border-top: 1px solid; width: 15%;">
+        <span>Signature</span>
+        <!--  -->
+    </section>
+</main>
+<section style="position: absolute; right: 1rem; text-align: center; top: 0; font-size: 1rem; width: 10%;">
+    <!-- <hr> -->
+    <div class="clear-fix py-3"></div>
+    <!--  -->
+    <div class="d-flex w-100 justify-content-end">
+        <button class="btn btn-primary bg-gradient border rounded-0 btn-sm me-1 printPOBtn" type="button"
+            onclick="printReceipt()" id="receipt_print">
+            <i class='bx bxs-printer'></i>
+            Print
+        </button>
+    </div>
+    <!--  -->
+</section>
+<!--  -->
+<script>
+    //<!--  -->
+    $(document).ready(function () {
+
+        function getUrlParameter(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        const res_fin_id = getUrlParameter('res_fin_id');
+
+        if (!res_fin_id) {
+            $("#finalizedReportTable tbody").html(`
+                <tr><td colspan="20" class="text-center text-warning">res_fin_id missing in URL!</td></tr>
+            `);
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'get_results_finalization_details_report' %}",
+            type: "GET",
+            data: { res_fin_id: res_fin_id },
+
+            beforeSend: function () {
+                $("#finalizedReportTable tbody").html(`
+                    <tr><td colspan="20" class="text-center text-muted">Loading...</td></tr>
+                `);
+            },
+
+            success: function (response) {
+
+                if (!response.success) {
+                    $("#finalizedReportTable tbody").html(`
+                        <tr><td colspan="20" class="text-center text-danger">${response.message}</td></tr>
+                    `);
+                    return;
+                }
+
+                // Fill Headers
+                const h = response.header;
+                $('.com-name').text(h.org_name);
+                $('.com-address-name').text(h.address);
+                $('.email-address-name').text(h.email);
+                $('.website-name').text(h.website);
+                $('.com-hotline-name').text(h.phone_hotline);
+                $('.com-fax-name').text(h.fax);
+                $('.com-receipt-logo').attr('src', h.logo_url);
+                $('.com-branch-title').text(h.branch_name);
+                $('.exam_type-version-year').text(h.exam_line);
+                $('.is_changed_by_and_date').text(h.changed_info);
+
+                renderFinalizedTable(response.data);
+            },
+
+            error: function () {
+                $("#finalizedReportTable tbody").html(`
+                    <tr><td colspan="20" class="text-center text-danger">Server Error!</td></tr>
+                `);
+            }
+        });
+    });
+
+
+    function renderFinalizedTable(data) {
+
+        $("#finalizedReportTable thead").empty();
+        $("#finalizedReportTable tbody").empty();
+
+        if (!data || data.length === 0) {
+            $("#finalizedReportTable tbody").html(
+                "<tr><td colspan='20'>No Data Found</td></tr>"
+            );
+            return;
+        }
+
+        // Collect Unique Mode Names
+        let modeList = [];
+        data.forEach(item => {
+            item.modes.forEach(md => {
+                if (!modeList.includes(md.is_mode_name)) {
+                    modeList.push(md.is_mode_name);
+                }
+            });
+        });
+
+        // Build THEAD
+        let thead = "<tr style='text-align: center; font-weight: bold; font-size: 0.9rem;'>";
+        thead += "<th>Sl</th>";
+        thead += "<th>Student Name</th>";
+        thead += "<th>Roll</th>";
+        thead += "<th>Class</th>";
+        thead += "<th>Section</th>";
+        thead += "<th>Shift</th>";
+        thead += "<th>Group</th>";
+        thead += "<th>Subject</th>";
+        thead += "<th>Exam Type</th>";
+
+        modeList.forEach(md => {
+            thead += `<th>${md}</th>`;
+            thead += `<th>P/A</th>`;
+        });
+
+        thead += "</tr>";
+        $("#finalizedReportTable thead").html(thead);
+
+        // Build TBODY
+        let tbody = "";
+
+        data.forEach((row, index) => {
+            tbody += "<tr style='font-size: 0.8rem;'>";
+            tbody += `<td style="text-align: center;">${index + 1}</td>`;
+            tbody += `<td style="text-align: left;">${row.full_name}</td>`;
+            tbody += `<td style="text-align: center;">${row.roll_no}</td>`;
+            tbody += `<td style="text-align: center;">${row.class_name}</td>`;
+            tbody += `<td style="text-align: center;">${row.section_name}</td>`;
+            tbody += `<td style="text-align: center;">${row.shift_name}</td>`;
+            tbody += `<td style="text-align: center;">${row.group_name}</td>`;
+            tbody += `<td style="text-align: center;">${row.subject_name}</td>`;
+            tbody += `<td style="text-align: center;">${row.exam_type_name}</td>`;
+
+            modeList.forEach(md => {
+                let modeObj = row.modes.find(x => x.is_mode_name === md);
+
+                if (modeObj) {
+                    tbody += `<td style="text-align: center;">${modeObj.is_actual_marks}</td>`;
+                    tbody += `<td style="text-align: center;">${modeObj.is_absent_present ? "P" : "A"}</td>`;
+                } else {
+                    tbody += "<td style=\"text-align: center;\">-</td><td style=\"text-align: center;\">-</td>";
+                }
+            });
+
+            tbody += "</tr>";
+        });
+
+        $("#finalizedReportTable tbody").html(tbody);
+    }
+    //<!--  -->
+
+    //
+    function printReceipt() {
+        const footerText = 'TECHROOT (Pvt.) Ltd';
+        const now = new Date();
+        const formattedDateTime = now.toLocaleString();
+        const pageNumber = 1; // Update this dynamically if needed
+
+        // Append your footer content
+        const footerContent =
+            `<div class="footer">
+                <span class="software-woner-title">Software By: </span>
+                <span class="software-woner-name">${footerText}</span>
+                <span class="printed-by-title">- Printed By: </span>
+                <span class="printed-by-name"></span>
+                <span class="printed-on-title">- Printed on: </span>
+                <span class="printed-on-date">${formattedDateTime}</span>
+                <span class="printed-page-title">- Page </span>
+                <span class="printed-page-no">${pageNumber}</span>
+            </div>`;
+
+        var printContents = document.querySelector('main').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        // Append footer content to the end of the print contents
+        printContents += footerContent;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+    //<!--  -->
+    //
+</script>
+{% endblock %}

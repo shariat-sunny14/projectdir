@@ -1,0 +1,742 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<!--========== FAVICON ICONS ==========-->
+<!-- ajax googleapis libs jquery -->
+<script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+<!-- datatables CDN javascript / CSS -->
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'assets/jquery_dataTables/css/jquery.dataTables.1.13.6.css' %}">
+<!-- js -->
+<script src="{% static 'assets/jquery_dataTables/js/jquery.dataTables.1.13.6.js' %}" defer></script>
+<!-- jQuery CDN -->
+<script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+<!-- Then include jQuery UI and the datepicker widget -->
+<link rel="stylesheet" href="{% static 'assets/jquery-ui-1.13.2/jquery-ui.css' %}">
+<script src="{% static 'assets/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+<script src="{% static 'assets/toastr/js/toastr.min.js' %}"></script>
+<title>Academic Transcript Report</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        background: #000; /* কালো ব্যাকগ্রাউন্ড */
+        font-family: "DejaVu Sans", "Georgia", serif, "Noto Sans Bengali", Arial, sans-serif;
+    }
+
+    .page {
+        width: 297mm;   /* landscape width */
+        height: 210mm;  /* landscape height */
+        margin: 10px auto;
+        background: #fff;
+        padding: 5mm;
+        box-shadow: 0 0 6px rgba(0,0,0,0.5);
+        position: relative;
+        page-break-after: always;
+    }
+    
+    @page {
+        size: A4 landscape;  /* print/PDF landscape */
+        margin: 10mm;        /* page margin */
+    }
+
+    /* Print button style */
+    #printBtn {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        padding: 8px 14px;
+        font-size: 14px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #printBtn:hover { background: #0056b3; }
+
+    /* ----------- Print style ----------- */
+
+    @media print {
+        body {
+            background: none !important;
+        }
+        .page {
+            margin: 0 auto;
+            box-shadow: none;
+            page-break-after: always;
+        }
+        #printBtn { display: none; } /* বাটন প্রিন্ট হবে না */
+    }
+
+    .content-wrapper {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .main-body {
+        position: relative;
+        z-index: 2;
+        /*border: 3px dashed black;
+        padding: 7px;*/
+        background: white;
+    }
+
+    /* ======================================================= */
+    .icon-border {
+        position: absolute;
+        padding: 20px;
+        text-align: center;
+        height: 91.3%;
+        width: 93.5%;
+    }
+
+    .icon-border::before,
+    .icon-border::after {
+        content: "★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    /* Top */
+    .icon-border::before {
+        top: 0;
+    }
+
+    /* Bottom */
+    .icon-border::after {
+        bottom: 0;
+    }
+
+    /* Left & Right */
+    .icon-border span.left,
+    .icon-border span.right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .icon-border span.left {
+        left: 0;
+    }
+
+    .icon-border span.right {
+        right: 0;
+    }
+    /* ======================================================= */
+
+    .hologram img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 45%;
+        opacity: 0.15;
+        z-index: 3;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .transcript-header {
+        display: grid;
+        grid-template-columns: 2fr 0fr;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    header .logo {
+        width: 80px;
+        margin: 10px auto;
+        display: block;
+    }
+
+    .header-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .head-line {
+        width: 20rem;
+        font-size: 1.1rem;
+        border: 1px solid #000;
+        display: inline-block;
+        padding: 7px 10px;
+        margin: 0;
+        border-radius: 0.5rem;
+        font-family: 'Georgia', serif;
+        font-weight: 600;
+    }
+
+    .strong-fonts {
+        font-family: 'Georgia', serif;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    .grading-scale table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9px;
+    }
+
+
+    .grading-scale {
+        font-size: 14px;
+        margin-left: 3rem;
+    }
+
+    .grading-scale th,
+    .grading-scale td {
+        border: 1px solid #000;
+        padding: 0px;
+        text-align: center;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 250px auto;
+        gap: 8px 20px;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    #gradingScale th {
+        border: 1px solid #000;
+        padding: 0px;
+        text-align: center;
+    }
+
+    #gradingScale td {
+        border: 1px solid #000;
+        padding: 2px 6px;
+        text-align: center;
+    }
+
+    #studentReportInfo th {
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    #studentReportInfo td {
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    #subGradeReportInfo th {
+        border: 1px solid #000;
+        padding: 2px 6px;
+        text-align: center;
+    }
+
+    #subGradeReportInfo td {
+        border: 1px solid #000;
+        padding: 5px 6px;
+        text-align: center;
+    }
+
+    .subject-marks h3 {
+        padding-top: 0rem;
+        margin-bottom: 1px;
+        text-align: center;
+        font-family: 'Georgia', serif !important;
+        font-size: 1.6rem;
+        font-weight: bolder;
+    }
+
+    .total td {
+        font-weight: bold;
+    }
+
+    .remarks {
+        margin-top: 10px;
+        font-size: 1rem;
+        border: 1px solid #000;
+        padding: 5px;
+        font-family: 'Georgia', serif;
+        text-align: center; /* parent aligns all text to center */
+    }
+
+    .remarksLabel {
+        display: inline-block; /* or block */
+        text-align: center;
+        font-family: 'Georgia', serif;
+    }
+
+    .date {
+        margin-top: 0px !important;
+        font-size: 11px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        margin-bottom: 0.5rem;
+        margin-left: 1.5rem;
+    }
+
+    #subGradeReportInfo tr:nth-child(even) {
+        background-color: transparent !important;
+    }
+
+    #studentReportInfo {
+        background-color: transparent !important;
+    }
+
+    #studentReportInfo td.left {
+        text-align: left !important;
+        vertical-align: middle;
+        padding: 3px 6px;
+        font-size: 14px;
+    }
+
+    #studentReportInfo td.strong {
+        font-weight: bold;
+        font-family: Arial, sans-serif !important;
+    }
+
+    .subjectsName {
+        text-align: left !important;
+    }
+
+    .totalMarksCol {
+        text-align: right !important;
+    }
+
+    .spanSubjectsName {
+        margin-left: 0rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        font-family: 'Georgia', serif;
+    }
+
+    .defaultSizeAlign {
+        font-size: 0.85rem !important;
+        font-weight: bold !important;
+        font-family: Arial, sans-serif !important;
+    }
+
+    .defaultSizeAlignBody {
+        font-size: 0.85rem !important;
+        font-family: Arial, sans-serif !important;
+    }
+
+    .defaultSizeAlignBody strong {
+        font-weight: normal; /* remove bold */
+    }
+
+    .defaultFronts {
+        font-size: 0.85rem !important;
+        font-family: Arial, sans-serif !important;
+    }
+
+    .blank_td_first {
+        text-align: left; width: 30%;
+        border-style: hidden !important;
+    }
+
+    .middle_td {
+        text-align: center; 
+        width: 60%;
+        border-style: hidden !important;
+    }
+
+    .blank_td_second {
+        text-align: left; width: 30%;
+        border-style: hidden !important;
+    }
+
+    .footer {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px; /* optional */
+        position: static; /* remove absolute */
+    }
+
+    .signature {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 40px;
+        margin-top: 30px;
+        font-size: 0.8rem;
+        font-family: 'Georgia', serif;
+        font-weight: 600;
+    }
+
+    .footer {
+        position: absolute;
+        top: 41rem;
+        left: 0;
+        right: 0;
+        bottom: 0; /* inside page padding */
+        width: 100%;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <!-- Print Button -->
+    <button id="printBtn" onclick="window.print()">🖨️ Print</button>
+    <!-- Print Button -->
+    <!-- Page -->
+    <input type="hidden" value="{{ registration.org_id.org_id|default:'' }}" name="is_org_id" id="id_is_org_id">
+    <input type="hidden" value="{{ registration.branch_id.branch_id|default:'' }}" name="is_branch_id" id="id_is_branch_id">
+    <input type="hidden" value="{{ registration.reg_id|default:'' }}" name="is_reg_id[]" id="id_is_reg_id">
+    <input type="hidden" value="{{ registration.class_id.class_id|default:'' }}" name="is_class_id" id="id_is_class_id">
+    <input type="hidden" value="{{ registration.section_id.section_id|default:'' }}" name="is_section_id[]" id="id_is_section_id">
+    <input type="hidden" value="{{ registration.shift_id.shift_id|default:'' }}" name="is_shifts_id" id="id_is_shifts_id">
+    <input type="hidden" value="{{ registration.groups_id.groups_id|default:'' }}" name="is_groups_id" id="id_is_groups_id">
+    <input type="hidden" value="{{ registration.is_english }}" name="is_english_id" id="id_is_english_id">
+    <input type="hidden" value="{{ registration.is_bangla }}" name="is_bangla_id" id="id_is_bangla_id">
+    <input type="hidden" value="{{ transaction.is_year|default:'' }}" name="is_year" id="id_is_year">
+    <div class="page">
+        <div class="content-wrapper">
+            <div class="hologram">
+                <img src="{% static 'images/company_logo/shksc_hologram.png' %}" alt="">
+            </div>
+            <div class="icon-border">
+                <span class="left" style="font-size: 1rem; height: 91.3%;">★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★</span>
+                <span class="right" style="font-size: 1rem; height: 91.3%;">★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★<br>★</span>
+                <!--  -->
+                <div class="main-body">
+                    <div class="transcript-container">
+
+                        <div class="transcript-header">
+
+                            <div class="header-body">
+                                <table>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+                                        <center>
+                                            <label style="font-family: 'Georgia', serif; font-size: 1.5rem; font-weight: bold;">
+                                                <!-- school Name Here -->
+                                                {{ transaction.org_name }}
+                                            </label>
+                                        </center>
+                                        <center>
+                                            <label style="font-family: 'Georgia', serif; font-size: 1.1rem; font-weight: bold;">
+                                                {{ transaction.exam_type_name }} Examination – {{ transaction.create_date }}
+                                            </label>
+                                        </center>
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                </table>
+                                <div class="body-element">
+                                    <table class="table" style="width: 100%; border-style: hidden!important;">
+                                        <tr style="width: 100%; display: flex; border-style: hidden!important;">
+                                            <td class="blank_td_first">
+
+                                            </td>
+                                            <td class="middle_td">
+                                                <img src="{% static 'images/company_logo/shksc_hologram.png' %}" alt=""
+                                                    style="width: 10%;">
+                                                <div>
+                                                    <h3 class="head-line">ACADEMIC TRANSCRIPT</h3>
+                                                </div>
+                                            </td>
+                                            <td class="blank_td_second">
+                                                <div>
+                                                    <section class="grading-scale" style="display: flex; margin-right: -1.3rem; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                                        <table id="gradingScale" class="table table-bordered table-striped">
+                                                            <thead style="background: #d7d7d7;">
+                                                                <tr>
+                                                                    <th rowspan="2">Letter Grade</th>
+                                                                    <th colspan="2" class="text-center">Marks Interval</th>
+                                                                    <th rowspan="2">Grade Point</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center">50</th><!-- in_letter_gradeFiftyMap -->
+                                                                    <th class="text-center">100</th><!-- in_letter_gradeHundredMap -->
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for row in table_data %}
+                                                                <tr>
+                                                                    <td>{{ row.grade_name }}</td>
+                                                                    <td>{{ row.fifty_interval }}</td>
+                                                                    <td>{{ row.hundred_interval }}</td>
+                                                                    <td>{{ row.grade_point }}</td>
+                                                                </tr>
+                                                                {% empty %}
+                                                                <tr>
+                                                                    <td colspan="4" class="text-center text-muted">No grading data available</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </section>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section style="margin-top: -0.8rem;">
+                            <table border="1" cellspacing="0" cellpadding="6" id="studentReportInfo"
+                                style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Student’s Name</strong></td>
+                                    <td class="left">{{ transaction.full_name }}</td>
+                                    <td class="left"><strong class="strong-fonts">GPA</strong></td>
+                                    <td class="left strong">{{ transaction.is_average_gpa }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Father’s Name</strong></td>
+                                    <td class="left">{{ transaction.father_name }}</td>
+                                    <td class="left"><strong class="strong-fonts">Letter Grade</strong></td>
+                                    <td class="left strong">{{ transaction.average_letter_grade }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Mother’s Name</strong></td>
+                                    <td class="left">{{ transaction.mother_name }}</td>
+                                    <td class="left"><strong class="strong-fonts">Total Obtained Marks</strong></td>
+                                    <td class="left strong">{{ transaction.total_obtained_marks }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Class</strong></td>
+                                    <td class="left strong">{{ transaction.class_name }}</td>
+                                    <td class="left"><strong class="strong-fonts">Result Status</strong></td>
+                                    <td class="left strong">{{ transaction.result_status }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Roll No</strong></td>
+                                    <td class="left">{{ transaction.roll_no }}</td>
+                                    <td class="left">
+                                        <strong class="strong-fonts">
+                                            {% if transaction.result_status == "Failed" %}
+                                                Position
+                                            {% else %}
+                                                Merit Position
+                                            {% endif %}
+                                        </strong>
+                                    </td>
+                                    <td class="left strong">{{ transaction.merit_position }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Section</strong></td>
+                                    <td class="left">{{ transaction.section_name }}</td>
+                                    <td class="left"><strong class="strong-fonts">Total Working Days</strong></td>
+                                    <td class="left strong">{{ transaction.total_working_days }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left"><strong class="strong-fonts">Shift</strong></td>
+                                    <td class="left">{{ transaction.shift_name }}</td>
+                                    <td class="left"><strong class="strong-fonts">Total Present Days</strong></td>
+                                    <td class="left strong">{{ transaction.total_present_days }}</td>
+                                </tr>
+                            </table>
+                        </section>
+                        <!--  -->
+                        <!--  -->
+                        <section class="subject-marks">
+                            <h3>Subject-wise Annual Grade & Marks</h3>
+                            <table class="table table-striped" style="width: 100%;" id="ANNUALCARDREPORT">
+                                <thead class="text-center"></thead>
+                                <tbody></tbody>
+                            </table>
+                        </section>
+                        <!-- wrapper for multiple tables -->
+                        <!-- <div id="ANNUALCARDREPORT_WRAPPER"></div> -->
+                        <!--  -->
+                        <!--  -->
+                        <section class="remarks">
+                            <strong class="remarksLabel">Remarks:</strong> {{ transaction.is_remarks }}
+                        </section>
+
+                        <footer class="footer">
+                            <div class="signature">
+                                <div>_________________<br>Guardian</div>
+                                <div>___________________<br>Class Teacher</div>
+                                <div>_____________________________________<br>(Md. Mahbubur Rahman Mollah)<br>Principal</div>
+                            </div>
+                            <p class="date">Date of Publication of Result: {{ transaction.date_of_publication }}</p>
+                        </footer>
+                    </div>
+                </div>
+                <!--  -->
+            </div>
+            <!--  -->
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            if (window._annualResultsLoaded) return;
+            window._annualResultsLoaded = true;
+
+            var org_id     = $('#id_is_org_id').val();
+            var branch_id  = $('#id_is_branch_id').val();
+            var class_id   = $('#id_is_class_id').val();
+            var shift_id   = $('#id_is_shifts_id').val();
+            var groups_id  = $('#id_is_groups_id').val();
+            var isEnglish  = $('#id_is_english_id').val();
+            var isBangla   = $('#id_is_bangla_id').val();
+            var year       = $('#id_is_year').val();
+
+            var reg_ids = $("input[name='is_reg_id[]']").map(function(){ return $(this).val(); }).get();
+
+            var version = (isEnglish == 'True' || isEnglish == '1') 
+                    ? 'english' 
+                    : (isBangla == 'True' || isBangla == '1') 
+                        ? 'bangla' 
+                        : 'english';
+
+            function fmt(v) {
+                v = Number(v ?? 0);
+                return (v % 1 === 0) ? parseInt(v) : v.toFixed(2);
+            }
+
+            $.ajax({
+                url: "/print_is_annual_details_result/",
+                type: "GET",
+                traditional: true,
+                data: {
+                    org_id: org_id,
+                    branch_id: branch_id,
+                    reg_ids: reg_ids,
+                    class_id: class_id,
+                    shift_id: shift_id,
+                    groups_id: groups_id,
+                    is_year: year,
+                    is_version: version
+                },
+                success: function(response) {
+                    const regKeys = Object.keys(response);
+                    if (regKeys.length === 0) {
+                        alert("No data found!");
+                        return;
+                    }
+
+                    const $table = $("#ANNUALCARDREPORT");
+                    $table.find("thead").html(""); // clear previous header
+                    $table.find("tbody").html(""); // clear previous body
+
+                    regKeys.forEach(reg_id => {
+                        const data = response[reg_id];
+                        if (!data.success) return;
+
+                        const modeNames = data.mode_names;
+                        const subjects = data.final_subjects;
+
+                        // Build header only once (for first reg_id)
+                        if ($table.find("thead").is(":empty")) {
+                            let headerHTML = `<tr>
+                                <th rowspan="2" style="text-align:center; border:1px solid #24326a; width:20%;">Name of Subjects</th>
+                                <th rowspan="2" style="text-align:center; border:1px solid #24326a; writing-mode:vertical-rl; transform: rotate(180deg); white-space:nowrap;">Full Marks</th>
+                                <th colspan="${modeNames.length +1}" style="text-align:center; border:1px solid #24326a;">Half Yearly Exam</th>
+                                <th colspan="${modeNames.length +1}" style="text-align:center; border:1px solid #24326a;">Annual Exam</th>
+                                <th colspan="${modeNames.length}" style="text-align:center; border:1px solid #24326a;">${data.half_percent}% of Half Yearly Exam</th>
+                                <th colspan="${modeNames.length}" style="text-align:center; border:1px solid #24326a;">${data.annual_percent}% of Annual Exam</th>
+                                <th colspan="${modeNames.length}" style="text-align:center; border:1px solid #24326a;">Total Particular Marks</th>
+                                <th rowspan="2" style="padding:5px; text-align:center; border:1px solid #24326a;">Total Obtained Marks (Subject Wise)</th>
+                                <th rowspan="2" style="padding:5px; text-align:center; border:1px solid #24326a;">Letter Grade</th>
+                                <th rowspan="2" style="width:4%; text-align:center; border:1px solid #24326a;">GP</th>
+                            </tr>
+                            <tr>
+                                ${modeNames.map(m => `<th style="padding:7px;text-align:center;border:1px solid #24326a;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">${m}</th>`).join('')}
+                                <th style="padding:7px;text-align:center;border:1px solid #24326a;font-weight:bold;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">Total</th>
+                                ${modeNames.map(m => `<th style="padding:7px;text-align:center;border:1px solid #24326a;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">${m}</th>`).join('')}
+                                <th style="padding:7px;text-align:center;border:1px solid #24326a;font-weight:bold;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">Total</th>
+                                ${modeNames.map(m => `<th style="padding:7px;text-align:center;border:1px solid #24326a;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">${m}</th>`).join('')}
+                                ${modeNames.map(m => `<th style="padding:7px;text-align:center;border:1px solid #24326a;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">${m}</th>`).join('')}
+                                ${modeNames.map(m => `<th style="padding:7px;text-align:center;border:1px solid #24326a;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">${m}</th>`).join('')}
+                            </tr>`;
+                            $table.find("thead").append(headerHTML);
+                        }
+
+                        let grandTotalFull = 0;
+                        let grandTotalObtained = 0;
+
+                        subjects.forEach(sub => {
+                            let halfTotal = 0;
+                            let annualTotal = 0;
+                            let finalTotal = 0;
+
+                            let rowHTML = `<tr>
+                                <td style="text-align:left; border:1px solid #ccc;">${sub.name}${sub.is_optional ? " (Optional)" : sub.is_not_countable ? " (Not Countable)" : ""}</td>
+                                <td style="text-align:center; border:1px solid #ccc;">${fmt(sub.full_marks)}</td>`;
+
+                            modeNames.forEach(mode => {
+                                const v = Number(sub.modes[mode]?.half_actual ?? 0);
+                                halfTotal += v;
+                                rowHTML += `<td style="text-align:center; border:1px solid #ccc;">${fmt(v)}</td>`;
+                            });
+                            rowHTML += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(halfTotal)}</td>`;
+
+                            modeNames.forEach(mode => {
+                                const v = Number(sub.modes[mode]?.annual_actual ?? 0);
+                                annualTotal += v;
+                                rowHTML += `<td style="text-align:center; border:1px solid #ccc;">${fmt(v)}</td>`;
+                            });
+                            rowHTML += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(annualTotal)}</td>`;
+
+                            modeNames.forEach(mode => {
+                                rowHTML += `<td style="text-align:center; border:1px solid #ccc;">${fmt(sub.modes[mode]?.["40% of Half Yearly Exam"] ?? 0)}</td>`;
+                            });
+                            modeNames.forEach(mode => {
+                                rowHTML += `<td style="text-align:center; border:1px solid #ccc;">${fmt(sub.modes[mode]?.["60% of Annual Exam"] ?? 0)}</td>`;
+                            });
+                            modeNames.forEach(mode => {
+                                const v = Number(sub.modes[mode]?.["Total mode_names Marks"] ?? 0);
+                                finalTotal += v;
+                                rowHTML += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(v)}</td>`;
+                            });
+
+                            rowHTML += `<td style="text-align:center; font-weight:bold; border:1px solid #ccc;">${fmt(finalTotal)}</td>
+                                <td style="text-align:center; border:1px solid #ccc;">${sub.letter_grade}</td>
+                                <td style="text-align:center; border:1px solid #ccc;">${sub.gp}</td>
+                            </tr>`;
+
+                            $table.find("tbody").append(rowHTML);
+
+                            grandTotalFull += sub.full_marks;
+                            grandTotalObtained += finalTotal;
+                        });
+
+                        // Add grand total row per reg_id
+                        $table.find("tbody").append(`<tr style="font-weight:bold;">
+                            <td style="text-align:right; border:1px solid #ccc;">Total Marks:</td>
+                            <td style="text-align:center; border:1px solid #ccc;">${fmt(grandTotalFull)}</td>
+                            <td colspan="${modeNames.length +1 + modeNames.length +1 + (modeNames.length *3)}" style="border:1px solid #ccc;"></td>
+                            <td style="text-align:center; border:1px solid #ccc;">${fmt(grandTotalObtained)}</td>
+                            <td style="border:1px solid #ccc;"></td>
+                            <td style="border:1px solid #ccc;"></td>
+                        </tr>`);
+                    });
+                },
+                error: function() {
+                    alert("Error loading results.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

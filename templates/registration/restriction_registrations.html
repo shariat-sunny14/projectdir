@@ -1,0 +1,239 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container" style="border: 0;">
+                <form id="Restrictionform" enctype="multipart/form-data">
+                    <input type="hidden" id="id_reg_id" name="reg_id" value="{% if reg_data.pk %}{{reg_data.pk}}{% endif %}">
+                    <!--  -->
+                    <div class="alert_box">
+                        <header style="color: red;">Restriction Confirm</header>
+                        <p>Are you sure want to Restriction this Students?</p>
+                        <!--  -->
+                        <!--  -->
+                        <div style="display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; width: 100%; align-items: flex-start;">
+                            <div style="margin-bottom: 1rem; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: flex-start; align-items: flex-start;">
+                                <!--  -->
+                                <div>
+                                    <span style="font-size: 1.1rem; color: red; font-weight: bolder;">Academic:</span>
+                                </div>
+                                <!--  -->
+                                <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: flex-start;">
+                                    <div class="form-check" style="padding-top: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_transferred" name="restriction_reason" id="id_is_transferred" {% if reg_data.is_transferred %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_transferred">
+                                            Transferred (TC)
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_promoted_passed_out" name="restriction_reason" id="id_is_promoted_passed_out" {% if reg_data.is_promoted_passed_out %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_promoted_passed_out">
+                                            Promoted & Passed Out
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_fail_removed" name="restriction_reason" id="id_is_fail_removed" {% if reg_data.is_fail_removed %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_fail_removed">
+                                            Fail & Removed
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_lack_of_attendance" name="restriction_reason" id="id_is_lack_of_attendance" {% if reg_data.is_lack_of_attendance %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_lack_of_attendance">
+                                            Lack of Attendance
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <!--  -->
+                            <div style="margin-bottom: 1rem; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: flex-start; align-items: flex-start;">
+                                <!--  -->
+                                <div>
+                                    <span style="font-size: 1.1rem; color: red; font-weight: bolder;">Disciplinary:</span>
+                                </div>
+                                <!--  -->
+                                <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: flex-start;">
+                                    <div class="form-check" style="padding-top: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_rusticated" name="restriction_reason" id="id_is_rusticated" {% if reg_data.is_rusticated %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_rusticated">
+                                            Rusticated
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_expelled" name="restriction_reason" id="id_is_expelled" {% if reg_data.is_expelled %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_expelled">
+                                            Expelled
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_misbehavior" name="restriction_reason" id="id_is_misbehavior" {% if reg_data.is_misbehavior %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_misbehavior">
+                                            Misbehavior
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_policy_violation" name="restriction_reason" id="id_is_policy_violation" {% if reg_data.is_policy_violation %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_policy_violation">
+                                            Policy Violation
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <!--  -->
+                            <div style="margin-bottom: 1rem; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: flex-start; align-items: flex-start;">
+                                <!--  -->
+                                <div>
+                                    <span style="font-size: 1.1rem; color: red; font-weight: bolder;">Personal:</span>
+                                </div>
+                                <!--  -->
+                                <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: flex-start;">
+                                    <div class="form-check" style="padding-top: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_family_shift" name="restriction_reason" id="id_is_family_shift" {% if reg_data.is_family_shift %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_family_shift">
+                                            Family Shift
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_financial_problem" name="restriction_reason" id="id_is_financial_problem" {% if reg_data.is_financial_problem %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_financial_problem">
+                                            Financial Problem
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_personal_health_problem" name="restriction_reason" id="id_is_personal_health_problem" {% if reg_data.is_personal_health_problem %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_personal_health_problem">
+                                            Personal Health Problem
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_family_decision" name="restriction_reason" id="id_is_family_decision" {% if reg_data.is_family_decision %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_family_decision">
+                                            Family Decision
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <!--  -->
+                            <div style="margin-bottom: 1rem; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: flex-start; align-items: flex-start;">
+                                <!--  -->
+                                <div>
+                                    <span style="font-size: 1.1rem; color: red; font-weight: bolder;">Legal / Official:</span>
+                                </div>
+                                <!--  -->
+                                <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: flex-start;">
+                                    <div class="form-check" style="padding-top: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_court_ordered" name="restriction_reason" id="id_is_court_ordered" {% if reg_data.is_court_ordered %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_court_ordered">
+                                            Court Ordered
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_government_directive" name="restriction_reason" id="id_is_government_directive" {% if reg_data.is_government_directive %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_government_directive">
+                                            Government Directive
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                </div>
+                            </div>
+                            <!--  -->
+                            <!--  -->
+                            <div style="margin-bottom: 1rem; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: flex-start; align-items: flex-start;">
+                                <!--  -->
+                                <div>
+                                    <span style="font-size: 1.1rem; color: red; font-weight: bolder;">Misc:</span>
+                                </div>
+                                <!--  -->
+                                <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: flex-start;">
+                                    <div class="form-check" style="padding-top: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_death" name="restriction_reason" id="id_is_death" {% if reg_data.is_death %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_death">
+                                            Death
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_missing" name="restriction_reason" id="id_is_missing" {% if reg_data.is_missing %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_missing">
+                                            Missing
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_admission_cancelled" name="restriction_reason" id="id_is_admission_cancelled" {% if reg_data.is_admission_cancelled %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_admission_cancelled">
+                                            Admission Cancelled
+                                        </label>
+                                    </div>
+                                    <!--  -->
+                                    <div class="form-check" style="padding-top: 10px; margin-left: 10px;">
+                                        <input class="form-check-input" type="radio" value="is_unauthorized_absent" name="restriction_reason" id="id_is_unauthorized_absent" {% if reg_data.is_unauthorized_absent %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_is_unauthorized_absent">
+                                            Unauthorized Absent
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <!--  -->
+                        <!--  -->
+                        <div class="btns">
+                            <button id="addUserBtn" name="submit" type="submit" class="btn btn-warning">
+                                Add Restriction
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    ////////////////////////////////////////////////////////////////////
+    $(function () {
+        $('#Restrictionform').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'restriction_confirm_submission' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (success = resp.msg) {
+                        toastr.success(resp.msg);
+                        location.reload();
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                }
+            });
+        });
+    });
+</script>

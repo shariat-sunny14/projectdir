@@ -1,0 +1,337 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'base_setup/css/base_setup.css' %}">
+<style>
+    .table>tbody {
+        vertical-align: middle;
+    }
+</style>
+<!--========== from type_category js file ==========-->
+<script src="{% static 'base_setup/js/base_setup.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+<section  class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+    <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+        <div style="border: 1px solid rgba(0, 0, 0, .125);
+            margin-bottom: 0.5rem;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            background: #458d97;">
+            <!-- Main Heading -->
+            <div class="row" style="display: flex; justify-content: center; text-align: center; align-items: center;">
+                <div class="col col-md-4 col-md-6 dashboar-head">
+                    <div class="d-sm-flex align-items-center mb-2" style="margin-left: 0.5rem;">
+                        <i class='bx bx-book-alt text-white req-head-icon'></i>
+                        <h1 class="h3 text-white req-head">Annual Exam Percentance Policy</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <section>
+            <div class="row row_item_setup">
+                <!-- form 1 -->
+                <div class="col-sm-12">
+                    <div class="card main-card">
+                        <div class="card-body card-body_item_setup">
+                            <div class="itemsetup_container">
+                                <form action="" method="" id="AEPPFORM">
+                                    <div class="add_edit_head" style="justify-content: left;">
+                                        <h2 class="text-primary" style="margin-left: 3rem;">Annual Exam Percentance Policy Info</h2>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row_item_setup">
+                                        <!--  -->
+                                        <div class="col-sm-12">
+                                            <div class="card main-card">
+                                                <div class="card-body card-body_item_setup">
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-4" style="flex-grow: 1; display: flex; justify-content: left;">
+                                                            <div class="card main-card">
+                                                                <div class="card-body item_setup_sub">
+                                                                    <div class="row cash_point_row"
+                                                                        style="margin-top: -2px;">
+                                                                        <label for="id_org" class="col-sm-orgName col-form-label font_size_filter required" style="width: 16%;">
+                                                                            Org:
+                                                                        </label>
+                                                                        <div class="col-orgInput" style="width: 71.5%;">
+                                                                            <select id="id_org" name="org" class="form-select item_inputbox" aria-label="Default select example" required>
+                                                                                <!-- <option value="" selected disabled>Choose Organization ...</option> -->
+                                                                                {% for org in user_org_list %}
+                                                                                <option value="{{org.org_id}}">
+                                                                                    {{ org.org_name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="col-sm-4" style="flex-grow: 2; display: flex; justify-content: center;">
+                                                            <label for="id_is_aepp_year" class="col-sm-2 col-form-label" style="text-align: right; font-size: 0.8rem;">
+                                                                Year:
+                                                            </label>
+                                                            <div class="col-orgInput" style="width: 63.5%;">
+                                                                <input type="text" class="form-control item_inputbox datepicker" style="margin-left: 0.5rem; text-align: center;" id="id_is_aepp_year" name="is_aepp_year" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <!--  -->
+                                                        <div class="col-sm-4" style="flex-grow: 3; display: flex; justify-content: right;">
+                                                            <div class="card main-card">
+                                                                <div class="card-body card-body_item_setup" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; align-content: center;">
+                                                                    <div class="item_setupflag" style="display: flex; margin-right: 1rem; justify-content: right;">
+                                                                        <label class="form-check-label setupflag_label"
+                                                                            for="id_is_english">
+                                                                            Is English:
+                                                                        </label>
+                                                                        <input class="form-check-input" type="radio" id="id_is_english"
+                                                                            name="is_version" value="english" aria-label="..." checked>
+                                                                    </div>
+                                                                    <!--  -->
+                                                                    <div class="item_setupflag" style="display: flex; margin-right: 1rem; justify-content: right;">
+                                                                        <label class="form-check-label setupflag_label"
+                                                                            for="id_is_bangla">
+                                                                            Is Bangla:
+                                                                        </label>
+                                                                        <input class="form-check-input" type="radio" id="id_is_bangla"
+                                                                            name="is_version" value="bangla" aria-label="...">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <!--  -->
+                                                    <div>
+                                                        <span class="Not_found_msg" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center; padding: 0.5rem;"></span>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="row row_item_setup">
+                                                        <div class="col-sm-12">
+                                                            <div class="exam_modestb" style="margin-top: 0.5rem;">
+                                                                <table id="AEPPTABLE" class="table table-striped table-hover" style="width: 100%;">
+                                                                    <thead class="text-center table-header_itemlist">
+                                                                        <tr>
+                                                                            <th style="text-align:center; width: 5%;">Sl</th>
+                                                                            <th style="text-align:center; width: 25%;">Class Name</th>
+                                                                            <th style="text-align:center; width: 15%;">Half Yearly (%)</th>
+                                                                            <th style="text-align:center; width: 15%;">Annual (%)</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <!--  -->
+                                                                    <tbody id="AEPPTBODY" class="table-body-row" style="text-align:center; cursor: pointer;">
+                                                                        {% for class in classs %}
+                                                                        <tr>
+                                                                            <td>{{ forloop.counter }}</td>
+                                                                            <td>
+                                                                                {{ class.class_name }}
+                                                                                <input type="hidden" name="class_id[]" value="{{ class.class_id }}">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="number" class="form-control item_inputbox half-yearly-per" name="half_yearly_per[]" value="0" style="width:96%; text-align:center; font-weight:500;">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="number" class="form-control item_inputbox annual-per" name="annual_per[]" value="0" style="width:96%; text-align:center; font-weight:500;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- submit button -->
+                                    <div class="submit_button" style="margin-top: 5rem;">
+                                        <!--  -->
+                                        <button type="submit" value="submit" class="btn btn-success btn-sm"
+                                            style="margin-right: 10px;">
+                                            Save & Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+<!--  -->
+<script>
+    //=============================================================
+    // Annual Exam Percentance Policy get list function
+    //=============================================================
+    function loadAEPPolicy() {
+
+        let org_id = $("#id_org").val();
+        let year = $("#id_is_aepp_year").val();
+        let version = $("input[name='is_version']:checked").val();
+
+        $.ajax({
+            url: "{% url 'get_annual_exam_percentance_policy_list' %}",
+            method: 'GET',
+            data: {
+                org_id: org_id,
+                year: year,
+                version: version
+            },
+            dataType: "json",
+            success: function(resp) {
+                if (resp.status) {
+
+                    // আগের সব value reset করা
+                    $("#AEPPTBODY tr").each(function(){
+                        $(this).find("input[name='half_yearly_per[]']").val(0);
+                        $(this).find("input[name='annual_per[]']").val(0);
+                    });
+
+                    // AJAX data loop
+                    resp.data.forEach(function(rowData) {
+
+                        $("#AEPPTBODY tr").each(function(){
+
+                            let class_id = $(this).find("input[name='class_id[]']").val();
+
+                            if (class_id == rowData.class_id) {
+
+                                // Matching row = set values
+                                $(this).find("input[name='half_yearly_per[]']").val(
+                                    rowData.half_yearly_per ?? 0
+                                );
+
+                                $(this).find("input[name='annual_per[]']").val(
+                                    rowData.annual_per ?? 0
+                                );
+                            }
+
+                        });
+
+                    });
+
+                } else {
+                    toastr.error("Error loading data");
+                }
+            }
+        });
+    }
+
+    
+    //=============================================================
+    // Document Ready
+    //=============================================================
+    $(document).ready(function () {
+
+        //=============================================================
+        // Set current year BEFORE first load
+        //=============================================================
+        const currentYear = new Date().getFullYear();
+        $('#id_is_aepp_year').val(currentYear);
+
+        //=============================================================
+        // Initialize Datepicker
+        //=============================================================
+        $('#id_is_aepp_year').datepicker({
+            dateFormat: 'yy',
+            changeYear: true,
+            showButtonPanel: true,
+            yearRange: '2000:2035',
+            closeText: 'Select',
+            onClose: function (dateText, inst) {
+                const year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+
+                if (year) {
+                    $(this).datepicker('setDate', new Date(year, 0, 1));
+                    $(this).val(year);
+                }
+
+                loadAEPPolicy();
+            },
+            beforeShow: function () {
+                $(this).datepicker('widget').addClass('hide-calendar');
+                setTimeout(function () {
+                    $('.ui-datepicker-calendar').hide();
+                    $('.ui-datepicker-month').hide();
+                }, 0);
+            }
+        });
+
+        $('#id_is_aepp_year').on('click', function () {
+            $(this).datepicker('show');
+        });
+
+        $("<style>")
+            .prop("type", "text/css")
+            .html(`
+                .hide-calendar .ui-datepicker-calendar { display: none !important; }
+                .hide-calendar .ui-datepicker-month { display: none !important; }
+                .ui-datepicker .ui-datepicker-buttonpane button {
+                    margin: 0 auto;
+                    display: block;
+                }
+            `)
+            .appendTo("head");
+
+
+        //=============================================================
+        // Load Data Events
+        //=============================================================
+        $("input[name='is_version']").change(loadAEPPolicy);
+        $("#id_is_aepp_year").change(loadAEPPolicy);
+        $("#id_org").change(loadAEPPolicy);
+
+        //=============================================================
+        // First data load AFTER year set
+        //=============================================================
+        loadAEPPolicy();
+
+    });
+    //=============================================================
+    // Save half year roll section change policy
+    //=============================================================
+    $(function () {
+        $('#AEPPFORM').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save_annual_exam_percentance_policy' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (success = resp.msg) {
+                        toastr.success(resp.msg)
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                }
+            })
+        })
+    })
+    
+</script>
+</main>
+{% endblock %}

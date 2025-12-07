@@ -1,0 +1,816 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'result_finalization/css/result_finalization.css' %}">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #455697;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex; align-items: center;">
+                        <div class="d-sm-flex align-items-center mb-2" style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bxl-trello text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Result Finalization List</h1>
+                        </div>
+                        <div style="width: 18%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-evenly;">
+                            <!--  -->
+                            <div style="width: 10%; float: right; display: flex; justify-content: center; text-align: center; align-items: center; flex-direction: row; flex-wrap: nowrap;">
+                                <button id="addmodulesetup" class="btn text-white btn-xs moduleBtn" onClick="navigateTo('/result_finalize_services/')"
+                                    style="font-weight: bolder; box-shadow: 4px 2px 5px 2px #455697; border-radius: 0.7rem; border: 1.5px solid #fff; font-size: 0.8rem;">
+                                    Add New Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <section>
+                <div class="card grnwo_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <div class="row g-3 align-items-center col-sm-3" style="flex-grow: 0;">
+                                            <div class="col-auto">
+                                                <!-- all active inactive status -->
+                                                <section>
+                                                    <div class="active-filter" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: flex-start; align-items: center;">
+                                                        <div style="border-right: 1px solid #cfcfcf;">
+                                                            <!--  -->
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="option" id="id_all"
+                                                                    value="1" checked>
+                                                                <label class="form-check-label" for="id_all">All</label>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="option" id="id_pending"
+                                                                    value="false">
+                                                                <label class="form-check-label" for="id_pending">Pending</label>
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="option" id="id_approved"
+                                                                    value="true">
+                                                                <label class="form-check-label" for="id_approved">Approved</label>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                        <!--  -->
+                                                        <div style="margin-left: 0.5rem;">
+                                                            <div class="row cash_point_row">
+                                                                <label for="id_english_fil" class="col-sm-6 col-form-label font_size_filter" style="width: 40%;">
+                                                                    Version:
+                                                                </label>
+                                                                <div class="col-sm-6" style="display: flex; justify-content: flex-start; flex-wrap: wrap; flex-direction: row; align-content: center; align-items: center;">
+                                                                    {% if user.is_english %}
+                                                                        <div class="form-check form-check-inline inline_item">
+                                                                            <input class="form-check-input" type="radio" name="is_version"
+                                                                                value="english" id="id_english_fil" checked>
+                                                                            <label class="form-check-label" for="id_english_fil">English</label>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    {% if user.is_bangla %}
+                                                                        <div class="form-check form-check-inline inline_item">
+                                                                            <input class="form-check-input" type="radio" name="is_version"
+                                                                                value="bangla" id="id_bangla_fil" checked>
+                                                                            <label class="form-check-label" for="id_bangla_fil">Bangla</label>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    {% if not user.is_english and not user.is_bangla %}
+                                                                        <span style="color: red; font-size: 0.8rem;">
+                                                                            Please let the user select version first from user setup !..
+                                                                        </span>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <!--  -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <!--  -->
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-2" style="display: flex; justify-content: right;">
+                                            <label for="is_start" class="col-auto col-form-label">
+                                                From :
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control item_inputbox datepicker" id="is_start"
+                                                    name="is_start" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="row store_row col-sm-2" style="display: flex; justify-content: right;">
+                                            <label for="is_end" class="col-auto col-form-label">
+                                                To :
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control item_inputbox datepicker" id="is_end"
+                                                    name="is_end" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-2" style="flex-grow: 1; display: flex; justify-content: right;">
+                                            <label for="id_filter_org" class="col-auto col-form-label">
+                                                Org:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_org" name="filter_org"
+                                                    class="form-select store_Selectbox"
+                                                    aria-label="Default select example">
+                                                    {% for org in user_org_list %}
+                                                    <option id="{{org.org_id}}" value="{{org.org_id}}">
+                                                        {{org.org_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                        <div class="row store_row col-sm-2" style="flex-grow: 2; display: flex; justify-content: right;">
+                                            <label for="id_filter_branch" class="col-auto col-form-label">
+                                                Branch:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select id="id_filter_branch" name="filter_branch"
+                                                    class="form-select store_Selectbox" aria-label="Default select example">
+                                                    <!--  -->
+                                                    {% for branch in user_branch_list %}
+                                                    <option id="{{ branch.branch_id }}" value="{{ branch.branch_id }}">
+                                                        {{ branch.branch_name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <!--  -->
+            <section>
+                <div class="card grnwo_card" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem; background: whitesmoke;">
+                    <div class="card-body">
+                        <div class="report-filter">
+                            <!-- Date Range Filter -->
+                            <div class="date-range">
+                                <div class="row date_range-body" style="display:flex; font-size: 0.8rem;">
+                                    <div class="date_range-element" style="display:flex">
+                                        <div class="row align-items-center col-sm-12">
+                                            <div class="col-sm-4">
+                                                <div class="card main-card" style="background: transparent;">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="cash_point_row" style="display: flex;">
+                                                            <label for="id_is_class" class="col-sm-2 col-form-label font_size_filter">
+                                                                Class:
+                                                            </label>
+                                                            <div class="col-sm-10filclss">
+                                                                <select id="id_is_class" name="is_class" class="form-select item_inputbox">
+                                                                    <!--  -->
+                                                                    {% for cls in user_others_access.class_access %}
+                                                                        <option value="{{ cls.class_id }}" data-class_name="{{ cls.class_name }}" data-allow_group="{{ cls.allow_groups }}" {% if cls.is_defaults %}selected{% endif %}>
+                                                                            {{ cls.class_name }}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-4">
+                                                <div class="card main-card" style="background: transparent;">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="cash_point_row" style="display: flex;">
+                                                            <label for="id_is_section" class="col-sm-2 col-form-label font_size_filter">
+                                                                Section:
+                                                            </label>
+                                                            <div class="col-sm-10filclss">
+                                                                <select id="id_is_section" name="is_section" class="form-select item_inputbox">
+                                                                    {% for sect in user_others_access.section_access %}
+                                                                        <option value="{{ sect.section_id }}" data-section_name="{{ sect.section_name }}" {% if sect.is_defaults %}selected{% endif %}>
+                                                                            {{ sect.section_name }}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-4">
+                                                <div class="card main-card" style="background: transparent;">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="cash_point_row" style="display: flex;">
+                                                            <label for="id_is_shifts" class="col-sm-2 col-form-label font_size_filter">
+                                                                Shifts:
+                                                            </label>
+                                                            <div class="col-sm-10filclss">
+                                                                <select id="id_is_shifts" name="is_shifts" class="form-select item_inputbox">
+                                                                    {% for shift in user_others_access.shift_access %}
+                                                                        <option value="{{ shift.shift_id }}" data-shift_name="{{ shift.shift_name }}" {% if shift.is_defaults %}selected{% endif %}>
+                                                                            {{ shift.shift_name }}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-4">
+                                                <div class="card main-card" style="background: transparent;">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="cash_point_row" style="display: flex;">
+                                                            <label for="id_is_subjects_filter" class="col-sm-2 col-form-label font_size_filter">
+                                                                Subj.:
+                                                            </label>
+                                                            <div class="col-sm-10filclss">
+                                                                <select id="id_is_subjects_filter" name="is_subjects_filter" class="form-select item_inputbox">
+                                                                    <!--  -->
+
+                                                                </select>
+                                                            </div>
+                                                            <!--  -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-4">
+                                                <div class="card main-card" style="background: transparent;">
+                                                    <div class="card-body item_setup_sub">
+                                                        <div class="cash_point_row" style="display: flex;">
+                                                            <label for="id_exam_type" class="col-sm-2 col-form-label font_size_filter">
+                                                                Type:
+                                                            </label>
+                                                            <div class="col-sm-10filclss">
+                                                                <select id="id_exam_type" name="exam_type" class="form-select item_inputbox">
+                                                                    {% for examtype in examtypelist %}
+                                                                        <option value="{{ examtype.exam_type_id }}" data-type_name="{{ examtype.exam_type_name }}">
+                                                                            {{ examtype.exam_type_name }}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                            <div class="col-sm-4">
+                                                <div class="card main-card" style="background: transparent;">
+                                                    <div id="group_section" class="card-body item_setup_sub" style="display: none;">
+                                                        <div class="cash_point_row" style="display: flex;">
+                                                            <label for="id_is_groups" class="col-sm-2 col-form-label font_size_filter">
+                                                                Group:
+                                                            </label>
+                                                            <div class="col-sm-10filclss">
+                                                                <select id="id_is_groups" name="is_groups" class="form-select item_inputbox">
+                                                                    <option value="" disabled selected>Choose Groups</option>
+                                                                    {% for group in user_others_access.group_access %}
+                                                                        <option value="{{ group.groups_id }}" data-groups_name="{{ group.groups_name }}" {% if group.is_defaults %}selected{% endif %}>
+                                                                            {{ group.groups_name }}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                        <!--  -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--  -->
+            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                <div class="module-table">
+                    <table id="WOGRN_table" class="table table-striped table-hover" style="width: 100%; border: 1px solid #6aa2a8;">
+                        <thead class="text-center table-header_itemlist" style="background: #6aa2a8;">
+                            <tr>
+                                <th style="text-align:center; width: 3%;">
+                                    Sl
+                                </th>
+                                <th style="text-align:center; width: 5%;">
+                                    Exam No
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Create Date
+                                </th>
+                                <th style="text-align:center; width: 18%;">
+                                    Names of Exam
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Exam Date
+                                </th>
+                                <th style="text-align:center; width: 5%;">
+                                    Class
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Subjects
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Approved Date
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Approved by
+                                </th>
+                                <th style="text-align:center; width: 5%;">
+                                    Status
+                                </th>
+                                <th style="text-align:center; width: 10%;">
+                                    Option
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="FINRES_TB" style="text-align:center; font-size: 0.8rem">
+                            <!--  -->
+                            
+                        </tbody>
+
+                        <!-- loader start -->
+                        <div class="loader"></div>
+                        <!-- loader end -->
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<!-- present date show scriptStart  -->
+<script>
+    $(document).ready(function () {
+        // -----------------------------
+        // guards + state
+        // -----------------------------
+        let isLoadingPOList = false;
+        let isLoadingSubjects = false;
+        let pendingPOListXHR = null;
+        let pendingSubjectsXHR = null;
+        let latestPOReqNonce = 0;
+        let latestSubjReqNonce = 0;
+
+        // -----------------------------
+        // utils
+        // -----------------------------
+        const debounce = (fn, wait = 250) => {
+            let t;
+            return function (...args) {
+                clearTimeout(t);
+                t = setTimeout(() => fn.apply(this, args), wait);
+            };
+        };
+
+        function initDefaultsIfEmpty() {
+            // ensure branch has a value so first load works on reload
+            if (!$('#id_filter_branch').val()) {
+                const $opt = $('#id_filter_branch option[value!=""]').first();
+                if ($opt.length) $opt.prop('selected', true).trigger('change');
+            }
+            // ensure class has a value (optional, if your API requires it)
+            if (!$('#id_is_class').val()) {
+                const $copt = $('#id_is_class option[value!=""]').first();
+                if ($copt.length) $copt.prop('selected', true);
+            }
+            // ensure version checked
+            if (!$('input[name="is_version"]:checked').length) {
+                const $v = $('input[name="is_version"]').first();
+                if ($v.length) $v.prop('checked', true);
+            }
+        }
+
+        // -----------------------------
+        // boot
+        // -----------------------------
+        initDefaultsIfEmpty();
+        // first run: update subjects (depends on class/group/version/org), then load list
+        refreshWithSubjects();
+
+        // if you have these helpers elsewhere, keep calling them
+        if (typeof handlePORowSelection === 'function') handlePORowSelection();
+
+        // -----------------------------
+        // event wiring (debounced)
+        // -----------------------------
+        // changes that alter available subjects -> update subjects first, then load
+        $('#id_filter_org, #id_is_class, #id_is_section, #id_is_shifts, #id_is_groups, input[name="is_version"]').off('change').on(
+            'change',
+            debounce(refreshWithSubjects, 250)
+        );
+
+        // changes that only affect the listing -> just load
+        $('input[name="option"], #is_start, #is_end, #id_filter_branch, #id_exam_type, #id_is_subjects_filter').off('change').on(
+            'change',
+            debounce(loadPOlist, 250)
+        );
+
+        // -----------------------------
+        // pipeline: update subjects -> load list
+        // -----------------------------
+        function refreshWithSubjects() {
+            updateSubjectsOptionsfilter().always(() => {
+                // after subjects are refreshed, load the list with current filter set
+                loadPOlist();
+            });
+        }
+
+        // -----------------------------
+        // subjects options (returns jqXHR-like promise)
+        // -----------------------------
+        function updateSubjectsOptionsfilter() {
+            if (isLoadingSubjects) {
+                // cancel previous to avoid races
+                try { pendingSubjectsXHR && pendingSubjectsXHR.abort(); } catch (_) {}
+            }
+
+            isLoadingSubjects = true;
+            const myNonce = ++latestSubjReqNonce;
+
+            const selectedFilterOrgId = $('#id_filter_org').val();
+            const selectedClassFilterId = $('#id_is_class').val();
+            const selectedIsVersionId = $('input[name="is_version"]:checked').val();
+
+            let selectedGroupFilterId = '';
+            if ($('#group_section').is(':visible')) {
+                selectedGroupFilterId = $('#id_is_groups').val();
+            }
+
+            // keep current subject selection if still present
+            const prevSubject = $('#id_is_subjects_filter').val() || '';
+
+            pendingSubjectsXHR = $.ajax({
+                url: '/get_subjects_options/',
+                method: 'GET',
+                data: {
+                    org_id: selectedFilterOrgId,
+                    groups_id: selectedGroupFilterId,
+                    class_id: selectedClassFilterId,
+                    is_version: selectedIsVersionId
+                }
+            })
+                .done(function (data) {
+                    // ignore stale response
+                    if (myNonce !== latestSubjReqNonce) return;
+
+                    const $sel = $('#id_is_subjects_filter');
+                    $sel.empty();
+                    $sel.append('<option value="" selected>All Subjects</option>');
+
+                    if (data && Array.isArray(data.subOptions)) {
+                        data.subOptions.forEach(function (subject) {
+                            $sel.append(
+                                '<option value="' + subject.subjects_id + '">' + subject.subjects_name + '</option>'
+                            );
+                        });
+                    }
+
+                    // try to restore previous selection if still exists; otherwise keep "All Subjects"
+                    if (prevSubject && $sel.find('option[value="' + prevSubject + '"]').length) {
+                        $sel.val(prevSubject);
+                    } else {
+                        $sel.val('');
+                    }
+                    // DO NOT trigger change here (avoids circular load loops)
+                })
+                .fail(function (xhr) {
+                    if (xhr && xhr.statusText === 'abort') return;
+                    console.error('Error fetching subject options:', xhr && xhr.responseText);
+                })
+                .always(function () {
+                    isLoadingSubjects = false;
+                    pendingSubjectsXHR = null;
+                });
+
+            return pendingSubjectsXHR;
+        }
+
+        // -----------------------------
+        // load list
+        // -----------------------------
+        function loadPOlist() {
+            if (isLoadingPOList) {
+                // cancel previous request; we only care about the latest filter state
+                try { pendingPOListXHR && pendingPOListXHR.abort(); } catch (_) {}
+            }
+
+            const option = $('input[name="option"]:checked').val() || 'true';
+            const orgFilterValue = $('#id_filter_org').val();
+            const branchFilterValue = $('#id_filter_branch').val();
+            const filter_class = $('#id_is_class').val();
+            const filter_section = $('#id_is_section').val();
+            const filter_shifts = $('#id_is_shifts').val();
+            const filter_groups = $('#id_is_groups').val();
+            const filter_exam_type = $('#id_exam_type').val();
+            const filter_subjects = $('#id_is_subjects_filter').val();
+            const filter_version = $('input[name="is_version"]:checked').val();
+            const startDate = $('#is_start').val();
+            const endDate = $('#is_end').val();
+
+            // enforce branch presence; if empty, try to pick first option and retry once
+            if (!branchFilterValue) {
+                const $opt = $('#id_filter_branch option[value!=""]').first();
+                if ($opt.length) {
+                    $opt.prop('selected', true);
+                } else {
+                    // no branch available; show empty table and bail
+                    safeRenderEmpty();
+                    return;
+                }
+            }
+
+            localStorage.setItem('option', option);
+
+            isLoadingPOList = true;
+            const myNonce = ++latestPOReqNonce;
+
+            if (typeof startLoader === 'function') startLoader();
+
+            pendingPOListXHR = $.ajax({
+                type: 'GET',
+                url: '/get_results_finalization_list/',
+                data: {
+                    filter_option: option,
+                    filter_org: orgFilterValue,
+                    filter_branch: $('#id_filter_branch').val(), // might have been defaulted above
+                    filter_class: filter_class,
+                    filter_section: filter_section,
+                    filter_shifts: filter_shifts,
+                    filter_exam_type: filter_exam_type,
+                    filter_groups: filter_groups,
+                    filter_subjects: filter_subjects,
+                    filter_version: filter_version,
+                    is_start: startDate,
+                    is_end: endDate
+                }
+            })
+                .done(function (data) {
+                    // ignore stale/aborted responses
+                    if (myNonce !== latestPOReqNonce) return;
+
+                    // destroy safely if already initialised
+                    if ($.fn.DataTable && $.fn.DataTable.isDataTable('#WOGRN_table')) {
+                        $('#WOGRN_table').DataTable().clear().destroy();
+                    }
+
+                    updatePOTable(data);
+
+                    if ($.fn.DataTable) {
+                        $('#WOGRN_table').DataTable({ ordering: false });
+                    }
+
+                    if (typeof highlightSelectedRowOnInit === 'function') {
+                        highlightSelectedRowOnInit();
+                    }
+                })
+                .fail(function (xhr) {
+                    if (xhr && xhr.statusText === 'abort') return;
+                    console.error('Ajax Error:', xhr && xhr.responseText);
+                    safeRenderEmpty();
+                })
+                .always(function () {
+                    if (typeof endLoader === 'function') endLoader();
+                    isLoadingPOList = false;
+                    pendingPOListXHR = null;
+                });
+        }
+
+        function safeRenderEmpty() {
+            const $tb = $('#FINRES_TB');
+            $tb.empty();
+            $('#noDataFoundRow').show();
+            if ($.fn.DataTable && $.fn.DataTable.isDataTable('#WOGRN_table')) {
+                $('#WOGRN_table').DataTable().clear().draw();
+            }
+        }
+
+        // -----------------------------
+        // render table rows
+        // -----------------------------
+        function updatePOTable(data) {
+            const tableBody = $('#FINRES_TB');
+            tableBody.empty();
+
+            const rows = (data && data.data) || [];
+            if (!rows.length) {
+                $('#noDataFoundRow').show();
+                return;
+            }
+            $('#noDataFoundRow').hide();
+
+            $.each(rows, function (index, poDtls) {
+                const statusText = poDtls.is_approved ? 'Approved' : 'Unapproved';
+                const statusColor = poDtls.is_approved ? '#27d127' : '#ff5959';
+
+                // --- build conditionally unapprove button ---
+                let rollbackButton = "";
+                if (poDtls.has_access === true) {
+                    rollbackButton = `
+                        <button type="button" class="btn btn-danger btn-xs text-white rollback-finalizedR"
+                            style="padding: 5px 10px 5px 10px; font-size: 0.95rem;"
+                            data-is_approve="${poDtls.is_approved}"
+                            data-id="${poDtls.res_fin_id}">
+                            Unapprove
+                        </button>`;
+                }
+
+                const rowHtml = `
+                    <tr class="FINRES-row" data-id="${poDtls.res_fin_id}">
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td style="text-align:left;">${poDtls.res_fin_id}</td>
+                        <td style="text-align:center;">${poDtls.created_date || ''}</td>
+                        <td style="text-align:left;">${poDtls.names_of_exam}</td>
+                        <td style="text-align:center;">${poDtls.exam_date || ''}</td>
+                        <td style="text-align:center;">${poDtls.class_name || ''}</td>
+                        <td style="text-align:center;">${poDtls.subjects_name || ''}</td>
+                        <td style="text-align:center;">${poDtls.approved_date || ''}</td>
+                        <td style="text-align:center;">${poDtls.approved_by || ''}</td>
+                        <td style="text-align:center; font-weight: bold; color: ${statusColor};">${statusText}</td>
+                        <td style="text-align:center;">
+                            <button type="button" class="btn btn-warning btn-xs text-white update-finalizedR" style="padding: 5px 10px 0px 10px;"
+                                data-is_approve="${poDtls.is_approved}" data-id="${poDtls.res_fin_id}">
+                                <i class='bx bx-edit text-white' style="font-size: 1.5rem;"></i>
+                            </button>
+                            <!-- report -->
+                            <button type="button" class="btn btn-info btn-xs text-white report-finalizedR" style="padding: 5px 10px 5px 10px; font-size: 0.95rem;"
+                                data-is_approve="${poDtls.is_approved}" data-res_fin_id="${poDtls.res_fin_id}">
+                                Report
+                            </button>
+                            <!-- approve rollback -->
+                            ${rollbackButton}
+                        </td>
+                    </tr>`;
+                tableBody.append(rowHtml);
+            });
+        }
+    });
+
+
+    //
+    function handlePORowSelection() {
+        // Attach click event listener to all rows
+        $(document).on("click", ".FINRES-row", function () {
+            var clickedFINRESId = $(this).data("id");
+            
+            // Remove highlighting from other rows
+            $(".FINRES-row").removeClass("selected-row");
+            
+            // Highlight the selected row
+            $(this).addClass("selected-row");
+
+            // Save the selected WOGRN ID to local storage
+            localStorage.setItem("selectedFINRESID", clickedFINRESId);
+        });
+    }
+
+    function highlightSelectedRowOnInit() {
+        var selectedFINRESID = localStorage.getItem("selectedFINRESID");
+        if (selectedFINRESID) {
+            $(".FINRES-row").each(function() {
+                if ($(this).data("id").toString() === selectedFINRESID) {
+                    $(this).addClass("selected-row");
+                    return false; // Break the loop once the match is found
+                }
+            });
+        }
+    }
+
+    //
+    $(function () {
+        $(document).on('click', '.update-finalizedR', function (e) {
+            e.preventDefault(); // Prevent the default action of the click event
+            var isApproved = $(this).attr('data-is_approve');
+
+            if (isApproved === 'true') {
+                toastr.warning("Finalized Results Already Approved.. Edit Option Not Available !...");
+            } else {
+                var wogrnId = $(this).attr('data-id');
+                var updateWithoutGRNUrl = "{% url 'edit_result_finalize_services' %}?res_fin_id=" + wogrnId;
+                navigateTo(updateWithoutGRNUrl);
+            }
+        });
+        //
+        $(document).on('click', '.rollback-finalizedR', function (e) {
+            e.preventDefault(); // Prevent the default action of the click event
+            var isApproved = $(this).attr('data-is_approve');
+
+            if (isApproved === 'true') {
+                var regfinID = $(this).attr('data-id');
+                lineloaderstart();
+                modal_md("Approved Rollback Finalization", "{% url 'approved_rollback_finalize' %}?res_fin_id=" + regfinID);
+                lineloaderstop();
+            } else {
+                toastr.warning("Finalized Results Not Approved.. Unapprove Option Not Available !...");
+            }
+        });
+    });
+
+    ///report button click
+    $(document).on('click', '.report-finalizedR', function (e) {
+        e.preventDefault();
+
+        var resFinId = $(this).attr('data-res_fin_id');
+
+        // ✅ Build URL with all query parameters
+        var resfinReportUrl = "{% url 'report_results_finalizations' %}" +
+            "?res_fin_id=" + encodeURIComponent(resFinId); // pass as comma-separated IDs
+
+        window.open(resfinReportUrl, "_blank");
+    });
+    
+    //
+    window.addEventListener("DOMContentLoaded", function() {
+        // Get today's date
+        var today = new Date();
+    
+        // Set the end date to today
+        var endYear = today.getFullYear();
+        var endMonth = (today.getMonth() + 1).toString().padStart(2, '0'); // Month starts from 0
+        var endDate = today.getDate().toString().padStart(2, '0');
+        document.getElementById('is_end').value = endYear + '-' + endMonth + '-' + endDate;
+
+        ////////////// Calculate 1 week ago //////////////
+        var oneWeekAgo = new Date(today);
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        // Set the start date to one week ago
+        var startYear = oneWeekAgo.getFullYear();
+        var startMonth = (oneWeekAgo.getMonth() + 1).toString().padStart(2, '0');
+        var startDate = oneWeekAgo.getDate().toString().padStart(2, '0');
+        ////////////// Calculate 1 week ago //////////////
+        document.getElementById('is_start').value = startYear + '-' + startMonth + '-' + startDate;
+    });
+
+    //
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            // document.body.removeChild("loader");
+        });
+    });
+
+    //<!-- status change true = Approved & false = Unapprove -->
+    elements = document.getElementsByClassName("status_appr_unapp");
+    for (var i = 0; i < elements.length; i++) {
+        if (elements[i].innerText === "True") {
+            elements[i].innerHTML = "Approved";
+            elements[i].classList.add("approved");
+        }
+        if (elements[i].innerText === "False") {
+            elements[i].innerHTML = "Unapprove";
+            elements[i].classList.add("unapprove");
+        }
+    }
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+    
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+</script>
+
+{% endblock %}
