@@ -1,0 +1,488 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container">
+                <form action="" method="" id="photoGalleryEditForm" enctype="multipart/form-data">
+                    <input type="hidden" name="phgallery_id" id="id_phgallery_id" value="{{ gallery.phgallery_id }}">
+                    <div class="add_edit_head">
+                        <h2 class="text-primary">Edit/Update Photo Gallery Info</h2>
+                    </div>
+                    <div class="modal_closer">
+                        <button type="button" class="btn bg-danger text-white closerBtn"
+                            data-bs-dismiss="modal">X</button>
+                    </div>
+                    <!--  -->
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <div class="card add_user_card">
+                                <div class="card-body">
+                                    <div class="user_add_body">
+                                        <div class="sub_body_one">
+                                            <div class="row add_user_row">
+                                                <div class="row g-3 align-items-center">
+                                                    <div class="col-sm-2" style="width: 26%; text-align: right;">
+                                                        <label for="id_gallery_name" class="col-form-label font_size required">
+                                                            Gallery Name:
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-xl-8 adduser_col">
+                                                        <input type="text" class="form-control form_adduser_body" value="{{ gallery.gallery_name }}"
+                                                            id="id_gallery_name" name="gallery_name" maxlength="150" required
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row g-3 align-items-center">
+                                                    <div class="col-sm-2" style="width: 26%; text-align: right;">
+                                                        <label for="id_thumbnail_title"
+                                                            class="col-form-label font_size required">
+                                                            Thumbnail Title:
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-xl-8 adduser_col">
+                                                        <input type="text" class="form-control form_adduser_body" value="{{ gallery.thumbnail_title }}"
+                                                            id="id_thumbnail_title" name="thumbnail_title" required
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row g-3 align-items-center">
+                                                    <div class="col-sm-2" style="width: 26%; text-align: right;">
+                                                        <label for="id_descriptions"
+                                                            class="col-form-label font_size required">
+                                                            Descriptions:
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-xl-8 adduser_col">
+                                                        <textarea type="text" class="form-control form_adduser_body" style="height: 17.5rem;"
+                                                            id="id_descriptions" name="descriptions" required
+                                                            autocomplete="off">{{ gallery.descriptions }}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-5">
+                            <div class="card add_user_card_other" style="border-left: 1px solid rgba(0, 0, 0, .125);">
+                                <div class="card-body">
+                                    <!-- image -->
+                                    <div class="row g-3 align-items-center">
+                                        <div class="row g-3 align-items-center" style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap;">
+                                            <!--  -->
+                                            <div class="col-sm-12 adduser_col">
+                                                <div class="container">
+                                                    <div class="card">
+                                                        <div class="drop_box">
+                                                            <div class="banner-display">
+                                                                <img class="banner-viewer" id="selected_image" src="">
+                                                            </div>
+                                                            <header style="z-index: 1;">
+                                                                <h4>Select File here</h4>
+                                                            </header>
+                                                            <p>Files Supported: png, jpeg, jpg, webp</p>
+                                                            <input type="file" name="photos_img" accept="image/*"
+                                                                id="id_gallery_img" style="display:none;" onchange="displaySelectedImage(this);">
+                                                            <label for="id_gallery_img" class="chooseBtn">
+                                                                Choose File
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row g-3 align-items-center" style="display: flex; flex-direction: column; flex-wrap: wrap; justify-content: flex-start; align-content: flex-start; width: 100%;">
+                                        <div class="col-sm-2" style="width: 100%; text-align: left;">
+                                            <label for="id_photo_title"
+                                                class="col-form-label font_size">
+                                                Photo Title:
+                                            </label>
+                                        </div>
+                                        <div class="col-xl-8 adduser_col" style="width: 100%;">
+                                            <input type="text" class="form-control form_adduser_body"
+                                                id="id_photo_title" name="photo_title"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row g-3 align-items-center" style="display: flex; flex-direction: column; flex-wrap: wrap; justify-content: flex-start; align-content: flex-start; width: 100%; margin-bottom: 2rem;">
+                                        <div class="col-sm-2" style="width: 100%; text-align: left;">
+                                            <label for="id_photo_descriptions"
+                                                class="col-form-label font_size">
+                                                Photo Descriptions:
+                                            </label>
+                                        </div>
+                                        <div class="col-xl-8 adduser_col" style="width: 100%;">
+                                            <textarea type="text" class="form-control form_adduser_body" style="height: 5rem;"
+                                                id="id_photo_descriptions" name="photo_descriptions"
+                                                autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="usersetup_modal-footer" style="display: flex; justify-content: right; align-items: center; text-align: center; margin-bottom: 1rem;">
+                                        <button id="addNewPhotosBtnEditMode" type="button" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                                            Add New Photos
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <!--  -->
+                        <!--  -->
+                        <div class="col-sm-12">
+                            <div class="card add_user_card_other" style="border-top: 1px solid rgba(0, 0, 0, 0.301); margin-top: 2rem; margin-bottom: 5rem;">
+                                <!-- photo dtls body -->
+                                <section style="margin: 0.5rem;">
+                                    <div class="module-table">
+                                        <table id="PHOTOGTABLE" class="table table-striped table-hover"
+                                            style="width: 100%; border: 1px solid #639745a9;">
+                                            <thead class="text-center table-header_itemlist" style="background: #639745a9;">
+                                                <tr>
+                                                    <th style="text-align:center; width: 3%;">
+                                                        Sl
+                                                    </th>
+                                                    <th style="text-align:center;">
+                                                        Photos
+                                                    </th>
+                                                    <th style="text-align:center;">
+                                                        Photo Title
+                                                    </th>
+                                                    <th style="text-align:center;">
+                                                        Photo Des
+                                                    </th>
+                                                    <th style="text-align:center;">
+                                                        Is Cover Photo
+                                                    </th>
+                                                    <th style="text-align:center;">
+                                                        Is Thumbnail Photo
+                                                    </th>
+                                                    <th style="text-align:center; width: 8%;">
+                                                        Option
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="PHGTBODY" style="text-align:center; font-size: 0.8rem">
+                                                <!--  -->
+                                                {% for dtls in gallery_dtls %}
+                                                    <tr>
+
+                                                        <td>{{ forloop.counter }}</td>
+
+                                                        <td>
+                                                            <img src="{{ dtls.photos.url }}" width="80" height="60">
+                                                            <input type="file" name="photo_file_list" style="display:none;" class="real-file-input">
+                                                            <input type="hidden" name="existing_phgdtls_id_list" value="{{ dtls.phgdtls_id }}">
+                                                        </td>
+
+                                                        <td>
+                                                            {{ dtls.photos_title }}
+                                                            <input type="hidden" name="photo_title_list"
+                                                                value="{{ dtls.photos_title }}">
+                                                        </td>
+
+                                                        <td>
+                                                            {{ dtls.photo_description }}
+                                                            <input type="hidden" name="photo_description_list"
+                                                                value="{{ dtls.photo_description }}">
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="radio"
+                                                                name="cover_photo_index"
+                                                                value="{{ forloop.counter0 }}"
+                                                                {% if dtls.is_cover_photo %}checked{% endif %}>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="radio"
+                                                                name="thumbnail_photo_index"
+                                                                value="{{ forloop.counter0 }}"
+                                                                {% if dtls.is_thumbnail_photo %}checked{% endif %}>
+                                                        </td>
+
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger btn-sm remove-photo-btn" data-phgdtls_id="{{ dtls.phgdtls_id }}">
+                                                                <i class='bx bx-trash-alt'></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="6" class="text-danger text-center">
+                                                            No Photos Found
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="usersetup_modal-footer"
+                        style="display: flex; justify-content: right; align-items: center; text-align: center; margin-bottom: 1rem;">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Close
+                        </button>
+                        <button id="addUserBtn" name="submit" type="submit" class="btn btn-success"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                           Update Gallery
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+
+        // =========================
+        // DELETE EXISTING PHOTO
+        // =========================
+        $('.remove-photo-btn').click(function() {
+            if (!confirm("Are you sure you want to delete this photo?")) return;
+
+            var phgdtls_id = $(this).data('phgdtls_id');
+            var btn = $(this);
+
+            $.ajax({
+                url: "{% url 'delete_dtls_photo_edit_mode' %}",
+                type: "POST",
+                data: {
+                    'phgdtls_id': phgdtls_id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Correctly remove the row from table
+                        btn.closest("tr").remove();
+                        alert(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+
+
+        // =========================
+        // ADD NEW PHOTO ROW
+        // =========================
+        (function () {
+            if (typeof window.editPhotoIndex === "undefined") {
+                window.editPhotoIndex = document.querySelectorAll("#PHGTBODY tr").length;
+            }
+
+            $(document).off("click", "#addNewPhotosBtnEditMode");
+
+            $(document).on("click", "#addNewPhotosBtnEditMode", function () {
+
+                const fileInput = document.getElementById("id_gallery_img");
+                const photoTitleInput = document.getElementById("id_photo_title");
+                const descriptionInput = document.getElementById("id_photo_descriptions");
+                const previewImage = document.getElementById("selected_image");
+
+                if (!fileInput.files[0]) {
+                    alert("Please select an image!");
+                    return;
+                }
+
+                if (!photoTitleInput.value.trim()) {
+                    alert("Please enter photo title!");
+                    return;
+                }
+
+                if (!descriptionInput.value.trim()) {
+                    alert("Please enter photo description!");
+                    return;
+                }
+
+                const file = fileInput.files[0];
+                const imageURL = URL.createObjectURL(file);
+                const tableBody = document.getElementById("PHGTBODY");
+                const currentIndex = window.editPhotoIndex;
+
+                const newRow = document.createElement("tr");
+
+                newRow.innerHTML = `
+                    <td>${currentIndex + 1}</td>
+
+                    <td>
+                        <img src="${imageURL}" width="80" height="60">
+                        <input type="file" name="photo_file_list" 
+                            style="display:none;" 
+                            class="real-file-input">
+                    </td>
+
+                    <td>
+                        ${photoTitleInput.value || ""}
+                        <input type="hidden" 
+                            name="photo_title_list" 
+                            value="${photoTitleInput.value || ""}">
+                    </td>
+
+                    <td>
+                        ${descriptionInput.value || ""}
+                        <input type="hidden" 
+                            name="photo_description_list" 
+                            value="${descriptionInput.value || ""}">
+                    </td>
+
+                    <td>
+                        <input type="radio" 
+                            name="cover_photo_index" 
+                            value="${currentIndex}">
+                    </td>
+
+                    <td>
+                        <input type="radio" 
+                            name="thumbnail_photo_index" 
+                            value="${currentIndex}">
+                    </td>
+
+                    <td>
+                        <button type="button" 
+                                class="btn btn-danger btn-sm remove-new-row">
+                            <i class='bx bx-trash-alt'></i>
+                        </button>
+                    </td>
+                `;
+
+                tableBody.appendChild(newRow);
+
+                // attach file
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                newRow.querySelector(".real-file-input").files = dt.files;
+
+                window.editPhotoIndex++;
+
+                fileInput.value = "";
+                photoTitleInput.value = "";
+                descriptionInput.value = "";
+                if (previewImage) previewImage.src = "";
+            });
+
+            // =========================
+            // REMOVE NEWLY ADDED ROW
+            // =========================
+            $(document).on("click", ".remove-new-row", function() {
+                $(this).closest("tr").remove();
+            });
+
+        })();
+
+
+        function removeRow(button) {
+            button.closest("tr").remove();
+        }
+
+
+    });
+
+
+    ///////////////////////////////////////////
+    function displaySelectedImage(input) {
+
+        const previewImage = document.getElementById('selected_image');
+
+        if (input.files && input.files[0]) {
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+
+                var img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function () {
+
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+
+                    var maxWidth = 300;
+                    var maxHeight = 300;
+
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > maxWidth || height > maxHeight) {
+
+                        if (width > height) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        } else {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        previewImage.src = canvas.toDataURL('image/jpeg');
+
+                    } else {
+                        previewImage.src = img.src;
+                    }
+                };
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////
+    // save user
+    $(function () {
+
+        $('#photoGalleryEditForm').submit(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'add_new_photo_gallery_details' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.msg);
+                        setTimeout(function () { location.reload() }, 500);
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                },
+
+                error: function () {
+                    toastr.error("An error occurred while processing the request.");
+                }
+            });
+        });
+
+    });
+</script>

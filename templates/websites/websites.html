@@ -1,0 +1,687 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!--- HEADER -->
+<header>
+  <!-- header-main -->
+  {% include 'websites/header_main.html' %}
+</header>
+
+<!--- MAIN -->
+<main>
+
+  <!-- HOME SECTION -->
+  <section id="home">
+
+    <!-- ================= MAIN SLIDER ================= -->
+    <div class="slider-wrapper">
+      <div class="swiper main-slider">
+        <div class="swiper-wrapper">
+          {% for data in banner_data %}
+          <div class="swiper-slide">
+            <img src="{{ data.banner_img.url }}">
+            <div class="content">
+              {% comment %} <div class="title">{{ data.title_name }}</div> {% endcomment %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+
+      <!-- ================= NAV SLIDER ================= -->
+      <div class="swiper nav-slider">
+        <div class="swiper-wrapper">
+          {% for data in banner_data %}
+          <div class="swiper-slide">
+            <img src="{{ data.banner_img.url }}">
+            <div class="title">{{ data.title_name }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <!-- gallary -->
+    <div style="margin-top: 90vh;">
+      <div class="gallary-body container">
+        <div class="company-logo" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; padding: 3rem;">
+          {% if org_data and org_data.org_logo %}
+            <img src="{{ org_data.org_logo.url }}" alt="" style="width: auto; max-width: 15rem;">
+          {% else %}
+            <img src="{% static 'images/company_logo/com_logo.png' %}" alt="">
+          {% endif %}
+        </div>
+        <!-- LEFT / INTRO CONTENT -->
+        <div class="about-intro-wrap">
+            <div class="about-copy reveal">
+                <div class="about-kicker"> <span></span> Who we are </div>
+                <h3> Bridal Harmony </h3>
+                <h2> Premium Class Photography <em>&amp;</em> Cinematography Services </h2>
+                <p class="about-description"> Bridal Harmony is a team of experienced professional photographers,
+                    cinematographers and photo-book experts dedicated to creating stunning, authentic stories of people's lives.
+                </p>
+                <div class="about-line"></div>
+                <p class="about-note"> From intimate family moments to grand celebrations, we capture every frame with
+                    intention, emotion and cinematic detail. </p>
+            </div> <!-- RIGHT / STATS -->
+            <div class="stats-section reveal">
+                <div class="stats-intro"> <span>Our journey</span>
+                    <p> More than a decade of capturing moments across Bangladesh. </p>
+                </div>
+                <div class="stats-grid"> <!-- SINCE -->
+                    <div class="stat-card">
+                        <div class="stat-number"> <span class="stat-counter" data-target="2013"> 0 </span> </div>
+                        <div class="stat-label"> Since </div>
+                        <div class="stat-card-line"></div>
+                    </div> <!-- EVENTS -->
+                    <div class="stat-card stat-featured">
+                        <div class="stat-number"> <span class="stat-counter" data-target="6000"> 0 </span> <small>+</small>
+                        </div>
+                        <div class="stat-label"> Events </div>
+                        <div class="stat-card-line"></div>
+                    </div> <!-- PHOTOS -->
+                    <div class="stat-card">
+                        <div class="stat-number"> <span class="stat-counter" data-target="800"> 0 </span> <small>k+</small>
+                        </div>
+                        <div class="stat-label"> Photos </div>
+                        <div class="stat-card-line"></div>
+                    </div> <!-- CLIENTS -->
+                    <div class="stat-card">
+                        <div class="stat-number"> <span class="stat-counter" data-target="40"> 0 </span> <small>k+</small>
+                        </div>
+                        <div class="stat-label"> Happy Clients </div>
+                        <div class="stat-card-line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <!--  -->
+        
+      </div>
+    </div>
+    <!--  -->
+    <!--  -->
+  </section>
+  <!-- ============================================================
+      SERVICES
+  ============================================================ -->
+  <section id="services">
+      <div class="wrap">
+          <div class="section-head reveal">
+              <div class="kicker"> <span></span> What we do</div>
+              <h2>
+                  Services built around how Bangladeshi celebrations
+                  actually unfold
+              </h2>
+              <p>
+                  Pick a single day of coverage or hand us the whole calendar —
+                  holud through walima.
+              </p>
+          </div>
+          <div class="services-grid reveal">
+              <div class="service-card">
+                  <span class="service-num">01</span>
+                  <h3>Wedding Photography &amp; Films</h3>
+                  <p>
+                      Full coverage across holud, akd, and reception —
+                      candid photography paired with a cinematic highlight film.
+                  </p>
+              </div>
+              <div class="service-card">
+                  <span class="service-num">02</span>
+                  <h3>Event Management</h3>
+                  <p>
+                      Décor, vendor booking, and a run-of-show that keeps
+                      every ceremony on time.
+                  </p>
+              </div>
+              <div class="service-card">
+                  <span class="service-num">03</span>
+                  <h3>Corporate Events</h3>
+                  <p>
+                      Product launches, annual summits, and brand shoots
+                      documented with a business-ready gallery, delivered
+                      fast for press and socials.
+                  </p>
+              </div>
+              <div class="service-card">
+                  <span class="service-num">04</span>
+                  <h3>Maternity &amp; Newborn</h3>
+                  <p>
+                      Gentle, studio or at-home sessions for expecting families.
+                  </p>
+              </div>
+              <div class="service-card">
+                  <span class="service-num">05</span>
+                  <h3>Birthday &amp; Family</h3>
+                  <p>
+                      Milestone birthdays and family gatherings,
+                      shot candidly.
+                  </p>
+              </div>
+              <div class="service-card">
+                  <span class="service-num">06</span>
+                  <h3>Drone &amp; Cinematic Coverage</h3>
+                  <p>
+                      Aerial footage of the venue and processions,
+                      cut into your highlight film alongside ground coverage
+                      for a wide, cinematic sense of scale.
+                  </p>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- ============================================================
+     PORTFOLIO
+  ============================================================ -->
+  <section id="portfolio">
+      <div class="wrap">
+          <div class="portfolio-head reveal">
+              <div class="section-head" style="margin-bottom:0;">
+                  <div class="kicker">Recent work</div>
+                  <h2>A few of our favourite stories</h2>
+              </div>
+              <div class="filter-row" id="filterRow">
+                  <button class="filter-btn is-active" data-filter="all">All</button>
+                  <button class="filter-btn" data-filter="wedding">Wedding</button>
+                  <button class="filter-btn" data-filter="holud">Holud &amp; Mehndi</button>
+                  <button class="filter-btn" data-filter="corporate">Corporate</button>
+                  <button class="filter-btn" data-filter="portrait">Portrait</button>
+              </div>
+          </div>
+
+          <div class="gallery reveal" id="gallery">
+              <!-- items populated by JS from DATA below, but written statically for no-JS fallback -->
+          </div>
+      </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" style="margin-top: 3.2rem;">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close viewer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+      </button>
+      <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous image">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18l-6-6 6-6" />
+          </svg>
+      </button>
+      <figure>
+          <img id="lightboxImg" src="" alt="">
+          <figcaption id="lightboxCaption"></figcaption>
+      </figure>
+      <button class="lightbox-next" id="lightboxNext" aria-label="Next image">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+          </svg>
+      </button>
+  </div>
+
+    <!-- ============================================================
+     PROCESS
+  ============================================================ -->
+  <section class="process" id="process">
+    <div class="wrap">
+        <div class="section-head on-dark reveal">
+            <div class="kicker">How it works</div>
+            <h2>From first message to final gallery</h2>
+        </div>
+        <div class="process-steps reveal">
+            <div class="process-step">
+                <span class="step-num">01</span>
+                <h3>Inquiry &amp; date check</h3>
+                <p>Tell us the date and venue. We confirm availability within a day and send our package guide.</p>
+            </div>
+            <div class="process-step">
+                <span class="step-num">02</span>
+                <h3>Planning call</h3>
+                <p>We walk through your ceremony order, family shot list, and any must-have moments.</p>
+            </div>
+            <div class="process-step">
+                <span class="step-num">03</span>
+                <h3>The big day</h3>
+                <p>Our team arrives ahead of schedule and works quietly through every ceremony.</p>
+            </div>
+            <div class="process-step">
+                <span class="step-num">04</span>
+                <h3>Edit &amp; delivery</h3>
+                <p>A preview set within a week, full gallery and films within 4–6 weeks.</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- PACKAGES SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="packages">
+    <!--  -->
+    <div class="package-body container">
+      <div class="package-intro">
+        {% if package_hdbd %}
+        {% for package in package_hdbd %}
+        <h1 class="package-header">{{ package.head_name }}</h1>
+        {% endfor %}
+        {% else %}
+        <h1 class="package-header">FIND THE RIGHT PLAN</h1>
+        {% endif %}
+        <!--  -->
+        {% if package_hdbd %}
+        {% for package in package_hdbd %}
+        <p class="package-description">{{ package.body_text }}</p>
+        {% endfor %}
+        {% else %}
+        <p class="package-description">
+          We believe in transparency and clarity, which is why our pricing is
+          straightforward and easy to understand. Contact us to learn more about our
+          pricing options and to book your next photography session.
+        </p>
+        {% endif %}
+      </div>
+      <!--  -->
+      <!--  -->
+      <div class="package-cards-container"
+        style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+        <!--  -->
+        {% for title in package_data %}
+        <div class="package-cards" style="padding: 0.6rem;">
+          <div class="wrapper">
+            <div class="card front-face">
+              <div class="header-title">{{ title.package_title }}</div>
+              <img src="{{ title.title_img.url }}">
+            </div>
+            <div class="card back-face">
+              <img src="{{ title.title_img.url }}">
+              <div class="info">
+                <div class="title">
+                  {{ title.package_title }}
+                </div>
+                <p style="font-size: 0.8rem;">
+                  <button class="btn showPackageDtlsModal" data-package_id="{{ title.package_id }}" style="background: rgb(83, 83, 83); color: #c3c3c3;">
+                    Package Details
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!--  -->
+        <!--  -->
+      </div>
+      <!--  -->
+    </div>
+
+
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- TRAINING SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="training">
+    {% include 'websites/training_section.html' %}
+  </section>
+  <!-- =============================================================================================== -->
+  <!-- TRAINING SECTION -->
+  <!-- =============================================================================================== -->
+
+  <!-- =============================================================================================== -->
+  <!-- BOOK US SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="bookus">
+    <!-- BOOK US -->
+    {% include 'websites/booking_us.html' %}
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- WHY US SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="whyus">
+    <div class="whyus-body" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+      <div class="bookus-body container" style="margin-bottom: 5rem;">
+        <div class="bookus-intro">
+            <h1 class="bookus-header">FREQUENTLY ASKED QUESTIONS</h1>
+            <!--  -->
+            <p class="bookus-description">
+                We’ve curated these questions based on our years of experience, and we’ve tried to anticipate the queries that we get asked most frequently by our clients.
+            </p>
+        </div>
+        <!--  -->
+      </div>
+
+      <!--  -->
+      <!--  -->
+      <div class="accordion" style="width: 100%; max-width: 100%; border: hidden;">
+
+        {% for faq in faqs %}
+        <div class="accordion-container" style="padding: 5px; border-left: hidden; border-right: hidden;">
+          <div class="accordion-item" style="border: hidden; background: #5a5a5a;">
+            <button class="accordion-header">
+                {{ faq.question }}
+                <span class="icon">+</span>
+            </button>
+
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    {{ faq.answer }}
+                </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!--  -->
+        <!--  -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- Social Media SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="social_media">
+    <div class="gallary-body container">
+      <div class="fb-post-container">
+        <div class="fb-post-title">Facebook Posts</div>
+
+        {% for post in posts %}
+            <div class="fb-post-card">
+              <div class="fb-post-message">
+                  {{ post.message|default:"" }}
+              </div>
+
+              {% if post.image %}
+              <a href="{{ post.post_url }}" target="_blank">
+                  <img src="{{ post.image.url }}" class="fb-post-image">
+              </a>
+              {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <!--  -->
+      <!--  -->
+      <div class="gallary-body container">
+        <div class="videos-container" style="margin-top: 7rem;">
+          <div class="fb-post-title">Videos Gallery</div>
+            <!--  -->
+            <!--  -->
+            {% include 'websites/vedios_gellary.html' %}
+            <!--  -->
+            <!--  -->
+          </div>
+        <!--  -->
+        <!--  -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- ABOUT SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="about" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+    {% include 'websites/about_us.html' %}
+  </section>
+
+</main>
+
+
+<!-- =============================================================================================== -->
+<!-- footer -->
+<!-- =============================================================================================== -->
+{% include 'websites/footer.html' %}
+{% include 'modal_service/modal-lg.html' %}
+{% include 'modal_service/modal-xl.html' %}
+
+<!-- footer -->
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<!-- Swiper JS -->
+<script>
+  $(document).on('click', '.showPackageDtlsModal', function () {
+    var packageId = $(this).data('package_id');
+
+    var url = "{% url 'show_package_details_modal' 0 %}".replace('0', packageId);
+
+    modal_lg("Show Package Details", url);
+  });
+  /////////////////////////////////////////////////////
+  const mainSlider = new Swiper('.main-slider', {
+    loop: true,
+    speed: 1000,
+    autoplay: { delay: 3000 },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    },
+    loopedSlides: 5,
+    on: {
+      slideChange: function () {
+        const activeIndex = this.realIndex;
+
+        // Manually update nav-slider active slide
+        document.querySelectorAll('.nav-slider .swiper-slide').forEach((s, i) => {
+          s.classList.remove('swiper-slide-active');
+          if (i === activeIndex) s.classList.add('swiper-slide-active');
+        });
+      }
+    }
+  });
+
+  const navSlider = new Swiper('.nav-slider', {
+    direction: 'vertical',
+    slidesPerView: 5,
+    centeredSlides: true,
+    slideToClickedSlide: true,
+    loop: false,
+    spaceBetween: 5
+  });
+
+  // Sync sliders
+  mainSlider.controller.control = navSlider;
+  navSlider.controller.control = mainSlider;
+</script>
+
+<script>
+  ///////////////////////////////////////////////////////////////
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  window.addEventListener("scroll", () => {
+    let current = "";
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100;
+      const sectionHeight = section.clientHeight;
+
+      if (pageYOffset >= sectionTop &&
+        pageYOffset < sectionTop + sectionHeight) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+      }
+    });
+  });
+
+
+  ////////////////////////////// whyus accordion /////////////////////////////////
+  document.querySelectorAll(".accordion-header").forEach(header => {
+
+    header.addEventListener("click", function () {
+
+        const item = this.parentElement;
+        const content = item.querySelector(".accordion-content");
+        const icon = this.querySelector(".icon");
+
+        const isOpen = this.classList.contains("active");
+
+        // close all
+        document.querySelectorAll(".accordion-header").forEach(h => {
+            h.classList.remove("active");
+            h.querySelector(".icon").innerText = "+";
+        });
+
+        document.querySelectorAll(".accordion-content").forEach(c => {
+            c.classList.remove("show");
+        });
+
+        // open current
+        if (!isOpen) {
+            this.classList.add("active");
+            content.classList.add("show");
+            icon.innerText = "−";
+        }
+    });
+  });
+
+</script>
+<script>
+  /* ============================================================
+   DATA — portfolio items (edit / extend freely)
+  ============================================================ */
+  const PORTFOLIO = [
+      { cat: "wedding", size: "tall", title: "Anika & Rafi", src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=700&auto=format&fit=crop" },
+      { cat: "holud", size: "", title: "Nusrat's Gaye Holud", src: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=700&auto=format&fit=crop" },
+      { cat: "corporate", size: "wide", title: "Bengal Corp Summit", src: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=900&auto=format&fit=crop" },
+      { cat: "wedding", size: "", title: "Labonno & Apu", src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=700&auto=format&fit=crop" },
+      { cat: "portrait", size: "tall", title: "Maternity — Tania", src: "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=700&auto=format&fit=crop" },
+      { cat: "holud", size: "", title: "Mehndi Detail", src: "https://images.unsplash.com/photo-1583394293214-28ded15ee548?q=80&w=700&auto=format&fit=crop" },
+      { cat: "wedding", size: "wide", title: "Simona & Badhon", src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=900&auto=format&fit=crop" },
+      { cat: "corporate", size: "", title: "Product Launch — Aroni", src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=700&auto=format&fit=crop" },
+      { cat: "portrait", size: "", title: "Birthday — Rion, 5", src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=700&auto=format&fit=crop" },
+      { cat: "wedding", size: "", title: "Ritu & Shaikat", src: "https://images.unsplash.com/photo-1592921870789-04563d55041c?q=80&w=700&auto=format&fit=crop" },
+  ];
+
+  /* ============================================================
+    PORTFOLIO — GALLERY RENDER + FILTER
+  ============================================================ */
+  const galleryEl = document.getElementById('gallery');
+
+  function renderGallery() {
+      galleryEl.innerHTML = PORTFOLIO.map((item, i) => `
+      <div class="gallery-item ${item.size}" data-cat="${item.cat}" data-index="${i}">
+        <img src="${item.src}" alt="${item.title}" loading="lazy">
+        <div class="overlay">
+          <span class="cat">${labelFor(item.cat)}</span>
+          <span class="title">${item.title}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function labelFor(cat) {
+      return { wedding: "Wedding", holud: "Holud & Mehndi", corporate: "Corporate", portrait: "Portrait" }[cat] || cat;
+  }
+
+  renderGallery();
+
+  const filterRow = document.getElementById('filterRow');
+  filterRow.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const filter = btn.dataset.filter;
+      galleryEl.querySelectorAll('.gallery-item').forEach(item => {
+          const show = filter === 'all' || item.dataset.cat === filter;
+          item.hidden = !show;
+      });
+  });
+
+  /* ============================================================
+    LIGHTBOX
+  ============================================================ */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  let currentIndex = 0;
+  let visibleIndexes = [];
+
+  function refreshVisibleIndexes() {
+      visibleIndexes = Array.from(galleryEl.querySelectorAll('.gallery-item'))
+          .filter(el => !el.hidden)
+          .map(el => parseInt(el.dataset.index, 10));
+  }
+
+  function openLightbox(index) {
+      refreshVisibleIndexes();
+      currentIndex = index;
+      showSlide();
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+  }
+
+  function showSlide() {
+      const item = PORTFOLIO[currentIndex];
+      lightboxImg.src = item.src.replace('w=700', 'w=1400').replace('w=900', 'w=1400');
+      lightboxImg.alt = item.title;
+      lightboxCaption.textContent = `${item.title} — ${labelFor(item.cat)}`;
+  }
+
+  function step(dir) {
+      const pos = visibleIndexes.indexOf(currentIndex);
+      const nextPos = (pos + dir + visibleIndexes.length) % visibleIndexes.length;
+      currentIndex = visibleIndexes[nextPos];
+      showSlide();
+  }
+
+  galleryEl.addEventListener('click', (e) => {
+      const item = e.target.closest('.gallery-item');
+      if (!item) return;
+      openLightbox(parseInt(item.dataset.index, 10));
+  });
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', () => step(-1));
+  document.getElementById('lightboxNext').addEventListener('click', () => step(1));
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+  });
+
+  /* ============================================================
+    PROCESS
+    এই section-এর জন্য আলাদা কোনো JS logic নেই — শুধু ".reveal" class-এ
+    scroll-এ fade-in animation লাগে, যেটা পুরো সাইটের জন্য একটা shared
+    IntersectionObserver দিয়ে হ্যান্ডল হয়। প্রয়োজন হলে নিচেরটা রাখুন:
+  ============================================================ */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+          }
+      });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => revealObserver.observe(el));
+</script>
+<!-- ============================================================ COUNTER SCRIPT ============================================================ --> <script> document.addEventListener("DOMContentLoaded", function () { const counters = document.querySelectorAll(".stat-counter"); const duration = 1800; function animateCounter(counter) { const target = parseInt( counter.getAttribute("data-target"), 10 ); const startTime = performance.now(); function updateCounter(currentTime) { const elapsed = currentTime - startTime; const progress = Math.min( elapsed / duration, 1 ); /* * Smooth ease-out animation */ const easedProgress = 1 - Math.pow(1 - progress, 3); const currentValue = Math.floor( target * easedProgress ); counter.textContent = currentValue.toLocaleString(); if (progress < 1) { requestAnimationFrame(updateCounter); } else { counter.textContent = target.toLocaleString(); } } requestAnimationFrame(updateCounter); } /* * Run animation when stats become visible */ if ("IntersectionObserver" in window) { const observer = new IntersectionObserver( function (entries, observer) { entries.forEach(function (entry) { if (entry.isIntersecting) { counters.forEach(function (counter) { animateCounter(counter); }); observer.disconnect(); } }); }, { threshold: 0.25 } ); observer.observe( document.querySelector(".stats-section") ); } else { counters.forEach(function (counter) { animateCounter(counter); }); } }); </script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% load static %}
+<div class="header-main">
+
+    <div class="container col-sm-12 flex items-center justify-between header-width-768" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center;">
+
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <a href="{% url 'websites' %}" class="header-logo flex items-center">
+                <div class="relative h-[42px] w-auto max-w-[120px] lg:h-[50px] lg:max-w-[200px]">
+                    <!--  -->
+                    {% if org_data and org_data.org_logo %}
+                        <img class="header-logos"
+                            src="{{ org_data.org_logo.url }}"
+                            alt="Company Logo"
+                            class="h-full w-auto object-contain"
+                            loading="eager">
+                    {% else %}
+                        <img class="header-logos" src="{% static 'images/company_logo/com_logo.png' %}" alt="Company Logo" class="h-full w-auto object-contain" loading="eager">    
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        <!--  -->
+        <div class="header-user-actions col-sm-8 flex items-center justify-center">
+            
+            <nav>
+                <ul>
+                    <li><a href="{% url 'websites' %}#home" class="nav-link active">Home</a></li>
+                    <li><a href="{% url 'websites' %}#services" class="nav-link">Services</a></li>
+                    <li><a href="{% url 'websites' %}#portfolio" class="nav-link">Portfolio</a></li>
+                    <li><a href="{% url 'websites' %}#packages" class="nav-link">Packages</a></li>
+                    <li><a href="{% url 'websites' %}#training" class="nav-link">Training</a></li>
+                    <li><a href="{% url 'websites' %}#bookus" class="nav-link">Book Us</a></li>
+                    <li><a href="{% url 'websites' %}#whyus" class="nav-link">Why Us</a></li>
+                    <li><a href="{% url 'websites' %}#about" class="nav-link">About</a></li>
+                    <!--  -->
+                    
+                </ul>
+            </nav>
+            
+        </div>
+        <!--  -->
+        <!--  -->
+        <!-- Profile Portal -->
+        <div class="profile-portal col-sm-2 flex items-center justify-center {% if user.is_authenticated %}auth-width{% else %}guest-width{% endif %} flex-box">
+            <a href="#logout/confirmation" class="profile-link" style="display:flex;align-items:center;justify-content:center;">
+                <button class="action-btn" style="background:transparent;">
+                    {% if user.is_authenticated and user.profile_img %}
+                        <img src="{{ user.profile_img.url }}" style="display:flex;border-radius:50%;width:3rem;height:3rem; align-items:center;justify-content:center;background:transparent; color:#4c3b3b;border:1px solid #bbbbbb;overflow:hidden;" alt="Profile Image">
+                    {% else %}
+                        {% if not user.is_authenticated %}
+                            <li>
+                                <a href="/accounts/login/" class="nav__link" style="padding: 0; border-bottom: 0; color: #c3c3c3; text-decoration: none;">
+                                    <span class="title" style="margin-bottom: 0px; padding-bottom: 0px; text-decoration: none; border-bottom: 0px solid; color: #c3c3c3;">Sign In</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <button class="action-btn" style="display:flex;border-radius:50%;width:3rem;height:3rem; align-items:center;justify-content:center;background:transparent; color:#4c3b3b;border:1px solid #bbbbbb;overflow:hidden;">
+                                <ion-icon name="person-outline"></ion-icon>
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- log out modal start -->
+<div id="logout/confirmation" class="modal_body">
+    <div class="modalcontent">
+        <div class="toggle">
+            {% if user.is_authenticated %}
+                <h1 style="display: flex; font-size: 0.7rem; color: #c3c3c3; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: flex-start; align-items: center; margin-bottom: 0;">{{ user.first_name }} {{ user.last_name }}</h1>
+            {% endif %}
+        </div>
+        <ul>
+            <!--  -->
+            {% if user.is_authenticated %}
+                {% if user.is_admin %}
+                    <li>
+                        <a href="/accounts/profile/" style="color: #c3c3c3;">
+                            <span class="icon"><i class="bx bxs-shield-plus" aria-hidden="true"></i></span>
+                            <span class="title" style="margin-bottom: 0px; padding-bottom: 0px; color: #c3c3c3;">Admin Panel</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="/orders_listed/" class="orderList_by_user" data-id="{{ user.user_id }}" style="color: #c3c3c3;">
+                        <span class="icon"><i class="bx bx-list-ul" aria-hidden="true"></i></span>
+                        <span class="title" style="margin-bottom: 0px; padding-bottom: 0px; color: #c3c3c3;">Order List</span>
+                    </a>
+                </li>
+                <!--  -->
+                {% if user.is_admin %}
+                    <li>
+                        <a href="/inquires_listed/" class="inquireList_by_user" data-id="{{ user.user_id }}" style="color: #c3c3c3;">
+                            <span class="icon"><i class="bx bx-calendar-edit" aria-hidden="true"></i></span>
+                            <span class="title" style="margin-bottom: 0px; padding-bottom: 0px; color: #c3c3c3;">Inquire List</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <!--  -->
+                <li>
+                    <a href="{% url 'enroll_listed' %}" class="trainingList_by_user" data-id="{{ user.user_id }}" style="color: #c3c3c3;">
+                        <span class="icon"><i class="bx bx-briefcase-alt" aria-hidden="true"></i></span>
+                        <span class="title" style="margin-bottom: 0px; padding-bottom: 0px; color: #c3c3c3;">Enroll List</span>
+                    </a>
+                </li>
+                <!--  -->
+                <li>
+                    <a href="{% url 'logout' %}" style="color: #c3c3c3;">
+                        <span class="icon"><i class='bx bx-log-out bx-flip-horizontal' aria-hidden="true"></i></span>
+                        <span class="title" style="margin-bottom: 0px; padding-bottom: 0px; color: #c3c3c3;">Sign Out</span>
+                    </a>
+                </li>
+            {% endif %}
+            <!--  -->
+        </ul>
+        <a href="#" class="modalclose">&times;</a>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+{% load static %}
+<div class="package-wrapper">
+    <div class="package-intro">
+        <h1 class="package-header">FIND THE RIGHT TRAINING PACKAGES</h1>
+
+        <p class="package-description">
+            We believe in transparency and clarity, which is why our pricing is
+            straightforward and easy to understand.
+        </p>
+    </div>
+
+    <!-- LOOP START -->
+    {% for item in enroll_data %}
+
+    <div class="package-card {% if item.is_most_popular %}popular{% endif %}"
+        style="background: #484848; color: #c3c3c3">
+        <!-- TITLE -->
+        <div class="package-title">{{ item.enroll_title }}</div>
+
+        <!-- CAPTION -->
+        <div class="package-info">{{ item.enroll_caption }}</div>
+
+        <!-- PRICE -->
+        <div class="package-price">
+
+            {% if item.is_offer_price %}
+            <!-- Original Price (Cut) -->
+            <span style="text-decoration: line-through; color: #999;">
+                ৳{{ item.enroll_price }}
+            </span>
+
+            <!-- Offer Price -->
+            <span style="color: #00ffcc; font-weight: bold;">
+                ৳{{ item.offer_price }}
+            </span>
+
+            {% elif item.is_enroll_price %}
+            <!-- Normal Price -->
+            <span style="color: #00ffcc; font-weight: bold;">
+                ৳{{ item.enroll_price }}
+            </span>
+            {% endif %}
+
+            <span style="color: #c3c3c3"> / Course</span>
+        </div>
+
+        <!-- FEATURES -->
+        <ul class="package-features">
+            {% for dtls in item.enroll2enrolldtls.all %}
+            {% if dtls.is_published %}
+            <li>{{ dtls.enroll_dtls }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        <!-- BUTTON -->
+        <button class="btn package-btn showEnrollDtlsModal" data-enroll_id="{{ item.enroll_id }}">
+            Enroll Details
+        </button>
+    </div>
+
+    {% endfor %}
+    <!-- LOOP END -->
+</div>
+
+<script>
+    $(document).on('click', '.showEnrollDtlsModal', function () {
+        var enrollId = $(this).data('enroll_id');
+
+        var url = "/show_enroll_details_modal/" + enrollId + "/";
+
+        modal_md("Show Package Details", url);
+    });
+</script>

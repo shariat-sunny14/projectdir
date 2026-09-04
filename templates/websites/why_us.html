@@ -1,0 +1,100 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<!--- HEADER -->
+<header style="border-bottom: 1px solid var(--cultured)">
+  <!-- SUB-HEADER -->
+  <!--- HEADER -->
+  {% include 'websites/sub_header.html' %}
+  <!--- HEADER -->
+</header>
+
+<section style="margin-top: 5rem; color: #c3c3c3; background: #313131;">
+  <div
+    class="whyus-body"
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+    "
+  >
+    <div class="bookus-body container" style="margin-bottom: 5rem">
+      <div class="bookus-intro">
+        <h1 class="bookus-header">FREQUENTLY ASKED QUESTIONS</h1>
+        <!--  -->
+        <p class="bookus-description">
+          We’ve curated these questions based on our years of experience, and
+          we’ve tried to anticipate the queries that we get asked most
+          frequently by our clients.
+        </p>
+      </div>
+      <!--  -->
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <div class="accordion" style="width: 100%; max-width: 100%; border: hidden">
+      {% for faq in faqs %}
+      <div class="accordion-container" style="padding: 5px; border-left: hidden; border-right: hidden">
+        <div class="accordion-item" style="border: hidden; background: #5a5a5a">
+          <button class="accordion-header">
+            {{ faq.question }}
+            <span class="icon">+</span>
+          </button>
+
+          <div class="accordion-content">
+            <div class="accordion-body">
+              {{ faq.answer }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!--  -->
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+{% include 'websites/footer.html' %} 
+<script>
+  document.querySelectorAll(".accordion-header").forEach(header => {
+
+    header.addEventListener("click", function () {
+
+        const item = this.parentElement;
+        const content = item.querySelector(".accordion-content");
+        const icon = this.querySelector(".icon");
+
+        const isOpen = this.classList.contains("active");
+
+        // close all
+        document.querySelectorAll(".accordion-header").forEach(h => {
+            h.classList.remove("active");
+            h.querySelector(".icon").innerText = "+";
+        });
+
+        document.querySelectorAll(".accordion-content").forEach(c => {
+            c.classList.remove("show");
+        });
+
+        // open current
+        if (!isOpen) {
+            this.classList.add("active");
+            content.classList.add("show");
+            icon.innerText = "−";
+        }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<style>
+
+/* ===== Wrapper ===== */
+.fb-wrapper {
+    max-width: 700px;
+    margin: auto;
+}
+
+/* ===== Card ===== */
+.fb-card {
+    margin-top: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+/* ===== Header ===== */
+.fb-header {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    margin-bottom: 20px;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.fb-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ===== Buttons ===== */
+.fb-btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.fb-btn-back {
+    background: #6c757d;
+    color: #fff;
+}
+
+.fb-btn-sync {
+    background: #1877f2;
+    color: #fff;
+}
+
+.fb-btn-save {
+    background: #28a745;
+    color: #fff;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.fb-btn:hover {
+    opacity: 0.85;
+}
+
+/* ===== Form Styling ===== */
+.fb-form label {
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.fb-form input,
+.fb-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.fb-form textarea {
+    resize: vertical;
+}
+
+/* ===== Divider ===== */
+.fb-divider {
+    margin: 20px 0;
+    border-top: 1px solid #eee;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="fb-wrapper">
+
+    <div class="fb-card">
+
+        <!-- Header -->
+        <div class="fb-header">
+            <div class="fb-title">⚙ Facebook Access Control Settings</div>
+
+            <div style="margin-top: 1rem; display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap;">
+                <div>
+                    <a href="{% url 'facebook_posts_sync' %}" class="fb-btn fb-btn-sync">
+                        🔄 Back to Sync
+                    </a>
+                </div>
+                <div>
+                    <a href="https://developers.facebook.com" target="_blank" class="fb-btn btn-info text-white">
+                        FB Access ID & Token
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+
+        <div class="fb-divider"></div>
+
+        <!-- Form -->
+        <form method="post" class="fb-form">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="fb-btn fb-btn-save">
+                💾 Save Settings
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

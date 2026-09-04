@@ -1,0 +1,67 @@
+<div class="social-wrapper">
+  <div class="social-links">
+    {% if org_data and org_data.fb_link %}
+        <a href="{{ org_data.fb_link }}" target="_blank" rel="noopener noreferrer" class="facebook">
+        <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+    {% endif %}
+
+    {% if org_data and org_data.twitter_link %}
+        <a href="{{ org_data.twitter_link }}" target="_blank" rel="noopener noreferrer" class="twitter">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+    {% endif %}
+
+    {% if org_data and org_data.linkedin_link %}
+        <a href="{{ org_data.linkedin_link }}" target="_blank" rel="noopener noreferrer" class="linkedin">
+            <ion-icon name="logo-linkedin"></ion-icon>
+        </a>
+    {% endif %}
+
+    {% if org_data and org_data.instagram_link %}
+        <a href="{{ org_data.instagram_link }}" target="_blank" rel="noopener noreferrer" class="instagram">
+            <ion-icon name="logo-instagram"></ion-icon>
+        </a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- WHATSAPP CHAT BOX -->
+
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">Chat with us on WhatsApp</div>
+
+  <div class="chat-body">
+    <textarea id="message" placeholder="Type your message..."></textarea>
+
+    <button class="chat-send" onclick="sendWhatsApp()">Send</button>
+  </div>
+</div>
+
+<!-- WHATSAPP ICON -->
+
+<div class="whatsapp-btn" onclick="toggleChat()">
+  <ion-icon name="logo-whatsapp"></ion-icon>
+</div>
+
+<script>
+  function toggleChat() {
+    let box = document.getElementById("chatBox");
+
+    if (box.style.display == "block") {
+      box.style.display = "none";
+    } else {
+      box.style.display = "block";
+    }
+  }
+
+  function sendWhatsApp() {
+    let message = document.getElementById("message").value;
+
+    let phone = "+8801713464606";
+
+    let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank");
+  }
+</script>

@@ -1,0 +1,148 @@
+{% load static %}
+
+<!-- ABOUT US -->
+<div class="about-header">
+  <h1 class="about_h1">
+    {% if about %}
+      {{ about.header }}
+    {% else %}
+      No ABOUT US Found
+    {% endif %}
+  </h1>
+
+  <p class="about_p">
+    {% if about %}
+      {{ about.description }}
+    {% else %}
+      No About Content Found
+    {% endif %}
+  </p>
+</div>
+
+
+<!-- TEAM -->
+<div class="team-container" style="width: 100%; margin-bottom: 5rem">
+  <div class="section-title">
+    <h2 style="font-size: 1.5rem; color: #c3c3c3; font-family: time">
+      OUR TEAM
+    </h2>
+    <p style="font-size: 1.5rem; font-family: time; color: #c3c3c3;">
+      Founding Members
+    </p>
+  </div>
+
+  <div class="team-grid">
+
+    {% for member in team_members %}
+    <div class="team-card">
+      <img src="{{ member.image.url }}" alt="" />
+
+      <h3>{{ member.name }}</h3>
+      <span>{{ member.designation }}</span>
+
+      <div class="social-icons">
+
+        {% if member.facebook %}
+        <a href="{{ member.facebook }}" target="_blank">
+          <i class="fab fa-facebook"></i>
+        </a>
+        {% endif %}
+
+        {% if member.linkedin %}
+        <a href="{{ member.linkedin }}" target="_blank">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        {% endif %}
+
+        {% if member.twitter %}
+        <a href="{{ member.twitter }}" target="_blank">
+          <i class="fab fa-twitter"></i>
+        </a>
+        {% endif %}
+
+      </div>
+    </div>
+    {% empty %}
+    <p>No Team Member Found</p>
+    {% endfor %}
+
+  </div>
+</div>
+
+
+<!-- Awards -->
+<div class="team-container" style="width: 100%; margin-bottom: 5rem">
+  <div class="section-title">
+    <h2 style="font-size: 1.5rem; color: #c3c3c3; font-family: time">
+      Awards
+    </h2>
+  </div>
+
+  <div class="team-grid">
+    {% for item in my_awards %}
+    <div class="team-card">
+      <img src="{{ item.image.url }}" 
+           alt="" 
+           style="height: 100%; width: 100%; border-radius: 1rem;">
+    </div>
+    {% empty %}
+    <p>No Awards Found</p>
+    {% endfor %}
+  </div>
+</div>
+
+
+<!-- certificate -->
+<div class="team-container" style="width: 100%; margin-bottom: 5rem">
+  <div class="section-title">
+    <h2 style="font-size: 1.5rem; color: #c3c3c3; font-family: time">
+      Certificates
+    </h2>
+  </div>
+
+  <div class="team-grid">
+    {% for item in my_certificates %}
+    <div class="team-card">
+      <img src="{{ item.image.url }}" 
+           alt="" 
+           style="height: 100%; width: 100%; border-radius: 1rem;">
+    </div>
+    {% empty %}
+    <p>No Certificates Found</p>
+    {% endfor %}
+  </div>
+</div>
+
+
+<!-- LIFE AT TBOX -->
+<div class="life_at" style="margin-bottom: 5rem">
+  <div class="section-title">
+    <h2>
+      {% if Life_at %}
+        {{ Life_at.header }}
+      {% else %}
+        No Life at Found
+      {% endif %}
+    </h2>
+  </div>
+
+  <div class="life-grid">
+
+    <div class="life_at_descrip">
+      <p>
+        {% if Life_at %}
+          {{ Life_at.description }}
+        {% else %}
+          No Life Content Found
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="youtube_videos">
+      {% if Life_at %}
+        {{ Life_at.iframe_code|safe }}
+      {% endif %}
+    </div>
+
+  </div>
+</div>

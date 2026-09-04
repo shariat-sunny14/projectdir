@@ -1,0 +1,232 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'user_setup_style/css/user_setup_style.css' %}">
+<link rel="stylesheet" href="{% static 'photo_gallery/css/photo_gallery.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'photo_gallery/js/photo_gallery.js' %}"></script>
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #639745d8;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head"
+                        style="display:flex; align-items: center; border-bottom: none;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bxl-trello text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Photo Gallery List</h1>
+                        </div>
+                        <!--  -->
+                        <div
+                            style="width: 20%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-evenly;">
+                            <div
+                                style="width: 10%; float: right; display: flex; justify-content: center; text-align: center; align-items: center; flex-direction: row; flex-wrap: nowrap;">
+                                <button id="addPhotoGallery" class="btn text-white btn-xs moduleBtn"
+                                    style="font-weight: bolder; box-shadow: 4px 2px 5px 2px #639745d8; border-radius: 0.7rem; border: 1.5px solid #fff; font-size: 0.8rem;">
+                                    Add Photo Gallery
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <section style="margin-left: 0.5rem; margin-right: 0.5rem;">
+                <div class="module-table">
+                    <table id="pglist_table" class="table table-striped table-hover"
+                        style="width: 100%; border: 1px solid #639745a9;">
+                        <thead class="text-center table-header_itemlist" style="background: #639745a9;">
+                            <tr>
+                                <th style="text-align:center; width: 3%;">
+                                    Sl
+                                </th>
+                                <th style="text-align:center;">
+                                    Gallery ID
+                                </th>
+                                <th style="text-align:center;">
+                                    Gallery Name
+                                </th>
+                                <th style="text-align:center;">
+                                    Thumbnail Title
+                                </th>
+                                <th style="text-align:center;">
+                                    Descriptions
+                                </th>
+                                <th style="text-align:center; width: 8%;">
+                                    Option
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="PHGLISTTB" style="text-align:center; font-size: 0.8rem">
+                            <!--  -->
+
+                        </tbody>
+
+                        <!-- loader start -->
+                        <div class="loader"></div>
+                        <!-- loader end -->
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
+</main>
+<script>
+    $(document).ready(function() {
+
+        $(document).on("click", ".delete-gallery", function() {
+            var galleryId = $(this).data("id");
+            var btn = $(this);
+
+            if (!confirm("Are you sure you want to delete this gallery?")) return;
+
+            $.ajax({
+                url: "{% url 'delete_gallery' %}",
+                type: "POST",
+                data: {
+                    'gallery_id': galleryId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+
+    });
+
+    ///////////////////////////////////////////////////////////////
+    $(document).ready(function () {
+
+        loadGalleryList();
+
+        function loadGalleryList() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/get_photo_gallery_list/',
+                success: function (data) {
+
+                    if ($.fn.DataTable.isDataTable('#pglist_table')) {
+                        $('#pglist_table').DataTable().destroy();
+                    }
+
+                    updateGalleryTable(data);
+
+                    $('#pglist_table').DataTable({
+                        ordering: false
+                    });
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function updateGalleryTable(data) {
+
+            var tableBody = $('#PHGLISTTB');
+            tableBody.empty();
+
+            if (!data.data || data.data.length === 0) {
+                tableBody.append(`
+                    <tr>
+                        <td colspan="6" class="text-center text-danger">
+                            No Data Found
+                        </td>
+                    </tr>
+                `);
+                return;
+            }
+
+            $.each(data.data, function (index, pgallery) {
+
+                var rowHtml = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${pgallery.phgallery_id}</td>
+                        <td>${pgallery.gallery_name || ''}</td>
+                        <td>${pgallery.thumbnail_title || ''}</td>
+                        <td>${pgallery.descriptions || ''}</td>
+                        <td>
+                            <button type="button" 
+                                class="btn btn-warning btn-xs text-white edit-gallery" 
+                                data-id="${pgallery.phgallery_id}">
+                                <i class='bx bx-edit'></i>
+                            </button>
+
+                            <button type="button" 
+                                class="btn btn-danger btn-xs text-white delete-gallery" 
+                                data-id="${pgallery.phgallery_id}">
+                                <i class='bx bx-trash'></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                tableBody.append(rowHtml);
+            });
+        }
+
+    });
+    //
+    //
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            // document.body.removeChild("loader");
+        });
+    });
+
+    // loader start
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 500);
+    }
+    //loader end
+
+    $(document).on('click', '#addPhotoGallery', function () {
+        modal_xl("Add New Photo Gallery", "{% url 'add_new_photo_gallery_modal' %}");
+    });
+
+    // edit gallery
+    $(document).on('click', '.edit-gallery', function () {
+        var galleryId = $(this).data('id');
+        modal_xl("Edit Photo Gallery", "{% url 'edit_photo_gallery_modal' %}?phgallery_id=" + galleryId);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,1159 @@
+{% load static %}
+<div style=" display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+    <div class="bookus-body container">
+        <div class="bookus-intro">
+            <h1 class="bookus-header">BOOK A SHOOT</h1>
+            <!--  -->
+            <p class="bookus-description">
+                Thank you again for considering us as your wedding photographer &
+                Cinematographer. Fill out the form to book a shoot with us.
+            </p>
+        </div>
+        <!--  -->
+    </div>
+    <!--  -->
+    <!--  -->
+    <!-- Tabs -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('book')">
+                I want to book
+            </button>
+
+            <button class="tab-btn" onclick="openTab('inquire')">
+                I want to inquire
+            </button>
+        </div>
+     </div>
+    <!--  -->
+    <div class="tab-container">
+        <!-- Booking Section Tab Content -->
+        <div id="book" class="tab-content active" style="border: 0;">
+            <div class="form-wrapper">
+                <form id="multiStepForm" action="" method="" enctype="multipart/form-data">
+                    <!-- Step 1 -->
+                    <div class="form-step active">
+                        <h3 class="book-types-header required">1. What type of shoot you want to book?</h3>
+
+                        <div class="step-error"></div>
+
+                        <label class="book-types">
+                            Wedding
+                            <input type="checkbox" name="shoot_type[]" value="Wedding">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Gaye Holud
+                            <input type="checkbox" name="shoot_type[]" value="Gaye Holud">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Reception
+                            <input type="checkbox" name="shoot_type[]" value="Reception">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Post / Pre Wedding Outdoor
+                            <input type="checkbox" name="shoot_type[]" value="Outdoor">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Sonaton Wedding
+                            <input type="checkbox" name="shoot_type[]" value="Sonaton">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Birthday / Annaprashan
+                            <input type="checkbox" name="shoot_type[]" value="Birthday">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Corporate / Event Documentation
+                            <input type="checkbox" name="shoot_type[]" value="Corporate">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Music Video
+                            <input type="checkbox" name="shoot_type[]" value="Music Video">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        {% if user.is_authenticated %}
+                            <div class="btn-group-first">
+                                <button type="button" class="next-btn">Next</button>
+                            </div>
+                        {% else %}
+                            <div class="btn-group-first">
+                                <button type="button" onclick="toastr.error('Please sign in first to proceed with this booking.')">Next</button>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!--  -->
+                    <!--  -->
+                    <!--  -->
+                    <!-- Step 2 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">2. Please choose your event date from the schedule below</h3>
+                            <!-- Please mention all the dates of your event in (DD/MM/YYYY) format -->
+                        <div class="step-error"></div>
+                        
+                        <!-- <input type="text" name="event_dates" placeholder="Type your Answer Here (Eg. Holud - 01/01/2025 etc)" autofocus required> -->
+
+                        <!--  -->
+                        <!--  -->
+                        <!--  -->
+                        <div class="schedule-container">
+
+                            <h3>📅 Select Schedule (Date Range)</h3>
+
+                            <!-- Date Filter (Demo only) -->
+                            <div class="schedule-filter">
+                                <div class="schedule-input-group">
+                                    <label>From Date</label>
+                                    <input type="text" id="fromDate">
+                                </div>
+
+                                <div class="schedule-input-group">
+                                    <label>To Date</label>
+                                    <input type="text" id="toDate">
+                                </div>
+
+                                <div>
+                                    <button onclick="filterSchedule()">Show Schedule</button>
+                                </div>
+                            </div>
+
+                            <!-- Schedule List -->
+                            <div class="schedule-list" id="scheduleListContainer">
+                                <div class="schedule-empty">Loading schedules...</div>
+                            </div>
+
+                            <!-- Selected -->
+                            <div class="selected-schedule" id="selectedScheduleContainer">
+                                Selected Schedule: None
+                            </div>
+
+                        </div>
+
+                        <!--  -->
+                        <!--  -->
+                        <!--  -->
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">3. Venue Name (Please specify the location)</h3>
+                        
+                        <div class="step-error"></div>
+
+                        <input type="text" name="venue_name" placeholder="Type your Answer Here" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">4. Estimated guest number</h3>
+                        
+                        <div class="step-error"></div>
+
+                        <input type="text" name="guest_number" placeholder="Type your Approximate guest number Here" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header">5. What are some things I should know about you? (For couples, feel free to share your love story here!)</h3>
+
+                        <textarea name="about_you" placeholder="Type your Answer Here or Next" style="border-radius: 0.5rem; font-size: 0.9rem; height: 10rem;"></textarea>
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">6. Your Name</h3>
+                        
+                        <div class="step-error"></div>
+
+                        <input type="text" name="full_name" placeholder="FULL NAME" value="{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 7 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required" style="margin-bottom: 0rem;">7. Email</h3>
+                        <span style="font-size: 0.7rem; font-weight: 500;">Please Provide your Email Address</span>
+                        
+                        <div class="step-error"></div>
+
+                        <input type="email" name="email" placeholder="E-Mail" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+
+                    <!-- Step 8 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">8. Your Phone Number</h3>
+                        
+                        <div class="step-error"></div>
+
+                        <input type="text" name="phone_number" placeholder="+8801309-994317" value="{% if user.is_authenticated %}{{ user.phone_no }}{% endif %}" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 9 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">9. Please share the package name you want to book</h3>
+                        
+                        <div class="step-error"></div>
+
+                        <!-- <input type="text" name="package_name" placeholder="Type Your answer here" required> -->
+                        {% for package in package_data %}
+
+                            <label class="book-types">
+                                
+                                <div class="package-box">
+                                    <div class="package-title">
+                                        {{ package.package_title }}
+                                    </div>
+
+                                    <div class="package-price">
+
+                                        {% if package.is_offer_price %}
+                                            <span class="old-price">
+                                                ৳{{ package.package_price }}
+                                            </span>
+
+                                            <span class="offer-price">
+                                                ৳{{ package.offer_price }}
+                                            </span>
+
+                                        {% elif package.is_package_price %}
+                                            <span class="normal-price">
+                                                ৳{{ package.package_price }}
+                                            </span>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+
+                                <!-- value হবে package_id -->
+                                <input type="checkbox" name="package_type[]" value="{{ package.package_id }}">
+                                <span class="checkmark">✔</span>
+
+                            </label>
+
+                        {% endfor %}
+
+                        <!--  -->
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 10 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header">10. Tell me about what you have planned! The more detail the better</h3>
+
+                        <textarea name="your_planned" placeholder="Type your Answer Here or Next" style="border-radius: 0.5rem; font-size: 0.9rem; height: 10rem;"></textarea>
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 11 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">11. Will there be any Other Professional Team/Photographer friend? (If Yes, Please contact us before booking)</h3>
+
+                        <div class="step-error"></div>
+
+                        <label class="book-types">
+                            Yes
+                            <input type="radio" name="is_other_photographer" value="Yes">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            No
+                            <input type="radio" name="is_other_photographer" value="No">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 12 -->
+                    <div class="form-step">
+                        <h3 class="book-types-header required">12. How did you discover our work?</h3>
+
+                        <div class="step-error"></div>
+
+                        <label class="book-types">
+                            Facebook
+                            <input type="checkbox" name="discover_type[]" value="Facebook">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Client referral
+                            <input type="checkbox" name="discover_type[]" value="Client referral">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Instagram
+                            <input type="checkbox" name="discover_type[]" value="Instagram">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Friends
+                            <input type="checkbox" name="discover_type[]" value="Friends">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Google
+                            <input type="checkbox" name="discover_type[]" value="Google">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Photographer
+                            <input type="checkbox" name="discover_type[]" value="Photographer">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            YouTube
+                            <input type="checkbox" name="discover_type[]" value="YouTube">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            {% if org_data and org_data.org_name %} {{ org_data.org_name }} {% else %} Tbox {% endif %} Crew Referrals
+                            <input type="checkbox" name="discover_type[]" value="{% if org_data and org_data.org_name %} {{ org_data.org_name }} {% else %} Tbox {% endif %} Crew Referrals">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Others
+                            <input type="checkbox" name="discover_type[]" value="Others">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step last -->
+                    <div class="form-step">
+                        <h3 class="book-types-header">13. Comments</h3>
+
+                        <textarea name="comments" placeholder="Type your Answer Here" style="border-radius: 0.5rem; font-size: 0.9rem; height: 10rem;"></textarea>
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="submit" class="submit-btn">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /////////////////////////////////////////////////////////////////////////////// -->
+        <!-- /////////////////////////////////////////////////////////////////////////////// -->
+        <!-- /////////////////////////////////////////////////////////////////////////////// -->
+        <!--  -->
+        <!--  -->
+        <!-- ///////////////////////// Inquiry Section Tab Content ///////////////////////// -->
+        <!--  -->
+        <!--  -->
+        <!-- Inquiry Section Tab Content -->
+        <!-- /////////////////////////////////////////////////////////////////////////////// -->
+        <!-- /////////////////////////////////////////////////////////////////////////////// -->
+        <!-- /////////////////////////////////////////////////////////////////////////////// -->
+        <div id="inquire" class="tab-content">
+            <h2 style="display: flex; font-size: 1rem; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center; margin-bottom: 3rem;">For answers to common questions, please check out our <a href="{% url 'why_us' %}" target="_blank" rel="noopener noreferrer" style="margin-left: 5px; margin-right: 5px;">FAQ</a>section.</h2>
+            
+            <!--  -->
+            <!--  -->
+            <div class="form-wrapper">
+                <form id="inquireFrom" action="" method="" enctype="multipart/form-data">
+                    <!-- inquire 1 -->
+                    <div class="form-inquire active">
+                        <h3 class="book-types-header required">1. What type of shoot you are inquiring about?</h3>
+
+                        <div class="inquire-error"></div>
+
+                        <label class="book-types">
+                            Wedding
+                            <input type="checkbox" name="inquire_type[]" value="Wedding">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Gaye Holud
+                            <input type="checkbox" name="inquire_type[]" value="Gaye Holud">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Reception
+                            <input type="checkbox" name="inquire_type[]" value="Reception">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Post / Pre Wedding Outdoor
+                            <input type="checkbox" name="inquire_type[]" value="Outdoor">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Sonaton Wedding
+                            <input type="checkbox" name="inquire_type[]" value="Sonaton">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Birthday / Annaprashan
+                            <input type="checkbox" name="inquire_type[]" value="Birthday">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Corporate / Event Documentation
+                            <input type="checkbox" name="inquire_type[]" value="Corporate">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Music Video
+                            <input type="checkbox" name="inquire_type[]" value="Music Video">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Others
+                            <input type="checkbox" name="inquire_type[]" value="Others">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        {% if user.is_authenticated %}
+                            <div class="btn-group-first">
+                                <button type="button" class="next-btn">Next</button>
+                            </div>
+                        {% else %}
+                            <div class="btn-group-first">
+                                <button type="button" onclick="toastr.error('Please sign in first to proceed with this Inquiry.')">Next</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <!-- inquire 2 -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header required">2. Ask your questions here</h3>
+                        
+                        <div class="inquire-error"></div>
+
+                        <input type="text" name="your_questions" placeholder="Please type your question here" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <!-- inquire 3 -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header required">3. Tell me about what you have planned! The more detail the better</h3>
+                        
+                        <div class="inquire-error"></div>
+
+                        <input type="text" name="your_planned" placeholder="Please type your answer here" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <!-- inquire 4 -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header required">4. Your Name</h3>
+                        
+                        <div class="inquire-error"></div>
+
+                        <input type="text" name="full_name" placeholder="FULL NAME" value="{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <!-- inquire 5 -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header required">5. Email</h3>
+                        
+                        <div class="inquire-error"></div>
+
+                        <input type="email" name="email" placeholder="E-MAIL" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <!-- inquire 6 -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header required">6. Your Phone Number</h3>
+                        
+                        <div class="inquire-error"></div>
+
+                        <input type="number" name="phone_number" placeholder="+8801309-994317" value="{% if user.is_authenticated %}{{ user.phone_no }}{% endif %}" required />
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <!-- inquire 7 -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header required">7. How did you discover our work?</h3>
+
+                        <div class="inquire-error"></div>
+
+                        <label class="book-types">
+                            Facebook
+                            <input type="checkbox" name="discover_type[]" value="Facebook">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Client referral
+                            <input type="checkbox" name="discover_type[]" value="Client referral">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Instagram
+                            <input type="checkbox" name="discover_type[]" value="Instagram">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Friends
+                            <input type="checkbox" name="discover_type[]" value="Friends">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Google
+                            <input type="checkbox" name="discover_type[]" value="Google">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Photographer
+                            <input type="checkbox" name="discover_type[]" value="Photographer">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            YouTube
+                            <input type="checkbox" name="discover_type[]" value="YouTube">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            {% if org_data and org_data.org_name %} {{ org_data.org_name }} {% else %} Tbox {% endif %} Crew Referrals
+                            <input type="checkbox" name="discover_type[]" value="{% if org_data and org_data.org_name %} {{ org_data.org_name }} {% else %} Tbox {% endif %} Crew Referrals">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <label class="book-types">
+                            Others
+                            <input type="checkbox" name="discover_type[]" value="Others">
+                            <span class="checkmark">✔</span>
+                        </label>
+
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="button" class="next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- inquire last -->
+                    <div class="form-inquire">
+                        <h3 class="book-types-header">8. Comments</h3>
+
+                        <textarea name="inquire_comments" placeholder="Type your Answer Here" style="border-radius: 0.5rem; font-size: 0.9rem; height: 10rem;"></textarea>
+                        <div class="btn-group">
+                            <button type="button" class="prev-btn">Previous</button>
+                            <button type="submit" class="submit-btn">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--  -->
+        </div>
+    </div>
+
+    <!--  -->
+    <!-- footer section for booking -->
+    <div class="col-sm-12 address-container flex items-center justify-center">
+        <div class="col-sm-4">
+            <div class="address-info-item">
+                <i class="bx bx-location-pin address-icon"></i>
+                <h3 class="address-head">Our Office</h3>
+                <p class="address-info">
+                    {% if org_data and org_data.address %}
+                        {{ org_data.address }}
+                    {% else %}
+                    Sector#9, 2nd Floor, House#612, road#10, Uttara, Dhaka-1230, Bangladesh
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-sm-4">
+            <div class="address-info-item">
+                <i class="bx bx-phone address-icon"></i>
+                <h3 class="address-head">Phone</h3>
+                <p class="address-info">
+                    {% if org_data and org_data.phone %}
+                        {{ org_data.phone }}
+                    {% else %}
+                    +8801710XXXXXX
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-sm-4">
+            <div class="address-info-item">
+                <i class="bx bx-envelope address-icon"></i>
+                <h3 class="address-head">E-Mail</h3>
+                <p class="address-info">
+                    {% if org_data and org_data.email %}
+                        {{ org_data.email }}
+                    {% else %}
+                    tbox.info.bd@gmail.com
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <!--  -->
+    </div>
+
+</div>
+<script>
+    ////////////////////////////////////////////////////////////////////
+    /* ===== Demo Backend Schedule Data ===== */
+    $(function () {
+
+        var today = new Date();
+
+        $("#fromDate").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            minDate: 0,
+            onSelect: function () {
+                var minToDate = $(this).datepicker('getDate');
+                $("#toDate").datepicker("option", "minDate", minToDate);
+            }
+        }).datepicker("setDate", today);
+
+        $("#toDate").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeYear: true,
+            changeMonth: true,
+            minDate: today
+        }).datepicker("setDate", today);
+
+        let formattedToday = $.datepicker.formatDate('yy-mm-dd', today);
+        fetchSchedules(formattedToday, formattedToday);
+    });
+
+
+    // ================= FETCH =================
+    function fetchSchedules(from = null, to = null) {
+
+        let url = "/get_schedules/";
+        if (from && to) {
+            url += `?from_date=${from}&to_date=${to}`;
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => renderSchedules(data.schedules))
+            .catch(() => {
+                document.getElementById('scheduleListContainer').innerHTML =
+                    "<div class='schedule-empty'>Failed to load schedules</div>";
+            });
+    }
+
+
+    // ================= RENDER =================
+    function renderSchedules(schedules) {
+
+        const listEl = document.getElementById('scheduleListContainer');
+
+        if (!schedules.length) {
+            listEl.innerHTML = "<div class='schedule-empty'>No schedules found</div>";
+            return;
+        }
+
+        let html = "";
+
+        schedules.forEach(item => {
+
+            const isBooked = item.status === "Booked";
+
+            html += `
+                <div class="schedule-card ${isBooked ? 'schedule-booked' : ''}">
+                    
+                    <input type="checkbox"
+                        class="schedule-checkbox"
+                        name="selectedSchedule[]"
+                        value="${item.id}"
+                        data-date="${item.date}"
+                        data-title="${item.title}"
+                        ${isBooked ? 'disabled' : ''}>
+
+                    <div class="schedule-content">
+                        <div>${item.date} — ${item.title}</div>
+                        <small class="${isBooked ? 'status-booked' : 'status-free'}">
+                            ${item.status}
+                        </small>
+                    </div>
+
+                    <span class="schedule-checkmark">✔</span>
+                </div>
+            `;
+        });
+
+        listEl.innerHTML = html;
+
+        attachCardEvents();
+    }
+
+
+    // ================= FIXED CLICK HANDLER =================
+    function attachCardEvents() {
+
+        const cards = document.querySelectorAll('.schedule-card');
+
+        cards.forEach(card => {
+
+            const checkbox = card.querySelector('.schedule-checkbox');
+
+            if (checkbox.disabled) return;
+
+            card.addEventListener('click', function () {
+
+                checkbox.checked = !checkbox.checked;
+
+                if (checkbox.checked) {
+                    card.classList.add('schedule-selected');
+                } else {
+                    card.classList.remove('schedule-selected');
+                }
+
+                updateSelectedSchedule();
+            });
+        });
+    }
+
+
+    // ================= UPDATE SELECTED =================
+    function updateSelectedSchedule() {
+
+        const checkedItems = document.querySelectorAll('input[name="selectedSchedule[]"]:checked');
+        const container = document.getElementById('selectedScheduleContainer');
+
+        if (!checkedItems.length) {
+            container.innerHTML = "Selected Schedule: None";
+            return;
+        }
+
+        let html = "<strong>Selected Schedule:</strong><br>";
+
+        checkedItems.forEach(item => {
+            html += `${item.dataset.date} — ${item.dataset.title}<br>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+
+    // ================= FILTER =================
+    function filterSchedule() {
+
+        const fromDate = $("#fromDate").val();
+        const toDate = $("#toDate").val();
+
+        if (!fromDate || !toDate) {
+            toastr.error("Please select both dates");
+            return;
+        }
+
+        fetchSchedules(fromDate, toDate);
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    // openTab
+    ////////////////////////////////////////////////////////////////////
+    function openTab(tabName) {
+
+        let contents = document.querySelectorAll(".tab-content");
+        let buttons  = document.querySelectorAll(".tab-btn");
+
+        contents.forEach(content => {
+            content.classList.remove("active");
+        });
+
+        buttons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        document.getElementById(tabName).classList.add("active");
+
+        event.target.classList.add("active");
+
+    }
+
+    /////////////////////////////////////////////////////////////
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // BOOK FORM
+        initMultiStepForm({
+            formId: 'multiStepForm',
+            stepClass: '.form-step',
+            errorClass: '.step-error'
+        });
+
+        // INQUIRE FORM
+        initMultiStepForm({
+            formId: 'inquireFrom',
+            stepClass: '.form-inquire',
+            errorClass: '.inquire-error'
+        });
+
+    });
+
+    function initMultiStepForm(config) {
+
+        const form  = document.getElementById(config.formId);
+        const steps = form.querySelectorAll(config.stepClass);
+        const nextButtons = form.querySelectorAll('.next-btn');
+        const prevButtons = form.querySelectorAll('.prev-btn');
+
+        let currentStep = 0;
+
+        function showStep(n) {
+            steps.forEach(step => step.classList.remove('active'));
+            steps[n].classList.add('active');
+            currentStep = n;
+
+            // autofocus
+            setTimeout(() => {
+                const focusEl = steps[n].querySelector(
+                    "input:not([type=checkbox]), textarea"
+                );
+                if (focusEl) focusEl.focus();
+            }, 100);
+        }
+
+        function hideError(stepIndex) {
+            const errorEl = steps[stepIndex].querySelector(config.errorClass);
+            if (errorEl) {
+                errorEl.style.display = 'none';
+                errorEl.textContent = '';
+            }
+        }
+
+        function showError(stepIndex, message) {
+            const errorEl = steps[stepIndex].querySelector(config.errorClass);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+            }
+            return false;
+        }
+
+        function validateStep(stepIndex) {
+            const step = steps[stepIndex];
+            hideError(stepIndex);
+
+            // 1️⃣ checkbox validation
+            const checkboxes = step.querySelectorAll('input[type="checkbox"]');
+            if (checkboxes.length) {
+                const checked = step.querySelectorAll('input[type="checkbox"]:checked');
+                if (!checked.length) {
+                    return showError(stepIndex, "Please select at least one option.");
+                }
+                return true;
+            }
+
+            // 2️⃣ radio validation
+            const radios = step.querySelectorAll('input[type="radio"]');
+            if (radios.length) {
+                const checkedRadio = step.querySelector('input[type="radio"]:checked');
+                if (!checkedRadio) {
+                    return showError(stepIndex, "Please select one option.");
+                }
+                return true;
+            }
+
+            // 3️⃣ required fields
+            const requiredFields = step.querySelectorAll('input[required], textarea[required]');
+            for (const field of requiredFields) {
+                if (!field.value.trim()) {
+                    return showError(stepIndex, "This field is required.");
+                }
+            }
+
+            return true;
+        }
+
+        // NEXT
+        nextButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (validateStep(currentStep) && currentStep < steps.length - 1) {
+                    showStep(currentStep + 1);
+                }
+            });
+        });
+
+        // PREVIOUS
+        prevButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    showStep(currentStep - 1);
+                }
+            });
+        });
+
+        // SUBMIT
+        form.addEventListener('submit', e => {
+            if (!validateStep(currentStep)) {
+                e.preventDefault();
+                return;
+            }
+
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = {};
+
+            for (let [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    const cleanKey = key.replace('[]', '');
+                    if (!data[cleanKey]) data[cleanKey] = [];
+                    data[cleanKey].push(value);
+                } else {
+                    data[key] = value.trim();
+                }
+            }
+
+            console.log(config.formId, data);
+            toastr.success("Booking submitted successfully!");
+        });
+
+        // clear error on input
+        form.addEventListener('input', () => hideError(currentStep));
+
+        showStep(0);
+    }
+
+    //////////////////////////////////////////////
+    $(document).ready(function () {
+        $("#multiStepForm").on("submit", function (e) {
+            e.preventDefault(); // Prevent default form submit
+
+            const formData = {};
+
+            // Step 1: Shoot types
+            formData.shoot_type = $("input[name='shoot_type[]']:checked").map(function () {
+                return this.value;
+            }).get();
+
+            // Step 2: Selected schedule(s)
+            formData.selected_schedule_ids = $("input[name='selectedSchedule[]']:checked").map(function () {
+                return this.value;
+            }).get();
+
+            // Step 3–10
+            formData.venue_name = $("input[name='venue_name']").val();
+            formData.guest_number = $("input[name='guest_number']").val();
+            formData.about_you = $("textarea[name='about_you']").val();
+            formData.full_name = $("input[name='full_name']").val();
+            formData.email = $("input[name='email']").val();
+            formData.phone_number = $("input[name='phone_number']").val();
+            formData.your_planned = $("textarea[name='your_planned']").val();
+
+            // Step 9: Package selection
+            formData.package_ids = $("input[name='package_type[]']:checked").map(function () {
+                return this.value;
+            }).get();
+
+            // Step 11: Other photographer
+            formData.is_other_photographer = $("input[name='is_other_photographer']:checked").val() === "Yes";
+
+            // Step 12: Discover type
+            formData.discover_type = $("input[name='discover_type[]']:checked").map(function () {
+                return this.value;
+            }).get();
+
+            // Step 13: Comments
+            formData.comments = $("textarea[name='comments']").val();
+
+            // AJAX POST
+            $.ajax({
+                url: "{% url 'order_submit_api' %}",
+                type: "POST",
+                data: JSON.stringify(formData),
+                contentType: "application/json",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                success: function (response) {
+                    if (response.status === "success") {
+                        toastr.success(response.message);
+                        $("#multiStepForm")[0].reset();
+                        $(".form-step").removeClass("active");
+                        $(".form-step:first").addClass("active");
+                        $("#selectedScheduleContainer").text("Selected Schedule: None");
+
+                        // Reload the page to reflect the changes
+                        location.reload();
+
+                    } else {
+                        toastr.error("Error: " + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("AJAX Error: " + error);
+                }
+            });
+        });
+    });
+
+
+    //////////////////////////////////
+    $(document).ready(function () {
+
+        $("#inquireFrom").on("submit", function (e) {
+
+            e.preventDefault();
+
+            const formData = {};
+
+            // Shoot type
+            formData.inquire_type = $("input[name='inquire_type[]']:checked").map(function () {
+                return this.value;
+            }).get();
+
+            // Questions
+            formData.your_questions = $("input[name='your_questions']").val().trim();
+
+            // Planned
+            formData.your_planned = $("input[name='your_planned']").val();
+
+            // Name
+            formData.full_name = $("input[name='full_name']").val();
+
+            // Email
+            formData.email = $("input[name='email']").val();
+
+            // Phone
+            formData.phone_number = $("input[name='phone_number']").val();
+
+            // Discover type
+            formData.discover_type = $("input[name='discover_type[]']:checked").map(function () {
+                return this.value;
+            }).get();
+
+            // Comments
+            formData.inquire_comments = $("textarea[name='inquire_comments']").val().trim();
+
+
+            $.ajax({
+                url: "{% url 'save_inquire_api' %}",
+                type: "POST",
+                data: JSON.stringify(formData),
+                contentType: "application/json",
+
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+
+                success: function (response) {
+
+                    if (response.status === "success") {
+
+                        toastr.success(response.message);
+
+                        $("#inquireFrom")[0].reset();
+
+                        location.reload();
+
+                    } else {
+
+                        toastr.error(response.message);
+
+                    }
+
+                },
+
+                error: function () {
+
+                    toastr.error("Something went wrong");
+
+                }
+
+            });
+
+        });
+
+    });
+</script>

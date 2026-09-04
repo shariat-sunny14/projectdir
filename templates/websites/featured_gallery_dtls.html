@@ -1,0 +1,74 @@
+{% extends 'websites/base.html' %} 
+{% load crispy_forms_tags %} 
+{% load static %} 
+{% block extra_link %}
+<!--========== CSS ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<!--- HEADER -->
+<header style="border-bottom: 1px solid var(--cultured)">
+  <!-- SUB-HEADER -->
+  <!--- HEADER -->
+  {% include 'websites/sub_header.html' %}
+  <!--- HEADER -->
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+
+  {% if hero_image and hero_image.photos %}
+    <img src="{{ hero_image.photos.url }}" alt="Featured Image">
+  {% endif %}
+
+  <div class="hero-overlay">
+    <div class="container">
+      <h1 class="hero-title">
+        {{ gallery.thumbnail_title }}
+      </h1>
+    </div>
+  </div>
+
+</section>
+
+<!-- Description -->
+<section class="description-section">
+  <div class="container">
+    <h2 style="color: #c3c3c3">About This Collection</h2>
+    <p>
+      {{ gallery.descriptions }}
+    </p>
+  </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="gallery">
+  <div class="container">
+    <div class="gallery-grid">
+
+      {% for photo in photos %}
+        <div class="gallery-item">
+
+          {% if photo.photos %}
+            <img src="{{ photo.photos.url }}" alt="{{ photo.photos_title }}">
+          {% endif %}
+
+          <div class="gallery-info">
+            <h3>{{ photo.photos_title }}</h3>
+            <p>{{ photo.photo_description }}</p>
+          </div>
+
+        </div>
+      {% empty %}
+        <p>No Photos Found</p>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+{% include 'websites/footer.html' %}
+<!-- footer -->
+{% endblock %}

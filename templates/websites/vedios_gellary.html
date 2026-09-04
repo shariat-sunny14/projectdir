@@ -1,0 +1,10 @@
+{% load static %}
+<div class="youtube_gallery_container">
+    {% for video in yt_videos %}
+    <div class="youtube_videos">
+        <div class="iframe-container">
+            {{ video.iframe_code|safe }}
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    {% load static %}
+
+    <!----===== Boxicons CSS ===== -->
+    <link rel="stylesheet" href="{% static 'assets/boxicons-2.1.4/css/boxicons.min.css' %}">
+
+    <!--========== FAVICON ICONS ==========-->
+    <link rel="shortcut icon" href="{% static 'fav_icon/favicon.ico' %}">
+
+    <!--========== Bootstrap link ==========-->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+
+    <!-- jQuery CDN -->
+    <script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+
+    <!-- toastr js -->
+    <link rel="stylesheet" href="{% static 'assets/toastr/css/toastr.min.css' %}">
+    <script src="{% static 'assets/toastr/js/toastr.min.js' %}"></script>
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" type="text/css" href="{% static 'logger_style/login_theme.css' %}">
+    <title>TBOX</title>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="container" id="container">
+
+            <!-- ===== SIGN UP ===== -->
+            <div class="form-container sign-up-container">
+                <form action="" method="" id="registerForm">
+                    <h1 class="form-title">Create Account</h1>
+                    <input type="text" id="id_reg_first_name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="id_reg_last_name" name="last_name" placeholder="Last Name" required>
+                    <input type="text" id="id_reg_username" name="username" placeholder="Enter your User Name" required>
+                    <input type="tel" id="id_reg_phone" name="phone" placeholder="Phone Number" required>
+                    <input type="email" id="id_reg_email" name="email" placeholder="Email" required>
+                    <input type="password" id="id_reg_password" name="password" placeholder="Password" required>
+                    <span id="message"></span>
+                    <button type="submit" class="btn-main">Sign Up</button>
+
+                    <p class="mobile-switch">
+                        Already have an account?
+                        <a href="#" id="mobileSignIn">Sign In</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- ===== SIGN IN ===== -->
+            <div class="form-container sign-in-container">
+                <form action="" method="" id="loginForm">
+                    <h1 class="form-title">Sign in</h1>
+
+                    <input type="text" id="id_username" name="username"
+                        placeholder="Enter your User Name" autofocus
+                        autocapitalize="none" autocomplete="off" maxlength="50" required>
+
+                    <input type="password" id="id_password" name="password"
+                        class="password" placeholder="Enter your Password"
+                        autocomplete="off" required>
+
+                    <div class="forgot-container">
+                        <a href="#" id="forgotBtn" style="color: #ff6a00;">Forgot Your password?</a>
+                        <a href="/web/sites/#home" style="color: green;">Website</a>
+                    </div>
+
+                    <!-- STEP 1 EMAIL -->
+                    <div id="emailBox" class="reset-step">
+                        <input type="email" id="reset_email" placeholder="Enter your email">
+                        <button type="button" id="sendOtpBtn">Send Code</button>
+                    </div>
+
+                    <!-- STEP 2 OTP -->
+                    <div id="otpBox" class="reset-step">
+                        <input type="text" id="otp_code" placeholder="Enter verification code">
+                        <button type="button" id="verifyOtpBtn">Verify Code</button>
+                    </div>
+
+                    <!-- STEP 3 PASSWORD -->
+                    <div id="passwordBox" class="reset-step reset-step--column">
+                        <input type="password" id="new_password" placeholder="New password">
+                        <input type="password" id="confirm_password" placeholder="Confirm password">
+                        <button type="button" id="changePassBtn">Change Password</button>
+                    </div>
+
+                    <button type="submit" class="btn-main">Sign In</button>
+
+                    <p class="mobile-switch">
+                        Don't have an account?
+                        <a href="#" id="mobileSignUp">Sign Up</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- ===== DESKTOP OVERLAY (hidden on mobile) ===== -->
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Welcome Back!</h1>
+                        <p>To keep connected with us please login with your personal info</p>
+                        <button class="ghost" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Enter your personal details and start journey with us</p>
+                        <button class="ghost" id="signUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            Copyright &copy; TBOX <span id="currentYear"></span>. All Rights Reserved. Software Versions: 1.0.0
+        </p>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+
+            /* GET CSRF TOKEN FROM COOKIE */
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            const csrftoken = getCookie('csrftoken');
+
+            /* FORGOT PASSWORD CLICK */
+            $("#forgotBtn").click(function (e) {
+                e.preventDefault();
+                $(".reset-step").removeClass('active');
+                $("#emailBox").addClass('active');
+            });
+
+            /* SEND OTP */
+            $("#sendOtpBtn").click(function () {
+                let email = $("#reset_email").val();
+
+                $.ajax({
+                    url: '/send-reset-otp/',
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrftoken },
+                    data: JSON.stringify({ email: email }),
+                    contentType: "application/json",
+                    success: function (res) {
+                        if (res.status == "success") {
+                            toastr.success("OTP sent to email");
+                            $("#emailBox").removeClass('active');
+                            $("#otpBox").addClass('active');
+                        } else {
+                            toastr.error(res.message);
+                        }
+                    }
+                });
+            });
+
+            /* VERIFY OTP */
+            $("#verifyOtpBtn").click(function () {
+                let email = $("#reset_email").val();
+                let otp = $("#otp_code").val();
+
+                $.ajax({
+                    url: '/verify-reset-otp/',
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrftoken },
+                    data: JSON.stringify({ email: email, otp: otp }),
+                    contentType: "application/json",
+                    success: function (res) {
+                        if (res.status == "success") {
+                            $("#otpBox").removeClass('active');
+                            $("#passwordBox").addClass('active');
+                        } else {
+                            toastr.error("Invalid Code");
+                        }
+                    }
+                });
+            });
+
+            /* CHANGE PASSWORD */
+            $("#changePassBtn").click(function () {
+                let email = $("#reset_email").val();
+                let pass1 = $("#new_password").val();
+                let pass2 = $("#confirm_password").val();
+
+                if (pass1 !== pass2) {
+                    toastr.error("Password not match");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/change-password/',
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrftoken },
+                    data: JSON.stringify({ email: email, password: pass1 }),
+                    contentType: "application/json",
+                    success: function (res) {
+                        if (res.status == "success") {
+                            toastr.success("Password changed successfully");
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
+        });
+
+        ////////////////////////////////////////////////////////////////////////////
+        // Panel switch (desktop overlay buttons + mobile text links)
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const mobileSignUp = document.getElementById('mobileSignUp');
+        const mobileSignIn = document.getElementById('mobileSignIn');
+        const container = document.getElementById('container');
+
+        function showSignUp() { container.classList.add("right-panel-active"); }
+        function showSignIn() { container.classList.remove("right-panel-active"); }
+
+        signUpButton.addEventListener('click', showSignUp);
+        signInButton.addEventListener('click', showSignIn);
+
+        mobileSignUp.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSignUp();
+        });
+
+        mobileSignIn.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSignIn();
+        });
+
+        ////////////////////////////////////////////////////////////////////////////
+        // Set the current year dynamically
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        ////////////////////////////////////////////////////////////////////////////
+        // Login with Ajax
+        $(document).ready(function () {
+            $('#loginForm').submit(function (e) {
+                e.preventDefault();
+
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                    url: "{% url 'user_wise_login' %}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (resp) {
+                        if (resp.msg) {
+                            toastr.success(resp.msg);
+                            window.location.href = "/web/sites/";
+                        } else {
+                            toastr.error(resp.errmsg);
+                        }
+                    }
+                });
+            });
+        });
+
+        ////////////////////////////////////////////////////////////////////////////
+        // Register with Ajax
+        $(document).ready(function () {
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var formData = {
+                    first_name: $('#id_reg_first_name').val(),
+                    last_name: $('#id_reg_last_name').val(),
+                    username: $('#id_reg_username').val(),
+                    phone: $('#id_reg_phone').val(),
+                    email: $('#id_reg_email').val(),
+                    password: $('#id_reg_password').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'register_user' %}",
+                    data: formData,
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            $('#message').css('color', 'green').text(response.message);
+                            $('#registerForm')[0].reset();
+                        } else {
+                            $('#message').css('color', 'red').text(response.message);
+                        }
+                    },
+                    error: function () {
+                        $('#message').css('color', 'red').text('Something went wrong. Try again!');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

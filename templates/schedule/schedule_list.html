@@ -1,0 +1,272 @@
+{% extends 'base_form/main_base/main_base.html' %} 
+{% load crispy_forms_tags %}
+{% load static %} 
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'user_setup_style/css/user_setup_style.css' %}">
+<link rel="stylesheet" href="{% static 'module_setup_style/css/module_setup_style.css' %}">
+<link rel="stylesheet" href="{% static 'schedule/css/schedule.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'module_setup_style/js/module_setup.js' %}"></script>
+
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<div class="loader"></div>
+<!-- loader end -->
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #978f45d8;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head"
+                        style="display:flex; align-items: center; border-bottom: none;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bxs-calendar text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Schedule List</h1>
+                        </div>
+                        <!--  -->
+                        <div style="width: 22%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-evenly;">
+                            <div style="width: 100%; float: right; display: flex; justify-content: center; text-align: center; align-items: center; flex-direction: row; flex-wrap: nowrap;">
+                                <button id="addScheduleModal" class="btn text-white btn-xs moduleBtn"
+                                    style="width: 15%; font-weight: bolder; box-shadow: 4px 2px 5px 2px #978f45d8; border-radius: 0.7rem; border: 1.5px solid #fff; font-size: 0.8rem;">
+                                    Add Schedule
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <div class="col-xl-12" style="width: 98.7%; margin-top: 1rem; margin-left: 0.5rem; margin-right: 0.5rem;">
+                <!--  -->
+                <div class="module-table">
+                    <!--  -->
+                    <div class="filter-rangs">
+                        <div class="form-row col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: flex-start; align-items: center; margin-bottom: 20px;">
+                            <div class="formGroups col-sm-4" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center;">
+                                <label class="labelClass col-auto" for="from_date" style="margin-right: 0.5rem; margin-bottom: 0px; font-size: 0.8rem; font-weight: 500;">From Date: </label>
+                                <input type="text" class="form-control datepicker" id="from_date">
+                            </div>
+                            <!--  -->
+                            <div class="formGroups col-sm-4" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center;">
+                                <label class="labelClass col-auto" for="to_date" style="margin-right: 0.5rem; margin-bottom: 0px; font-size: 0.8rem; font-weight: 500;">To Date: </label>
+                                <input type="text" class="form-control datepicker" id="to_date">
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <table id="schedulelist" class="table table-striped table-hover dataTable no-footer" style="width: 100%; border: 1px solid #978f45d8;">
+                        <thead class="text-center table-header" style="background-color: #978f45d8; color: #fff;">
+                            <tr style="border-style: hidden !important">
+                            <th style="text-align: center; width: 10%;">SL</th>
+                            <th style="text-align: center;">Event Date</th>
+                            <th style="text-align: center;">Name</th>
+                            <th style="text-align: center;">status</th>
+                            <th style="text-align: center; width: 10%;">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody class="packagecategory-row" style="font-size: 0.9rem;">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <!--  -->
+                </div>
+            <!--  -->
+            </div>
+        </section>
+    </section>
+</main>
+<script>
+    $(document).on("click", ".delete-schedule-btn", function () {
+
+        var schedule_id = $(this).data("schedule_id");
+
+        if (!confirm("Are you sure you want to delete this schedule?")) {
+            return;
+        }
+
+        fetch("{% url 'delete_schedule_list' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                schedule_id: schedule_id
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.success) {
+                toastr.success(data.message);
+
+                // 🔄 Reload DataTable
+                $('#schedulelist').DataTable().ajax.reload();
+            } else {
+                toastr.error(data.message);
+            }
+
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+    });
+    
+    // schedule list
+    $(document).ready(function () {
+
+        // ------------------------------
+        // Helper: Get Today in dd-mm-yyyy
+        // ------------------------------
+        function getTodayDate() {
+            const today = new Date();
+            const day = ("0" + today.getDate()).slice(-2);
+            const month = ("0" + (today.getMonth() + 1)).slice(-2);
+            const year = today.getFullYear();
+            return `${day}-${month}-${year}`;
+        }
+
+        // ------------------------------
+        // Helper: Parse/Enforce dd-mm-yyyy
+        // ------------------------------
+        function parseDateInput(dateStr) {
+            if (!dateStr) return getTodayDate();
+            const parts = dateStr.split(/[-\/]/);
+            if (parts.length !== 3) return getTodayDate();
+
+            let day, month, year;
+
+            if (parseInt(parts[0], 10) > 31) {
+                // yyyy-mm-dd
+                year = parts[0]; month = parts[1]; day = parts[2];
+            } else {
+                // dd-mm-yyyy
+                day = parts[0]; month = parts[1]; year = parts[2];
+            }
+            return `${("0" + day).slice(-2)}-${("0" + month).slice(-2)}-${year}`;
+        }
+
+        // ------------------------------
+        // Initialize jQuery UI Datepickers
+        // ------------------------------
+        const today = new Date();
+
+        $("#from_date").datepicker({
+            dateFormat: "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate: null,
+            onSelect: function(selectedDate) {
+                const minToDate = $(this).datepicker('getDate');
+                $("#to_date").datepicker("option", "minDate", minToDate);
+
+                // Reload table whenever date changes
+                table.ajax.reload(null, false);
+            }
+        }).datepicker("setDate", today);
+
+        $("#to_date").datepicker({
+            dateFormat: "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate: null,
+            onSelect: function(selectedDate) {
+                table.ajax.reload(null, false);
+            }
+        }).datepicker("setDate", today);
+
+        // ------------------------------
+        // Initialize DataTable
+        // ------------------------------
+        var table = $('#schedulelist').DataTable({
+            ordering: true,
+            processing: true,
+            serverSide: false,
+            ajax: {
+                url: "{% url 'get_schedule_list' %}", // replace with your Django URL
+                data: function(d) {
+                    d.from_date = parseDateInput($('#from_date').val());
+                    d.to_date = parseDateInput($('#to_date').val());
+                }
+            },
+            columnDefs: [
+                { targets: "_all", className: "text-center align-middle" }
+            ],
+            columns: [
+                { data: 'sl' },
+                { data: 'event_date' },
+                { data: 'name' },
+                { 
+                    data: 'status',
+                    render: function(data) {
+                        return data === "Free"
+                            ? '<span class="badge bg-success">Free</span>'
+                            : '<span class="badge bg-danger">Booked</span>';
+                    }
+                },
+                { 
+                    data: 'schedule_id',
+                    render: function(data) {
+                        return `<button class="btn btn-sm btn-danger delete-schedule-btn" data-schedule_id="${data}">
+                                    <i class='bx bxs-trash'></i>
+                                </button>`;
+                    }
+                }
+            ]
+        });
+
+        // ------------------------------
+        // Reload table when date changes
+        // ------------------------------
+        $('#from_date, #to_date').on('change', function () {
+            const formattedDate = parseDateInput($(this).val());
+            $(this).val(formattedDate);
+            table.ajax.reload(null, false);
+        });
+
+        // ------------------------------
+        // Optional: restrict manual typing
+        // ------------------------------
+        $('.datepicker').on('keydown', function(e) {
+            if (
+                !((e.keyCode >= 48 && e.keyCode <= 57) ||  // numbers 0-9
+                (e.keyCode >= 96 && e.keyCode <= 105) || // numpad
+                e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 189 || e.keyCode === 191)
+            ) {
+                e.preventDefault();
+            }
+        });
+
+    });
+    //////////////////////////////////////////////////////////
+    // add schedule
+    $(document).on('click', '#addScheduleModal', function () {
+        modal_lg("Add New Schedule", "{% url 'add_schedule_modal' %}");
+    });
+
+    // loader scrt
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+        // document.body.removeChild("loader");
+        });
+    });
+</script>
+{% endblock %}

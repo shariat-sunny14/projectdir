@@ -1,0 +1,271 @@
+{% extends 'base_form/main_base/main_base.html' %} 
+{% load crispy_forms_tags %}
+{% load static %} 
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'user_setup_style/css/user_setup_style.css' %}">
+
+<style>
+  .table > tbody {
+    vertical-align: middle !important;
+  }
+</style>
+<style>
+  .form-control:hover {
+    background: none;
+  }
+
+  .card-body {
+    flex: 1 1 auto;
+    padding: 0rem 1rem;
+  }
+
+  .card {
+    border: 0px solid rgba(0, 0, 0, 0.125);
+    box-shadow: none;
+  }
+
+  .drop_box {
+    margin: 0px 0px 10px 0px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 3px dotted #a3a3a3;
+    border-radius: 5px;
+    height: 13.5rem;
+    position: relative;
+  }
+
+  .drop_box h4 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #2e2e2e;
+    z-index: 1;
+  }
+
+  .drop_box p {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #a3a3a3;
+    z-index: 1;
+  }
+
+  .chooseBtn {
+    text-decoration: none;
+    background-color: #005af0;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+    z-index: 1;
+  }
+
+  .chooseBtn:hover {
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #005af0;
+    padding: 10px 20px;
+    border: none;
+    outline: 1px solid #010101;
+  }
+
+  .form input {
+    margin: 10px 0;
+    width: 100%;
+    background-color: #e2e2e2;
+    border: none;
+    outline: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+  }
+
+  .banner-display {
+    display: flex;
+  }
+
+  .banner-viewer {
+    position: absolute;
+    top: 14px;
+    left: 5px;
+    right: 5px;
+    bottom: 0;
+    display: flex;
+    height: 11.5rem;
+    width: 97%;
+    z-index: 0;
+  }
+  
+  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+</style>
+<link rel="stylesheet" href="{% static 'module_setup_style/css/module_setup_style.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'module_setup_style/js/module_setup.js' %}"></script>
+
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<div class="loader"></div>
+<!-- loader end -->
+<main>
+    <section class="container-fluid" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+        <section style="border: 1px solid rgba(0, 0, 0, .125); border-top: none; border-radius: 0.3rem;">
+            <div style="border: 1px solid rgba(0, 0, 0, .125);
+                margin-bottom: 0.5rem;
+                border-left: none;
+                border-right: none;
+                border-top-left-radius: 0.3rem;
+                border-top-right-radius: 0.3rem;
+                background: #979645d8;">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head"
+                        style="display:flex; align-items: center; border-bottom: none;">
+                        <div class="d-sm-flex align-items-center mb-2"
+                            style="height: 1.5rem; width: 100%; margin-left: 1rem;">
+                            <i class='bx bxl-trello text-white req-head-icon'></i>
+                            <h1 class="h3 text-white req-head">Enrolls List</h1>
+                        </div>
+                        <!--  -->
+                        <div style="width: 22%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-evenly;">
+                            <div style="width: 100%; float: right; display: flex; justify-content: center; text-align: center; align-items: center; flex-direction: row; flex-wrap: nowrap;">
+                                <button id="addEnrollmodal" class="btn text-white btn-xs moduleBtn"
+                                    style="width: 15%; font-weight: bolder; box-shadow: 4px 2px 5px 2px #979645d8; border-radius: 0.7rem; border: 1.5px solid #fff; font-size: 0.8rem;">
+                                    Add New Enroll
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <div class="col-xl-12" style="width: 98.7%; margin-top: 1rem; margin-left: 0.5rem; margin-right: 0.5rem;">
+                <!--  -->
+                <div class="module-table">
+                    <table id="enrollList" class="table table-striped table-hover dataTable no-footer" style="width: 100%" >
+                    <thead class="text-center table-header" style="background: #979645d8;">
+                        <tr style="border-style: hidden !important">
+                            <th style="text-align: center; width: 10%">SL</th>
+                            <th style="text-align: center; width: 10%">Enroll ID</th>
+                            <th style="text-align: center; width: 10%">Enroll Title</th>
+                            <th style="text-align: center; width: 55%">Enroll Caption</th>
+                            <th style="text-align: center; width: 15%">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody class="packagecategory-row" style="font-size: 0.85rem;">
+                        {% for data in enroll_data %}
+                        <tr style="border-style: hidden !important">
+                            <td style="text-align: center; width: 5%; font-family: 'Poppins'; font-size: 0.8rem;">{{forloop.counter}}</td>
+                            <td style="text-align: center; font-family: 'Poppins'; font-size: 0.8rem;">
+                                {{data.enroll_id}}
+                            </td>
+                            <td style="text-align: center; font-family: 'Poppins'; font-size: 0.8rem;">{{data.enroll_title}}</td>
+                            <td style="text-align: center; font-family: 'Poppins'; font-size: 0.8rem;">{{data.enroll_caption}}</td>
+                            <td style="text-align: center; width: 12%; font-family: 'Poppins'; font-size: 0.8rem;">
+                                <button type="button" data-id="{{ data.pk }}" class="btn btn-warning printBtn table-row-btn btn-xs text-white edit-data">
+                                    <i class='bx bx-edit printIcon text-white'></i>
+                                </button>
+
+                                <button type="button" data-id="{{ data.pk }}" class="btn btn-danger printBtn table-row-btn btn-xs text-white delete-data">
+                                    <i class="bx bx-box printIcon text-white"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+                <!--  -->
+                </div>
+            <!--  -->
+            </div>
+        </section>
+    </section>
+</main>
+<script>
+
+    // add enroll
+    $(document).on('click', '#addEnrollmodal', function () {
+        modal_lg("Add New Enroll", "{% url 'add_new_enroll_modal' %}");
+    });
+
+    // edit enroll
+    $(document).on('click', '.edit-data', function () {
+        var enrollId = $(this).data('id');
+        modal_lg("Edit Enroll", "{% url 'edit_enroll_modal' %}?enroll_id=" + enrollId);
+    });
+
+    ////////////////////////////////////////////////////////
+    $(function () {
+        // Delete enroll on click
+        $(document).on("click", ".delete-data", function () {
+            _conf(
+                "Are You Sure Want to Delete This Enroll?",
+                "delete_title_enroll",
+                [$(this).attr("data-id")]
+            );
+        });
+    });
+
+    // Delete function
+    function delete_title_enroll(enroll_id) {
+        $.ajax({
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            url: "{% url 'delete_enroll_list' %}",
+            method: "POST",
+            data: {
+                enroll_id: enroll_id,
+            },
+            dataType: "json",
+            success: function (resp) {
+                if (resp.success) {
+                    // Green success
+                    toastr.success(resp.msg);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 300);
+                } else {
+                    // Red error
+                    toastr.error(resp.msg);
+                }
+            },
+            error: function (xhr, status, error) {
+                toastr.error("An unexpected error occurred.");
+            }
+        });
+    }
+
+    // loader scrt
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+        // document.body.removeChild("loader");
+        });
+    });
+
+    $(document).ready(function () {
+        $(
+        "#enrollList",
+        ).DataTable({
+        ordering: true,
+        });
+    });
+</script>
+{% endblock %}

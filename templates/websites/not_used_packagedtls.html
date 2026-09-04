@@ -1,0 +1,351 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<!--- HEADER -->
+<header style="border-bottom: 1px solid var(--cultured)">
+  <!-- SUB-HEADER -->
+  <!--- HEADER -->
+  {% include 'websites/sub_header.html' %}
+  <!--- HEADER -->
+</header>
+
+<!-- Description -->
+<section class="package-dtls" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+  <div class="package-body container">
+    <div class="package-intro">
+      <h2 class="package-header">INSIDE DHAKA PACKAGES</h2>
+      <p class="package-description">
+        Capture the magic of your urban wedding with our photography package designed for city weddings.
+        Our experienced photographers know the best locations for stunning city shots.
+        Contact us today to learn more.
+      </p>
+    </div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="openPackagesTab(event,'regular_tab')">
+        Regular
+      </button>
+      <!--  -->
+      <button class="tab-btn" onclick="openPackagesTab(event,'homely_tab')">
+        Homely
+      </button>
+      <!--  -->
+      <button class="tab-btn" onclick="openPackagesTab(event,'sonaton_tab')">
+        Sonaton
+      </button>
+    </div>
+  </div>
+  <!--  -->
+  <div class="tab-container" style="margin: 10px auto;">
+    <!-- regular_tab Section Tab Content -->
+    <div id="regular_tab" class="tab-content active" style="border: 0;">
+      <div class="form-wrapper form-packageDtls">
+        <form id="regularForm">
+          <!--  -->
+          <!--  -->
+          <!--  -->
+          <!-- regular 1 -->
+          <div class="packageDtls">
+            <h1 class="section-title">Affordable Packages</h1>
+
+            <div class="packageDtls-wrapper">
+
+              <!-- River Gorai -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Gorai - গড়াই</div>
+                  <div class="package-price">35,999 BDT</div>
+                  <ul class="package-details">
+                      <li>2 Photographers</li>
+                      <li>1 Cinematographer</li>
+                      <li>5 Hours Duration</li>
+                      <li>Less than 80 Guests</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River Rupsa -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Rupsa - রূপসা</div>
+                  <div class="package-price">59,999 BDT</div>
+                  <ul class="package-details">
+                      <li>3 Photographers</li>
+                      <li>2 Cinematographers</li>
+                      <li>6 Hours Duration</li>
+                      <li>No Prints</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+            </div>
+          </div>
+          
+          <!--  -->
+          <!--  -->
+          <!--  -->
+          <!-- regular 2 -->
+          <div class="packageDtls" style="margin-top: 7rem;">
+            <h1 class="section-title">Premium Core Packages</h1>
+
+            <div class="packageDtls-wrapper">
+
+              <!-- River Jadukata-জাদুকাটা -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Jadukata-জাদুকাটা</div>
+                  <div class="package-price">79,999 BDT</div>
+                  <ul class="package-details">
+                      <li>3 Photographers</li>
+                      <li>2 Senior Cinematographers</li>
+                      <li>Lead by Core Photographer Mr. X</li>
+                      <li>5 hours Duration Continual</li>
+                      <li>Venue based</li>
+                      <li>PhotoBook</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River Dahuk-ডাহুক -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Dahuk-ডাহুক</div>
+                  <div class="package-price">99,999 BDT</div>
+                  <ul class="package-details">
+                      <li>4 Photographers</li>
+                      <li>3 Cinematographers</li>
+                      <li>Lead by Core Photographer Mr. X</li>
+                      <li>7 hours Duration Continual</li>
+                      <li>before event outdoor+venue+after</li>
+                      <li>PhotoBook</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River ichamati-ইছামতী -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River ichamati-ইছামতী</div>
+                  <div class="package-price">94,999 BDT</div>
+                  <ul class="package-details">
+                      <li>4 Photographers</li>
+                      <li>2 Senior Cinematographers</li>
+                      <li>Lead by Core Photographer Mr. X</li>
+                      <li>5 hours Duration Continual</li>
+                      <li>Venue based only</li>
+                      <li>PhotoBook</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River Kopotakkho-কপোতাক্ষ -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Kopotakkho-কপোতাক্ষ</div>
+                  <div class="package-price">1,19,999 BDT</div>
+                  <ul class="package-details">
+                      <li>4 Photographers</li>
+                      <li>3 Cinematographers</li>
+                      <li>Lead by Core Photographer Mr. X</li>
+                      <li>7 hours Duration Continual</li>
+                      <li>outdoor before event+venue+drone</li>
+                      <li>PhotoBook</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <!--  -->
+          <!--  -->
+          <!-- regular 3 -->
+          <div class="packageDtls" style="margin-top: 7rem;">
+            <h1 class="section-title">Signature Storytelling</h1>
+
+            <div class="packageDtls-wrapper">
+
+              <!-- River Chitra-চিত্রা -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Chitra-চিত্রা</div>
+                  <div class="package-price">1,39,999 BDT</div>
+                  <ul class="package-details">
+                      <li>4 Photographers</li>
+                      <li>3 Cinematographers</li>
+                      <li>Lead by Core Mr. X & Mr. Y</li>
+                      <li>6 hours Duration</li>
+                      <li>Photobook</li>
+                      <li>Drone</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River Bangali-বাঙালি -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Bangali-বাঙালি</div>
+                  <div class="package-price">2,49,999 BDT</div>
+                  <ul class="package-details">
+                      <li>6 Photographers</li>
+                      <li>4 Cinematographers</li>
+                      <li>Lead by Core Mr. X & Mr. Y</li>
+                      <li>13 hours Duration</li>
+                      <li>Photobook</li>
+                      <li>Drone</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!--  -->
+    <!--  -->
+    <!-- ///////////////////////// Homely Section Tab Content ///////////////////////// -->
+    <!--  -->
+    <!--  -->
+    <!-- homely_tab Section Tab Content -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <div id="homely_tab" class="tab-content">
+      <!--  -->
+      <!--  -->
+      <div class="form-wrapper form-packageDtls">
+        <form id="homelyFrom">
+          <!-- homely 1 -->
+          <div class="packageDtls">
+            <h1 class="section-title">Homely Akdh/ Holud/ Mehdi/ Small Occasion – Without Stage | Less than 50 guests</h1>
+
+            <div class="packageDtls-wrapper">
+
+              <!-- River Ariyal kha-আড়িয়াল খা -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Ariyal kha-আড়িয়াল খা</div>
+                  <div class="package-price">39,999 BDT</div>
+                  <ul class="package-details">
+                      <li>Mr. X as Core Photographer</li>
+                      <li>1 Senior Cinematographer</li>
+                      <li>5 hours Duration</li>
+                      <li>No Prints</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River Bibiana-বিবিয়ানা -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Bibiana-বিবিয়ানা</div>
+                  <div class="package-price">44,999 BDT</div>
+                  <ul class="package-details">
+                      <li>Mr. X as Core Photographer</li>
+                      <li>1 Associate Photographer</li>
+                      <li>1 Senior Cinematographer</li>
+                      <li>6 Hours Duration</li>
+                      <li>No Prints</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--  -->
+    </div>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!--  -->
+    <!--  -->
+    <!-- ///////////////////////// Sonaton Section Tab Content ///////////////////////// -->
+    <!--  -->
+    <!--  -->
+    <!-- sonaton_tab Section Tab Content -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <div id="sonaton_tab" class="tab-content">
+      <!--  -->
+      <!--  -->
+      <div class="form-wrapper form-packageDtls">
+        <form id="sonatonFrom">
+          <!-- sonaton 1 -->
+          <div class="packageDtls">
+            <h1 class="section-title">Sonaton Packages</h1>
+
+            <div class="packageDtls-wrapper">
+
+              <!-- River Horihoro-হরিহর -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Horihoro-হরিহর</div>
+                  <div class="package-price">1,10,999 BDT</div>
+                  <ul class="package-details">
+                      <li>3 Photographers</li>
+                      <li>2 Cinematographers</li>
+                      <li>HoludSnan+Biye+Bashibiye+Biday</li>
+                      <li>This is Only Bride side package. You can add Groom side.</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+              <!-- River Paharia – পাহাড়িয়া -->
+              <div class="package-card-dtls">
+                  <div class="package-name">River Paharia – পাহাড়িয়া</div>
+                  <div class="package-price">1,29,999 BDT</div>
+                  <ul class="package-details">
+                      <li>4 Photographers</li>
+                      <li>2 Cinematographers</li>
+                      <li>Lead by Core Photographer Mr. X</li>
+                      <li>HoludSnan+Biye+Bashibiye+Biday</li>
+                      <li>PhotoBook</li>
+                      <li>This is Only Bride side package. You can add Groom side.</li>
+                  </ul>
+                  <a href="#" class="package-btn">Details</a>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--  -->
+    </div>
+  </div>
+</section>
+
+<script>
+  function openPackagesTab(event, tabName) {
+
+    let contents = document.querySelectorAll(".tab-content");
+    let buttons  = document.querySelectorAll(".tab-btn");
+
+    // Hide all tabs
+    contents.forEach(content => {
+      content.classList.remove("active");
+    });
+
+    // Remove active from all buttons
+    buttons.forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    // Show selected tab
+    document.getElementById(tabName).classList.add("active");
+
+    // Set clicked button active
+    event.currentTarget.classList.add("active");
+  }
+</script>
+
+<!-- footer -->
+{% include 'websites/footer.html' %}
+<!-- footer -->
+{% endblock %}

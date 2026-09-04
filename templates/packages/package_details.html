@@ -1,0 +1,161 @@
+{% load static %}
+
+<style>
+.package-wrapper {
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.package-logo img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.package_title_header {
+    font-size: 32px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    color: #c3c3c3;
+    margin-bottom: 0px;
+}
+
+.section-header {
+    font-size: 22px;
+    font-weight: 600;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #c3c3c3;
+    display: inline-block;
+}
+
+.element-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.element-list li {
+    padding: 6px 0;
+    font-size: 17px;
+}
+
+.book-btn {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+.book-btn button {
+    padding: 10px 25px;
+    color: #c3c3c3;
+    border: 2px solid #c3c3c3;
+    background: transparent;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.book-btn button:hover {
+    background: #333333;
+    color: #fff;
+}
+
+.package-price-wrapper {
+    text-align: center;
+}
+
+.old-price {
+    font-size: 22px;
+    color: #8a8a8a;
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.current-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #929292; /* golden look */
+}
+
+.only-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #363636;
+}
+</style>
+
+<div class="package-wrapper" style="max-width: 100%; display: flex; flex-direction: column; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+
+    <!-- Close Button -->
+    <div style="width: 2rem; position: absolute; top: 2rem; left: 2rem; right: 0; border: 0; text-align: left;">
+        <button type="button" class="btn btn-sm" data-bs-dismiss="modal" style="width: 2rem; border: 2px solid #d6d6d6; color: #e6e6e6; border-radius: 50%; font-weight: bolder;">
+            X
+        </button>
+    </div>
+
+    <!-- Logo -->
+    <div class="package-logo">
+        {% if org_data.org_logo %}
+            <img src="{{ org_data.org_logo.url }}" alt="Logo">
+        {% endif %}
+    </div>
+
+    <!-- Package Title -->
+    <div class="package_title_header">
+        {{ package.package_title }}
+    </div>
+
+    <!-- Package price -->
+    <div class="package-price-wrapper">
+
+        {% if package.is_offer_price and package.offer_price %}
+            
+            <span class="old-price">
+                ৳{{ package.package_price }} BDT
+            </span>
+
+            <span class="current-price">
+                ৳{{ package.offer_price }} BDT
+            </span>
+
+        {% elif package.is_package_price and package.package_price %}
+
+            <span class="only-price">
+                ৳{{ package.package_price }} BDT
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- Dynamic Sections -->
+    {% for header, items in grouped_data.items %}
+        <div class="package-section">
+            <div class="section-header">
+                {{ header }}
+            </div>
+
+            <ul class="element-list">
+                {% for element in items %}
+                    <li>
+                        {{ element.elements_drescription }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+
+    <!-- Book Button -->
+    <div class="book-btn">
+        <button data-package_id="{{ package.package_id }}">Book us now!</button>
+    </div>
+
+</div>
+<script>
+    // Add click event listener to the book button
+    document.querySelectorAll('.book-btn button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const packageId = this.getAttribute('data-package_id');
+            // Redirect to booking page with package_id as query param
+            window.location.href = "{% url 'booking_from_package' %}?package_id=" + packageId;
+        });
+    });
+</script>

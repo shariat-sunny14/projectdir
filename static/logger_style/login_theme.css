@@ -1,0 +1,423 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	height: auto;
+	min-height: 100%;
+}
+
+body {
+	background: #f6f5f7;
+	font-family: 'Montserrat', sans-serif;
+	margin: 0;
+	padding-bottom: 60px;
+	/* space for fixed footer */
+}
+
+/* ===== Page wrapper (replaces the old broken .my-fixed-box) ===== */
+.page-wrapper {
+	width: 100%;
+	min-height: calc(100vh - 60px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+}
+
+h1 {
+	font-weight: bold;
+	margin: 0;
+}
+
+.form-title {
+	font-size: 1.8rem;
+	margin-bottom: 1.25rem;
+}
+
+p {
+	font-size: 14px;
+	font-weight: 100;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	margin: 20px 0 30px;
+}
+
+span {
+	font-size: 12px;
+}
+
+a {
+	color: #333;
+	font-size: 14px;
+	text-decoration: none;
+	margin: 15px 0;
+}
+
+button {
+	border-radius: 20px;
+	border: 1px solid #FF4B2B;
+	background-color: #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: transform 80ms ease-in;
+	white-space: nowrap;
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+button:focus {
+	outline: none;
+}
+
+button.ghost {
+	background-color: transparent;
+	border-color: #FFFFFF;
+}
+
+.btn-main {
+	margin-top: 1.25rem;
+}
+
+form {
+	background-color: #FFFFFF;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 40px 50px;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow-y: auto;
+}
+
+input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 6px 0;
+	width: 100%;
+	border-radius: 5px;
+	font-size: 15px;
+	/* prevents iOS auto-zoom on focus */
+}
+
+/* ===== Card ===== */
+.container {
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+		0 10px 10px rgba(0, 0, 0, 0.22);
+	position: relative;
+	overflow: hidden;
+	width: 768px;
+	max-width: 100%;
+	min-height: 520px;
+}
+
+.form-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 50%;
+	transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+	left: 0;
+	width: 50%;
+	z-index: 2;
+}
+
+.container.right-panel-active .sign-in-container {
+	transform: translateX(100%);
+}
+
+.sign-up-container {
+	left: 0;
+	width: 50%;
+	opacity: 0;
+	z-index: 1;
+}
+
+.container.right-panel-active .sign-up-container {
+	transform: translateX(100%);
+	opacity: 1;
+	z-index: 5;
+}
+
+.overlay-container {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+	transition: transform 0.6s ease-in-out;
+	z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+	transform: translateX(-100%);
+}
+
+.overlay {
+	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	color: #FFFFFF;
+	position: relative;
+	left: -100%;
+	height: 100%;
+	width: 200%;
+	transform: translateX(0);
+	transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+	transform: translateX(50%);
+}
+
+.overlay-panel {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 40px;
+	text-align: center;
+	top: 0;
+	height: 100%;
+	width: 50%;
+}
+
+.overlay-left {
+	transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+	transform: translateX(0);
+}
+
+.overlay-right {
+	right: 0;
+}
+
+.social-container {
+	margin: 20px 0;
+}
+
+.social-container a {
+	border: 1px solid #DDDDDD;
+	border-radius: 50%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+	height: 40px;
+	width: 40px;
+	color: #333;
+}
+
+footer {
+	background-color: #222;
+	color: #fff;
+	font-size: 14px;
+	bottom: 0;
+	position: fixed;
+	left: 0;
+	right: 0;
+	text-align: center;
+	z-index: 200;
+}
+
+footer p {
+	margin: 10px 0;
+}
+
+footer i {
+	color: red;
+}
+
+footer a {
+	color: #3c97bf;
+	text-decoration: none;
+}
+
+.forgot-container {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
+	margin: 8px 0;
+}
+
+/* ===== Multi-step password reset boxes (fixed duplicate-style bug) ===== */
+.reset-step {
+	display: none;
+	width: 100%;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 6px 0;
+}
+
+.reset-step.active {
+	display: flex;
+}
+
+.reset-step--column {
+	flex-direction: column;
+}
+
+/* ===== Mobile-only switch links (hidden on desktop) ===== */
+.mobile-switch {
+	display: none;
+	margin: 16px 0 0;
+	font-size: 13px;
+}
+
+.mobile-switch a {
+	color: #FF4B2B;
+	font-weight: bold;
+	margin-left: 4px;
+}
+
+/* =========================================================
+   TABLET (≤ 768px): keep the card, tighten spacing a bit
+   ========================================================= */
+@media (max-width: 768px) {
+	.page-wrapper {
+		padding: 12px;
+	}
+
+	form {
+		padding: 40px 32px;
+	}
+}
+
+/* =========================================================
+   MOBILE (≤ 600px): drop the sliding animation, stack forms,
+   switch to simple tab-style navigation instead
+   ========================================================= */
+@media (max-width: 600px) {
+
+	body {
+		padding-bottom: 90px;
+	}
+
+	.page-wrapper {
+		align-items: flex-start;
+		padding: 16px 12px;
+	}
+
+	.container {
+		width: 100%;
+		min-height: auto;
+		overflow: visible;
+	}
+
+	/* Disable the desktop sliding-card mechanism */
+	.overlay-container {
+		display: none;
+	}
+
+	.form-container {
+		position: relative;
+		width: 100%;
+		height: auto;
+		opacity: 1;
+		transform: none !important;
+		transition: none;
+	}
+
+	/* Only one panel visible at a time, toggled by JS */
+	.sign-up-container {
+		display: none;
+	}
+
+	.sign-in-container {
+		display: flex;
+	}
+
+	.container.right-panel-active .sign-up-container {
+		display: flex;
+	}
+
+	.container.right-panel-active .sign-in-container {
+		display: none;
+	}
+
+	form {
+		padding: 32px 22px;
+		min-height: 100%;
+	}
+
+	.form-title {
+		font-size: 1.5rem;
+	}
+
+	button {
+		padding: 12px 20px;
+	}
+
+	.btn-main {
+		width: 100%;
+	}
+
+	.forgot-container {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+
+	.reset-step {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.reset-step button {
+		width: 100%;
+	}
+
+	.mobile-switch {
+		display: block;
+	}
+
+	footer {
+		position: fixed;
+		font-size: 12px;
+		padding: 6px 8px;
+	}
+}
+
+/* =========================================================
+   SMALL PHONES (≤ 400px): extra tight spacing
+   ========================================================= */
+@media (max-width: 400px) {
+	form {
+		padding: 24px 16px;
+	}
+
+	.form-title {
+		font-size: 1.3rem;
+	}
+
+	button {
+		font-size: 11px;
+		padding: 11px 16px;
+	}
+}

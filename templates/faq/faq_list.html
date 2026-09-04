@@ -1,0 +1,240 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<style>
+
+/* 🌟 Page Background */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* 🌟 Main Card */
+.faq-wrapper {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* 🌟 Header */
+.faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.faq-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* 🌟 Button */
+.btn-add {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79,70,229,0.4);
+}
+
+/* 🌟 Search */
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    outline: none;
+}
+
+/* 🌟 Table */
+.faq-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Header */
+.faq-table thead {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.faq-table th {
+    padding: 14px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* Row */
+.faq-table td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Hover Effect */
+.faq-table tbody tr {
+    transition: 0.25s ease;
+}
+
+.faq-table tbody tr:hover {
+    background: #eef2ff;
+}
+
+/* 🌟 Serial Badge */
+.serial-badge {
+    background: #6366f1;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* 🌟 Status Badge */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* 🌟 Actions */
+.action-group {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.edit-btn {
+    background: #0ea5e9;
+}
+
+.delete-btn {
+    background: #ef4444;
+}
+
+.edit-btn:hover {
+    background: #0284c7;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+
+/* 🌟 Responsive */
+@media(max-width:768px){
+    .faq-table th, .faq-table td{
+        font-size:12px;
+        padding:8px;
+    }
+}
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="faq-wrapper">
+
+    <!-- 🔥 Header -->
+    <div class="faq-header">
+        <div class="faq-title">📌 FAQ Management</div>
+        <a href="{% url 'faq_create' %}" class="btn-add">➕ Add FAQ</a>
+    </div>
+
+    <!-- 🔍 Search -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search question...">
+    </div>
+
+    <!-- 📊 Table -->
+    <table class="faq-table" id="faqTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for faq in faqs %}
+            <tr>
+                <td>
+                    <span class="serial-badge">{{ faq.is_serial }}</span>
+                </td>
+
+                <td>{{ faq.question }}</td>
+
+                <td>{{ faq.answer|truncatechars:60 }}</td>
+
+                <td>
+                    {% if faq.is_active %}
+                        <span class="status-badge active">Active</span>
+                    {% else %}
+                        <span class="status-badge inactive">Inactive</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <div class="action-group">
+                        <a href="{% url 'faq_update' faq.id %}" class="action-btn edit-btn">✏️</a>
+                        <a href="{% url 'faq_delete' faq.id %}"
+                           onclick="return confirm('Are you sure?')"
+                           class="action-btn delete-btn">🗑</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- 🔥 JS Search Filter -->
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#faqTable tbody tr");
+
+    rows.forEach(row => {
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(value) ? "" : "none";
+    });
+});
+</script>
+
+{% endblock %}

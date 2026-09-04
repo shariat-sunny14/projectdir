@@ -1,0 +1,40 @@
+<div class="nav__menu" id="navbar">
+    <nav class="nav__container">
+        <div>
+            <a class="nav__link__menu__head nav__logo">
+                <i class='bx bxs-disc nav__icon'></i>
+                <span class="nav__logo-name">Apps</span>
+            </a>
+
+            {% if user.is_authenticated %}
+                <div class="nav__list">
+                    <div class="nav__items">
+                        {% for module_id, module_data in grouped_data.items %}
+                            <!-- <h3 class="nav__subtitle">{{ module_data.module_name }}</h3> -->
+                            {% for type_name, type_data in module_data.types.items %}
+                                <div class="nav__dropdown">
+                                    <a class="nav__link__menu">
+                                        <i class='{{type_data.type_icon}} nav__icon'></i>
+                                        <span class="nav__name">{{ type_name }}</span>
+                                        <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                                    </a>
+
+                                    <div class="nav__dropdown-collapse">
+                                        <div class="nav__dropdown-content">
+                                            {% for feature in type_data.features %}
+                                                <a href="{{ feature.feature_page_link }}" class="nav__link">
+                                                    <i class='{{ feature.feature_icon }} nav__icon nav__sub__icon'></i>
+                                                    <span class="nav__name nav__sub__name">{{ feature.feature_name }}</span>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+</div>

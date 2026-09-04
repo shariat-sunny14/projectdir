@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== FAVICON ICONS ==========-->
+  <link rel="shortcut icon" href="{% static 'fav_icon/favicon.ico' %}">
+  <title>Finger's story</title>
+
+  <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!--- custom css link -->
+  <!----===== Boxicons CSS ===== -->
+    <link rel="stylesheet" href="{% static 'assets/boxicons-2.1.4/css/boxicons.min.css' %}">
+
+  <!--========== Bootstrap link ==========-->
+  <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.2/dist/css/bootstrap.min.css' %}">
+
+    <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+  <!--==========Bootstap MAIN JS ==========-->
+  <!--Jquery Cdn -->
+  <script src="{% static 'assets/bootstrap-5.0.2/dist/js/bootstrap.min.js' %}"></script>
+  <!-- <script src="{% static 'assets/bootstrap-5.0.2/dist/js/bootstrap.bundle.min.js' %}"></script> -->
+
+  <!-- ajax googleapis libs jquery -->
+  <script src="{% static 'assets/ajax_googleapis_2.1.1/js/ajax.googleapis.jquery.min.js' %}"></script>
+
+  <!-- datatables CDN javascript / CSS -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'assets/jquery_dataTables/css/jquery.dataTables.1.13.6.css' %}">
+  <!-- js -->
+  <script src="{% static 'assets/jquery_dataTables/js/jquery.dataTables.1.13.6.js' %}" defer></script>
+
+  <!-- toastr js -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'assets/toastr/css/toastr.min.css' %}">
+  <!-- JS -->
+  <script src="{% static 'assets/toastr/js/toastr.min.js' %}"></script>
+
+  <!-- jQuery CDN -->
+  <script src="{% static 'assets/jquery_3.7.0/js/jquery.3.7.0.min.js' %}"></script>
+  <!-- Then include jQuery UI and the datepicker widget -->
+  <link rel="stylesheet" href="{% static 'assets/jquery-ui-1.13.2/jquery-ui.css' %}">
+  <script src="{% static 'assets/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+
+  <!-- ======== main base from style CSS ======== -->
+  <link rel="stylesheet" type="text/css" href="{% static 'base_form_style/main_base_style/css/website.css' %}">
+
+  <!--- google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  {% block extra_link %} {% endblock %}
+</head>
+
+<body>
+
+  {% block body %} {% endblock %}
+
+  <!--- custom js link -->
+  <script src="{% static 'base_form_style/main_base_style/js/websites_scripts.js' %}"></script>
+  {% include 'modal_service/modal-lg.html' %}
+  {% include 'modal_service/modal-xl.html' %}
+  {% include 'modal_service/modal-md.html' %}
+
+  <!--  -->
+  <!-- social media link Icon-->
+  {% include 'websites/social_media_link.html' %}
+
+  <!--- ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

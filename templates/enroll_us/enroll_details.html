@@ -1,0 +1,210 @@
+<style>
+/* WRAPPER */
+.enroll-wrapper {
+    max-width: 500px;
+    margin: auto;
+    padding: 30px 25px;
+    border-radius: 0px;
+    background: linear-gradient(145deg, #2b2b2b, #1f1f1f);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle glow */
+.enroll-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0,255,204,0.08), transparent 60%);
+    transform: rotate(25deg);
+}
+
+/* CLOSE BTN */
+.enroll-close {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.enroll-close button {
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #333;
+    color: #fff;
+    font-weight: bold;
+    transition: 0.3s;
+    padding: 0px;
+}
+
+.enroll-close button:hover {
+    background: #00ffcc;
+    color: #000;
+}
+
+/* TITLE */
+.enroll-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* CAPTION */
+.enroll-caption {
+    font-size: 15px;
+    color: #b5b5b5;
+    margin-bottom: 20px;
+}
+
+/* PRICE BOX */
+.enroll-price-box {
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 20px;
+}
+
+/* PRICES */
+.enroll-old-price {
+    font-size: 18px;
+    color: #888;
+    text-decoration: line-through;
+    margin-right: 8px;
+}
+
+.enroll-new-price {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00ffcc;
+}
+
+.enroll-normal-price {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00ffcc;
+}
+
+/* DETAILS */
+.enroll-details-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.enroll-details-list li {
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    font-size: 15px;
+    color: #dcdcdc;
+    transition: 0.3s;
+}
+
+.enroll-details-list li:hover {
+    background: rgba(0,255,204,0.08);
+    transform: translateX(5px);
+}
+
+/* BUTTON */
+.enroll-btn {
+    position: relative;
+    margin-top: 25px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.enroll-btn button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #00ffcc, #00ccaa);
+    color: #000;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: 0.3s;
+}
+
+.enroll-btn button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,255,204,0.4);
+}
+
+.modal-body {
+    background: transparent;
+    padding: 0rem;
+}
+</style>
+
+
+<div class="enroll-wrapper">
+
+    <!-- Close Button -->
+    <div class="enroll-close">
+        <button type="button" data-bs-dismiss="modal">×</button>
+    </div>
+
+    <!-- TITLE -->
+    <div class="enroll-title">{{ enroll.enroll_title }}</div>
+
+    <!-- CAPTION -->
+    <div class="enroll-caption">{{ enroll.enroll_caption }}</div>
+
+    <!-- PRICE -->
+    <div class="enroll-price-box">
+
+        {% if enroll.is_offer_price %}
+            <span class="enroll-old-price">
+                ৳{{ enroll.enroll_price }}
+            </span>
+            <span class="enroll-new-price">
+                ৳{{ enroll.offer_price }}
+            </span>
+
+        {% elif enroll.is_enroll_price %}
+            <span class="enroll-normal-price">
+                ৳{{ enroll.enroll_price }}
+            </span>
+        {% endif %}
+
+        <div style="font-size:13px; color:#aaa;">Per Course</div>
+    </div>
+
+    <!-- DETAILS -->
+    <ul class="enroll-details-list">
+        {% for item in enroll_details %}
+            <li>✔ {{ item.enroll_dtls }}</li>
+        {% empty %}
+            <li>No details available</li>
+        {% endfor %}
+    </ul>
+
+    <!-- BUTTON -->
+    <div class="enroll-btn">
+        <button data-enroll_id="{{ enroll.enroll_id }}">
+            🚀 Enroll Now
+        </button>
+    </div>
+
+</div>
+
+
+<script>
+document.querySelectorAll('.enroll-btn button').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        const enrollId = this.getAttribute('data-enroll_id');
+        window.location.href = "/enroll_from_booking?enroll_id=" + enrollId;
+    });
+});
+</script>

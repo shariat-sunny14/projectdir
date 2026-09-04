@@ -1,0 +1,195 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<style>
+
+/* ===== HEADER ===== */
+.gallery-header {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.gallery-header h2 {
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.5px;
+}
+
+/* ===== ADD BUTTON ===== */
+.add-btn {
+    background: linear-gradient(135deg, #4CAF50, #2ecc71);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* ===== GRID ===== */
+.youtube_gallery_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* ===== CARD ===== */
+.youtube_videos {
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: all 0.35s ease;
+    position: relative;
+}
+
+.youtube_videos:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+/* ===== VIDEO AREA ===== */
+.iframe-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+    overflow: hidden;
+}
+
+/* iframe */
+.iframe-container iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ===== PLAY OVERLAY EFFECT ===== */
+.iframe-container::after {
+    content: "▶";
+    font-size: 40px;
+    color: rgba(255,255,255,0.8);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.youtube_videos:hover .iframe-container::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* ===== CONTENT ===== */
+.video-content {
+    padding: 15px;
+}
+
+/* TITLE */
+.video-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.video-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+/* Edit */
+.btn-edit {
+    background: linear-gradient(135deg, #2196F3, #0d8bf2);
+    color: white;
+}
+.btn-edit:hover {
+    background: linear-gradient(135deg, #1976D2, #0c6cd1);
+}
+
+/* Delete */
+.btn-delete {
+    background: linear-gradient(135deg, #f44336, #e53935);
+    color: white;
+}
+.btn-delete:hover {
+    background: linear-gradient(135deg, #d32f2f, #c62828);
+}
+
+/* ===== EMPTY ===== */
+.no-video {
+    text-align: center;
+    padding: 70px;
+    color: #999;
+    grid-column: 1/-1;
+    font-size: 18px;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="gallery-header">
+    <h2>🎬 YouTube Gallery</h2>
+    <a href="{% url 'video_add' %}" class="add-btn">+ Add Video</a>
+</div>
+
+<div class="youtube_gallery_container">
+    {% for video in videos %}
+    <div class="youtube_videos">
+
+        <div class="iframe-container">
+            {{ video.iframe_code|safe }}
+        </div>
+
+        <div class="video-content">
+            <div class="video-title">{{ video.title }}</div>
+
+            <div class="video-actions">
+                <a href="{% url 'video_edit' video.id %}" class="btn btn-edit">Edit</a>
+                <a href="{% url 'video_delete' video.id %}" 
+                   class="btn btn-delete"
+                   onclick="return confirm('Delete this video?')">
+                   Delete
+                </a>
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+    <div class="no-video">
+        <h4>No videos added yet 😢</h4>
+        <p>Click "Add Video" to start</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

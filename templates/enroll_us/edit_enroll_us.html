@@ -1,0 +1,399 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container">
+                <form id="updateEnrollForm" enctype="multipart/form-data">
+
+                    <input type="hidden" name="enroll_id" id="id_enroll_id" value="{{ enroll.enroll_id }}">
+
+                    <div class="add_edit_head" style="width: 30%;">
+                        <h2 class="text-primary">Edit/Update Enroll Info</h2>
+                    </div>
+
+                    <div class="modal_closer">
+                        <button type="button" class="btn bg-danger text-white closerBtn" data-bs-dismiss="modal"
+                            style="padding: 0.6rem; border: 1px solid white; border-radius: 50%;">
+                            X
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card add_user_card">
+                                <div class="card-body">
+                                    <div class="user_add_body">
+                                        <div class="sub_body_one">
+                                            <div class="row add_user_row">
+
+                                                <!-- TOP PART -->
+                                                <div class="col-sm-12" style="display: flex; flex-wrap: wrap; justify-content: center; border-bottom: 1px solid #707070;">
+                                                    <div class="col-sm-12">
+
+                                                        <!-- Title -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12 d-flex justify-content-between">
+                                                                <label class="col-form-label font_size required">
+                                                                    Title of Enroll:
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="col-sm-10 adduser_col">
+                                                                <input type="text" class="form-control form_adduser_body"
+                                                                    name="enroll_title"
+                                                                    value="{{ enroll.enroll_title }}">
+                                                            </div>
+
+                                                            <div class="col-sm-1 adduser_col d-flex justify-content-end align-items-center">
+                                                                <input type="checkbox"
+                                                                    class="form-check-input"
+                                                                    name="is_most_popular"
+                                                                    {% if enroll.is_most_popular %}checked{% endif %}>
+                                                                <label style="font-size: 0.85rem;">Is Most?</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Enroll Price -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12 d-flex justify-content-between">
+                                                                <label class="col-form-label font_size required">
+                                                                    Enroll Price:
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="d-flex justify-content-between w-100">
+                                                                <div class="col-sm-10 adduser_col">
+                                                                    <input type="number" class="form-control form_adduser_body"
+                                                                        name="enroll_price"
+                                                                        step="0.01"
+                                                                        value="{{ enroll.enroll_price }}">
+                                                                </div>
+
+                                                                <div class="col-sm-1 adduser_col d-flex justify-content-end align-items-center">
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="price_type" value="price"
+                                                                        {% if enroll.is_enroll_price %}checked{% endif %}>
+                                                                    <label style="font-size: 0.85rem;">Is Price?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Offer Price -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12 d-flex justify-content-between">
+                                                                <label class="col-form-label font_size required">
+                                                                    Offer Price:
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="d-flex justify-content-between w-100">
+                                                                <div class="col-sm-10 adduser_col">
+                                                                    <input type="number" class="form-control form_adduser_body"
+                                                                        name="offer_price"
+                                                                        step="0.01"
+                                                                        value="{{ enroll.offer_price }}">
+                                                                </div>
+
+                                                                <div class="col-sm-1 adduser_col d-flex justify-content-end align-items-center">
+                                                                    <input type="radio" class="form-check-input"
+                                                                        name="price_type" value="offer"
+                                                                        {% if enroll.is_offer_price %}checked{% endif %}>
+                                                                    <label style="font-size: 0.85rem;">Is Offer?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Caption -->
+                                                        <div class="row g-3 align-items-center" style="margin-bottom: 1rem;">
+                                                            <div class="col-sm-2">
+                                                                <label class="col-form-label font_size required">
+                                                                    Enroll Caption:
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="col-sm-12 adduser_col">
+                                                                <textarea name="enroll_caption"
+                                                                    class="form-control form_adduser_body"
+                                                                    style="height: 10rem">{{ enroll.enroll_caption }}</textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- SECOND PART -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: flex-start;">
+                                                    <!--  -->
+                                                    <div class="col-sm-2" style="width: 15%;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_edit_Order_no" class="col-form-label font_size">
+                                                                    Order No:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <input type="number" class="form-control form_adduser_body" id="id_edit_Order_no" name="enroll_Order_no" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-4" style="width: 70%; margin-bottom: 1rem;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_edit_enroll_dtls" class="col-form-label font_size">
+                                                                    Enroll Details:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <textarea type="text" class="form-control form_adduser_body" id="id_edit_enroll_dtls" name="enroll_dtls" autocomplete="off" style="height: 8rem;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <!--  -->
+                                                    <div class="col-sm-2 usersetup_modal-footer" style="width: 15%; margin-top: 2rem; display: flex; justify-content: flex-end; align-items: center; text-align: center; flex-direction: row; flex-wrap: nowrap;">
+                                                        <button type="button" id="addEditEnrollBtn" class="btn btn-primary" style=" font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                                                            Add Enroll
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TABLE -->
+                                                <div class="col-sm-12" style="border-top: 1px solid rgba(0,0,0,0.3);">
+                                                    <div class="card add_user_card_other" style="margin-top: 0.5rem; margin-bottom: 5rem;">
+                                                        <section>
+                                                            <div class="Packages-table">
+                                                                <table class="table table-hover" style="width: 100%; border: 1px solid #458097d8;">
+                                                                    <thead class="text-center table-header_itemlist" style="background: #458097d8;">
+                                                                        <tr>
+                                                                            <th>Sl</th>
+                                                                            <th>Order No</th>
+                                                                            <th>Enroll Details</th>
+                                                                            <th>Is Published?</th>
+                                                                            <th>Option</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody id="EDITENROLLSTBODY" style="text-align:center; font-size: 0.8rem">
+
+                                                                        {% for item in enroll_details %}
+                                                                        <tr>
+                                                                            <td>{{ forloop.counter }}</td>
+
+                                                                            <!-- ORDER NO -->
+                                                                            <td>
+                                                                                {{ item.order_no }}
+                                                                                <input type="hidden" name="enroll_order_no_list[]" value="{{ item.order_no }}">
+                                                                            </td>
+
+                                                                            <!-- DETAILS -->
+                                                                            <td>
+                                                                                {{ item.enroll_dtls }}
+                                                                                <input type="hidden" name="enroll_dtls_list[]" value="{{ item.enroll_dtls }}">
+                                                                            </td>
+
+                                                                            <!-- CHECKBOX -->
+                                                                            <td>
+                                                                                <input type="checkbox"
+                                                                                    name="is_published[]"
+                                                                                    value="{{ forloop.counter }}"
+                                                                                    {% if item.is_published %}checked{% endif %}>
+                                                                            </td>
+
+                                                                            <!-- DELETE -->
+                                                                            <td>
+                                                                                <button type="button" class="btn btn-danger btn-sm deleteRowBtn" data-enrolldtls_id="{{ item.enrolldtls_id }}">
+                                                                                    <i class='bx bx-trash-alt'></i>
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div class="usersetup_modal-footer"
+                        style="display: flex; justify-content: right; align-items: center; text-align: center; margin-bottom: 1rem;">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Close
+                        </button>
+                        <button id="saveUpdateBtn" name="submit" type="submit" class="btn btn-success"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Update Enroll
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+<!--  -->
+<script>
+    $('.deleteRowBtn').click(function() {
+        if (!confirm("Are you sure you want to delete this elements?")) return;
+
+        var enrolldtls_id = $(this).data('enrolldtls_id');
+        var btn = $(this);
+
+        $.ajax({
+            url: "{% url 'delete_enroll_details' %}",
+            type: "POST",
+            data: {
+                'enrolldtls_id': enrolldtls_id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Correctly remove the row from table
+                    btn.closest("tr").remove();
+                    alert(response.message);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert("An error occurred. Please try again.");
+            }
+        });
+    });
+    ///////////////////////////////////////////////
+    document.addEventListener("click", function (e) {
+
+        // ----------------------------
+        // Add row in EDIT modal
+        // ----------------------------
+        if (e.target && e.target.id === "addEditEnrollBtn") {
+
+            const tbody = document.getElementById("EDITENROLLSTBODY");
+            const orderInput = document.getElementById("id_edit_Order_no");
+            const detailsInput = document.getElementById("id_edit_enroll_dtls");
+
+            if (!orderInput || !detailsInput) {
+                console.error("Edit modal inputs not found!");
+                return;
+            }
+
+            const editorderNo = orderInput.value.trim();
+            const editdetails = detailsInput.value.trim();
+
+            if (!editorderNo || !editdetails) {
+                alert("All fields required!");
+                return;
+            }
+
+            const rowCount = tbody.rows.length + 1;
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>${rowCount}</td>
+                <td>
+                    ${editorderNo}
+                    <input type="hidden" name="edit_enroll_order_no_list[]" value="${editorderNo}">
+                </td>
+                <td>
+                    ${editdetails}
+                    <input type="hidden" name="edit_enroll_dtls_list[]" value="${editdetails}">
+                </td>
+                <td>
+                    <input type="checkbox" name="edit_is_published[]" value="${rowCount}">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm editDeleteRow">
+                        <i class='bx bx-trash-alt'></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // Clear input fields
+            orderInput.value = "";
+            detailsInput.value = "";
+            orderInput.focus();
+        }
+
+        // ----------------------------
+        // Delete row in EDIT modal
+        // ----------------------------
+        if (e.target && (e.target.classList.contains("editDeleteRow") || e.target.closest(".editDeleteRow"))) {
+
+            const tbody = document.getElementById("EDITENROLLSTBODY");
+            const editrow = e.target.closest("tr");
+            if (!editrow) return;
+
+            editrow.remove();
+
+            // Re-number all remaining rows and update checkbox values
+            const editrows = tbody.querySelectorAll("tr");
+            editrows.forEach((row, index) => {
+                row.cells[0].innerText = index + 1;
+
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                if (checkbox) checkbox.value = index + 1;
+            });
+        }
+
+    });
+    /////////////////////////////////////////////////////////////////
+    $(function () {
+
+        $("#updateEnrollForm").on("submit", function (e) {
+
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+
+                url: "{% url 'save_enroll_setup_api' %}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+
+                success: function (resp) {
+
+                    if (resp.success) {
+
+                        toastr.success(resp.msg);
+                        setTimeout(() => location.reload(), 500);
+
+                    } else {
+
+                        toastr.error(resp.errmsg);
+
+                    }
+
+                },
+
+                error: function (xhr) {
+
+                    console.log(xhr.responseText);
+                    toastr.error("Server Error");
+
+                }
+
+            });
+
+        });
+
+    });
+</script>
