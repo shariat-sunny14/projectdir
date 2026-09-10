@@ -23,7 +23,7 @@
     "id": "VEH-002",
     "status": "ON_TRIP",
     "createdAt": "2026-09-10T07:04:49.239Z",
-    "updatedAt": "2026-09-10T09:35:23.585Z",
+    "updatedAt": "2026-09-10T09:40:48.597Z",
     "registrationNumber": "DHAKA-METRO-GA-11-5678",
     "vehicleName": "Toyota Axio",
     "brand": "Toyota",
@@ -40,7 +40,7 @@
     "taxTokenExpiry": "2026-11-30",
     "currentLat": 23.8115,
     "currentLng": 90.4191,
-    "locationUpdatedAt": "2026-09-10T09:35:23.581Z"
+    "locationUpdatedAt": "2026-09-10T09:40:48.593Z"
   },
   {
     "id": "VEH-003",

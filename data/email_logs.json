@@ -28,5 +28,15 @@
     "status": "SENT",
     "createdAt": "2026-09-10T09:34:10.295Z",
     "updatedAt": "2026-09-10T09:34:10.295Z"
+  },
+  {
+    "id": "EML-00004",
+    "to": "shariatsunny2@gmail.com",
+    "event": "REGISTRATION_SUBMITTED",
+    "subject": "Registration received",
+    "body": "Hi Shariat Sunny, your registration (via Google) is pending admin approval.",
+    "status": "SENT",
+    "createdAt": "2026-09-10T09:46:32.424Z",
+    "updatedAt": "2026-09-10T09:46:32.424Z"
   }
 ]

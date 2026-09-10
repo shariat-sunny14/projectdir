@@ -63,5 +63,20 @@
     "status": "ACTIVE",
     "createdAt": "2026-09-10T07:04:49.236Z",
     "updatedAt": "2026-09-10T07:04:49.236Z"
+  },
+  {
+    "id": "USR-006",
+    "fullName": "Shariat Sunny",
+    "email": "shariatsunny2@gmail.com",
+    "phone": "01309994317",
+    "departmentId": "DEP-001",
+    "designation": "Admin",
+    "passwordHash": "$2b$10$SsyDpwy6Rf5Xaj4IA5dXkeiQYtYNEqsCEGoiLxLDBl10kZYT8EKv2",
+    "googleId": "113761830751148960933",
+    "role": "EMPLOYEE",
+    "status": "PENDING",
+    "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocKBtVg7sPXPPOmP0j8BnSGJ3LqS_8R7desB1StQHEtCOxpAt3Ed=s96-c",
+    "createdAt": "2026-09-10T09:46:32.418Z",
+    "updatedAt": "2026-09-10T09:46:32.418Z"
   }
 ]

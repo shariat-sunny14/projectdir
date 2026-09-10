@@ -88,5 +88,15 @@
     "description": "Booking BK-00002, starting KM 18500",
     "createdAt": "2026-09-10T09:34:50.127Z",
     "updatedAt": "2026-09-10T09:34:50.127Z"
+  },
+  {
+    "id": "AUD-00010",
+    "userId": "USR-006",
+    "module": "User",
+    "action": "CREATE",
+    "recordId": "USR-006",
+    "description": "Self-registration via Google",
+    "createdAt": "2026-09-10T09:46:36.457Z",
+    "updatedAt": "2026-09-10T09:46:36.457Z"
   }
 ]
