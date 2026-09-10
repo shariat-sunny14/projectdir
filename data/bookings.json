@@ -1,0 +1,50 @@
+[
+  {
+    "id": "BK-00001",
+    "employeeId": "USR-004",
+    "departmentId": "DEP-003",
+    "startDateTime": "2026-09-10T16:30:00",
+    "endDateTime": "2026-09-10T21:30:00",
+    "pickupLocation": "Uttara",
+    "destinationLocation": "Narayanganj",
+    "purpose": "Visit",
+    "passengerCount": 3,
+    "remarks": "",
+    "requestedVehicleId": "VEH-001",
+    "assignedVehicleId": "VEH-001",
+    "assignedDriverId": "DRV-001",
+    "status": "COMPLETED",
+    "createdAt": "2026-09-10T07:12:23.078Z",
+    "updatedAt": "2026-09-10T07:15:07.942Z"
+  },
+  {
+    "id": "BK-00002",
+    "employeeId": "USR-001",
+    "departmentId": "DEP-001",
+    "startDateTime": "2026-09-10T16:33:00",
+    "endDateTime": "2026-09-10T22:39:00",
+    "pickupLocation": "North Tower",
+    "destinationLocation": "Konabari",
+    "pickupLocationDetails": {
+      "name": "North Tower",
+      "address": "North Tower, Sonargaon Janapath, Sector 6, Uttara, Dhaka, Dhaka Metropolitan, Dhaka District, Dhaka Division, 1276, Bangladesh",
+      "lat": 23.8744027,
+      "lng": 90.4000894
+    },
+    "destinationLocationDetails": {
+      "name": "Konabari",
+      "address": "Konabari, Gazipur Sadar Upazila, Gazipur District, Dhaka Division, 1346, Bangladesh",
+      "lat": 24.0120416,
+      "lng": 90.3166405
+    },
+    "purpose": "Factory Visit",
+    "passengerCount": 3,
+    "remarks": "",
+    "requestedVehicleId": "VEH-002",
+    "assignedVehicleId": "VEH-002",
+    "assignedDriverId": "DRV-001",
+    "status": "ON_TRIP",
+    "createdAt": "2026-09-10T09:34:00.325Z",
+    "updatedAt": "2026-09-10T09:34:50.111Z"
+  }
+]

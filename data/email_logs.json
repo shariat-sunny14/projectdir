@@ -1,0 +1,32 @@
+[
+  {
+    "id": "EML-00001",
+    "to": "employee@fleet.local",
+    "event": "BOOKING_APPROVED",
+    "subject": "Booking BK-00001 approved",
+    "body": "Hi Employee Demo, your booking BK-00001 (Uttara to Narayanganj) has been approved. Vehicle: DHAKA-METRO-GA-11-1234. Driver: Driver Demo.",
+    "status": "SENT",
+    "createdAt": "2026-09-10T07:13:44.090Z",
+    "updatedAt": "2026-09-10T07:13:44.090Z"
+  },
+  {
+    "id": "EML-00002",
+    "to": "employee@fleet.local",
+    "event": "TRIP_COMPLETED",
+    "subject": "Trip completed for booking BK-00001",
+    "body": "Hi Employee Demo, your trip for booking BK-00001 has been completed. Total distance: 100 km.",
+    "status": "SENT",
+    "createdAt": "2026-09-10T07:15:07.983Z",
+    "updatedAt": "2026-09-10T07:15:07.983Z"
+  },
+  {
+    "id": "EML-00003",
+    "to": "admin@fleet.local",
+    "event": "BOOKING_APPROVED",
+    "subject": "Booking BK-00002 approved",
+    "body": "Hi Super Admin, your booking BK-00002 (North Tower to Konabari) has been approved. Vehicle: DHAKA-METRO-GA-11-5678. Driver: Driver Demo.",
+    "status": "SENT",
+    "createdAt": "2026-09-10T09:34:10.295Z",
+    "updatedAt": "2026-09-10T09:34:10.295Z"
+  }
+]

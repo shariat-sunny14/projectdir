@@ -1,0 +1,134 @@
+[
+  {
+    "id": "NOT-00001",
+    "userId": "USR-001",
+    "title": "Maintenance Entry Submitted",
+    "message": "A driver submitted a maintenance entry for DHAKA-METRO-GA-11-5678 awaiting your approval.",
+    "type": "MAINTENANCE",
+    "relatedId": "SRV-00002",
+    "isRead": true,
+    "createdAt": "2026-09-10T07:09:58.978Z",
+    "updatedAt": "2026-09-10T07:10:18.281Z"
+  },
+  {
+    "id": "NOT-00002",
+    "userId": "USR-002",
+    "title": "Maintenance Entry Submitted",
+    "message": "A driver submitted a maintenance entry for DHAKA-METRO-GA-11-5678 awaiting your approval.",
+    "type": "MAINTENANCE",
+    "relatedId": "SRV-00002",
+    "isRead": false,
+    "createdAt": "2026-09-10T07:09:58.983Z",
+    "updatedAt": "2026-09-10T07:09:58.983Z"
+  },
+  {
+    "id": "NOT-00003",
+    "userId": "USR-003",
+    "title": "Maintenance Entry Submitted",
+    "message": "A driver submitted a maintenance entry for DHAKA-METRO-GA-11-5678 awaiting your approval.",
+    "type": "MAINTENANCE",
+    "relatedId": "SRV-00002",
+    "isRead": false,
+    "createdAt": "2026-09-10T07:09:58.989Z",
+    "updatedAt": "2026-09-10T07:09:58.989Z"
+  },
+  {
+    "id": "NOT-00004",
+    "userId": "USR-001",
+    "title": "New Booking Request",
+    "message": "Booking BK-00001 is awaiting your review.",
+    "type": "BOOKING_CREATED",
+    "relatedId": "BK-00001",
+    "isRead": true,
+    "createdAt": "2026-09-10T07:12:23.094Z",
+    "updatedAt": "2026-09-10T07:12:51.450Z"
+  },
+  {
+    "id": "NOT-00005",
+    "userId": "USR-002",
+    "title": "New Booking Request",
+    "message": "Booking BK-00001 is awaiting your review.",
+    "type": "BOOKING_CREATED",
+    "relatedId": "BK-00001",
+    "isRead": false,
+    "createdAt": "2026-09-10T07:12:23.099Z",
+    "updatedAt": "2026-09-10T07:12:23.099Z"
+  },
+  {
+    "id": "NOT-00006",
+    "userId": "USR-003",
+    "title": "New Booking Request",
+    "message": "Booking BK-00001 is awaiting your review.",
+    "type": "BOOKING_CREATED",
+    "relatedId": "BK-00001",
+    "isRead": false,
+    "createdAt": "2026-09-10T07:12:23.103Z",
+    "updatedAt": "2026-09-10T07:12:23.103Z"
+  },
+  {
+    "id": "NOT-00007",
+    "userId": "USR-004",
+    "title": "Booking Approved",
+    "message": "Your booking BK-00001 has been approved. Vehicle: DHAKA-METRO-GA-11-1234, Driver: Driver Demo.",
+    "type": "BOOKING_APPROVED",
+    "relatedId": "BK-00001",
+    "isRead": false,
+    "createdAt": "2026-09-10T07:13:44.082Z",
+    "updatedAt": "2026-09-10T07:13:44.082Z"
+  },
+  {
+    "id": "NOT-00008",
+    "userId": "USR-004",
+    "title": "Trip Completed",
+    "message": "Your trip for booking BK-00001 has been completed. Total distance: 100 km.",
+    "type": "TRIP_COMPLETED",
+    "relatedId": "BK-00001",
+    "isRead": false,
+    "createdAt": "2026-09-10T07:15:07.976Z",
+    "updatedAt": "2026-09-10T07:15:07.976Z"
+  },
+  {
+    "id": "NOT-00009",
+    "userId": "USR-001",
+    "title": "New Booking Request",
+    "message": "Booking BK-00002 is awaiting your review.",
+    "type": "BOOKING_CREATED",
+    "relatedId": "BK-00002",
+    "isRead": false,
+    "createdAt": "2026-09-10T09:34:00.339Z",
+    "updatedAt": "2026-09-10T09:34:00.339Z"
+  },
+  {
+    "id": "NOT-00010",
+    "userId": "USR-002",
+    "title": "New Booking Request",
+    "message": "Booking BK-00002 is awaiting your review.",
+    "type": "BOOKING_CREATED",
+    "relatedId": "BK-00002",
+    "isRead": false,
+    "createdAt": "2026-09-10T09:34:00.344Z",
+    "updatedAt": "2026-09-10T09:34:00.344Z"
+  },
+  {
+    "id": "NOT-00011",
+    "userId": "USR-003",
+    "title": "New Booking Request",
+    "message": "Booking BK-00002 is awaiting your review.",
+    "type": "BOOKING_CREATED",
+    "relatedId": "BK-00002",
+    "isRead": false,
+    "createdAt": "2026-09-10T09:34:00.351Z",
+    "updatedAt": "2026-09-10T09:34:00.351Z"
+  },
+  {
+    "id": "NOT-00012",
+    "userId": "USR-001",
+    "title": "Booking Approved",
+    "message": "Your booking BK-00002 has been approved. Vehicle: DHAKA-METRO-GA-11-5678, Driver: Driver Demo.",
+    "type": "BOOKING_APPROVED",
+    "relatedId": "BK-00002",
+    "isRead": false,
+    "createdAt": "2026-09-10T09:34:10.289Z",
+    "updatedAt": "2026-09-10T09:34:10.289Z"
+  }
+]

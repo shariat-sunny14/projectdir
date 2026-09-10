@@ -1,0 +1,32 @@
+[
+  {
+    "id": "DEP-001",
+    "code": "ADMIN",
+    "name": "Administration",
+    "manager": "",
+    "description": "",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:48.670Z",
+    "updatedAt": "2026-09-10T07:04:48.671Z"
+  },
+  {
+    "id": "DEP-002",
+    "code": "OPS",
+    "name": "Operations",
+    "manager": "",
+    "description": "",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:48.672Z",
+    "updatedAt": "2026-09-10T07:04:48.672Z"
+  },
+  {
+    "id": "DEP-003",
+    "code": "SALES",
+    "name": "Sales",
+    "manager": "",
+    "description": "",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:48.673Z",
+    "updatedAt": "2026-09-10T07:04:48.673Z"
+  }
+]

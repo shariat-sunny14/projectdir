@@ -1,0 +1,46 @@
+[
+  {
+    "id": "EXP-00001",
+    "vehicleId": "VEH-001",
+    "bookingId": "BK-00001",
+    "expenseDate": "2026-09-10",
+    "category": "FUEL",
+    "location": "Uttara",
+    "amount": 1500,
+    "paymentMethod": "CASH",
+    "description": "Fuel for BK-00001 trip",
+    "createdByUserId": "USR-005",
+    "approvalStatus": "APPROVED",
+    "createdAt": "2026-09-10T08:36:38.838Z",
+    "updatedAt": "2026-09-10T08:36:38.838Z"
+  },
+  {
+    "id": "EXP-00002",
+    "vehicleId": "VEH-001",
+    "bookingId": "BK-00001",
+    "expenseDate": "2026-09-10",
+    "category": "TOLL",
+    "location": "Uttara-Narayanganj Highway",
+    "amount": 300,
+    "paymentMethod": "CASH",
+    "description": "Highway toll",
+    "createdByUserId": "USR-005",
+    "approvalStatus": "APPROVED",
+    "createdAt": "2026-09-10T08:36:38.838Z",
+    "updatedAt": "2026-09-10T08:36:38.838Z"
+  },
+  {
+    "id": "EXP-00003",
+    "vehicleId": "VEH-003",
+    "expenseDate": "2026-09-10",
+    "category": "PARKING",
+    "location": "Motijheel",
+    "amount": 100,
+    "paymentMethod": "BKASH",
+    "description": "Parking fee",
+    "createdByUserId": "USR-005",
+    "approvalStatus": "APPROVED",
+    "createdAt": "2026-09-10T08:36:38.838Z",
+    "updatedAt": "2026-09-10T08:36:38.838Z"
+  }
+]

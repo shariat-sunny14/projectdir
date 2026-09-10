@@ -1,0 +1,92 @@
+[
+  {
+    "id": "AUD-00001",
+    "userId": "USR-001",
+    "module": "Maintenance",
+    "action": "CREATE",
+    "recordId": "SRV-00001",
+    "description": "Vehicle VEH-001",
+    "createdAt": "2026-09-10T07:07:49.457Z",
+    "updatedAt": "2026-09-10T07:07:49.457Z"
+  },
+  {
+    "id": "AUD-00002",
+    "userId": "USR-005",
+    "module": "Maintenance",
+    "action": "CREATE",
+    "recordId": "SRV-00002",
+    "description": "Vehicle VEH-002 — submitted by driver, pending approval",
+    "createdAt": "2026-09-10T07:09:58.965Z",
+    "updatedAt": "2026-09-10T07:09:58.965Z"
+  },
+  {
+    "id": "AUD-00003",
+    "userId": "USR-004",
+    "module": "Booking",
+    "action": "CREATE",
+    "recordId": "BK-00001",
+    "description": "Requested vehicle VEH-001",
+    "createdAt": "2026-09-10T07:12:23.085Z",
+    "updatedAt": "2026-09-10T07:12:23.085Z"
+  },
+  {
+    "id": "AUD-00004",
+    "userId": "USR-001",
+    "module": "Booking",
+    "action": "APPROVE",
+    "recordId": "BK-00001",
+    "description": "Vehicle VEH-001, Driver DRV-001",
+    "createdAt": "2026-09-10T07:13:44.071Z",
+    "updatedAt": "2026-09-10T07:13:44.071Z"
+  },
+  {
+    "id": "AUD-00005",
+    "userId": "USR-001",
+    "module": "Trip",
+    "action": "START_TRIP",
+    "recordId": "TRP-00001",
+    "description": "Booking BK-00001, starting KM 42000",
+    "createdAt": "2026-09-10T07:14:35.533Z",
+    "updatedAt": "2026-09-10T07:14:35.533Z"
+  },
+  {
+    "id": "AUD-00006",
+    "userId": "USR-001",
+    "module": "Trip",
+    "action": "COMPLETE_TRIP",
+    "recordId": "TRP-00001",
+    "description": "Total KM 100",
+    "createdAt": "2026-09-10T07:15:07.957Z",
+    "updatedAt": "2026-09-10T07:15:07.957Z"
+  },
+  {
+    "id": "AUD-00007",
+    "userId": "USR-001",
+    "module": "Booking",
+    "action": "CREATE",
+    "recordId": "BK-00002",
+    "description": "Requested vehicle VEH-002",
+    "createdAt": "2026-09-10T09:34:00.331Z",
+    "updatedAt": "2026-09-10T09:34:00.331Z"
+  },
+  {
+    "id": "AUD-00008",
+    "userId": "USR-001",
+    "module": "Booking",
+    "action": "APPROVE",
+    "recordId": "BK-00002",
+    "description": "Vehicle VEH-002, Driver DRV-001",
+    "createdAt": "2026-09-10T09:34:10.267Z",
+    "updatedAt": "2026-09-10T09:34:10.267Z"
+  },
+  {
+    "id": "AUD-00009",
+    "userId": "USR-005",
+    "module": "Trip",
+    "action": "START_TRIP",
+    "recordId": "TRP-00002",
+    "description": "Booking BK-00002, starting KM 18500",
+    "createdAt": "2026-09-10T09:34:50.127Z",
+    "updatedAt": "2026-09-10T09:34:50.127Z"
+  }
+]

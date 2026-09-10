@@ -1,0 +1,67 @@
+[
+  {
+    "id": "USR-001",
+    "fullName": "Super Admin",
+    "email": "admin@fleet.local",
+    "phone": "01700000001",
+    "departmentId": "DEP-001",
+    "designation": "System Administrator",
+    "passwordHash": "$2b$10$OCkiYW7MDaTAiFvJpgwJ..donp9WJjCNs8y3WPfNe6gFOfqxqqlCa",
+    "role": "SUPER_ADMIN",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:48.788Z",
+    "updatedAt": "2026-09-10T07:04:48.788Z"
+  },
+  {
+    "id": "USR-002",
+    "fullName": "Admin User",
+    "email": "admin.user@fleet.local",
+    "phone": "01700000002",
+    "departmentId": "DEP-001",
+    "designation": "Fleet Admin",
+    "passwordHash": "$2b$10$3SbMuqtvcrPVL5RBOAthpuPkzM4yMm1U35qXsfIBZIcHXn83trp4u",
+    "role": "ADMIN",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:48.900Z",
+    "updatedAt": "2026-09-10T07:04:48.901Z"
+  },
+  {
+    "id": "USR-003",
+    "fullName": "Transport Manager",
+    "email": "manager@fleet.local",
+    "phone": "01700000003",
+    "departmentId": "DEP-002",
+    "designation": "Transport Manager",
+    "passwordHash": "$2b$10$UuwYbzOyR60YA78K4Fyp8.dKEwqbRmSQsp0egCno1Cbt4UYGy87Fi",
+    "role": "TRANSPORT_MANAGER",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:49.012Z",
+    "updatedAt": "2026-09-10T07:04:49.012Z"
+  },
+  {
+    "id": "USR-004",
+    "fullName": "Employee Demo",
+    "email": "employee@fleet.local",
+    "phone": "01700000004",
+    "departmentId": "DEP-003",
+    "designation": "Sales Executive",
+    "passwordHash": "$2b$10$pMbLojDDSwB1rXuFf80jcuzoPgCVOLD./hnd4BrzefFdu5LgsxrzC",
+    "role": "EMPLOYEE",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:49.122Z",
+    "updatedAt": "2026-09-10T07:52:25.575Z"
+  },
+  {
+    "id": "USR-005",
+    "fullName": "Driver Demo",
+    "email": "driver@fleet.local",
+    "phone": "01700000005",
+    "departmentId": "DEP-002",
+    "designation": "Driver",
+    "passwordHash": "$2b$10$wrSkkWIpNMn7mspOLFj51umtWibJoRzIrC6g.BsVQTb3Sn2CcboC.",
+    "role": "DRIVER",
+    "status": "ACTIVE",
+    "createdAt": "2026-09-10T07:04:49.236Z",
+    "updatedAt": "2026-09-10T07:04:49.236Z"
+  }
+]

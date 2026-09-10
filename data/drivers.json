@@ -1,0 +1,31 @@
+[
+  {
+    "id": "DRV-001",
+    "status": "ON_TRIP",
+    "createdAt": "2026-09-10T07:04:49.241Z",
+    "updatedAt": "2026-09-10T09:34:50.119Z",
+    "userId": "USR-005",
+    "driverName": "Driver Demo",
+    "phone": "01700000005",
+    "email": "driver@fleet.local",
+    "licenseNumber": "DL-2025-00123",
+    "licenseType": "Professional",
+    "licenseExpiryDate": "2028-01-01",
+    "joiningDate": "2023-01-01",
+    "assignedVehicleId": "VEH-001",
+    "emergencyContact": "01700000009"
+  },
+  {
+    "id": "DRV-002",
+    "status": "AVAILABLE",
+    "createdAt": "2026-09-10T07:04:49.242Z",
+    "updatedAt": "2026-09-10T07:04:49.242Z",
+    "driverName": "Karim Ahmed",
+    "phone": "01700000006",
+    "licenseNumber": "DL-2024-00987",
+    "licenseType": "Professional",
+    "licenseExpiryDate": "2027-06-01",
+    "joiningDate": "2022-05-01",
+    "emergencyContact": "01700000010"
+  }
+]
