@@ -1,0 +1,150 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'user_setup_style/css/user_setup_style.css' %}">
+<link rel="stylesheet" href="{% static 'module_setup_style/css/module_setup_style.css' %}">
+<!--========== from js file ==========-->
+<script src="{% static 'module_setup_style/js/module_setup.js' %}"></script>
+
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<div class="loader"></div>
+<!-- loader end -->
+<main>
+    <section style="margin-top: 10px;">
+        <section style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+            <div class="container-fluid">
+                <!-- Main Heading -->
+                <div class="row">
+                    <div class="col col-md-4 col-md-6 dashboar-head" style="display:flex;">
+                        <div class="d-sm-flex align-items-center mb-2" style="display: flex; width: 100%;">
+                            <i class='bx bx-objects-horizontal-left text-success req-head-icon'></i>
+                            <h1 class="h3 text-success req-head">Advertisement Banner Services</h1>
+                        </div>
+                        <div class="add-moduleBtn">
+                            <button id="addnewadvtitem" class="btn btn-success text-white btn-xs moduleBtn">
+                                Add New
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--  -->
+        <section>
+            <div class="col-xl-12">
+                <form action="" method="">
+                    <div class="module-table">
+                        <table id="moduleList" class="table table-hover table-striped" style="width: 100%;">
+                            <thead class="text-center table-header">
+                                <tr style="border-style: hidden!important;">
+                                    <th style="text-align:center; width: 5%;">SL No</th>
+                                    <th style="text-align:left;">Banner</th>
+                                    <th style="text-align:center;">Title Name</th>
+                                    <th style="text-align:center;">Status</th>
+                                    <th style="text-align:center; width: 8%;">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody class="module-table-row">
+                                {% for data in banner_data %}
+                                <tr style="border-style: hidden!important;">
+                                    <td style="text-align:center; width: 5%;">{{forloop.counter}}</td>
+                                    <td style="text-align: center; align-content: center; align-items: center;">
+                                        {% if data.banner_img %}
+                                            <img src="{{ data.banner_img.url }}" alt="Banner" style="width: auto; height: 2.2rem; width: 20%; display: flex; justify-content: center; flex-direction: row; align-items: center;">
+                                        {% else %}
+                                            <span>No Image</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:center;">{{data.title_name}}</td>
+                                    <td class="statusActiveInact" style="text-align:center;">
+                                        {{data.is_publist}}
+                                    </td>
+                                    <td style="text-align:center; width: 8%;">
+                                        <button type="button" data-id="{{ data.pk }}"
+                                            class="btn btn-success printBtn table-row-btn btn-xs text-white editadvtitem">
+                                            <i class='bx bx-edit printIcon text-white'></i>
+                                        </button>
+                                        <button type="button" data-id="{{ data.pk }}"
+                                            class="btn btn-danger printBtn table-row-btn btn-xs text-white delete-data">
+                                            <i class='bx bx-box printIcon text-white'></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </section>
+</main>
+<script>
+    $(function () {
+        // module setup
+        $('#addnewadvtitem').click(function () {
+            modal_lg("Add New Module", "{% url 'new_add_advert_item_modal' %}")
+        })
+
+        $(document).on('click', '.editadvtitem', function () {
+            modal_xl("edit add new advtitem", "{% url 'edit_advert_item_modal' %}?banner_id=" + $(this).attr('data-id'));
+        });
+
+        $(document).on('click', '.delete-data', function () {
+            _conf("Are you sure to delete this?", "delete_advtitem", [$(this).attr('data-id')])
+        });
+    })
+
+    // module delete function
+    function delete_advtitem($banner_id) {
+        $.ajax({
+            headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+            },
+            url: "{% url 'delete_advert_item' %}",
+            method: "POST",
+            data: {
+                banner_id: $banner_id
+            },
+            dataType: "json",
+            success: function (resp) {
+                toastr.success(resp.msg)
+                //location.reload();
+                setTimeout(function () { location.reload() }, 300);
+            }
+        })
+    }
+
+    // status change true = active & false = inactive
+    const elements = document.getElementsByClassName("statusActiveInact");
+    for (let i = elements.length; i--;) {
+        const el = elements[i];
+        if (el.innerText.trim() === "True") {
+            el.innerHTML = "Publist";
+            el.style.color = "green";
+            el.style.fontWeight = "bold";
+        } else if (el.innerText.trim() === "False") {
+            el.innerHTML = "Not Publist";
+            el.style.color = "red";
+            el.style.fontWeight = "bold";
+        }
+    }
+
+    // loader scrt
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            // document.body.removeChild("loader");
+        });
+    });
+</script>
+{% endblock %}

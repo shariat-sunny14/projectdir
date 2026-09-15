@@ -1,0 +1,179 @@
+<!-- inquire_viewers.html -->
+<div class="container-fluid inquire-view-modal">
+
+  <style>
+    .inquire-view-modal .card {
+        border-radius: 12px;
+    }
+
+    .inquire-header {
+        background: linear-gradient(135deg,#1c1f26,#343a40);
+        color: white;
+        padding: 18px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .inquire-header h4 {
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .info-card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+    .info-title {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 6px;
+    }
+
+    .info-item {
+        display: flex;
+        padding: 6px 0;
+        font-size: 14px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .info-item span:first-child {
+        color: #888;
+    }
+
+    .badge-modern {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    .comment-box {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+  </style>
+
+  <div class="card border-0 shadow-sm">
+
+    <!-- Header -->
+    <div class="inquire-header d-flex justify-content-between align-items-center">
+      <h4>Inquire #{{ inquiry.inquire_id }}</h4>
+      <span class="badge bg-primary badge-modern">{{ inquiry.inquire_date|date:"d-m-Y" }}</span>
+      <button type="button" class="btn bg-danger text-white closerBtn" data-bs-dismiss="modal" style="display: flex; width: 2rem; height: 2rem; border: 2px solid #fff; border-radius: 50%; align-items: center; justify-content: center;">X</button>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row g-4">
+
+        <!-- Personal Info -->
+        <div class="col-md-6">
+          <div class="info-card">
+            <div class="info-title">👤 Personal Information</div>
+
+            <div class="info-item">
+              <span>Full Name</span>
+              <strong>{{ inquiry.full_name }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Email</span>
+              <strong>{{ inquiry.email }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Phone</span>
+              <strong>{{ inquiry.phone_number }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Created By</span>
+              <strong>
+                {% if inquiry.ss_creator %}
+                  {{ inquiry.ss_creator.get_full_name }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </strong>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Inquiry Details -->
+        <div class="col-md-6">
+          <div class="info-card">
+            <div class="info-title">📋 Inquiry Details</div>
+
+            <div class="info-item">
+              <span>Inquire Type</span>
+              <div>
+                {% if inquiry.inquire_type %}
+                  {% for t in inquiry.inquire_type %}
+                    <span class="badge bg-info text-dark badge-modern me-1">{{ t }}</span>
+                  {% endfor %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span>Discover Type</span>
+              <div>
+                {% if inquiry.discover_type %}
+                  {% for t in inquiry.discover_type %}
+                    <span class="badge bg-success text-white badge-modern me-1" style="margin: 1rem 0.5rem 0 0;">{{ t }}</span>
+                  {% endfor %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Questions & Planned -->
+      <div class="row mt-4 g-4">
+
+        <div class="col-md-6">
+          <div class="info-card">
+            <div class="info-title">❓ Your Questions</div>
+            <p>{{ inquiry.your_questions|default:"N/A" }}</p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="info-card">
+            <div class="info-title">📌 Your Planned</div>
+            <p>{{ inquiry.your_planned|default:"N/A" }}</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Comments -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="info-card">
+            <div class="info-title">💬 Comments</div>
+            <div class="comment-box">{{ inquiry.comments|default:"No comment provided" }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

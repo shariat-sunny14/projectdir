@@ -1,0 +1,1853 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!--- HEADER -->
+<header>
+  <!-- header-main -->
+  {% include 'websites/header_main.html' %}
+</header>
+
+<!--- MAIN -->
+<main>
+
+  <!-- HOME SECTION -->
+  <section id="home">
+
+    <!-- ================= MAIN SLIDER — auto-spotlight mosaic grid =================
+         Every banner_data image shown at once as a dim mosaic; one tile is
+         "spotlighted" (brightened + lifted) at a time — auto-advancing every
+         ~4.5s, and overridden by hover/focus/tap on any tile. Inspired by the
+         reference the client liked (Kavieng Cheng's masonry portfolio), but
+         calmer: auto-cycles on its own instead of requiring user interaction. -->
+    <div class="slider-wrapper hero-grid-wrapper">
+      <div class="hero-grid" id="heroGrid" style="--hero-count: {{ banner_data|length }};">
+        {% for data in banner_data %}
+        <div class="hero-tile" data-index="{{ forloop.counter0 }}" tabindex="0"
+             role="button" aria-haspopup="dialog"
+             data-title="{{ data.title_name|default:'' }}" data-desc="{{ data.banner_text|default:'' }}"
+             aria-label="View {{ data.title_name|default:'this photograph' }} full screen">
+          <img src="{{ data.banner_img.url }}" alt="{{ data.title_name }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+          {% if data.title_name or data.banner_text %}
+          <div class="hero-tile-caption">
+            <span class="hero-kicker">Fine Art Photography &amp; Cinematography</span>
+            {% if data.title_name %}<h2 class="hero-title">{{ data.title_name }}</h2>{% endif %}
+            {% if data.banner_text %}<p class="hero-subtitle">{{ data.banner_text }}</p>{% endif %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <!-- Scroll cue (desktop only — a quiet nudge, not an instruction) -->
+      <div class="hero-scroll-cue" aria-hidden="true">
+        <span class="hero-scroll-cue-text">Scroll</span>
+        <span class="hero-scroll-cue-line"></span>
+      </div>
+    </div>
+
+    <!-- Hero lightbox — click/tap any mosaic tile to view that photo full-page.
+         Reuses the site's existing .lightbox styling (same look as the
+         portfolio/album viewers) with its own ids so it doesn't clash with
+         the other lightboxes further down this page. -->
+    <div class="lightbox" id="heroLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image viewer">
+        <button class="lightbox-close" id="heroLbClose" aria-label="Close viewer" title="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+        </button>
+        <button class="lightbox-prev" id="heroLbPrev" aria-label="Previous image" title="Previous">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+        <figure>
+            <img id="heroLbImg" src="" alt="">
+            <figcaption id="heroLbCaption"></figcaption>
+            <span class="lightbox-counter" id="heroLbCounter"></span>
+        </figure>
+        <button class="lightbox-next" id="heroLbNext" aria-label="Next image" title="Next">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6" />
+            </svg>
+        </button>
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <!-- gallary -->
+    <div>
+      <div class="gallary-body container">
+        <div class="company-logo" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; padding: 3rem;">
+          {% if org_data and org_data.org_logo %}
+            <img src="{{ org_data.org_logo.url }}" alt="" style="width: auto; max-width: 15rem;">
+          {% else %}
+            <img src="{% static 'images/company_logo/com_logo.png' %}" alt="">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <!--  -->
+  </section>
+  <!-- ============================================================
+      SERVICES
+  ============================================================ -->
+  <section id="services">
+    <!-- -->
+    <div class="wrap">
+        <div class="section-head reveal">
+            <div class="kicker"><span></span> Our Services</div>
+            <h2>Professional Photography Services</h2>
+            <p>
+                Finger's Story is a team of experienced professional photographers, cinematographers, and photo-book experts who are dedicated to creating stunning, authentic stories of people's lives. With a passion for capturing the essence of every event, no matter how big or small, our team has the skills, resources, and creativity to design and implement your dream event.
+            </p>
+        </div>
+
+        <div class="gallery-services-grid reveal" id="servicesGrid">
+            <!-- JS diye populate hobe -->
+        </div>
+
+        <div class="gs-cta-wrap">
+            <a href="/services/" class="gs-cta-btn">See All Services</a>
+        </div>
+    </div>
+  </section>
+  <script>
+    (function () {
+        const grid = document.getElementById('servicesGrid');
+
+        fetch('/api/services-gallery/')
+            .then(res => res.json())
+            .then(data => {
+                const results = data.results || [];
+
+                if (results.length === 0) {
+                    grid.innerHTML = '<p style="color:#9da1a4; text-align:center; width:100%;">No services found.</p>';
+                    return;
+                }
+
+                grid.innerHTML = results.map((item, idx) => `
+                    <a href="/featured_gallery_details/${item.phgallery_id}/" class="gs-card">
+                        <span class="gs-num">${String(idx + 1).padStart(2, '0')}</span>
+                        <div class="gs-frame">
+                            <img class="gs-bg" src="${item.image}" alt="" aria-hidden="true">
+                            <img class="gs-main" src="${item.image}" alt="${item.title}" loading="lazy">
+                        </div>
+                        <div class="gs-info">
+                            <h3>${item.title}</h3>
+                            <p>${item.photo_type_label}</p>
+                        </div>
+                    </a>
+                `).join('');
+            })
+            .catch(err => {
+                console.error(err);
+                grid.innerHTML = '<p style="color:#9da1a4; text-align:center; width:100%;">Could not load services.</p>';
+            });
+    })();
+  </script>
+
+  <!-- ============================================================
+     PORTFOLIO
+  ============================================================ -->
+  <!-- ============================================================
+     PORTFOLIO  (AJAX-driven — data Django backend theke ashbe)
+  ============================================================ -->
+  <section id="portfolio">
+    <div class="wrap">
+        <div class="portfolio-head reveal">
+            <div class="section-head" style="margin-bottom:0;">
+                <div class="kicker"><span></span> Recent work</div>
+                <h2>A few of our favourite stories</h2>
+            </div>
+            <!-- ekhon r static button nei — gallery.js PHOTOS_TYPE_CHOICES
+                 theke dynamically banabe -->
+            <div class="filter-row" id="filterRow"></div>
+        </div>
+
+        <div class="gallery reveal" id="gallery" aria-live="polite">
+            <p class="gallery-loading">Loading portfolio…</p>
+        </div>
+    </div>
+    <!--  -->
+    <!--  -->
+    <!-- Our Albums  -->
+    <!--  -->
+    <!--  -->
+    <div class="wrap" style="margin-top: 8rem;">
+      <div class="portfolio-head reveal">
+          <div class="section-head" style="margin-bottom:0;">
+              <div class="kicker"><span></span> Our Albums</div>
+              <h2>A few of our favourite Albums</h2>
+              <p>
+                Take a peek at our recent stunning wedding photography album, which is loaded with wonderful moments and memories.
+              </p>
+          </div>
+      </div>
+      <div class="albums reveal" id="albums" aria-live="polite">
+          <p class="albums-loading">Loading albums…</p>
+      </div>
+
+      <div class="gs-cta-wrap">
+        <a href="/albums/" class="gs-cta-btn">See All Albums</a>
+      </div>
+    </div>
+    <!--  -->
+    <!--  -->
+    <!-- Our photo gallery  -->
+    <!--  -->
+    <!--  -->
+    <div class="wrap" style="margin-top: 8rem;">
+      <div class="portfolio-head reveal">
+          <div class="section-head" style="margin-bottom:0;">
+              <div class="kicker"><span></span> Photo Gallery</div>
+              <h2>Moments We've Captured</h2>
+              <p>
+                A collection of beautiful moments, genuine emotions, and unforgettable memories captured through our lens.
+              </p>
+          </div>
+      </div>
+      <div class="photogallery reveal" id="photogallery" aria-live="polite">
+          <p class="photogallery-loading">Loading Photo Gallery…</p>
+      </div>
+      <div class="gs-cta-wrap">
+        <a href="/all_gallery_photos_view/" class="gs-cta-btn">See All Photos</a>
+      </div>
+    </div>
+
+    <!-- ✅ Shared full-screen lightbox — Albums ar Photo Gallery duita-i eita use korbe -->
+    <div class="lightbox" id="sharedLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image viewer">
+        <button class="lightbox-close" id="slbClose" aria-label="Close viewer" title="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+        </button>
+        <button class="lightbox-prev" id="slbPrev" aria-label="Previous image" title="Previous">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+        <figure>
+            <img id="slbImg" src="" alt="">
+            <figcaption id="slbCaption"></figcaption>
+            <span class="lightbox-counter" id="slbCounter"></span>
+        </figure>
+        <button class="lightbox-next" id="slbNext" aria-label="Next image" title="Next">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6" />
+            </svg>
+        </button>
+    </div>
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <script>
+      const API_ALBUMS_LIST = '/api/albums-list/';
+      const API_ALBUMS_DETAIL = (id) => `/api/albums-detail/${id}/`;
+      const API_PHOTOGALLERY_LIST = '/api/photogallery-list/';
+
+      const albumsEl = document.getElementById('albums');
+      const photogalleryEl = document.getElementById('photogallery');
+
+      let photogalleryCache = []; // photo gallery-r 20 ta image ekhane cache thakbe
+
+      function escapeHtml(str = '') {
+          const div = document.createElement('div');
+          div.textContent = str;
+          return div.innerHTML;
+      }
+
+      /* ============================================================
+        ALBUMS
+      ============================================================ */
+      async function loadAlbums() {
+          albumsEl.setAttribute('aria-busy', 'true');
+          albumsEl.innerHTML = `<p class="albums-loading">Loading albums…</p>`;
+
+          try {
+              const res = await fetch(API_ALBUMS_LIST, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const data = await res.json();
+              renderAlbums(data.results || []);
+          } catch (err) {
+              console.error('Albums load failed:', err);
+              albumsEl.innerHTML = `<p class="albums-error">Could not load albums right now.</p>`;
+          } finally {
+              albumsEl.removeAttribute('aria-busy');
+          }
+      }
+
+      function renderAlbums(items) {
+          if (!items.length) {
+              albumsEl.innerHTML = `<p class="albums-empty">No albums to show yet.</p>`;
+              return;
+          }
+
+          // ✅ <a> na, <div> — click e navigate na kore lightbox open korbe.
+          // Title image-er niche thakbei (.album-title)
+          albumsEl.innerHTML = items.map((item) => `
+            <div class="album-card" data-gallery-id="${item.phgallery_id}">
+              <div class="album-thumb">
+                <img src="${item.cover}" alt="${escapeHtml(item.title)}" loading="lazy">
+              </div>
+              <span class="album-title">${escapeHtml(item.title)}</span>
+            </div>
+          `).join('');
+      }
+
+      albumsEl.addEventListener('click', (e) => {
+          const card = e.target.closest('.album-card');
+          if (!card) return;
+          openAlbumLightbox(card.dataset.galleryId);
+      });
+
+      async function openAlbumLightbox(galleryId) {
+          openSharedLightbox();
+          slbCaption.textContent = 'Loading…';
+
+          try {
+              const res = await fetch(API_ALBUMS_DETAIL(galleryId), { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const data = await res.json();
+
+              const photos = (data.photos || []).map(p => ({ src: p.src, title: p.title }));
+              if (!photos.length) {
+                  slbCaption.textContent = 'No photos found for this album.';
+                  return;
+              }
+              setLightboxPhotos(photos, 0);
+          } catch (err) {
+              console.error('Album detail load failed:', err);
+              slbCaption.textContent = 'Could not load these photos right now.';
+          }
+      }
+
+      /* ============================================================
+        PHOTO GALLERY
+      ============================================================ */
+      async function loadPhotoGallery() {
+          photogalleryEl.setAttribute('aria-busy', 'true');
+          photogalleryEl.innerHTML = `<p class="photogallery-loading">Loading photo gallery…</p>`;
+
+          try {
+              const res = await fetch(API_PHOTOGALLERY_LIST, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const data = await res.json();
+              photogalleryCache = (data.results || []).map(p => ({ src: p.src, title: p.title }));
+              renderPhotoGallery(data.results || []);
+          } catch (err) {
+              console.error('Photo gallery load failed:', err);
+              photogalleryEl.innerHTML = `<p class="photogallery-error">Could not load photos right now.</p>`;
+          } finally {
+              photogalleryEl.removeAttribute('aria-busy');
+          }
+      }
+
+      function renderPhotoGallery(items) {
+          if (!items.length) {
+              photogalleryEl.innerHTML = `<p class="photogallery-empty">No photos to show yet.</p>`;
+              return;
+          }
+
+          photogalleryEl.innerHTML = items.map((item, i) => `
+            <div class="photogallery-item" data-index="${i}">
+              <img src="${item.src}" alt="${escapeHtml(item.title)}" loading="lazy">
+            </div>
+          `).join('');
+      }
+
+      photogalleryEl.addEventListener('click', (e) => {
+          const item = e.target.closest('.photogallery-item');
+          if (!item) return;
+          const index = parseInt(item.dataset.index, 10);
+          openSharedLightbox();
+          setLightboxPhotos(photogalleryCache, index);
+      });
+
+      /* ============================================================
+        SHARED LIGHTBOX — Albums ar Photo Gallery duitar jonno common
+      ============================================================ */
+      const sharedLightbox = document.getElementById('sharedLightbox');
+      const slbImg = document.getElementById('slbImg');
+      const slbCaption = document.getElementById('slbCaption');
+      const slbCounter = document.getElementById('slbCounter');
+      const slbClose = document.getElementById('slbClose');
+      const slbPrev = document.getElementById('slbPrev');
+      const slbNext = document.getElementById('slbNext');
+
+      let lbPhotos = [];
+      let lbIndex = 0;
+
+      function openSharedLightbox() {
+          sharedLightbox.classList.add('is-open');
+          sharedLightbox.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          slbImg.removeAttribute('src');
+          slbCounter.textContent = '';
+          slbPrev.hidden = true;
+          slbNext.hidden = true;
+      }
+
+      function closeSharedLightbox() {
+          sharedLightbox.classList.remove('is-open');
+          sharedLightbox.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+          lbPhotos = [];
+          lbIndex = 0;
+      }
+
+      function setLightboxPhotos(photos, startIndex) {
+          lbPhotos = photos;
+          lbIndex = startIndex || 0;
+          showLightboxSlide();
+      }
+
+      function showLightboxSlide() {
+          const photo = lbPhotos[lbIndex];
+          if (!photo) return;
+
+          slbImg.src = photo.src;
+          slbImg.alt = photo.title || '';
+          slbCaption.textContent = photo.title || '';
+          slbCounter.textContent = `${lbIndex + 1} / ${lbPhotos.length}`;
+
+          const multi = lbPhotos.length > 1;
+          slbPrev.hidden = !multi;
+          slbNext.hidden = !multi;
+      }
+
+      function lbStep(dir) {
+          if (!lbPhotos.length) return;
+          lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+          showLightboxSlide();
+      }
+
+      slbClose.addEventListener('click', closeSharedLightbox);
+      slbPrev.addEventListener('click', () => lbStep(-1));
+      slbNext.addEventListener('click', () => lbStep(1));
+      sharedLightbox.addEventListener('click', (e) => { if (e.target === sharedLightbox) closeSharedLightbox(); });
+
+      document.addEventListener('keydown', (e) => {
+          if (!sharedLightbox.classList.contains('is-open')) return;
+          if (e.key === 'Escape') closeSharedLightbox();
+          if (e.key === 'ArrowLeft') lbStep(-1);
+          if (e.key === 'ArrowRight') lbStep(1);
+      });
+
+      loadAlbums();
+      loadPhotoGallery();
+
+      if (!window.__revealObserverInit) {
+          window.__revealObserverInit = true;
+          const revealEls = document.querySelectorAll('.reveal');
+          const revealObserver = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      entry.target.classList.add('is-visible');
+                      revealObserver.unobserve(entry.target);
+                  }
+              });
+          }, { threshold: 0.12 });
+          revealEls.forEach(el => revealObserver.observe(el));
+      }
+    </script>
+  </section>
+
+  <script>const TESTIMONIALS_API_URL = "{% url 'testimonials:api_list' %}";</script>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("testimonials");
+        if (!container || typeof TESTIMONIALS_API_URL === "undefined") return;
+
+        fetch(TESTIMONIALS_API_URL)
+            .then((res) => res.json())
+            .then((data) => {
+                const results = data.results || [];
+
+                if (results.length === 0) {
+                    container.innerHTML = "<p class='testimonials-loading'>No testimonials yet.</p>";
+                    return;
+                }
+
+                const cardsHtml = results.map(buildCardHtml).join("");
+                container.innerHTML = `
+                    <div class="testimonials-track">
+                        ${cardsHtml}
+                        ${cardsHtml}
+                    </div>
+                `;
+            })
+            .catch(() => {
+                container.innerHTML = "<p class='testimonials-loading'>Failed to load testimonials.</p>";
+            });
+      });
+
+      function buildCardHtml(item) {
+          const avatarHtml = item.image_url
+              ? `<img src="${item.image_url}" alt="${escapeHtml(item.couple_name)}" class="testimonial-avatar">`
+              : `<div class="testimonial-avatar-placeholder"></div>`;
+
+          return `
+              <div class="testimonial-card">
+                  <p class="testimonial-quote">
+                      <span class="quote-mark">&lsquo;</span>${escapeHtml(item.message)}
+                  </p>
+                  <div class="testimonial-author">
+                      ${avatarHtml}
+                      <span class="testimonial-name">${escapeHtml(item.couple_name)}</span>
+                  </div>
+              </div>
+          `;
+      }
+
+      function escapeHtml(str) {
+          const div = document.createElement("div");
+          div.textContent = str;
+          return div.innerHTML;
+      }
+  </script>
+
+  <!-- Lightbox / Image Viewer -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image viewer">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close viewer" title="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+      </button>
+      <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous image" title="Previous">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+          </svg>
+      </button>
+      <figure>
+          <img id="lightboxImg" src="" alt="">
+          <figcaption id="lightboxCaption">
+              <span id="lightboxCaptionText"></span>
+              <button class="details-btn" id="idDetailsBtn" data-gallery-id="">Details</button>
+          </figcaption>
+          <span class="lightbox-counter" id="lightboxCounter"></span>
+      </figure>
+      <button class="lightbox-next" id="lightboxNext" aria-label="Next image" title="Next">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6l6 6-6 6" />
+          </svg>
+      </button>
+  </div>
+
+  <!-- =============================================================================================== -->
+  <!-- FOLLOW US SECTION — premium social-links block, kept separate from the
+       header/sub-header (those stay untouched); same kicker/title language
+       (.aw-kicker/.aw-title) already used by the Awards & Social Media
+       sections above, so it reads as one consistent design family. -->
+  <!-- =============================================================================================== -->
+  {% if org_data.fb_link or org_data.twitter_link or org_data.linkedin_link or org_data.instagram_link or org_data.youtube_link %}
+    <section id="follow_us">
+        <div class="fw-wrap reveal">
+        <div class="aw-head">
+            <div class="aw-kicker"><span></span> Stay Connected</div>
+            <h2 class="aw-title">Follow Our Journey</h2>
+        </div>
+        <p class="fw-sub">Behind-the-scenes moments, new stories and fresh work — first on our social channels.</p>
+        <div class="fw-links">
+            {% if org_data.fb_link %}
+            <a href="{{ org_data.fb_link }}" target="_blank" rel="noopener noreferrer" class="fw-link" aria-label="Follow us on Facebook">
+            <span class="fw-link-icon"><ion-icon name="logo-facebook"></ion-icon></span>
+            <span class="fw-link-label">Facebook</span>
+            </a>
+            {% endif %}
+            {% if org_data.instagram_link %}
+            <a href="{{ org_data.instagram_link }}" target="_blank" rel="noopener noreferrer" class="fw-link" aria-label="Follow us on Instagram">
+            <span class="fw-link-icon"><ion-icon name="logo-instagram"></ion-icon></span>
+            <span class="fw-link-label">Instagram</span>
+            </a>
+            {% endif %}
+            {% if org_data.youtube_link %}
+            <a href="{{ org_data.youtube_link }}" target="_blank" rel="noopener noreferrer" class="fw-link" aria-label="Subscribe on YouTube">
+            <span class="fw-link-icon"><ion-icon name="logo-youtube"></ion-icon></span>
+            <span class="fw-link-label">YouTube</span>
+            </a>
+            {% endif %}
+            {% if org_data.linkedin_link %}
+            <a href="{{ org_data.linkedin_link }}" target="_blank" rel="noopener noreferrer" class="fw-link" aria-label="Follow us on LinkedIn">
+            <span class="fw-link-icon"><ion-icon name="logo-linkedin"></ion-icon></span>
+            <span class="fw-link-label">LinkedIn</span>
+            </a>
+            {% endif %}
+            {% if org_data.twitter_link %}
+            <a href="{{ org_data.twitter_link }}" target="_blank" rel="noopener noreferrer" class="fw-link" aria-label="Follow us on X">
+            <span class="fw-link-icon">
+                <!-- Twitter -> X rebrand: ionicons 5.5.2 (pinned site-wide) has no
+                    logo-x glyph yet, so the official X mark is inlined here
+                    instead of bumping the icon library version site-wide. -->
+                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </span>
+            <span class="fw-link-label">X</span>
+            </a>
+            {% endif %}
+        </div>
+        </div>
+    </section>
+  {% endif %}
+
+  <!-- ============================================================
+    PROCESS
+  ============================================================ -->
+  <section class="process" id="process">
+    <div class="wrap">
+        <!--  -->
+        <!--  -->
+        <!-- TESTIMONIALS  -->
+        <!--  -->
+        <!--  -->
+        <div class="wrap-BODY">
+            <div class="portfolio-head reveal">
+                <!-- LEFT / INTRO CONTENT -->
+                <div class="about-intro-wrap">
+                    <div class="about-copy reveal">
+                        <div class="about-kicker"> <span></span> {{ who_we_are.kicker_text }} </div>
+                        <h3> {{ who_we_are.subtitle }} </h3>
+                        <h2>
+                            {{ who_we_are.title_main }}
+                            <em>&amp;</em>
+                            {{ who_we_are.title_after }}
+                        </h2>
+                        <p class="about-description"> {{ who_we_are.description }} </p>
+                        <div class="about-line"></div>
+                        <p class="about-note"> {{ who_we_are.note }} </p>
+                    </div>
+
+                    <!-- RIGHT / STATS -->
+                    <div class="stats-section reveal">
+                        <div class="stats-intro">
+                            <span>{{ who_we_are.stats_intro_label }}</span>
+                            <p> {{ who_we_are.stats_intro_text }} </p>
+                        </div>
+
+                        <div class="stats-grid">
+                            {% for stat in stats %}
+                            <div class="stat-card {% if stat.is_featured %}stat-featured{% endif %}">
+                                <div class="stat-number">
+                                    <span class="stat-counter" data-target="{{ stat.target_number }}" data-is_featured="{{ stat.is_featured }}"> 0 </span>
+                                    {% if stat.suffix %}<small>{{ stat.suffix }}</small>{% endif %}
+                                </div>
+                                <div class="stat-label"> {{ stat.label }} </div>
+                                <div class="stat-card-line"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <!--  -->
+                <div class="wrap-body">
+                    <div class="section-head reveal">
+                        <div class="kicker"> <span></span> {{ service_section.kicker_text }}</div>
+                        <h2>{{ service_section.heading }}</h2>
+                        <p>{{ service_section.sub_text }}</p>
+                    </div>
+                    <div class="services-grid reveal">
+                        {% for service in services %}
+                        <div class="service-card">
+                            <span class="service-num">{{ service.display_number }}</span>
+                            <h3>{{ service.title }}</h3>
+                            <p>{{ service.description }}</p>
+                        </div>
+                        {% empty %}
+                        <p class="empty-state"></p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!--  -->
+                <!--  -->
+                <div class="section-head" style="margin-top:3rem; margin-bottom:0;">
+                    <div class="kicker"><span></span> TESTIMONIALS</div>
+                    <h2>Words From Our Happy Clients</h2>
+                    <p>
+                    Every event is special, and hearing from our clients makes it even more meaningful. Discover what they say about their experience with us.
+                    </p>
+                </div>
+                <!--  -->
+            </div>
+            <!--  -->
+            <div class="testimonials reveal" id="testimonials" aria-live="testimonials">
+                <p class="testimonials-loading">Loading Testimonials…</p>
+            </div>
+        </div>
+
+
+        <!--  -->
+        <!--  -->
+        <!--  -->
+        <!--  -->
+        <div class="section-head on-dark reveal" style="margin-top: 4rem;">
+            <div class="kicker"><span></span> {{ process_section.kicker }}</div>
+            <h2>{{ process_section.heading }}</h2>
+        </div>
+        <div class="process-steps reveal">
+            {% for step in process_steps %}
+            <div class="process-step">
+                <span class="step-num">{{ step.formatted_step_number }}</span>
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+            </div>
+            {% empty %}
+            <p>No process steps added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- PACKAGES SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="packages">
+    <!--  -->
+    <div class="package-body container">
+      <div class="package-intro">
+        <div class="section-head" style="margin-bottom:0;">
+          <div class="kicker"><span></span> Our Signature Packages</div>
+        </div>
+        {% if package_hdbd %}
+        {% for package in package_hdbd %}
+        <h1 class="package-header">{{ package.head_name }}</h1>
+        {% endfor %}
+        {% else %}
+        <h1 class="package-header">FIND THE RIGHT PLAN</h1>
+        {% endif %}
+        <!--  -->
+        {% if package_hdbd %}
+        {% for package in package_hdbd %}
+        <p class="package-description">{{ package.body_text }}</p>
+        {% endfor %}
+        {% else %}
+        <p class="package-description">
+          We believe in transparency and clarity, which is why our pricing is
+          straightforward and easy to understand. Contact us to learn more about our
+          pricing options and to book your next photography session.
+        </p>
+        {% endif %}
+      </div>
+      <!--  -->
+      <!--  -->
+      <div class="package-cards-container"
+        style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+        <!--  -->
+        {% for title in package_data %}
+        <div class="package-cards" style="padding: 0.6rem;">
+          <div class="wrapper">
+            <div class="card front-face">
+              <div class="header-title">{{ title.package_title }}</div>
+              <img src="{{ title.title_img.url }}">
+            </div>
+            <div class="card back-face">
+              <img src="{{ title.title_img.url }}">
+              <div class="info">
+                <div class="title">
+                  {{ title.package_title }}
+                </div>
+                <p style="font-size: 0.8rem;">
+                  <button class="btn showPackageDtlsModal" data-package_id="{{ title.package_id }}" style="background: rgb(83, 83, 83); color: #c3c3c3;">
+                    Package Details
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!--  -->
+        <!--  -->
+      </div>
+      <!--  -->
+    </div>
+
+
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- TRAINING SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="training">
+    {% include 'websites/training_section.html' %}
+  </section>
+  <!-- =============================================================================================== -->
+  <!-- TRAINING SECTION -->
+  <!-- =============================================================================================== -->
+
+  <!-- =============================================================================================== -->
+  <!-- BOOK US SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="bookus">
+    <!-- BOOK US -->
+    {% include 'websites/booking_us.html' %}
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- WHY US SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="whyus">
+    <div class="whyus-body" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+      <div class="bookus-body container" style="margin-bottom: 5rem;">
+        <div class="bookus-intro">
+            <h1 class="bookus-header">FREQUENTLY ASKED QUESTIONS</h1>
+            <!--  -->
+            <p class="bookus-description">
+                We’ve curated these questions based on our years of experience, and we’ve tried to anticipate the queries that we get asked most frequently by our clients.
+            </p>
+        </div>
+        <!--  -->
+      </div>
+
+      <!--  -->
+      <!--  -->
+      <div class="accordion" style="width: 100%; max-width: 100%; border: hidden;">
+
+        {% for faq in faqs %}
+        <div class="accordion-container" style="padding: 5px; border-left: hidden; border-right: hidden;">
+          <div class="accordion-item" style="border: hidden; background: #3b3b3b91;">
+            <button class="accordion-header">
+                {{ faq.question }}
+                <span class="icon">+</span>
+            </button>
+
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    {{ faq.answer }}
+                </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!--  -->
+        <!--  -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- Social Media SECTION -->
+  <!-- =============================================================================================== -->
+  <!-- =============================================================================================== -->
+  <!-- SOCIAL MEDIA — premium redesign: Facebook posts + Videos gallery, each with
+       a gold kicker + serif title (same language as the Awards/Certificates
+       section above), cards with hover lift, consistent premium chrome. -->
+  <!-- =============================================================================================== -->
+  <section id="social_media">
+    <div class="gallary-body container">
+      {% if posts %}
+      <div class="ig-grid-wrap">
+        <div class="sm-head">
+          <span class="sm-kicker">Follow Along</span>
+          <h2 class="ig-grid-title">Facebook Posts</h2>
+        </div>
+
+        <div class="ig-grid">
+          {% for post in posts %}
+            {% if post.image %}
+            <a href="{{ post.post_url }}" target="_blank" rel="noopener" class="ig-grid-item" style="background-image: url('{{ post.image.url }}');">
+              <img src="{{ post.image.url }}" alt="">
+
+              <span class="ig-grid-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="7" y="2" width="15" height="15" rx="3" stroke="#fff" stroke-width="1.6"/>
+                  <path d="M2 8v11a3 3 0 0 0 3 3h11" stroke="#fff" stroke-width="1.6"/>
+                </svg>
+              </span>
+
+              {% if post.message %}
+              <span class="ig-grid-overlay">
+                <span class="ig-grid-overlay-text">{{ post.message }}</span>
+              </span>
+              {% endif %}
+            </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if yt_videos %}
+      <div class="ig-grid-wrap" style="margin-top: 7rem;">
+        <div class="sm-head">
+          <span class="sm-kicker">Behind The Lens</span>
+          <h2 class="ig-grid-title">Videos Gallery</h2>
+        </div>
+        {% include 'websites/vedios_gellary.html' %}
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- AWARDS & CERTIFICATES — premium grid, full-photo (no crop), click opens a
+       full-page slideable viewer. A group with one photo shows as one large
+       showcase card instead of being squeezed into a multi-column grid. -->
+  <!-- =============================================================================================== -->
+  <section id="awards">
+    {% if my_awards %}
+    <div class="aw-block reveal">
+      <div class="aw-head">
+        <span class="aw-kicker">Recognition</span>
+        <h2 class="aw-title">Awards</h2>
+      </div>
+
+      <div class="aw-grid {% if my_awards|length == 1 %}aw-grid-single{% endif %}" data-aw-group="awards">
+        {% for item in my_awards %}
+        <button type="button" class="aw-tile" data-full="{{ item.image.url }}" aria-label="View award {{ forloop.counter }} of {{ my_awards|length }} full screen">
+          <img class="aw-bg" src="{{ item.image.url }}" alt="" aria-hidden="true">
+          <img class="aw-main" src="{{ item.image.url }}" alt="Award {{ forloop.counter }}" loading="lazy">
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if my_certificates %}
+    <div class="aw-block reveal">
+      <div class="aw-head">
+        <span class="aw-kicker">Credentials</span>
+        <h2 class="aw-title">Certificates</h2>
+      </div>
+
+      <div class="aw-grid {% if my_certificates|length == 1 %}aw-grid-single{% endif %}" data-aw-group="certificates">
+        {% for item in my_certificates %}
+        <button type="button" class="aw-tile" data-full="{{ item.image.url }}" aria-label="View certificate {{ forloop.counter }} of {{ my_certificates|length }} full screen">
+          <img class="aw-bg" src="{{ item.image.url }}" alt="" aria-hidden="true">
+          <img class="aw-main" src="{{ item.image.url }}" alt="Certificate {{ forloop.counter }}" loading="lazy">
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if my_awards or my_certificates %}
+    <!-- Full-page viewer — shared by both groups; prev/next stay within
+         whichever group (awards vs certificates) was opened, never mixing
+         the two. Reuses the site's existing .lightbox styling. -->
+    <div class="lightbox" id="awardsLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image viewer">
+        <button class="lightbox-close" id="awLbClose" aria-label="Close viewer" title="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+        </button>
+        <button class="lightbox-prev" id="awLbPrev" aria-label="Previous image" title="Previous">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+        <figure>
+            <img id="awLbImg" src="" alt="">
+            <span class="lightbox-counter" id="awLbCounter"></span>
+        </figure>
+        <button class="lightbox-next" id="awLbNext" aria-label="Next image" title="Next">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l6 6-6 6" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+    (function () {
+        const lightbox = document.getElementById('awardsLightbox');
+        const lbImg = document.getElementById('awLbImg');
+        const lbCounter = document.getElementById('awLbCounter');
+        const lbClose = document.getElementById('awLbClose');
+        const lbPrev = document.getElementById('awLbPrev');
+        const lbNext = document.getElementById('awLbNext');
+
+        let activeItems = [];
+        let activeIndex = 0;
+
+        function showSlide() {
+            const item = activeItems[activeIndex];
+            if (!item) return;
+            const mainImg = item.querySelector('.aw-main');
+            lbImg.src = item.dataset.full;
+            lbImg.alt = mainImg ? mainImg.alt : '';
+            const multi = activeItems.length > 1;
+            lbCounter.textContent = multi ? (activeIndex + 1) + ' / ' + activeItems.length : '';
+            lbPrev.hidden = !multi;
+            lbNext.hidden = !multi;
+        }
+
+        function openLightbox(groupEl, index) {
+            activeItems = Array.prototype.slice.call(groupEl.querySelectorAll('.aw-tile'));
+            activeIndex = index;
+            showSlide();
+            lightbox.classList.add('is-open');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('is-open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function step(dir) {
+            if (activeItems.length < 2) return;
+            activeIndex = (activeIndex + dir + activeItems.length) % activeItems.length;
+            showSlide();
+        }
+
+        document.querySelectorAll('.aw-grid').forEach(function (grid) {
+            const tiles = Array.prototype.slice.call(grid.querySelectorAll('.aw-tile'));
+            tiles.forEach(function (tile, i) {
+                tile.addEventListener('click', function () {
+                    openLightbox(grid, i);
+                });
+            });
+        });
+
+        lbClose.addEventListener('click', closeLightbox);
+        lbPrev.addEventListener('click', function () { step(-1); });
+        lbNext.addEventListener('click', function () { step(1); });
+
+        lightbox.addEventListener('click', function (e) {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (!lightbox.classList.contains('is-open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') step(-1);
+            if (e.key === 'ArrowRight') step(1);
+        });
+    })();
+    </script>
+    {% endif %}
+  </section>
+
+  <!-- =============================================================================================== -->
+  <!-- ABOUT SECTION -->
+  <!-- =============================================================================================== -->
+  <section id="about" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+    {% include 'websites/about_us.html' %}
+  </section>
+
+</main>
+
+
+<!-- =============================================================================================== -->
+<!-- footer -->
+<!-- =============================================================================================== -->
+{% include 'websites/footer.html' %}
+{% include 'modal_service/modal-lg.html' %}
+{% include 'modal_service/modal-xl.html' %}
+
+<!-- footer -->
+
+<script>
+  $(document).on('click', '.showPackageDtlsModal', function () {
+    var packageId = $(this).data('package_id');
+
+    var url = "{% url 'show_package_details_modal' 0 %}".replace('0', packageId);
+
+    modal_lg("Show Package Details", url);
+  });
+
+  /////// refresh holei caches clear hobe
+  (function () {
+    localStorage.clear();
+    sessionStorage.clear();
+
+    if ("caches" in window) {
+        caches.keys().then((cacheNames) => {
+            cacheNames.forEach((cacheName) => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+  })();
+</script>
+
+<!-- =========================
+     HERO — auto-spotlight mosaic grid
+     (Swiper is no longer needed for the hero; the library load below was
+     removed along with it — nothing else on this page used it)
+========================= -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const grid = document.getElementById("heroGrid");
+    if (!grid) return;
+
+    const tiles = Array.prototype.slice.call(grid.querySelectorAll(".hero-tile"));
+    if (!tiles.length) return;
+
+    const AUTO_DELAY = 4500; // ms between auto spotlight changes
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let activeIndex = -1;
+    let isHeld = false;      // true while a tile is hovered/focused/tapped
+    let autoTimer = null;
+
+    /*
+     * ==========================================
+     * Random (non-serial) spotlight order — a shuffled "bag" of every
+     * tile index instead of picking a fresh Math.random() each time.
+     * A plain random pick can revisit the same photo repeatedly and
+     * leave others out for a long stretch; shuffling the full index
+     * list guarantees every photo is shown once before any repeat,
+     * just in a randomized order each pass.
+     * ==========================================
+     */
+    let shuffleBag = [];
+
+    function refillShuffleBag() {
+        shuffleBag = tiles.map(function (_, i) { return i; });
+        for (let i = shuffleBag.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const tmp = shuffleBag[i];
+            shuffleBag[i] = shuffleBag[j];
+            shuffleBag[j] = tmp;
+        }
+        // don't let a fresh bag start with the tile that's already
+        // spotlighted — that would look like nothing changed
+        if (shuffleBag.length > 1 && shuffleBag[0] === activeIndex) {
+            const tmp = shuffleBag[0];
+            shuffleBag[0] = shuffleBag[1];
+            shuffleBag[1] = tmp;
+        }
+    }
+
+    function nextRandomIndex() {
+        if (!shuffleBag.length) refillShuffleBag();
+        return shuffleBag.shift();
+    }
+
+    /*
+     * ==========================================
+     * নির্দিষ্ট index-এর tile-কে "spotlight" করা —
+     * বাকি সব tile dim থেকে যায়, শুধু এটাই উজ্জ্বল/বড় হয়
+     * ==========================================
+     */
+    function setActive(index) {
+        if (index === activeIndex) return;
+        tiles.forEach(function (tile, i) {
+            tile.classList.toggle("is-active", i === index);
+        });
+        activeIndex = index;
+    }
+
+    /*
+     * ==========================================
+     * Auto-cycle loop — প্রতি ~4.5s এ পরের tile spotlight হবে,
+     * user hover/focus/tap করলে (isHeld=true) থেমে থাকবে ওখানেই
+     * ==========================================
+     */
+    function tick() {
+        autoTimer = setTimeout(function () {
+            if (!isHeld) {
+                setActive(nextRandomIndex());
+            }
+            tick();
+        }, AUTO_DELAY);
+    }
+
+    tiles.forEach(function (tile, i) {
+
+        tile.addEventListener("mouseenter", function () {
+            isHeld = true;
+            setActive(i);
+        });
+
+        tile.addEventListener("mouseleave", function () {
+            isHeld = false;
+        });
+
+        tile.addEventListener("focus", function () {
+            isHeld = true;
+            setActive(i);
+        });
+
+        tile.addEventListener("blur", function () {
+            isHeld = false;
+        });
+
+        // NOTE: deliberately NOT spotlighting the tile on touchstart.
+        // Doing setActive(i) here used to scale the tile up (.is-active ->
+        // transform: scale(1.22)) the instant a finger touched down —
+        // growing/moving the element under the finger mid-gesture, which
+        // on real phones can make the browser treat the tap as a drag and
+        // drop the synthetic click that follows, so tapping a tile could
+        // silently fail to open the full-screen viewer. The tap's own
+        // click handler (below) already opens the lightbox, which is the
+        // whole point of touching a tile — no separate touch handling needed.
+
+        // click (mouse tap or touch tap) — open that photo full-page
+        tile.addEventListener("click", function () {
+            openHeroLightbox(i);
+        });
+
+        // keyboard activation (tile is tabindex="0", role="button")
+        tile.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openHeroLightbox(i);
+            }
+        });
+
+    });
+
+    setActive(nextRandomIndex());
+
+    if (!reduceMotion) {
+        tick();
+    }
+
+    /*
+     * ==========================================
+     * HERO LIGHTBOX — click/tap a tile to view that photo full-page,
+     * prev/next cycles through every banner image
+     * ==========================================
+     */
+    const heroLightbox = document.getElementById("heroLightbox");
+    const heroLbImg = document.getElementById("heroLbImg");
+    const heroLbCaption = document.getElementById("heroLbCaption");
+    const heroLbCounter = document.getElementById("heroLbCounter");
+    const heroLbClose = document.getElementById("heroLbClose");
+    const heroLbPrev = document.getElementById("heroLbPrev");
+    const heroLbNext = document.getElementById("heroLbNext");
+
+    let heroLbIndex = 0;
+    let heroLbAutoTimer = null;
+    let heroLbPaused = false;
+    const HERO_LB_SLIDE_MS = 380; // must match the CSS transition duration below
+
+    // .lightbox img also carries a one-time keyframe `animation` (for the
+    // other lightboxes on this page, which never toggle the classes below)
+    // — CSS animations always win over transitions on the same property,
+    // so it would fight our slide transition and leave the image stuck at
+    // opacity:0. Disabling it via inline style affects only this <img>.
+    heroLbImg.style.animation = "none";
+
+    /*
+     * Forces the "start" state (just applied) to actually commit before
+     * `fn` changes it again — needed to retrigger a CSS *transition* on
+     * transform/opacity. A single forced reflow (reading offsetWidth) is
+     * the standard trick for restarting an *animation* elsewhere in this
+     * file, but transform/opacity don't affect layout, so a layout-only
+     * reflow alone isn't reliably enough here. requestAnimationFrame would
+     * be the usual next step, but rAF gets throttled/paused on a
+     * backgrounded or not-currently-visible tab; a short real timeout
+     * fires regardless, so it's the safer bet for a page that isn't
+     * always the active tab.
+     */
+    function afterNextPaint(fn) {
+        void heroLbImg.offsetWidth;
+        setTimeout(fn, 20);
+    }
+
+    /*
+     * dir === undefined  -> first open: a plain fade/scale in
+     * dir === 1          -> "next": current slides out left, new slides in from the right
+     * dir === -1         -> "prev": current slides out right, new slides in from the left
+     * (a standard slideshow push-transition, not just an instant swap)
+     */
+    function showHeroLbSlide(dir) {
+        const tile = tiles[heroLbIndex];
+        const img = tile.querySelector("img");
+
+        function applySlide() {
+            heroLbImg.src = img.src;
+            heroLbImg.alt = img.alt || "";
+            heroLbCaption.textContent = tile.dataset.title || "";
+            heroLbCounter.textContent = (heroLbIndex + 1) + " / " + tiles.length;
+            setActive(heroLbIndex);
+        }
+
+        if (!dir || reduceMotion) {
+            applySlide();
+
+            if (!reduceMotion) {
+                heroLbImg.classList.add("lb-enter");
+                afterNextPaint(function () {
+                    heroLbImg.classList.remove("lb-enter");
+                });
+            }
+
+            return;
+        }
+
+        const outClass = dir === 1 ? "lb-slide-out-left" : "lb-slide-out-right";
+        const inClass = dir === 1 ? "lb-slide-in-right" : "lb-slide-in-left";
+
+        heroLbImg.classList.add(outClass);
+
+        setTimeout(function () {
+            applySlide();
+
+            heroLbImg.classList.remove(outClass);
+            heroLbImg.classList.add(inClass);
+
+            afterNextPaint(function () {
+                heroLbImg.classList.remove(inClass);
+            });
+        }, HERO_LB_SLIDE_MS);
+    }
+
+    let heroLbScrollY = 0;
+
+    /*
+     * Just toggling `overflow:hidden` on body does NOT reliably stop touch
+     * scrolling on mobile Safari, and — more to the point here — can leave
+     * a `position:fixed` element (this lightbox) rendered at the wrong
+     * spot / wrong size relative to the page instead of the true screen,
+     * because the visual viewport can still shift under it while the
+     * layout viewport doesn't. Pinning the body itself to `position:fixed`
+     * (offset by the current scroll position, then restored on close) is
+     * the standard fix and makes the lightbox behave as real full-screen
+     * on phones, not just on desktop.
+     */
+    function lockBodyScroll() {
+        heroLbScrollY = window.scrollY || window.pageYOffset || 0;
+        document.body.style.position = "fixed";
+        document.body.style.top = "-" + heroLbScrollY + "px";
+        document.body.style.left = "0";
+        document.body.style.right = "0";
+        document.body.style.width = "100%";
+    }
+
+    function unlockBodyScroll() {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.width = "";
+        window.scrollTo(0, heroLbScrollY);
+    }
+
+    function openHeroLightbox(index) {
+        heroLbIndex = index;
+        showHeroLbSlide();
+        heroLightbox.classList.add("is-open");
+        heroLightbox.setAttribute("aria-hidden", "false");
+        lockBodyScroll();
+        isHeld = true; // pause the mosaic grid's own auto-cycle while viewing full-screen
+        scheduleHeroLbAuto();
+    }
+
+    function closeHeroLightbox() {
+        heroLightbox.classList.remove("is-open");
+        heroLightbox.setAttribute("aria-hidden", "true");
+        unlockBodyScroll();
+        isHeld = false;
+        clearTimeout(heroLbAutoTimer);
+    }
+
+    function heroLbStep(dir) {
+        heroLbIndex = (heroLbIndex + dir + tiles.length) % tiles.length;
+        showHeroLbSlide(dir);
+    }
+
+    /*
+     * ==========================================
+     * Auto-slide while the lightbox is open — same unhurried cadence as
+     * the mosaic grid, paused while the pointer rests on the photo itself
+     * so it never advances mid-look, resumed on mouseleave.
+     *
+     * Deliberately scoped to the <img> rather than the whole lightbox —
+     * the lightbox backdrop covers the entire viewport, so the pointer is
+     * "inside" it for the whole time it's open; pausing on that would
+     * have meant auto-slide effectively never ran for a desktop user.
+     * ==========================================
+     */
+    function scheduleHeroLbAuto() {
+        clearTimeout(heroLbAutoTimer);
+        if (reduceMotion) return;
+        heroLbAutoTimer = setTimeout(function () {
+            if (!heroLbPaused) heroLbStep(1);
+            scheduleHeroLbAuto();
+        }, AUTO_DELAY);
+    }
+
+    heroLbImg.addEventListener("mouseenter", function () { heroLbPaused = true; });
+    heroLbImg.addEventListener("mouseleave", function () { heroLbPaused = false; });
+
+    heroLbClose.addEventListener("click", closeHeroLightbox);
+    heroLbPrev.addEventListener("click", function () { heroLbStep(-1); scheduleHeroLbAuto(); });
+    heroLbNext.addEventListener("click", function () { heroLbStep(1); scheduleHeroLbAuto(); });
+
+    heroLightbox.addEventListener("click", function (e) {
+        if (e.target === heroLightbox) closeHeroLightbox();
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (!heroLightbox.classList.contains("is-open")) return;
+        if (e.key === "Escape") closeHeroLightbox();
+        if (e.key === "ArrowLeft") { heroLbStep(-1); scheduleHeroLbAuto(); }
+        if (e.key === "ArrowRight") { heroLbStep(1); scheduleHeroLbAuto(); }
+    });
+
+    /*
+     * ==========================================
+     * Grid-এর column count image-সংখ্যা আর container-এর নিজের aspect
+     * ratio অনুযায়ী হিসেব করা — কম ছবি হলে বড় বড় tile, বেশি ছবি হলে
+     * ছোট ছোট tile, কোনো hardcoded breakpoint ছাড়াই।
+     *
+     * ideal column count-এর আশেপাশে কয়েকটা মান try করে সেটাই বেছে নেয়
+     * যেটায় শেষ row-এ সবচেয়ে কম (আদর্শভাবে শূন্য) ফাঁকা cell থাকে —
+     * নাহলে 12 ছবি 5 column-এ ভাগ হলে শেষ row-এ 3টা ফাঁকা কালো cell
+     * দেখা যেত, grid-টা "অসম্পূর্ণ" লাগত।
+     * ==========================================
+     */
+    function pickColumnCount(count, aspect) {
+        const ideal = Math.sqrt(count * aspect);
+
+        // Never even consider a single "column" once there are more than a
+        // handful of photos — 1 column always divides perfectly (0 empty
+        // cells) no matter the count, which used to let it out-score a far
+        // more sensible column count on a plain tie/near-tie (e.g. 17
+        // photos on a tall mobile hero picked 1 column x 17 rows — a
+        // column of thin strips instead of an actual mosaic).
+        const minCols = count > 3 ? 2 : 1;
+        const lo = Math.max(minCols, Math.floor(ideal - 2));
+        const hi = Math.min(count, Math.ceil(ideal + 2));
+
+        let best = Math.max(minCols, Math.min(count, Math.round(ideal)));
+        let bestScore = Infinity;
+
+        for (let c = lo; c <= hi; c++) {
+            const rows = Math.ceil(count / c);
+            const emptyCells = rows * c - count;
+            const distFromIdeal = Math.abs(c - ideal);
+            // distance is squared so straying far from a square-ish cell
+            // shape is punished much harder than a couple of empty cells —
+            // previously a linear distance let a degenerate but "perfectly
+            // full" column count (like the 1-column case above) tie with,
+            // and win over, the actual best-looking option
+            const score = emptyCells * 2 + (distFromIdeal * distFromIdeal);
+            if (score < bestScore) {
+                bestScore = score;
+                best = c;
+            }
+        }
+
+        return best;
+    }
+
+    function layoutGrid() {
+        const rect = grid.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const count = tiles.length;
+        const aspect = rect.width / rect.height;
+
+        const cols = pickColumnCount(count, aspect);
+        const rows = Math.ceil(count / cols);
+
+        grid.style.setProperty("--hero-cols", cols);
+        grid.style.setProperty("--hero-rows", rows);
+    }
+
+    layoutGrid();
+
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(layoutGrid, 200);
+    });
+
+});
+
+</script>
+
+<script>
+  ///////////////////////////////////////////////////////////////
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  window.addEventListener("scroll", () => {
+    let current = "";
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100;
+      const sectionHeight = section.clientHeight;
+
+      if (pageYOffset >= sectionTop &&
+        pageYOffset < sectionTop + sectionHeight) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+      }
+    });
+  });
+
+
+  ////////////////////////////// whyus accordion /////////////////////////////////
+  document.querySelectorAll(".accordion-header").forEach(header => {
+
+    header.addEventListener("click", function () {
+
+        const item = this.parentElement;
+        const content = item.querySelector(".accordion-content");
+        const icon = this.querySelector(".icon");
+
+        const isOpen = this.classList.contains("active");
+
+        // close all
+        document.querySelectorAll(".accordion-header").forEach(h => {
+            h.classList.remove("active");
+            h.querySelector(".icon").innerText = "+";
+        });
+
+        document.querySelectorAll(".accordion-content").forEach(c => {
+            c.classList.remove("show");
+        });
+
+        // open current
+        if (!isOpen) {
+            this.classList.add("active");
+            content.classList.add("show");
+            icon.innerText = "−";
+        }
+    });
+  });
+
+</script>
+<!-- ============================================================ COUNTER SCRIPT ============================================================ -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const counters = document.querySelectorAll(".stat-counter");
+  const duration = 150000; // 2.5 minutes
+
+  function animateCounter(counter) {
+    const target = parseInt(counter.getAttribute("data-target"), 10);
+    const startTime = performance.now();
+
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      const easedProgress = 1 - Math.pow(1 - progress, 1.2);
+      const currentValue = Math.floor(target * easedProgress);
+      counter.textContent = currentValue.toLocaleString();
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.textContent = target.toLocaleString();
+      }
+    }
+
+    requestAnimationFrame(updateCounter);
+  }
+
+  /*
+   * is_featured="False" hole direct target value show hobe (no animation, no comma)
+   * ar remaining featured counter gula return korbe animate korar jonno
+   */
+  function setupCounters() {
+    const featuredCounters = [];
+
+    counters.forEach(function (counter) {
+      const isFeatured = counter.getAttribute("data-is_featured");
+      const target = parseInt(counter.getAttribute("data-target"), 10);
+
+      if (isFeatured === "False") {
+        // Direct value show, animation nai, comma o nai
+        counter.textContent = target;
+      } else {
+        featuredCounters.push(counter);
+      }
+    });
+
+    return featuredCounters;
+  }
+
+  const featuredCounters = setupCounters();
+
+  /*
+   * Run animation when stats become visible
+   */
+  if (featuredCounters.length > 0 && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            featuredCounters.forEach(function (counter) {
+              animateCounter(counter);
+            });
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(document.querySelector(".stats-section"));
+  } else if (featuredCounters.length > 0) {
+    featuredCounters.forEach(function (counter) {
+      animateCounter(counter);
+    });
+  }
+});
+</script>
+<!-- DATA — portfolio items (edit / extend freely) -->
+<script>
+  /* ============================================================
+  CONFIG — apnar urls.py-r shathe mile thakte hobe
+  ============================================================ */
+  const API_PHOTO_TYPES = '/api/photo-types/';
+  const API_GALLERY_LIST = '/api/gallery-list/';
+  const API_GALLERY_DETAIL = (id) => `/api/gallery-detail/${id}/`;
+ 
+  // ✅ CORRECTED: Details button ekhon eita URL e navigate korbe
+  // Django urls.py e eirokom pattern thakte hobe:
+  //   path('featured_gallery_details/<int:phgallery_id>/', views.featured_gallery_details, name='featured_gallery_details')
+  const GALLERY_DETAIL_PAGE = (id) => `/featured_gallery_details/${id}/`;
+ 
+  const galleryEl = document.getElementById('gallery');
+  const filterRow = document.getElementById('filterRow');
+ 
+  let currentGalleryPhotos = []; // lightbox e active gallery-r shob photo
+  let currentIndex = 0;
+  let currentGalleryId = null; // active gallery-r id, Details button-er jonno lagbe
+  let currentGalleryTypeLabel = ''; // active gallery-r photo_type_label (gallery-level, per-photo na)
+  let activeFilter = 'all';
+ 
+  function escapeHtml(str = '') {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+  }
+ 
+  /* ============================================================
+    FILTER ROW — PHOTOS_TYPE_CHOICES theke dynamically banano
+  ============================================================ */
+  async function loadFilters() {
+      try {
+          const res = await fetch(API_PHOTO_TYPES, {
+              headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+ 
+          const data = await res.json();
+          renderFilters(data.results || []);
+      } catch (err) {
+          console.error('Filter list load failed:', err);
+          filterRow.innerHTML = `<button type="button" class="filter-btn is-active" data-filter="all">All</button>`;
+      }
+  }
+ 
+  function renderFilters(choices) {
+      const buttons = [
+          `<button type="button" class="filter-btn is-active" data-filter="all">All</button>`,
+          ...choices.map(c =>
+              `<button type="button" class="filter-btn" data-filter="${c.value}">${escapeHtml(c.label)}</button>`
+          ),
+      ];
+      filterRow.innerHTML = buttons.join('');
+  }
+ 
+  filterRow.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+ 
+      activeFilter = btn.dataset.filter;
+      applyFilter();
+  });
+ 
+  function applyFilter() {
+      galleryEl.querySelectorAll('.gallery-item').forEach(item => {
+          const show = activeFilter === 'all' || item.dataset.cat === activeFilter;
+          item.hidden = !show;
+      });
+  }
+ 
+  /* ============================================================
+    GALLERY — AJAX theke thumbnail (is_thumbnail_photo=True) load
+  ============================================================ */
+  async function loadGallery() {
+      galleryEl.setAttribute('aria-busy', 'true');
+      galleryEl.innerHTML = `<p class="gallery-loading">Loading portfolio…</p>`;
+ 
+      try {
+          const res = await fetch(API_GALLERY_LIST, {
+              headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+ 
+          const data = await res.json();
+          renderGallery(data.results || []);
+          applyFilter();
+      } catch (err) {
+          console.error('Gallery load failed:', err);
+          galleryEl.innerHTML = `<p class="gallery-error">Could not load the portfolio right now. Please try again shortly.</p>`;
+      } finally {
+          galleryEl.removeAttribute('aria-busy');
+      }
+  }
+ 
+  function renderGallery(items) {
+      if (!items.length) {
+          galleryEl.innerHTML = `<p class="gallery-empty">No photos to show yet.</p>`;
+          return;
+      }
+ 
+      // data-gallery-id ekhon .gallery-item container-e — jate image, overlay,
+      // shobar click e lightbox open hoy
+      // .gi-bg (blurred, cover) + .gi-main (sharp, contain) — full photo always
+      // visible, no top/bottom or left/right cropping in the fixed-height grid
+      // cell (same technique as .gs-frame / the main slider).
+      galleryEl.innerHTML = items.map((item) => `
+        <div class="gallery-item" data-cat="${item.photo_type}" data-gallery-id="${item.phgallery_id}">
+          <img class="gi-bg" src="${item.thumbnail}" alt="" aria-hidden="true">
+          <img class="gi-main" src="${item.thumbnail}" alt="${escapeHtml(item.title)}" loading="lazy">
+          <div class="overlay">
+            <span class="cat">${escapeHtml(item.photo_type_label || item.photo_type)}</span>
+            <span class="title">${escapeHtml(item.title)}</span>
+          </div>
+        </div>
+      `).join('');
+  }
+ 
+  /* ============================================================
+    LIGHTBOX / IMAGE VIEWER
+  ============================================================ */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  const lightboxCaptionText = document.getElementById('lightboxCaptionText'); // caption text ebong Details button alada
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  const detailsBtn = document.getElementById('idDetailsBtn');
+ 
+  async function openLightbox(galleryId) {
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+ 
+      lightboxImg.removeAttribute('src');
+      lightboxCounter.textContent = '';
+      lightboxPrev.hidden = true;
+      lightboxNext.hidden = true;
+ 
+      currentGalleryId = galleryId;
+      detailsBtn.dataset.galleryId = galleryId;
+      lightboxCaptionText.textContent = 'Loading…';
+ 
+      try {
+          const res = await fetch(API_GALLERY_DETAIL(galleryId), {
+              headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+ 
+          const data = await res.json();
+          currentGalleryPhotos = data.photos || [];
+          currentGalleryTypeLabel = data.photo_type_label || data.photo_type || ''; // gallery-level label store
+ 
+          if (!currentGalleryPhotos.length) {
+              lightboxCaptionText.textContent = 'No photos found for this gallery.';
+              return;
+          }
+ 
+          currentIndex = 0;
+          showSlide();
+      } catch (err) {
+          console.error('Gallery detail load failed:', err);
+          lightboxCaptionText.textContent = 'Could not load these photos right now.';
+      }
+  }
+ 
+  function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      currentGalleryPhotos = [];
+      currentIndex = 0;
+      currentGalleryId = null;
+      currentGalleryTypeLabel = '';
+      detailsBtn.dataset.galleryId = '';
+  }
+ 
+  function showSlide() {
+      const photo = currentGalleryPhotos[currentIndex];
+      if (!photo) return;
+ 
+      lightboxImg.src = photo.src;
+      lightboxImg.alt = photo.title || '';
+ 
+      // title ar photo_type_label eksathe dekhano — "Emma Sophia — Photography"
+      const titleText = photo.title || '';
+      lightboxCaptionText.textContent = currentGalleryTypeLabel
+          ? `${titleText} — ${currentGalleryTypeLabel}`
+          : titleText;
+ 
+      lightboxCounter.textContent = `${currentIndex + 1} / ${currentGalleryPhotos.length}`;
+ 
+      const multi = currentGalleryPhotos.length > 1;
+      lightboxPrev.hidden = !multi;
+      lightboxNext.hidden = !multi;
+  }
+ 
+  function step(dir) {
+      if (!currentGalleryPhotos.length) return;
+      currentIndex = (currentIndex + dir + currentGalleryPhotos.length) % currentGalleryPhotos.length;
+      showSlide();
+  }
+ 
+  // ✅ Details button click e '/featured_gallery_details/<id>/' e navigate kore
+  detailsBtn.addEventListener('click', () => {
+      if (!currentGalleryId) return;
+      window.location.href = GALLERY_DETAIL_PAGE(currentGalleryId);
+  });
+ 
+  // Image ba overlay — .gallery-item er je kono jaygay click korle
+  // oi gallery-r shob photo AJAX-e niye lightbox open hobe
+  galleryEl.addEventListener('click', (e) => {
+      const item = e.target.closest('.gallery-item');
+      if (!item) return;
+      openLightbox(item.dataset.galleryId);
+  });
+ 
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', () => step(-1));
+  lightboxNext.addEventListener('click', () => step(1));
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+ 
+  document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+  });
+ 
+  /* ============================================================
+    INIT
+  ============================================================ */
+  loadFilters();
+  loadGallery();
+ 
+  /* ============================================================
+    REVEAL ON SCROLL (shared IntersectionObserver, pura site-er jonno)
+  ============================================================ */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+          }
+      });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => revealObserver.observe(el));
+</script>
+{% endblock %}

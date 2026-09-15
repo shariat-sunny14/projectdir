@@ -1,0 +1,194 @@
+.table>tbody {
+    vertical-align: middle !important;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 0rem 1rem;
+}
+
+.card {
+    border: 0px solid rgba(0, 0, 0, 0.125);
+    box-shadow: none;
+}
+
+.drop_box {
+    margin: 0px 0px 10px 0px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 3px dotted #a3a3a3;
+    border-radius: 5px;
+    height: 13.5rem;
+    position: relative;
+}
+
+.drop_box h4 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #2e2e2e;
+    z-index: 1;
+}
+
+.drop_box p {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #a3a3a3;
+    z-index: 1;
+}
+
+.chooseBtn {
+    text-decoration: none;
+    background-color: #005af0;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+    z-index: 1;
+}
+
+.chooseBtn:hover {
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #005af0;
+    padding: 10px 20px;
+    border: none;
+    outline: 1px solid #010101;
+}
+
+.form input {
+    margin: 10px 0;
+    width: 100%;
+    background-color: #e2e2e2;
+    border: none;
+    outline: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+}
+
+.banner-display {
+    display: flex;
+}
+
+.banner-viewer {
+    position: absolute;
+    top: 14px;
+    left: 5px;
+    right: 5px;
+    bottom: 0;
+    display: flex;
+    height: 11.5rem;
+    width: 97%;
+    z-index: 0;
+}
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.schedule-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    font-family: Arial, sans-serif;
+}
+
+.card-section {
+    background: #f4f6f8;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: #5c6f82;
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #b8c2cc;
+    background: #fff;
+    transition: 0.3s;
+}
+
+input[type="date"]:focus,
+select:focus {
+    border-color: #4c9aff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(76, 154, 255, 0.4);
+}
+
+.checkbox-style {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+.btn-primary {
+    background: #4c9aff;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #357ae8;
+}
+
+#scheduleMessage {
+    margin-top: 15px;
+    font-weight: bold;
+}

@@ -1,0 +1,235 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+
+<style>
+:root {
+    --bg-color: #f5f7fb;
+    --card-bg: #ffffff;
+    --text-color: #333;
+    --input-bg: #ffffff;
+    --border-color: #ddd;
+    --primary: #4facfe;
+}
+
+/* 🌙 DARK MODE */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0f172a;
+        --card-bg: #1e293b;
+        --text-color: #e2e8f0;
+        --input-bg: #0f172a;
+        --border-color: #334155;
+        --primary: #38bdf8;
+    }
+}
+
+/* BODY */
+body {
+    background: var(--bg-color);
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-color);
+}
+
+/* CONTAINER */
+.booking-container {
+    max-width: 500px;
+    margin: 110px auto;
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+/* TITLE */
+.booking-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* COURSE BOX */
+.course-info {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* INPUT */
+.booking-container input,
+.booking-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    transition: 0.3s;
+}
+
+.booking-container input::placeholder,
+.booking-container textarea::placeholder {
+    color: #94a3b8;
+}
+
+.booking-container input:focus,
+.booking-container textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 6px rgba(56,189,248,0.4);
+}
+
+/* BUTTON */
+.booking-container button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #4facfe, #00c6ff);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.booking-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+}
+
+/* MESSAGE */
+#msg {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 500;
+    color: #22c55e;
+}
+
+/* 🌙 Smooth transition */
+* {
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+</style>
+
+{% endblock %}
+
+{% block body %}
+
+<header style="border-bottom: 1px solid var(--border-color)">
+  {% include 'websites/sub_header.html' %}
+</header>
+
+<div class="booking-container">
+    <form id="bookingForm">
+        <h2>🚀 Enroll Now</h2>
+
+        {% if enroll %}
+        <div class="course-info">
+            <h3>{{ enroll.enroll_title }}</h3>
+
+            {% if enroll.is_offer_price %}
+            <p>🔥 Offer Price: {{ enroll.offer_price }}</p>
+            <input type="hidden" name="enroll_amount" value="{{ enroll.offer_price }}" />
+            {% elif enroll.is_enroll_price %}
+            <p>💰 Price: {{ enroll.enroll_price }}</p>
+            <input type="hidden" name="enroll_amount" value="{{ enroll.enroll_price }}" />
+            {% endif %}
+        </div>
+        {% endif %}
+
+
+        <input type="hidden" name="enroll_id" value="{{ enroll.enroll_id }}" />
+
+        <input type="text" name="full_name" placeholder="👤 Full Name"
+            value="{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}" required />
+
+        <input type="text" name="mobile_no" placeholder="📱 Mobile Number"
+            value="{% if user.is_authenticated %}{{ user.phone_no }}{% endif %}" required />
+
+        <input type="email" name="email" placeholder="📧 Email (Optional)"
+            value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" />
+
+        <textarea name="address" placeholder="🏠 Address (Optional)"></textarea>
+
+        <button id="submit_booking" type="submit">Submit Booking</button>
+    </form>
+
+  <div id="msg"></div>
+</div>
+
+<script>
+    const form = document.getElementById("bookingForm");
+    const btn = document.getElementById("submit_booking"); // button id
+
+    let isSubmitting = false;
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        if (isSubmitting) return; // double submit blocked
+        isSubmitting = true;
+
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+
+        let formData = new FormData(form);
+
+        fetch("/save_enroll_booking", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                // ✅ success message
+                document.getElementById("msg").innerHTML = "✅ Booking সফল হয়েছে!";
+                
+                // 🔥 delay before redirect (1.5 seconds)
+                setTimeout(() => {
+                    window.location.href = "{% url 'enroll_listed' %}";
+                }, 1500);
+
+            } else {
+                document.getElementById("msg").innerHTML = data.message || "❌ সমস্যা হয়েছে!";
+                btn.innerText = "Submit Booking";
+                btn.disabled = false;
+                isSubmitting = false;
+            }
+        })
+        .catch(() => {
+            document.getElementById("msg").innerHTML = "❌ কিছু সমস্যা হয়েছে!";
+            btn.innerText = "Submit Booking";
+            btn.disabled = false;
+            isSubmitting = false;
+        });
+    });
+
+    // CSRF Cookie Helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            let cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+{% endblock %}

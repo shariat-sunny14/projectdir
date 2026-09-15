@@ -1,0 +1,311 @@
+<div class="container-fluid order-view-modal">
+
+    <style>
+
+        .order-view-modal .card{
+            border-radius:12px;
+        }
+
+        .order-header{
+            background:linear-gradient(135deg,#1c1f26,#343a40);
+            color:white;
+            padding:18px;
+            border-radius:12px 12px 0 0;
+        }
+
+        .order-header h4{
+            font-weight:600;
+            margin:0;
+        }
+
+        .info-card{
+            background:#ffffff;
+            border-radius:10px;
+            padding:18px;
+            box-shadow:0 3px 12px rgba(0,0,0,0.05);
+            height:100%;
+        }
+
+        .info-title{
+            font-weight:600;
+            color:#555;
+            margin-bottom:12px;
+            border-bottom:1px solid #eee;
+            padding-bottom:6px;
+        }
+
+        .info-item{
+            display: flex;
+            padding: 6px 0;
+            font-size: 14px;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .info-item span:first-child{
+            color:#888;
+        }
+
+        .badge-modern{
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:12px;
+        }
+
+        .table-modern{
+            border-radius:10px;
+            overflow:hidden;
+            font-size:14px;
+        }
+
+        .table-modern thead{
+            background:#f8f9fa;
+        }
+
+        .comment-box{
+            background:#f8f9fa;
+            padding:15px;
+            border-radius:8px;
+            font-size:14px;
+        }
+
+    </style>
+
+
+    <div class="card border-0 shadow-sm">
+
+        <!-- Header -->
+        <div class="order-header d-flex justify-content-between align-items-center">
+
+            <h4>
+                Order #{{order.order_id}}
+            </h4>
+
+            <span class="badge bg-success badge-modern">
+                {{order.order_date}}
+            </span>
+
+            <button type="button" class="btn bg-danger text-white closerBtn" data-bs-dismiss="modal" style="display: flex; width: 2rem; height: 2rem; border: 2px solid #fff; border-radius: 50%; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+                X
+            </button>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- Customer Info -->
+                <div class="col-md-6">
+
+                    <div class="info-card">
+
+                        <div class="info-title">
+                            👤 Customer Information
+                        </div>
+
+                        <div class="info-item">
+                            <span>Name</span>
+                            <strong>{{order.full_name}}</strong>
+                        </div>
+
+                        <div class="info-item">
+                            <span>Email</span>
+                            <strong>{{order.email}}</strong>
+                        </div>
+
+                        <div class="info-item">
+                            <span>Phone</span>
+                            <strong>{{order.phone_number}}</strong>
+                        </div>
+
+                        <div class="info-item">
+                            <span>Venue</span>
+                            <strong>{{order.venue_name}}</strong>
+                        </div>
+
+                        <div class="info-item">
+                            <span>Guests</span>
+                            <strong>{{order.guest_number}}</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Event Info -->
+                <div class="col-md-6">
+
+                    <div class="info-card">
+
+                        <div class="info-title">
+                            📸 Event Information
+                        </div>
+
+                        <div class="info-item">
+                            <span>Other Photographer</span>
+
+                            {% if order.is_other_photographer %}
+                            <span class="badge bg-warning badge-modern">Yes</span>
+                            {% else %}
+                            <span class="badge bg-secondary badge-modern">No</span>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="info-item">
+                            <span>About</span>
+                            <strong style="font-weight: 400;">{{order.about_you}}</strong>
+                        </div>
+
+                        <div class="info-item">
+                            <span>Planned</span>
+                            <strong style="font-weight: 400;">{{order.your_planned}}</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Shoot Type -->
+            <div class="mt-4">
+
+                <div class="info-title">
+                    🎬 Shoot Type
+                </div>
+
+                {% for shoot in order.shoot_type %}
+                <span class="badge bg-success badge-modern me-1">
+                    {{shoot}}
+                </span>
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Discover -->
+            <div class="mt-4">
+
+                <div class="info-title">
+                    🔍 Discover Source
+                </div>
+
+                {% for discover in order.discover_type %}
+                <span class="badge bg-info badge-modern me-1">
+                    {{discover}}
+                </span>
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Schedule -->
+            <div class="mt-4">
+
+                <div class="info-title">
+                    📅 Selected Schedule
+                </div>
+
+                <table class="table table-modern table-bordered">
+
+                    <thead>
+
+                        <tr>
+                            <th style="text-align: left;">Date</th>
+                            <th style="text-align: center;">Slot</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for s in schedules %}
+
+                        <tr>
+
+                            <td style="text-align: left;">{{s.event_date}}</td>
+
+                            <td style="text-align: center;">{{s.slot_id.slot_name}}</td>
+
+                            <td style="text-align: center;">
+
+                                {% if s.status == "Free" %}
+                                <span class="badge bg-success badge-modern">
+                                    Free
+                                </span>
+                                {% else %}
+                                <span class="badge bg-danger badge-modern">
+                                    Booked
+                                </span>
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Packages -->
+            <div class="mt-4">
+
+                <div class="info-title">
+                    📦 Selected Packages
+                </div>
+
+                <table class="table table-modern table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Package</th>
+                            <th style="text-align: center;">Package Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for op in order_packages %}
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>{{ op.package_id.package_title }}</strong>
+                            </td>
+                            <td style="text-align: center;">৳ {{ op.package_price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <!-- Comments -->
+            <div class="mt-4">
+
+                <div class="info-title">
+                    💬 Comments
+                </div>
+
+                <div class="comment-box">
+
+                    {{order.comments|default:"No comment provided"}}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,362 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container">
+                <form action="" method="" id="addPackageForm" enctype="multipart/form-data">
+                    <div class="add_edit_head" style="width: 20%;">
+                        <h2 class="text-primary">Add New Package Info</h2>
+                    </div>
+                    <div class="modal_closer">
+                        <button type="button" class="btn bg-danger text-white closerBtn" data-bs-dismiss="modal" style="padding: 0.6rem; border: 1px solid white; border-radius: 50%;">
+                            X
+                        </button>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card add_user_card">
+                                <div class="card-body">
+                                    <div class="user_add_body">
+                                        <div class="sub_body_one">
+                                            <div class="row add_user_row">
+                                                <!--  -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; border-bottom: 1px solid #707070;">
+                                                    <div class="col-sm-8">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_package_title" class="col-form-label font_size required">
+                                                                    Title of Package:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-10 adduser_col">
+                                                                <input type="text" class="form-control form_adduser_body" id="id_package_title" name="package_title" required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_package_price" class="col-form-label font_size required">
+                                                                    Packages Price:
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-content: center;">
+                                                                <div class="col-sm-8 adduser_col">
+                                                                    <input type="number" class="form-control form_adduser_body" id="id_package_price" name="package_price" step="0.01" required autocomplete="off">
+                                                                </div>
+                                                                <!--  -->
+                                                                <div class="col-sm-2 adduser_col" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                                                    <input type="radio" class="form-check-input" id="id_is_package_price" name="is_package_price" checked style="margin-top: 0px;">
+                                                                    <label for="id_is_package_price" style="font-size: 0.85rem;">Is Price?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_offer_price" class="col-form-label font_size required">
+                                                                    Offer Price:
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-content: center;">
+                                                                <div class="col-sm-8 adduser_col">
+                                                                    <input type="number" class="form-control form_adduser_body" id="id_offer_price" name="offer_price" step="0.01" required autocomplete="off">
+                                                                </div>
+                                                                <!--  -->
+                                                                <div class="col-sm-2 adduser_col" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">
+                                                                    <input type="radio" class="form-check-input" id="id_is_offer_price" name="is_offer_price" style="margin-top: 0px;">
+                                                                    <label for="id_is_offer_price" style="font-size: 0.85rem;">Is Offer?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="row g-3 align-items-center" style="margin-bottom: 1rem;">
+                                                            <div class="col-sm-2">
+                                                                <label for="id_title_caption" class="col-form-label font_size required">
+                                                                    Title Caption:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-10 adduser_col">
+                                                                <textarea name="title_caption" id="id_title_caption" class="form-control form_adduser_body" required style="height: 10rem" autocomplete="off"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <!--  -->
+                                                    <!--  -->
+                                                    <!--  -->
+                                                    <div class="col-sm-4">
+                                                        <div class="row g-3 align-items-center">
+                                                        <div class="row g-3 align-items-center" style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap;">
+                                                            <div class="col-sm-2" style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center;">
+                                                                <label for="id_profile_imgs" class="col-form-label font_size">
+                                                                    Cover Image
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-12 adduser_col">
+                                                                <div class="container">
+                                                                    <div class="card">
+                                                                        <div class="drop_box">
+                                                                            <div class="banner-display">
+                                                                                <img class="banner-viewer" id="selected_image" src="">
+                                                                            </div>
+                                                                            <header style="z-index: 1">
+                                                                                <h4>Select File here</h4>
+                                                                            </header>
+                                                                            <p>Files Supported: png, jpeg, jpg, webp</p>
+                                                                            <input type="file" name="profile_img" accept="image/*" id="id_profile_img" style="display: none" onchange="displaySelectedImage(this)">
+                                                                            <label for="id_profile_img" class="chooseBtn">
+                                                                                Choose File
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!-- second part -->
+                                                <!--  -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: flex-start;">
+                                                    <div class="col-sm-4" style="width: 30%;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_package_elements" class="col-form-label font_size">
+                                                                    Package Elements:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <select id="id_package_elements" name="package_elements" class="form-select form_adduser_body" style="padding: 0.175rem 0.25rem 0.175rem 0.75rem; font-size: 0.8rem; border: 1px solid rgb(133, 196, 255);">
+                                                                    <option value="" selected disabled>Select Elements</option>
+                                                                    {% for element in elements_data %}
+                                                                        <option value="{{ element.pitem_id }}">{{ element.pitem_name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-2" style="width: 15%;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_package_Order_no" class="col-form-label font_size">
+                                                                    Order No:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <input type="number" class="form-control form_adduser_body" id="id_package_Order_no" name="package_Order_no" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-4" style="width: 40%; margin-bottom: 1rem;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_elements_drescription" class="col-form-label font_size">
+                                                                    Elements Drescription:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <textarea type="text" class="form-control form_adduser_body" id="id_elements_drescription" name="elements_drescription" autocomplete="off" style="height: 8rem;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <!--  -->
+                                                    <div class="col-sm-2 usersetup_modal-footer" style="width: 15%; margin-top: 2rem; display: flex; justify-content: flex-end; align-items: center; text-align: center; flex-direction: row; flex-wrap: nowrap;">
+                                                        <button type="button" id="addElementsBtn" class="btn btn-primary" style=" font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                                                            Add Elements
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                                <!-- 3rd part -->
+                                                <!--  -->
+                                                <div class="col-sm-12" style="border-top: 1px solid rgba(0, 0, 0, 0.301);">
+                                                    <div class="card add_user_card_other" style="margin-top: 0.5rem; margin-bottom: 5rem;">
+                                                        <!-- photo dtls body -->
+                                                        <section>
+                                                            <div class="Packages-table">
+                                                                <table id="PACKAGESTABLE" class="table table-hover" style="width: 100%; border: 1px solid #458097d8;">
+                                                                    <thead class="text-center table-header_itemlist" style="background: #458097d8;">
+                                                                        <tr>
+                                                                            <th style="text-align:center; width: 5%;">
+                                                                                Sl
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 15%;">
+                                                                                Package Elements
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 10%;">
+                                                                                Order No
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 60%;">
+                                                                                Elements Drescription
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 10%;">
+                                                                                Option
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="PACKAGESTBODY" style="text-align:center; font-size: 0.8rem">
+                                                                        <!--  -->
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                    </div>
+                    <div class="usersetup_modal-footer"
+                        style="display: flex; justify-content: right; align-items: center; text-align: center; margin-bottom: 1rem;">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Close
+                        </button>
+                        <button id="saveUpdateBtn" name="submit" type="submit" class="btn btn-success"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Save Package
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+<!--  -->
+<script>
+    const packageRadio = document.getElementById("id_is_package_price");
+    const offerRadio = document.getElementById("id_is_offer_price");
+
+    function selectPackage() {
+        packageRadio.checked = true;
+        offerRadio.checked = false;
+
+        packageRadio.setAttribute("checked", "checked");
+        offerRadio.removeAttribute("checked");
+    }
+
+    function selectOffer() {
+        offerRadio.checked = true;
+        packageRadio.checked = false;
+
+        offerRadio.setAttribute("checked", "checked");
+        packageRadio.removeAttribute("checked");
+    }
+
+    packageRadio.addEventListener("click", selectPackage);
+    offerRadio.addEventListener("click", selectOffer);
+    ///////////////////////////////////////////////
+    document.addEventListener("click", function(e){
+
+        if(e.target && e.target.id === "addElementsBtn"){
+
+            e.preventDefault();
+
+            const tbody = document.getElementById("PACKAGESTBODY");
+            const selectElement = document.getElementById("id_package_elements");
+            const serialNoInput = document.getElementById("id_package_Order_no");
+            const descriptionInput = document.getElementById("id_elements_drescription");
+
+            if(!tbody || !selectElement){
+                console.log("Element missing!");
+                return;
+            }
+
+            const elementId = selectElement.value;
+            const elementText = selectElement.options[selectElement.selectedIndex]?.text;
+            const serialNo = serialNoInput.value.trim();
+            const description = descriptionInput.value.trim();
+
+            if (!elementId || !serialNo || !description) {
+                alert("All fields required!");
+                return;
+            }
+
+            const rowCount = tbody.rows.length + 1;
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>${rowCount}</td>
+                <td>
+                    ${elementText}
+                    <input type="hidden" name="package_elements_list[]" value="${elementId}">
+                </td>
+                <td>${serialNo}
+                    <input type="hidden" name="package_order_no_list[]" value="${serialNo}">
+                </td>
+                <td style="text-align: left; padding-left: 1rem;">
+                    ${description}
+                    <input type="hidden" name="elements_drescription_list[]" value="${description}">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm deleteRow">
+                        <i class='bx bx-trash-alt'></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            selectElement.selectedIndex = 0;
+            serialNoInput.value = "";
+            descriptionInput.value = "";
+        }
+
+        // Delete
+        if(e.target && e.target.classList.contains("deleteRow")){
+            const row = e.target.closest("tr");
+            row.remove();
+
+            const tbody = document.getElementById("PACKAGESTBODY");
+            const rows = tbody.querySelectorAll("tr");
+
+            rows.forEach((row, index) => {
+                row.cells[0].innerText = index + 1;
+            });
+        }
+
+    });
+    /////////////////////////////////////////////////////////////////
+    $(function () {
+        $("#addPackageForm").on("submit", function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        $.ajax({
+            url: "{% url 'add_package_setup_api' %}",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (resp) {
+            if (resp.success) {
+                toastr.success(resp.msg);
+                setTimeout(() => location.reload(), 300);
+            } else {
+                toastr.error(resp.errmsg);
+            }
+            },
+            error: function (xhr) {
+            console.error(xhr.responseText);
+            toastr.error("An error occurred while processing the request.");
+            },
+        });
+        });
+    });
+</script>

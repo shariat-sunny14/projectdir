@@ -1,0 +1,41 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+{% endblock %}
+
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<div class="svcx-body">
+
+    <!--- HEADER -->
+    <header>
+        {% include 'websites/sub_header.html' %}
+    </header>
+
+    <section class="svcx-section">
+        <div class="svcx-head">
+            <h1>Our Services</h1>
+        </div>
+
+        <div
+            class="svcx-grid"
+            id="servicesGrid"
+            data-ajax-url="{% url 'ajax_services_list' %}"
+            data-details-url-template="{% url 'service_details' 0 %}"
+        >
+            <div class="svcx-loading">Loading…</div>
+        </div>
+    </section>
+
+  <!-- footer -->
+  {% include 'websites/footer.html' %}
+
+</div>
+
+<script src="{% static 'base_form_style/main_base_style/js/services.js' %}"></script>
+{% endblock %}

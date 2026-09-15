@@ -1,0 +1,904 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  /*
+    Namespaced to .pg-gallery. Palette and type mirror the reference
+    portfolio: near-black ground, warm gold accent, a clay CTA, and a
+    Cormorant Garamond / Jost pairing. Falls back to the site's own
+    --theme-* tokens when they're defined, so it still sits inside the
+    existing site rather than fighting it.
+  */
+  .pg-gallery {
+    --pg-bg: var(--theme-bg, #0a0a0a);
+    --pg-bg-soft: var(--theme-bg-soft, #141414);
+    --pg-surface: var(--theme-surface, #17171799);
+    --pg-border: var(--theme-border, rgba(201, 168, 119, 0.25));
+    --pg-text: var(--theme-text, #f2f0ec);
+    --pg-muted: var(--theme-muted, #b8b3aa);
+    --pg-gold: var(--gold-1, #c9a877);
+    --pg-gold-soft: var(--gold-2, #e2c896);
+    --pg-clay: #cf8b78;
+    --pg-clay-hover: #c9a877;
+    background: var(--pg-bg);
+  }
+
+  .pg-gallery section { background: var(--pg-bg); }
+  .pg-gallery * { box-sizing: border-box; }
+
+  /* ---------- Hero ---------- */
+  .pg-hero {
+    position: relative;
+    min-height: 62vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: var(--pg-bg);
+    background-size: cover;
+    background-position: center;
+    /* keeps this section's own stacking self-contained, so it can never
+       visually climb above the site's fixed header regardless of the
+       z-index layers added below */
+    isolation: isolate;
+  }
+
+  /* blurred duplicate of the same hero photo, filling the section — sits
+     BEHIND the sharp <img> so when that image can't fill the box without
+     cropping (object-fit: contain, below) the leftover strip shows a soft
+     blurred version of itself instead of bare background color. Same
+     technique as the homepage main slider (`inherit` pulls background-image
+     from this element's own inline style, set per-page from hero_image). */
+  .pg-hero::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    z-index: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    filter: blur(30px) brightness(0.5) saturate(1.15);
+    transform: scale(1.15);
+    pointer-events: none;
+  }
+
+  .pg-hero img {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* was `cover` — cropped the hero photo from the top/bottom (or sides)
+       whenever its ratio didn't match the 62vh hero box. `contain` shows
+       the FULL photo; the blurred ::before above fills any leftover gap. */
+    object-fit: contain;
+    filter: grayscale(0.15) contrast(1.05) brightness(0.85);
+  }
+
+  .pg-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.55) 60%, rgba(10,10,10,0.96) 100%);
+    pointer-events: none;
+  }
+
+  .pg-hero-overlay {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 3.5rem 0 3rem;
+  }
+
+  .pg-hero-eyebrow {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.95rem;
+    letter-spacing: 0.4px;
+    color: var(--pg-muted);
+    margin: 0 0 0.9rem;
+  }
+
+  .pg-hero-eyebrow strong {
+    color: var(--pg-gold-soft);
+    font-weight: 500;
+  }
+
+  .pg-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: 0.5px;
+    color: var(--pg-text);
+    max-width: 20ch;
+    margin: 0;
+  }
+
+  /* ---------- Intro: featured photo + description ---------- */
+  .pg-intro {
+    padding: 60px 0 20px;
+  }
+
+  .pg-intro .container {
+    display: flex;
+    align-items: stretch;
+    gap: 40px;
+  }
+
+  .pg-intro-image {
+    position: relative;
+    flex: 1 1 46%;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    min-height: 320px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* same blurred-backdrop trick as the hero above — fills the gap left by
+     object-fit: contain on the real photo, so nothing gets cropped */
+  .pg-intro-image::before {
+    content: "";
+    position: absolute;
+    inset: -16px;
+    z-index: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    filter: blur(24px) brightness(0.5) saturate(1.1);
+    transform: scale(1.15);
+    pointer-events: none;
+  }
+
+  .pg-intro-image img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    /* was `cover` — cropped portrait/landscape photos to force-fit this
+       box. `contain` always shows the full photo. */
+    object-fit: contain;
+    display: block;
+    filter: grayscale(0.1) contrast(1.03);
+  }
+
+  .pg-intro-text {
+    flex: 1 1 54%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .pg-intro-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: var(--pg-text);
+    margin: 0 0 1rem;
+  }
+
+  .pg-intro-text p {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--pg-muted);
+    margin: 0 0 1.1rem;
+    max-width: 58ch;
+  }
+
+  .pg-intro-tag {
+    display: inline-block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    color: var(--pg-gold-soft);
+    border: 1px solid var(--pg-gold);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    margin-bottom: 1rem;
+    width: fit-content;
+  }
+
+  .pg-btn {
+    align-self: flex-start;
+    margin-top: 6px;
+    padding: 16px 34px;
+    background: var(--pg-clay);
+    color: #fff;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+
+  .pg-btn:hover { background: var(--pg-clay-hover); }
+
+  @media (max-width: 860px) {
+    .pg-intro .container { flex-direction: column; }
+    .pg-intro-image { max-height: 320px; }
+  }
+
+  /* ---------- Section label ---------- */
+  .pg-section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    text-align: center;
+    color: var(--pg-gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+
+  .pg-section-count {
+    display: block;
+    text-align: center;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    color: var(--pg-muted);
+    margin-bottom: 34px;
+  }
+
+  /* ---------- Gallery grid ---------- */
+  .pg-gallery-section { padding: 10px 0 70px; }
+
+  .pg-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .pg-tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--pg-border);
+    cursor: zoom-in;
+    background: var(--pg-bg-soft);
+    aspect-ratio: 4 / 5;
+    padding: 0;
+    display: block;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: left;
+    font: inherit;
+  }
+
+  /* blurred duplicate of the same photo, filling the tile — sits behind
+     .pg-tile-main so the letterbox gap left by object-fit: contain shows a
+     soft blurred version of itself instead of bare cell background. */
+  .pg-tile-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: blur(18px) brightness(.5) saturate(1.1);
+    transform: scale(1.15);
+  }
+
+  .pg-tile-main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    /* was `cover` on a single <img> — cropped every photo (mostly
+       top/bottom on portrait shots) to force-fit the fixed 4:5 tile.
+       `contain` always shows the FULL photo; .pg-tile-bg above fills the
+       gap instead of bare background showing through. */
+    object-fit: contain;
+    display: block;
+    filter: grayscale(0.1) contrast(1.02);
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+
+  .pg-tile:hover .pg-tile-main,
+  .pg-tile:focus-visible .pg-tile-main {
+    transform: scale(1.04);
+    filter: grayscale(0) contrast(1.04);
+  }
+
+  .pg-tile::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.68) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .pg-tile::after {
+    content: "\f31e";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--pg-border);
+    color: var(--pg-text);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+
+  .pg-tile-caption {
+    position: absolute;
+    left: 14px;
+    right: 46px;
+    bottom: 12px;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .pg-tile-caption h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--pg-text);
+    margin: 0;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  @media (max-width: 900px) {
+    .pg-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .pg-gallery-grid { grid-template-columns: 1fr; }
+    .pg-hero-title { font-size: 30px; }
+  }
+
+  .pg-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    font-family: 'Jost', sans-serif;
+    color: var(--pg-muted);
+  }
+
+  /* ---------- Lightbox ---------- */
+  .pg-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.94);
+    align-items: center;
+    justify-content: center;
+  }
+  .pg-lightbox.pg-open { display: flex; }
+
+  .pg-lightbox-toolbar {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    display: flex;
+    gap: 22px;
+    z-index: 3;
+  }
+  .pg-lightbox-toolbar button {
+    background: none;
+    border: none;
+    color: var(--pg-text);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 6px;
+  }
+  .pg-lightbox-toolbar button:hover { color: var(--pg-gold); }
+  .pg-lightbox-toolbar button.pg-active { color: var(--pg-gold); }
+
+  .pg-lightbox-prev,
+  .pg-lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--pg-text);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 14px 22px;
+    z-index: 3;
+  }
+  .pg-lightbox-prev:hover,
+  .pg-lightbox-next:hover { color: var(--pg-gold); }
+  .pg-lightbox-prev { left: 12px; }
+  .pg-lightbox-next { right: 12px; }
+
+  .pg-lightbox-stage {
+    position: relative;
+    max-width: 82vw;
+    max-height: 82vh;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #050505;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .pg-lightbox-stage img {
+    max-width: 82vw;
+    max-height: 82vh;
+    display: block;
+    transform-origin: center center;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .pg-lightbox-stage.pg-zoomed img { cursor: grab; }
+  .pg-lightbox-stage.pg-panning img { cursor: grabbing; }
+
+  .pg-lightbox-stage:fullscreen,
+  .pg-lightbox-stage:-webkit-full-screen {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+  }
+  .pg-lightbox-stage:fullscreen img,
+  .pg-lightbox-stage:-webkit-full-screen img {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    margin: auto;
+  }
+
+  .pg-lightbox-caption {
+    position: absolute;
+    left: 4px;
+    bottom: -56px;
+    max-width: 70vw;
+  }
+  .pg-lightbox-caption.pg-empty { display: none; }
+  .pg-lightbox-caption h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--pg-text);
+    margin: 0 0 2px;
+  }
+  .pg-lightbox-caption p {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: var(--pg-muted);
+    margin: 0;
+  }
+
+  .pg-lightbox-counter {
+    position: absolute;
+    bottom: -32px;
+    right: 4px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--pg-muted);
+  }
+
+  .pg-lightbox-toast {
+    position: absolute;
+    bottom: -32px;
+    left: 4px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: var(--pg-gold);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .pg-lightbox-toast.pg-show { opacity: 1; }
+
+  body.pg-lock { overflow: hidden; }
+</style>
+{% endblock %}
+
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<div class="pg-gallery">
+
+  <!--- HEADER -->
+  <header>
+    {% include 'websites/sub_header.html' %}
+  </header>
+
+  <!-- Hero -->
+  <section class="pg-hero" {% if hero_image and hero_image.photos %}style="background-image: url('{{ hero_image.photos.url }}');"{% endif %}>
+    {% if hero_image and hero_image.photos %}
+      <img src="{{ hero_image.photos.url }}" alt="Featured photograph">
+    {% endif %}
+    <div class="pg-hero-overlay">
+      <div class="container">
+        <span class="pg-hero-eyebrow">Collection <strong>{{ photos|length }} photograph{{ photos|length|pluralize }}</strong></span>
+        <h1 class="pg-hero-title">{{ gallery.thumbnail_title }}</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro: featured photo + description -->
+  <section class="pg-intro">
+    <div class="container">
+      <div class="pg-intro-image"
+        {% if photos %}
+          style="background-image: url('{{ photos.0.photos.url }}');"
+        {% elif hero_image and hero_image.photos %}
+          style="background-image: url('{{ hero_image.photos.url }}');"
+        {% endif %}>
+        {% if photos %}
+          {% with intro_photo=photos.0 %}
+            <img src="{{ intro_photo.photos.url }}" alt="{{ intro_photo.photos_title|default:'Featured work' }}">
+          {% endwith %}
+        {% elif hero_image and hero_image.photos %}
+          <img src="{{ hero_image.photos.url }}" alt="Featured photograph">
+        {% endif %}
+      </div>
+      <div class="pg-intro-text">
+        {% if gallery.get_photo_type_display %}
+          <span class="pg-intro-tag">{{ gallery.get_photo_type_display }}</span>
+        {% endif %}
+        <h2>{{ gallery.title|default:"About this collection" }}</h2>
+        <p>{{ gallery.descriptions }}</p>
+        <a href="#pgAlbum" class="pg-btn">View full gallery</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="pg-gallery-section">
+    <div class="container">
+      <h2 class="pg-section-label">Gallery</h2>
+      <span class="pg-section-count">{{ photos|length }} photograph{{ photos|length|pluralize }}</span>
+
+      <div class="pg-gallery-grid" id="pgAlbum">
+        {% for photo in photos %}
+          <button
+            type="button"
+            class="pg-tile"
+            data-full="{{ photo.photos.url }}"
+            data-title="{{ photo.photos_title|default:'' }}"
+            data-desc="{{ photo.photo_description|default:'' }}"
+            aria-label="{% if photo.photos_title %}Open {{ photo.photos_title }} full view{% else %}Open photo full view{% endif %}">
+            {% if photo.photos %}
+              <img class="pg-tile-bg" src="{{ photo.photos.url }}" alt="" aria-hidden="true">
+              <img class="pg-tile-main" src="{{ photo.photos.url }}" alt="{{ photo.photos_title|default:'' }}" loading="lazy">
+            {% endif %}
+            {% if photo.photos_title %}
+              <div class="pg-tile-caption"><h3>{{ photo.photos_title }}</h3></div>
+            {% endif %}
+          </button>
+        {% empty %}
+          <p class="pg-empty">No photos found</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="pg-lightbox" id="pgLightbox" role="dialog" aria-modal="true" aria-hidden="true">
+
+    <div class="pg-lightbox-toolbar">
+      <button id="pgFullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+      <button id="pgZoom" title="Zoom"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button id="pgShare" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+      <button id="pgClose" title="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <button class="pg-lightbox-prev" id="pgPrev"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="pg-lightbox-next" id="pgNext"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="pg-lightbox-stage" id="pgStage">
+      <img id="pgImage" src="" alt="">
+      <div class="pg-lightbox-caption" id="pgCaption">
+        <h3 id="pgCaptionTitle"></h3>
+        <p id="pgCaptionDesc"></p>
+      </div>
+      <span class="pg-lightbox-counter" id="pgCounter"></span>
+      <span class="pg-lightbox-toast" id="pgToast">Link copied</span>
+    </div>
+  </div>
+
+  <!-- footer -->
+  {% include 'websites/footer.html' %}
+
+</div>
+
+<script>
+  (function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll('#pgAlbum .pg-tile'));
+    if (!items.length) return;
+
+    var lightbox = document.getElementById('pgLightbox');
+    var stage = document.getElementById('pgStage');
+    var image = document.getElementById('pgImage');
+    var caption = document.getElementById('pgCaption');
+    var captionTitle = document.getElementById('pgCaptionTitle');
+    var captionDesc = document.getElementById('pgCaptionDesc');
+    var counter = document.getElementById('pgCounter');
+    var toast = document.getElementById('pgToast');
+
+    var closeBtn = document.getElementById('pgClose');
+    var prevBtn = document.getElementById('pgPrev');
+    var nextBtn = document.getElementById('pgNext');
+    var zoomBtn = document.getElementById('pgZoom');
+    var fullscreenBtn = document.getElementById('pgFullscreen');
+    var shareBtn = document.getElementById('pgShare');
+
+    var currentIndex = 0;
+    var lastFocused = null;
+
+    var ZOOM_LEVELS = [1, 2, 3];
+    var zoomStep = 0;
+    var scale = 1;
+    var panX = 0;
+    var panY = 0;
+    var isPanning = false;
+    var panStartX = 0;
+    var panStartY = 0;
+    var panOriginX = 0;
+    var panOriginY = 0;
+
+    function applyTransform() {
+      image.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')';
+      if (scale > 1) {
+        stage.classList.add('pg-zoomed');
+        zoomBtn.classList.add('pg-active');
+      } else {
+        stage.classList.remove('pg-zoomed');
+        zoomBtn.classList.remove('pg-active');
+        panX = 0;
+        panY = 0;
+        image.style.transform = 'translate(0px, 0px) scale(1)';
+      }
+    }
+
+    function resetZoom() {
+      zoomStep = 0;
+      scale = ZOOM_LEVELS[zoomStep];
+      panX = 0;
+      panY = 0;
+      applyTransform();
+    }
+
+    function cycleZoom() {
+      zoomStep = (zoomStep + 1) % ZOOM_LEVELS.length;
+      scale = ZOOM_LEVELS[zoomStep];
+      if (scale === 1) { panX = 0; panY = 0; }
+      applyTransform();
+    }
+
+    function setZoomFromWheel(direction) {
+      var idx = ZOOM_LEVELS.indexOf(scale);
+      if (idx === -1) idx = 0;
+      idx = direction > 0 ? Math.min(ZOOM_LEVELS.length - 1, idx + 1) : Math.max(0, idx - 1);
+      zoomStep = idx;
+      scale = ZOOM_LEVELS[idx];
+      if (scale === 1) { panX = 0; panY = 0; }
+      applyTransform();
+    }
+
+    function renderSlide(index) {
+      var item = items[index];
+      var title = item.getAttribute('data-title') || '';
+      var desc = item.getAttribute('data-desc') || '';
+
+      resetZoom();
+      image.src = item.getAttribute('data-full') || '';
+      image.alt = title;
+
+      if (title || desc) {
+        caption.classList.remove('pg-empty');
+        captionTitle.textContent = title;
+        captionTitle.style.display = title ? '' : 'none';
+        captionDesc.textContent = desc;
+        captionDesc.style.display = desc ? '' : 'none';
+      } else {
+        caption.classList.add('pg-empty');
+      }
+
+      counter.textContent = (index + 1) + ' / ' + items.length;
+    }
+
+    function exitFullscreenIfNeeded() {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+    }
+
+    function openLightbox(index, triggerEl) {
+      currentIndex = index;
+      lastFocused = triggerEl || document.activeElement;
+      renderSlide(currentIndex);
+      lightbox.classList.add('pg-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('pg-lock');
+      closeBtn.focus();
+    }
+
+    function closeLightbox() {
+      exitFullscreenIfNeeded();
+      lightbox.classList.remove('pg-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('pg-lock');
+      if (lastFocused && typeof lastFocused.focus === 'function') {
+        lastFocused.focus();
+      }
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % items.length;
+      renderSlide(currentIndex);
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      renderSlide(currentIndex);
+    }
+
+    function toggleFullscreen() {
+      var isFull = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!isFull) {
+        if (stage.requestFullscreen) stage.requestFullscreen();
+        else if (stage.webkitRequestFullscreen) stage.webkitRequestFullscreen();
+        fullscreenBtn.classList.add('pg-active');
+      } else {
+        exitFullscreenIfNeeded();
+      }
+    }
+
+    document.addEventListener('fullscreenchange', function () {
+      if (!document.fullscreenElement) fullscreenBtn.classList.remove('pg-active');
+    });
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add('pg-show');
+      setTimeout(function () { toast.classList.remove('pg-show'); }, 1600);
+    }
+
+    function shareImage() {
+      var url = image.src;
+      if (navigator.share) {
+        navigator.share({ title: 'Photograph', url: url }).catch(function () {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () {
+          showToast('Link copied');
+        }).catch(function () {
+          showToast('Could not copy link');
+        });
+      } else {
+        showToast('Sharing not supported');
+      }
+    }
+
+    items.forEach(function (item, index) {
+      item.addEventListener('click', function () {
+        openLightbox(index, item);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+    zoomBtn.addEventListener('click', cycleZoom);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    shareBtn.addEventListener('click', shareImage);
+
+    image.addEventListener('dblclick', function () {
+      if (scale > 1) resetZoom();
+      else { zoomStep = 1; scale = ZOOM_LEVELS[1]; applyTransform(); }
+    });
+
+    stage.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      setZoomFromWheel(e.deltaY < 0 ? 1 : -1);
+    }, { passive: false });
+
+    stage.addEventListener('mousedown', function (e) {
+      if (scale <= 1) return;
+      isPanning = true;
+      stage.classList.add('pg-panning');
+      panStartX = e.clientX;
+      panStartY = e.clientY;
+      panOriginX = panX;
+      panOriginY = panY;
+    });
+
+    window.addEventListener('mousemove', function (e) {
+      if (!isPanning) return;
+      panX = panOriginX + (e.clientX - panStartX);
+      panY = panOriginY + (e.clientY - panStartY);
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', function () {
+      isPanning = false;
+      stage.classList.remove('pg-panning');
+    });
+
+    var touchStartDist = 0;
+    var touchStartScale = 1;
+
+    function touchDistance(touches) {
+      var dx = touches[0].clientX - touches[1].clientX;
+      var dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    stage.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) {
+        touchStartDist = touchDistance(e.touches);
+        touchStartScale = scale;
+      } else if (e.touches.length === 1 && scale > 1) {
+        isPanning = true;
+        panStartX = e.touches[0].clientX;
+        panStartY = e.touches[0].clientY;
+        panOriginX = panX;
+        panOriginY = panY;
+      }
+    }, { passive: true });
+
+    stage.addEventListener('touchmove', function (e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        var ratio = touchDistance(e.touches) / touchStartDist;
+        scale = Math.min(3, Math.max(1, touchStartScale * ratio));
+        applyTransform();
+      } else if (e.touches.length === 1 && isPanning) {
+        panX = panOriginX + (e.touches[0].clientX - panStartX);
+        panY = panOriginY + (e.touches[0].clientY - panStartY);
+        applyTransform();
+      }
+    }, { passive: false });
+
+    stage.addEventListener('touchend', function () {
+      isPanning = false;
+    });
+
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lightbox.classList.contains('pg-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'z' || e.key === 'Z') cycleZoom();
+      if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+    });
+  })();
+</script>
+{% endblock %}

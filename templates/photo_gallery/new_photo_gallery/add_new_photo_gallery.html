@@ -1,0 +1,261 @@
+{% load static %}
+<div class="col-sm-12 pg-theme">
+    <div class="pg-modal">
+        <form action="" method="" id="photoGalleryForm" enctype="multipart/form-data">
+
+            <div class="pg-modal-head">
+                <h2 class="pg-modal-title">Add New Photo Gallery</h2>
+                <button type="button" class="pg-modal-close closerBtn" data-bs-dismiss="modal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <div class="row">
+                <!-- Details -->
+                <div class="col-sm-7">
+                    <div class="pg-panel">
+                        <p class="pg-panel-label">Gallery details</p>
+
+                        <div class="pg-field">
+                            <label for="id_photo_type" class="required">Photo Type</label>
+                            <select class="pg-input" id="id_photo_type" name="photo_type" required>
+                                {% for value, label in photo_type_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="pg-field">
+                            <label for="id_title" class="required">Title</label>
+                            <input type="text" class="pg-input" id="id_title" name="title"
+                                maxlength="100" required autocomplete="off">
+                        </div>
+
+                        <div class="pg-field">
+                            <label for="id_description">Description</label>
+                            <textarea class="pg-input" id="id_description" name="description"
+                                rows="3" autocomplete="off"></textarea>
+                        </div>
+
+                        <div class="pg-field pg-checkbox-group">
+                            <label class="pg-checkbox-label">
+                                <input type="checkbox" class="pg-checkbox" id="id_is_service" name="is_service">
+                                <span>Show in Services</span>
+                            </label>
+                            <label class="pg-checkbox-label">
+                                <input type="checkbox" class="pg-checkbox" id="id_is_recent_work" name="is_recent_work">
+                                <span>Show in Recent Work</span>
+                            </label>
+                            <label class="pg-checkbox-label">
+                                <input type="checkbox" class="pg-checkbox" id="id_is_album" name="is_album">
+                                <span>Mark as Album</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload -->
+                <div class="col-sm-5">
+                    <div class="pg-upload-panel">
+                        <div class="pg-dropzone">
+                            <div class="pg-frame" id="frame_selected_image">
+                                <img id="selected_image" src="" alt="">
+                            </div>
+                            <h4>Select a photo</h4>
+                            <p>Supported: png, jpeg, jpg, webp</p>
+                            <input type="file" name="photos_img" accept="image/*"
+                                id="id_gallery_img" style="display:none;" onchange="displaySelectedImage(this);">
+                            <label for="id_gallery_img" class="pg-choose-btn">Choose File</label>
+                        </div>
+
+                        <div class="pg-field">
+                            <label for="id_photo_title">Photo Title</label>
+                            <input type="text" class="pg-input" id="id_photo_title" name="photo_title"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="pg-field">
+                            <label for="id_photo_descriptions">Photo Description</label>
+                            <textarea class="pg-input" id="id_photo_descriptions" name="photo_descriptions"
+                                autocomplete="off"></textarea>
+                        </div>
+
+                        <div style="display:flex; justify-content:flex-end;">
+                            <button id="addNewPhotosBtn" type="button" class="pg-btn pg-btn-ghost">
+                                <i class='bx bx-image-add'></i> Add New Photos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo list -->
+                <div class="col-sm-12 pg-mini-table-wrap">
+                    <p class="pg-section-label">Photos in this gallery</p>
+                    <div class="pg-table-frame">
+                        <table id="PHOTOGTABLE" class="pg-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 3%;">Sl</th>
+                                    <th>Photos</th>
+                                    <th>Photo Title</th>
+                                    <th>Photo Des</th>
+                                    <th>Is Cover Photo</th>
+                                    <th>Is Thumbnail Photo</th>
+                                    <th style="width: 8%;">Option</th>
+                                </tr>
+                            </thead>
+                            <tbody id="PHGTBODY">
+                                <!--  -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pg-modal-footer">
+                <button type="button" class="pg-btn pg-btn-outline-muted" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button id="addUserBtn" name="submit" type="submit" class="pg-btn pg-btn-brass">
+                    Save Gallery
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let photoIndex = 0;
+
+    document.getElementById("addNewPhotosBtn").addEventListener("click", function () {
+
+        const fileInput = document.getElementById("id_gallery_img");
+        const photoTitleInput = document.getElementById("id_photo_title");
+        const descriptionInput = document.getElementById("id_photo_descriptions");
+        const previewImage = document.getElementById("selected_image");
+
+        if (!fileInput.files[0]) {
+            alert("Please select an image!");
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const imageURL = URL.createObjectURL(file);
+        const tableBody = document.getElementById("PHGTBODY");
+        const currentIndex = photoIndex;
+
+        const newRow = document.createElement("tr");
+
+        newRow.innerHTML = `
+            <td>${currentIndex + 1}</td>
+            <td>
+                <img class="pg-thumb" src="${imageURL}">
+                <input type="file" name="photo_file_list" style="display:none;" class="real-file-input">
+            </td>
+            <td>
+                ${photoTitleInput.value || ""}
+                <input type="hidden" name="photo_title_list" value="${photoTitleInput.value || ""}">
+            </td>
+            <td>
+                ${descriptionInput.value}
+                <input type="hidden" name="photo_description_list" value="${descriptionInput.value}">
+            </td>
+            <td>
+                <input type="radio" class="pg-radio" name="cover_photo_index" value="${currentIndex}">
+            </td>
+            <td>
+                <input type="radio" class="pg-radio" name="thumbnail_photo_index" value="${currentIndex}">
+            </td>
+            <td>
+                <button type="button" class="pg-icon-btn pg-delete" onclick="removeRow(this)" title="Remove">
+                    <i class='bx bx-trash-alt'></i>
+                </button>
+            </td>
+        `;
+
+        tableBody.appendChild(newRow);
+
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        newRow.querySelector(".real-file-input").files = dt.files;
+
+        photoIndex++;
+
+        fileInput.value = "";
+        photoTitleInput.value = "";
+        descriptionInput.value = "";
+        if (previewImage) previewImage.src = "";
+        document.getElementById("frame_selected_image").classList.remove("pg-has-image");
+    });
+
+    function removeRow(button) {
+        button.closest("tr").remove();
+    }
+
+    function displaySelectedImage(input) {
+        const previewImage = document.getElementById('selected_image');
+        const frame = document.getElementById('frame_selected_image');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.src = e.target.result;
+                img.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    var maxWidth = 300;
+                    var maxHeight = 300;
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > maxWidth || height > maxHeight) {
+                        if (width > height) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        } else {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        previewImage.src = canvas.toDataURL('image/jpeg');
+                    } else {
+                        previewImage.src = img.src;
+                    }
+                    if (frame) frame.classList.add('pg-has-image');
+                };
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(function () {
+        $('#photoGalleryForm').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                url: "{% url 'add_new_photo_gallery_details' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.msg);
+                        setTimeout(function () { location.reload() }, 500);
+                    } else {
+                        toastr.error(resp.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("An error occurred while processing the request.");
+                }
+            });
+        });
+    });
+</script>

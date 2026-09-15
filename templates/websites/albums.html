@@ -1,0 +1,139 @@
+{% extends 'websites/base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    .albums-body { background: #0d0d0d; color: #eae7e1; }
+
+    .albums-section { max-width: 1500px; margin: 0 auto; padding: 60px 40px 100px; }
+
+    .albums-head { margin-bottom: 50px; text-align: center; }
+    .albums-head h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        font-size: 2.6rem;
+        letter-spacing: 0.02em;
+        color: #f2efe9;
+        position: relative;
+        display: inline-block;
+    }
+    .albums-head h1::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 1px;
+        background: #c9a15a;
+        margin-top: 16px;
+    }
+
+    /* Masonry via CSS columns */
+    .albums-grid {
+        column-count: 3;
+        column-gap: 34px;
+    }
+    @media (max-width: 1024px) { .albums-grid { column-count: 2; } }
+    @media (max-width: 640px)  { .albums-grid { column-count: 1; } }
+
+    .album-card {
+        display: block;
+        break-inside: avoid;
+        margin-bottom: 42px;
+    }
+
+    .album-card .img-wrap {
+        overflow: hidden;
+        background: #1a1a1a;
+        border: 1px solid #222;
+    }
+    .album-card img {
+        width: 100%;
+        display: block;
+        transition: transform 0.6s ease, filter 0.6s ease;
+        filter: brightness(0.92);
+    }
+    .album-card:hover img {
+        transform: scale(1.04);
+        filter: brightness(1);
+    }
+
+    .album-card.no-image .img-wrap {
+        aspect-ratio: 4 / 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    .album-title {
+        display: block;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: #f2efe9;
+        margin-top: 18px;
+        text-decoration: none;
+        transition: color 0.25s;
+    }
+    .album-title:hover { color: #c9a15a; }
+
+    .album-tags {
+        font-family: 'Jost', sans-serif;
+        font-weight: 300;
+        font-size: 0.85rem;
+        color: #8a8578;
+        margin-top: 4px;
+        letter-spacing: 0.03em;
+    }
+
+    .albums-empty {
+        font-family: 'Jost', sans-serif;
+        color: #666;
+        padding: 60px 0;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="albums-body">
+
+    <header>
+        {% include 'websites/sub_header.html' %}
+    </header>
+
+    <section class="albums-section">
+        <div class="albums-head">
+            <h1>Albums</h1>
+        </div>
+
+        {% if albums %}
+        <div class="albums-grid">
+            {% for album in albums %}
+            <div class="album-card {% if not album.cover_photo %}no-image{% endif %}">
+                <a href="{% url 'album_detail_page' album.id %}">
+                    <div class="img-wrap">
+                        {% if album.cover_photo %}
+                            <img src="{{ album.cover_photo }}" alt="{{ album.title }}">
+                        {% else %}
+                            No Cover Photo
+                        {% endif %}
+                    </div>
+                </a>
+                <a class="album-title" href="{% url 'album_detail_page' album.id %}">{{ album.title }}</a>
+                <div class="album-tags">{{ album.tags|join:", " }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="albums-empty">No albums yet.</div>
+        {% endif %}
+    </section>
+
+    {% include 'websites/footer.html' %}
+</div>
+{% endblock %}

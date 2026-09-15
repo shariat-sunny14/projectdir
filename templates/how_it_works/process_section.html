@@ -1,0 +1,19 @@
+<section class="process" id="process">
+    <div class="wrap">
+        <div class="section-head on-dark reveal">
+            <div class="kicker"><span></span> {{ process_section.kicker }}</div>
+            <h2>{{ process_section.heading }}</h2>
+        </div>
+        <div class="process-steps reveal">
+            {% for step in process_steps %}
+            <div class="process-step">
+                <span class="step-num">{{ step.formatted_step_number }}</span>
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+            </div>
+            {% empty %}
+            <p>No process steps added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>

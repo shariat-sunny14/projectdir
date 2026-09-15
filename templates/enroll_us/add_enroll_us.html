@@ -1,0 +1,312 @@
+{% load static %}
+<div class="col-sm-12">
+    <div class="card main-card">
+        <div class="card-body card-body_item_setup">
+            <div class="itemsetup_container">
+                <form action="" method="" id="addEnrollForm" enctype="multipart/form-data">
+                    <div class="add_edit_head" style="width: 30%;">
+                        <h2 class="text-primary">Add New Enroll Info</h2>
+                    </div>
+                    <div class="modal_closer">
+                        <button type="button" class="btn bg-danger text-white closerBtn" data-bs-dismiss="modal" style="padding: 0.6rem; border: 1px solid white; border-radius: 50%;">
+                            X
+                        </button>
+                    </div>
+                    <!--  -->
+                    <!--  -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card add_user_card">
+                                <div class="card-body">
+                                    <div class="user_add_body">
+                                        <div class="sub_body_one">
+                                            <div class="row add_user_row">
+                                                <!--  -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; border-bottom: 1px solid #707070;">
+                                                    <div class="col-sm-12">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_enroll_title" class="col-form-label font_size required">
+                                                                    Title of Enroll:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-10 adduser_col">
+                                                                <input type="text" class="form-control form_adduser_body" id="id_enroll_title" name="enroll_title" required autocomplete="off">
+                                                            </div>
+                                                            <!--  -->
+                                                            <div class="col-sm-1 adduser_col" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-end; align-items: center;">
+                                                                <input type="checkbox" class="form-check-input" id="id_is_most_popular" name="is_most_popular" style="margin-top: 0px;">
+                                                                <label for="id_is_most_popular" style="font-size: 0.85rem;">Is Most?</label>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_enroll_price" class="col-form-label font_size required">
+                                                                    Enroll Price:
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-content: center;">
+                                                                <div class="col-sm-10 adduser_col">
+                                                                    <input type="number" class="form-control form_adduser_body" id="id_enroll_price" name="enroll_price" step="0.01" required autocomplete="off">
+                                                                </div>
+                                                                <!--  -->
+                                                                <div class="col-sm-1 adduser_col" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-end; align-items: center;">
+                                                                    <input type="radio" class="form-check-input" id="id_is_price" name="price_type" value="price" checked>
+                                                                    <label for="id_is_price" style="font-size: 0.85rem;">Is Price?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_offer_price" class="col-form-label font_size required">
+                                                                    Offer Price:
+                                                                </label>
+                                                            </div>
+                                                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-content: center;">
+                                                                <div class="col-sm-10 adduser_col">
+                                                                    <input type="number" class="form-control form_adduser_body" id="id_offer_price" name="offer_price" step="0.01" required autocomplete="off">
+                                                                </div>
+                                                                <!--  -->
+                                                                <div class="col-sm-1 adduser_col" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-end; align-items: center;">
+                                                                    <input type="radio" class="form-check-input" id="id_is_offer" name="price_type" value="offer">
+                                                                    <label for="id_is_offer" style="font-size: 0.85rem;">Is Offer?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="row g-3 align-items-center" style="margin-bottom: 1rem;">
+                                                            <div class="col-sm-2">
+                                                                <label for="id_enroll_caption" class="col-form-label font_size required">
+                                                                    Enroll Caption:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-12 adduser_col">
+                                                                <textarea name="enroll_caption" id="id_enroll_caption" class="form-control form_adduser_body" required style="height: 10rem" autocomplete="off"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <!--  -->
+                                                </div>
+                                                <!--  -->
+                                                <!-- second part -->
+                                                <!--  -->
+                                                <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: flex-start;">
+                                                    <!--  -->
+                                                    <div class="col-sm-2" style="width: 15%;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_enroll_Order_no" class="col-form-label font_size">
+                                                                    Order No:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <input type="number" class="form-control form_adduser_body" id="id_enroll_Order_no" name="enroll_Order_no" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-sm-4" style="width: 70%; margin-bottom: 1rem;">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                                <label for="id_enroll_dtls" class="col-form-label font_size">
+                                                                    Enroll Details:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-11 adduser_col">
+                                                                <textarea type="text" class="form-control form_adduser_body" id="id_enroll_dtls" name="enroll_dtls" autocomplete="off" style="height: 8rem;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+                                                    <!--  -->
+                                                    <div class="col-sm-2 usersetup_modal-footer" style="width: 15%; margin-top: 2rem; display: flex; justify-content: flex-end; align-items: center; text-align: center; flex-direction: row; flex-wrap: nowrap;">
+                                                        <button type="button" id="addEnrollBtn" class="btn btn-primary" style=" font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                                                            Add Enroll
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!--  -->
+                                                <!--  -->
+                                                <!-- 3rd part -->
+                                                <!--  -->
+                                                <div class="col-sm-12" style="border-top: 1px solid rgba(0, 0, 0, 0.301);">
+                                                    <div class="card add_user_card_other" style="margin-top: 0.5rem; margin-bottom: 5rem;">
+                                                        <!-- photo dtls body -->
+                                                        <section>
+                                                            <div class="Packages-table">
+                                                                <table id="ENROLLSTABLE" class="table table-hover" style="width: 100%; border: 1px solid #458097d8;">
+                                                                    <thead class="text-center table-header_itemlist" style="background: #458097d8;">
+                                                                        <tr>
+                                                                            <th style="text-align:center; width: 5%;">
+                                                                                Sl
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 10%;">
+                                                                                Order No
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 60%;">
+                                                                                Enroll Details
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 60%;">
+                                                                                Is Published?
+                                                                            </th>
+                                                                            <th style="text-align:center; width: 10%;">
+                                                                                Option
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="ENROLLSTBODY" style="text-align:center; font-size: 0.8rem">
+                                                                        <!--  -->
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                    </div>
+                    <div class="usersetup_modal-footer"
+                        style="display: flex; justify-content: right; align-items: center; text-align: center; margin-bottom: 1rem;">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Close
+                        </button>
+                        <button id="saveUpdateBtn" name="submit" type="submit" class="btn btn-success"
+                            style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                            Save Enroll
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+<!--  -->
+<script>
+    ///////////////////////////////////////////////
+    document.addEventListener("click", function (e) {
+
+        // Add new row
+        if (e.target && (e.target.id === "addEnrollBtn")) {
+
+            const tbody = document.getElementById("ENROLLSTBODY");
+
+            const orderNo = document.getElementById("id_enroll_Order_no").value.trim();
+            const details = document.getElementById("id_enroll_dtls").value.trim();
+
+            if (!orderNo || !details) {
+                alert("All fields required!");
+                return;
+            }
+
+            const rowCount = tbody.rows.length + 1;
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>${rowCount}</td>
+
+                <td>
+                    ${orderNo}
+                    <input type="hidden" name="enroll_order_no_list[]" value="${orderNo}">
+                </td>
+
+                <td>
+                    ${details}
+                    <input type="hidden" name="enroll_dtls_list[]" value="${details}">
+                </td>
+
+                <td>
+                    <input type="checkbox" name="is_published[]" value="${rowCount}">
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm deleteRow">
+                        <i class='bx bx-trash-alt'></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // Clear input fields
+            document.getElementById("id_enroll_Order_no").value = "";
+            document.getElementById("id_enroll_dtls").value = "";
+        }
+
+        // Delete row
+        const deleteBtn = e.target.closest(".deleteRow");
+        if (deleteBtn) {
+            const row = deleteBtn.closest("tr");
+            row.remove();
+
+            // Re-number remaining rows
+            const rows = document.querySelectorAll("#ENROLLSTBODY tr");
+            rows.forEach((row, index) => {
+                row.cells[0].innerText = index + 1;
+
+                // Also update the checkbox value if needed
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.value = index + 1;
+                }
+            });
+        }
+
+    });
+    /////////////////////////////////////////////////////////////////
+    $(function () {
+
+        $("#addEnrollForm").on("submit", function (e) {
+
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+
+                url: "{% url 'save_enroll_setup_api' %}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+
+                success: function (resp) {
+
+                    if (resp.success) {
+
+                        toastr.success(resp.msg);
+                        setTimeout(() => location.reload(), 500);
+
+                    } else {
+
+                        toastr.error(resp.errmsg);
+
+                    }
+
+                },
+
+                error: function (xhr) {
+
+                    console.log(xhr.responseText);
+                    toastr.error("Server Error");
+
+                }
+
+            });
+
+        });
+
+    });
+</script>

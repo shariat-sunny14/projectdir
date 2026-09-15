@@ -1,0 +1,60 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="stylesheet" href="{% static 'testimonials/css/testimonials.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="td-shell">
+
+    <a href="{% url 'testimonials:dashboard_list' %}" class="td-back-link">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to all testimonials
+    </a>
+
+    <div class="td-header" style="border:none; margin-bottom:2rem;">
+        <div>
+            <div class="td-kicker">{% if mode == "edit" %}EDIT ENTRY{% else %}NEW ENTRY{% endif %}</div>
+            <h1>{% if mode == "edit" %}Edit Testimonial{% else %}Add Testimonial{% endif %}</h1>
+        </div>
+    </div>
+
+    <div class="td-card">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if mode == "edit" and testimonial.image %}
+                <div class="td-current-image">
+                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.couple_name }}">
+                    <span>Current photo — upload a new one below to replace it.</span>
+                </div>
+            {% endif %}
+
+            <div class="td-field">
+                <label for="{{ form.couple_name.id_for_label }}">Name</label>
+                {{ form.couple_name }}
+            </div>
+
+            <div class="td-field">
+                <label for="{{ form.message.id_for_label }}">Testimonial</label>
+                {{ form.message }}
+            </div>
+
+            <div class="td-field">
+                <label for="{{ form.image.id_for_label }}">Photo</label>
+                {{ form.image }}
+            </div>
+
+            <div class="td-form-actions">
+                <button type="submit" class="td-btn td-btn-solid">
+                    {% if mode == "edit" %}Save Changes{% else %}Add Testimonial{% endif %}
+                </button>
+                <a href="{% url 'testimonials:dashboard_list' %}" class="td-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% load static %}
+
+<!-- ABOUT US -->
+{% if about %}
+<div class="about-header">
+  <h1 class="about_h1">{{ about.header }}</h1>
+  <p class="about_p">{{ about.description }}</p>
+</div>
+{% endif %}
+
+
+<!-- TEAM -->
+{% if team_members %}
+<div class="team-container" style="width: 100%; margin-bottom: 5rem">
+  <div class="section-title">
+    <h2 style="font-size: 1.5rem; color: #c3c3c3; font-family: time">
+      OUR TEAM
+    </h2>
+    <p style="font-size: 1.5rem; font-family: time; color: #c3c3c3;">
+      Founding Members
+    </p>
+  </div>
+
+  <div class="team-grid">
+    {% for member in team_members %}
+    <div class="team-card">
+      <img src="{{ member.image.url }}" alt="" />
+
+      <h3>{{ member.name }}</h3>
+      <span>{{ member.designation }}</span>
+
+      <div class="social-icons">
+
+        {% if member.facebook %}
+        <a href="{{ member.facebook }}" target="_blank">
+          <i class="fab fa-facebook"></i>
+        </a>
+        {% endif %}
+
+        {% if member.linkedin %}
+        <a href="{{ member.linkedin }}" target="_blank">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        {% endif %}
+
+        {% if member.twitter %}
+        <a href="{{ member.twitter }}" target="_blank">
+          <i class="fab fa-twitter"></i>
+        </a>
+        {% endif %}
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- LIFE AT TBOX -->
+{% if Life_at %}
+<div class="life_at" style="margin-bottom: 5rem">
+  <div class="section-title">
+    <h2>{{ Life_at.header }}</h2>
+  </div>
+
+  <div class="life-grid">
+
+    <div class="life_at_descrip">
+      <p>{{ Life_at.description }}</p>
+    </div>
+
+    {% if Life_at.iframe_code %}
+    <div class="youtube_videos">
+      {{ Life_at.iframe_code|safe }}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endif %}
