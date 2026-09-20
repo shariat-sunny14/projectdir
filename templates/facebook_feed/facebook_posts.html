@@ -1,0 +1,41 @@
+{% extends 'websites/base.html' %} 
+{% load crispy_forms_tags %} 
+{% load static %} 
+{% block extra_link %}
+<!--========== CSS ==========-->
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+
+<!--- HEADER -->
+<header style="border-bottom: 1px solid var(--cultured)">
+  <!-- SUB-HEADER -->
+  <!--- HEADER -->
+  {% include 'websites/sub_header.html' %}
+  <!--- HEADER -->
+</header>
+
+<h2 style="margin-top: 7rem; padding: 1rem;">Facebook Posts</h2>
+
+{% for post in fb_posts %}
+
+<div style="border:1px solid #ddd; padding:20px; margin-bottom:20px">
+
+    <p>{{ post.message }}</p>
+
+    {% if post.image %}
+        <a href="{{ post.image.url }}" target="_blank">
+            <img src="{{ post.image.url }}" width="400">
+        </a>
+    {% endif %}
+
+    <p>{{ post.created_time }}</p>
+
+</div>
+
+{% endfor %}
+
+<!-- footer -->
+{% include 'websites/footer.html' %}
+<!-- footer -->
+{% endblock %}

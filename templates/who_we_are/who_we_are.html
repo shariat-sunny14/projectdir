@@ -1,0 +1,246 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== WHO WE ARE — public section ==========-->
+<style>
+    :root {
+        --wwa-bg: #ffffff;
+        --wwa-surface: #fbfaf7;
+        --wwa-border: #ece7dd;
+        --wwa-gold: #b8873f;
+        --wwa-gold-dark: #96692c;
+        --wwa-text: #2a2621;
+        --wwa-text-muted: #8a8175;
+        --wwa-font: 'Cormorant Garamond', 'Georgia', serif;
+        --wwa-font-ui: 'Jost', 'Helvetica Neue', sans-serif;
+    }
+
+    .wwa-section {
+        background: var(--wwa-bg);
+        padding: 100px 24px;
+        font-family: var(--wwa-font-ui);
+        color: var(--wwa-text);
+    }
+
+    .wwa-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 80px;
+        align-items: start;
+    }
+
+    @media (max-width: 900px) {
+        .wwa-inner { grid-template-columns: 1fr; gap: 56px; }
+    }
+
+    /* ---- Left: about copy ---- */
+    .wwa-kicker {
+        display: inline-block;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: var(--wwa-gold-dark);
+        margin-bottom: 16px;
+        position: relative;
+        padding-left: 44px;
+    }
+
+    .wwa-kicker::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 50%;
+        width: 32px; height: 1px;
+        background: var(--wwa-gold);
+    }
+
+    .wwa-subtitle {
+        font-family: var(--wwa-font);
+        font-size: 20px;
+        font-style: italic;
+        color: var(--wwa-gold-dark);
+        margin: 0 0 8px;
+        font-weight: 500;
+    }
+
+    .wwa-title {
+        font-family: var(--wwa-font);
+        font-weight: 500;
+        font-size: 46px;
+        line-height: 1.15;
+        margin: 0 0 26px;
+        color: var(--wwa-text);
+    }
+
+    .wwa-title em {
+        color: var(--wwa-gold);
+        font-style: normal;
+    }
+
+    .wwa-description {
+        font-size: 16px;
+        line-height: 1.75;
+        color: var(--wwa-text-muted);
+        margin: 0 0 22px;
+        max-width: 540px;
+    }
+
+    .wwa-note {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--wwa-text);
+        margin: 0;
+        padding-left: 22px;
+        border-left: 2px solid var(--wwa-gold);
+        max-width: 520px;
+        font-style: italic;
+    }
+
+    /* ---- Right: stats intro + grid ---- */
+    .wwa-stats-intro-label {
+        display: inline-block;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-size: 11px;
+        color: var(--wwa-gold-dark);
+        margin-bottom: 10px;
+    }
+
+    .wwa-stats-intro-text {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--wwa-text-muted);
+        margin: 0 0 40px;
+    }
+
+    .wwa-stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .wwa-stat {
+        background: var(--wwa-surface);
+        border: 1px solid var(--wwa-border);
+        border-radius: 14px;
+        padding: 30px 24px;
+        text-align: left;
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .wwa-stat:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 36px -22px rgba(150,105,44,0.35);
+        border-color: var(--wwa-gold);
+    }
+
+    .wwa-stat.stat-featured {
+        background: linear-gradient(160deg, #fff, var(--wwa-surface));
+        border-color: var(--wwa-gold);
+        box-shadow: 0 20px 36px -22px rgba(150,105,44,0.3);
+    }
+
+    .wwa-stat-number {
+        font-family: var(--wwa-font);
+        font-size: 42px;
+        font-weight: 600;
+        color: var(--wwa-gold-dark);
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .wwa-stat-number .wwa-counter { display: inline; }
+
+    .wwa-stat-label {
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--wwa-text-muted);
+    }
+
+    @media (max-width: 480px) {
+        .wwa-title { font-size: 34px; }
+        .wwa-stats-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+        .wwa-stat { padding: 22px 16px; }
+        .wwa-stat-number { font-size: 32px; }
+    }
+</style>
+{% endblock %}
+{% block body %}
+<section class="wwa-section">
+    <div class="wwa-inner">
+
+        <!-- ===== Left: about copy ===== -->
+        <div class="wwa-about">
+            <span class="wwa-kicker">{{ about.kicker_text }}</span>
+            <p class="wwa-subtitle">{{ about.subtitle }}</p>
+            <h2 class="wwa-title">
+                {{ about.title_main }} <em>{{ about.title_highlight }}</em> {{ about.title_after }}
+            </h2>
+            <p class="wwa-description">{{ about.description }}</p>
+            <p class="wwa-note">{{ about.note }}</p>
+        </div>
+
+        <!-- ===== Right: stats ===== -->
+        <div class="wwa-stats">
+            <span class="wwa-stats-intro-label">{{ about.stats_intro_label }}</span>
+            <p class="wwa-stats-intro-text">{{ about.stats_intro_text }}</p>
+
+            <div class="wwa-stats-grid">
+                {% for stat in stats %}
+                <div class="wwa-stat {% if stat.is_featured %}stat-featured{% endif %}">
+                    <div class="wwa-stat-number">
+                        <span class="wwa-counter" data-target="{{ stat.target_number }}">0</span>{% if stat.suffix %}{{ stat.suffix }}{% endif %}
+                    </div>
+                    <div class="wwa-stat-label">{{ stat.label }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+(function () {
+    var counters = document.querySelectorAll('.wwa-counter');
+    if (!counters.length) return;
+
+    function animate(el) {
+        var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+        var duration = 1400;
+        var startTime = null;
+
+        function step(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(eased * target);
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target;
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animate(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+        counters.forEach(function (c) { observer.observe(c); });
+    } else {
+        counters.forEach(animate);
+    }
+})();
+</script>
+{% endblock %}

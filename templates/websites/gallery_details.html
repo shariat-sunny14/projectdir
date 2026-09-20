@@ -1,0 +1,416 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --wd-bg: #0a0a0a;
+    --wd-bg-soft: #141414;
+    --wd-gold: #c9a877;
+    --wd-btn: #cf8b78;
+    --wd-white: #f2f0ec;
+    --wd-muted: #b8b3aa;
+    --wd-border: rgba(201,168,119,0.25);
+  }
+
+  .wd-page{ background: var(--wd-bg); color: var(--wd-white); padding-bottom: 60px; }
+  .wd-content{ max-width: 1200px; margin: 0 auto; padding: 48px 24px 0; }
+
+  .wd-title{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 46px;
+    letter-spacing: 1px;
+    color: var(--wd-white);
+    margin-bottom: 36px;
+  }
+
+  /* ===== Masonry Grid ===== */
+  .wd-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-auto-rows: 8px;
+    gap: 18px;
+    min-height: 200px;
+  }
+
+  .wd-grid-item{
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--wd-border);
+    cursor: zoom-in;
+    background: var(--wd-bg-soft);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .wd-grid-item.wd-loaded{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .wd-grid-item img{ width: 100%; height: auto; display: block; }
+
+  .wd-grid-item::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .wd-grid-item::after{
+    content: "\f31e";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid var(--wd-border);
+    color: var(--wd-white);
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+  }
+
+  .wd-orient-tag{
+    position: absolute;
+    top: 14px; left: 14px;
+    z-index: 2;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid var(--wd-border);
+    color: var(--wd-muted);
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 3px;
+    display: none; /* dorkar hole 'inline-block' */
+  }
+
+  /* ===== Loader / states ===== */
+  .wd-loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 80px 0;
+    font-family: 'Jost', sans-serif;
+    color: var(--wd-muted);
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  .wd-spinner{
+    width: 22px; height: 22px;
+    border: 2px solid rgba(201,168,119,0.25);
+    border-top-color: var(--wd-gold);
+    border-radius: 50%;
+    animation: wd-spin 0.8s linear infinite;
+  }
+  @keyframes wd-spin{ to { transform: rotate(360deg); } }
+
+  .wd-empty, .wd-error{
+    font-family: 'Jost', sans-serif;
+    color: var(--wd-muted);
+    text-align: center;
+    padding: 60px 0;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 900px){
+    .wd-grid{ grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  }
+  @media (max-width: 560px){
+    .wd-grid{ grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .wd-title{ font-size: 32px; }
+  }
+
+  /* ===== Lightbox ===== */
+  .wd-lightbox{
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.94);
+    align-items: center; justify-content: center;
+  }
+  .wd-lightbox.wd-open{ display: flex; }
+
+  .wd-lightbox-toolbar{
+    position: absolute; top: 24px; right: 32px;
+    display: flex; gap: 22px; z-index: 3;
+  }
+  .wd-lightbox-toolbar button{
+    background: none; border: none; color: var(--wd-white);
+    font-size: 18px; cursor: pointer; line-height: 1;
+  }
+  .wd-lightbox-toolbar button:hover{ color: var(--wd-gold); }
+
+  .wd-lightbox-prev, .wd-lightbox-next{
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--wd-white);
+    font-size: 22px; cursor: pointer; padding: 14px 22px; z-index: 3;
+  }
+  .wd-lightbox-prev:hover, .wd-lightbox-next:hover{ color: var(--wd-gold); }
+  .wd-lightbox-prev{ left: 12px; }
+  .wd-lightbox-next{ right: 12px; }
+
+  .wd-lightbox-stage{
+    position: relative;
+    max-width: 82vw; max-height: 82vh;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #050505;
+    box-shadow: 0 0 80px rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .wd-lightbox-stage img{ max-width: 82vw; max-height: 82vh; display: block; }
+  .wd-lightbox-stage.wd-zoomed img{ max-width: none; max-height: none; cursor: grab; }
+
+  .wd-lightbox-stage:fullscreen{ max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; background: #000; }
+  .wd-lightbox-stage:fullscreen img{ max-width: 100vw; max-height: 100vh; width: auto; height: auto; margin: auto; }
+  .wd-lightbox-stage:-webkit-full-screen{ max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; background: #000; }
+  .wd-lightbox-stage:-webkit-full-screen img{ max-width: 100vw; max-height: 100vh; width: auto; height: auto; margin: auto; }
+
+  .wd-lightbox-counter{
+    position: absolute; bottom: -32px; right: 4px;
+    font-family: 'Jost', sans-serif; font-size: 13px;
+    letter-spacing: 1px; color: var(--wd-muted);
+  }
+
+  body.wd-lock{ overflow: hidden; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="wd-page">
+
+  <header>
+    {% include 'websites/sub_header.html' %}
+  </header>
+
+  <section class="wd-details-section">
+    <div class="wd-content" style="margin-bottom: 5rem;">
+
+      <h2 class="wd-title" id="wdGalleryTitle" style="text-align: center;">Gallery</h2>
+
+      <!-- Loader (AJAX fetch cholakalin dekhabe) -->
+      <div class="wd-loader" id="wdLoader">
+        <span class="wd-spinner"></span> Loading photos...
+      </div>
+
+      <!-- Error state -->
+      <div class="wd-error" id="wdError" style="display:none;">Could not load photos. Please try again.</div>
+
+      <!-- Empty state -->
+      <div class="wd-empty" id="wdEmpty" style="display:none;">No photos found in this gallery.</div>
+
+      <!-- Grid: AJAX diye fill hobe -->
+      <div class="wd-grid" id="wdGrid"></div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox markup -->
+  <div class="wd-lightbox" id="wdLightbox">
+    <div class="wd-lightbox-toolbar">
+      <button id="wdFullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+      <button id="wdZoom" title="Zoom"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button id="wdShare" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+      <button id="wdClose" title="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <button class="wd-lightbox-prev" id="wdPrev"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="wd-lightbox-stage" id="wdStage">
+      <img id="wdLightboxImg" src="" alt="">
+      <div class="wd-lightbox-counter" id="wdCounter"></div>
+    </div>
+    <button class="wd-lightbox-next" id="wdNext"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  {% include 'websites/footer.html' %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  var AJAX_URL = "{% url 'all_gallery_photos_ajax' %}"; // gallery_id chara — sokol photos
+
+  var grid = document.getElementById('wdGrid');
+  var loader = document.getElementById('wdLoader');
+  var errorBox = document.getElementById('wdError');
+  var emptyBox = document.getElementById('wdEmpty');
+
+  var images = []; // lightbox er jonno url list
+
+  /* ---------- AJAX fetch ---------- */
+  fetch(AJAX_URL, {
+    method: 'GET',
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(function (res) {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(function (data) {
+      loader.style.display = 'none';
+
+      if (!data.photos || data.photos.length === 0) {
+        emptyBox.style.display = 'block';
+        return;
+      }
+
+      renderGrid(data.photos);
+    })
+    .catch(function (err) {
+      loader.style.display = 'none';
+      errorBox.style.display = 'block';
+      console.error('Gallery load failed:', err);
+    });
+
+  /* ---------- Render grid dynamically ---------- */
+  function renderGrid(photos) {
+    var fragment = document.createDocumentFragment();
+
+    photos.forEach(function (photo, idx) {
+      images.push(photo.url);
+
+      var item = document.createElement('div');
+      item.className = 'wd-grid-item';
+      item.setAttribute('data-src', photo.url);
+      item.setAttribute('data-index', idx);
+
+      var tag = document.createElement('span');
+      tag.className = 'wd-orient-tag';
+      if (photo.orientation) {
+        tag.textContent = photo.orientation.charAt(0).toUpperCase() + photo.orientation.slice(1);
+      }
+      item.appendChild(tag);
+
+      var img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = photo.title || 'Gallery photo';
+      img.loading = 'lazy';
+
+      img.addEventListener('load', function () {
+        resizeGridItem(item, img);
+        item.classList.add('wd-loaded');
+      });
+
+      item.appendChild(img);
+      item.addEventListener('click', function () {
+        openLightbox(idx);
+      });
+
+      fragment.appendChild(item);
+    });
+
+    grid.appendChild(fragment);
+  }
+
+  /* window resize hole shob visible grid item recalculate hobe */
+  window.addEventListener('resize', function () {
+    grid.querySelectorAll('.wd-grid-item').forEach(function (item) {
+      var img = item.querySelector('img');
+      if (img && img.complete) resizeGridItem(item, img);
+    });
+  });
+
+  /* ---------- Masonry row-span calculate ---------- */
+  function resizeGridItem(item, img) {
+    if (!img.naturalHeight) return;
+    var rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+    var rowGap = parseFloat(window.getComputedStyle(grid).getPropertyValue('gap')) || 0;
+    var imgHeight = img.getBoundingClientRect().height;
+    var rowSpan = Math.ceil((imgHeight + rowGap) / (rowHeight + rowGap));
+    item.style.gridRowEnd = 'span ' + rowSpan;
+  }
+
+  /* ---------- Lightbox ---------- */
+  var lightbox = document.getElementById('wdLightbox');
+  var lightboxImg = document.getElementById('wdLightboxImg');
+  var stage = document.getElementById('wdStage');
+  var counter = document.getElementById('wdCounter');
+  var currentIndex = 0;
+
+  function openLightbox(index) {
+    if (!images.length) return;
+    currentIndex = index;
+    updateLightbox();
+    lightbox.classList.add('wd-open');
+    document.body.classList.add('wd-lock');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('wd-open');
+    document.body.classList.remove('wd-lock');
+    stage.classList.remove('wd-zoomed');
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }
+
+  function updateLightbox() {
+    lightboxImg.src = images[currentIndex];
+    counter.textContent = (currentIndex + 1) + ' / ' + images.length;
+    stage.classList.remove('wd-zoomed');
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateLightbox();
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateLightbox();
+  }
+
+  document.getElementById('wdClose').addEventListener('click', closeLightbox);
+  document.getElementById('wdPrev').addEventListener('click', showPrev);
+  document.getElementById('wdNext').addEventListener('click', showNext);
+
+  document.getElementById('wdFullscreen').addEventListener('click', function () {
+    if (!document.fullscreenElement) {
+      if (stage.requestFullscreen) stage.requestFullscreen();
+      else if (stage.webkitRequestFullscreen) stage.webkitRequestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+
+  document.getElementById('wdZoom').addEventListener('click', function () {
+    stage.classList.toggle('wd-zoomed');
+  });
+
+  document.getElementById('wdShare').addEventListener('click', function () {
+    var url = lightboxImg.src;
+    if (navigator.share) {
+      navigator.share({ url: url }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      alert('Image link copied!');
+    }
+  });
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('wd-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showPrev();
+    if (e.key === 'ArrowRight') showNext();
+  });
+
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,525 @@
+{% extends 'websites/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --wd-bg: #0a0a0a;
+    --wd-bg-soft: #141414;
+    --wd-gold: #c9a877;
+    --wd-btn: #cf8b78;
+    --wd-white: #f2f0ec;
+    --wd-muted: #b8b3aa;
+    --wd-border: rgba(201,168,119,0.25);
+  }
+
+  .wd-page{
+    background: var(--wd-bg);
+    color: var(--wd-white);
+    padding-bottom: 60px;
+  }
+
+  .wd-content{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .wd-title{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 46px;
+    letter-spacing: 1px;
+    color: var(--wd-white);
+    margin-bottom: 36px;
+  }
+
+  .wd-back{
+    display: inline-block;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--wd-muted);
+    text-decoration: none;
+    margin-bottom: 26px;
+  }
+  .wd-back:hover{ color: var(--wd-gold); }
+
+  .wd-tags{
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--wd-gold);
+    margin-bottom: 12px;
+  }
+
+  .wd-intro{
+    display: flex;
+    align-items: stretch;
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+
+  .wd-intro-image{
+    position: relative;
+    flex: 1 1 50%;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    background: var(--wd-bg-soft);
+    background-size: cover;
+    background-position: center;
+    min-height: 320px;
+  }
+
+  /* blurred duplicate of the cover photo (set inline as background-image
+     by the JS below) — fills the gap left by object-fit: contain on the
+     real <img> instead of showing bare background */
+  .wd-intro-image::before{
+    content: "";
+    position: absolute;
+    inset: -16px;
+    z-index: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    filter: blur(24px) brightness(.5) saturate(1.1);
+    transform: scale(1.15);
+    pointer-events: none;
+  }
+
+  .wd-intro-image img{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    /* was `cover` — cropped the album cover photo top/bottom or sides.
+       `contain` always shows the full photo. */
+    object-fit: contain;
+    display: block;
+  }
+
+  .wd-intro-text{
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .wd-intro-text p{
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--wd-muted);
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 860px){
+    .wd-intro{ flex-direction: column; }
+    .wd-intro-image{ max-height: 360px; }
+  }
+
+  .wd-section-label{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    text-align: center;
+    color: var(--wd-gold);
+    letter-spacing: 3px;
+    margin-bottom: 34px;
+    text-transform: uppercase;
+  }
+
+  .wd-grid{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .wd-grid-item{
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--wd-border);
+    cursor: zoom-in;
+    background: var(--wd-bg-soft);
+    aspect-ratio: 4 / 5;
+  }
+
+  /* blurred duplicate of the same photo, filling the tile — sits behind
+     .wd-tile-main so the gap left by object-fit: contain shows a soft
+     blurred version of itself instead of bare cell background */
+  .wd-tile-bg{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: blur(18px) brightness(.5) saturate(1.1);
+    transform: scale(1.15);
+  }
+
+  .wd-tile-main{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    /* was `cover` on a single <img> — cropped every photo (mostly
+       top/bottom on portrait shots) to force-fit the fixed 4:5 tile.
+       `contain` always shows the full photo. */
+    object-fit: contain;
+    display: block;
+  }
+
+  .wd-grid-item::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .wd-grid-item::after{
+    content: "\f31e";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid var(--wd-border);
+    color: var(--wd-white);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+
+  @media (max-width: 900px){
+    .wd-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px){
+    .wd-grid{ grid-template-columns: 1fr; }
+    .wd-title{ font-size: 32px; }
+  }
+
+  .wd-loading, .wd-empty{
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    color: var(--wd-muted);
+    text-align: center;
+    padding: 80px 0;
+  }
+
+  /* ===== Lightbox ===== */
+  .wd-lightbox{
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.94);
+    align-items: center;
+    justify-content: center;
+  }
+  .wd-lightbox.wd-open{ display: flex; }
+
+  .wd-lightbox-toolbar{
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    display: flex;
+    gap: 22px;
+    z-index: 3;
+  }
+  .wd-lightbox-toolbar button{
+    background: none;
+    border: none;
+    color: var(--wd-white);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .wd-lightbox-toolbar button:hover{ color: var(--wd-gold); }
+
+  .wd-lightbox-prev,
+  .wd-lightbox-next{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--wd-white);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 14px 22px;
+    z-index: 3;
+  }
+  .wd-lightbox-prev:hover,
+  .wd-lightbox-next:hover{ color: var(--wd-gold); }
+  .wd-lightbox-prev{ left: 12px; }
+  .wd-lightbox-next{ right: 12px; }
+
+  .wd-lightbox-stage{
+    position: relative;
+    max-width: 82vw;
+    max-height: 82vh;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #050505;
+    box-shadow: 0 0 80px rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wd-lightbox-stage img{
+    max-width: 82vw;
+    max-height: 82vh;
+    display: block;
+  }
+
+  .wd-lightbox-stage:fullscreen{
+    max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; background: #000;
+  }
+  .wd-lightbox-stage:fullscreen img{
+    max-width: 100vw; max-height: 100vh; width: auto; height: auto; margin: auto;
+  }
+  .wd-lightbox-stage:-webkit-full-screen{
+    max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; background: #000;
+  }
+  .wd-lightbox-stage:-webkit-full-screen img{
+    max-width: 100vw; max-height: 100vh; width: auto; height: auto; margin: auto;
+  }
+
+  .wd-lightbox-counter{
+    position: absolute;
+    bottom: -32px;
+    right: 4px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--wd-muted);
+  }
+
+  body.wd-lock{ overflow: hidden; }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="wd-page">
+
+  <header>
+    {% include 'websites/sub_header.html' %}
+  </header>
+
+  <section class="wd-details-section" id="wdSection" data-album-id="{{ album_id }}" data-api-url="{% url 'album_detail_api' album_id %}">
+
+    <div class="wd-content">
+      <a class="wd-back" href="{% url 'albums_list_page' %}">&larr; BACK TO ALBUMS</a>
+      <div class="wd-loading" id="wdLoading">Loading album…</div>
+
+      <div class="wd-intro" id="wdIntro" style="display:none;">
+        <div class="wd-intro-image" id="wdIntroImage"></div>
+        <div class="wd-intro-text">
+          <div class="wd-tags" id="wdTags"></div>
+          <h1 class="wd-title" id="wdTitleText"></h1>
+          <div id="wdDescription"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="wdSectionLabel" class="wd-section-label" style="display:none;">Few Memorable Moments</div>
+    <div class="wd-grid" id="wdGrid"></div>
+    <div class="wd-empty" id="wdEmpty" style="display:none;">No photos in this album yet.</div>
+
+  </section>
+
+  <div class="wd-lightbox" id="wdLightbox">
+    <div class="wd-lightbox-toolbar">
+      <button id="wdFullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+      <button id="wdZoom" title="Zoom"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button id="wdShare" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+      <button id="wdClose" title="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <button class="wd-lightbox-prev" id="wdPrev"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="wd-lightbox-stage">
+      <img id="wdLightboxImg" src="" alt="">
+      <div class="wd-lightbox-counter" id="wdCounter"></div>
+    </div>
+    <button class="wd-lightbox-next" id="wdNext"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  {% include 'websites/footer.html' %}
+
+</div>
+
+<script>
+(function(){
+  var section = document.getElementById('wdSection');
+  var apiUrl = section.dataset.apiUrl;
+
+  var loadingEl = document.getElementById('wdLoading');
+  var introEl = document.getElementById('wdIntro');
+  var introImageEl = document.getElementById('wdIntroImage');
+  var tagsEl = document.getElementById('wdTags');
+  var titleEl = document.getElementById('wdTitleText');
+  var descEl = document.getElementById('wdDescription');
+  var sectionLabelEl = document.getElementById('wdSectionLabel');
+  var gridEl = document.getElementById('wdGrid');
+  var emptyEl = document.getElementById('wdEmpty');
+
+  var items = [];
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function renderAlbum(data){
+    document.title = data.title;
+
+    tagsEl.textContent = (data.tags || []).join(', ');
+    titleEl.textContent = data.title;
+    descEl.innerHTML = data.description ? data.description.replace(/\n/g, '<br>') : '';
+
+    var cover = data.photos.find(function(p){ return p.is_cover_photo; }) || data.photos[0];
+    if (cover) {
+      introImageEl.style.backgroundImage = "url('" + cover.url + "')";
+      introImageEl.innerHTML = '<img src="' + cover.url + '" alt="' + escapeHtml(data.title) + '">';
+    }
+
+    introEl.style.display = 'flex';
+    loadingEl.style.display = 'none';
+
+    if (!data.photos.length) {
+      emptyEl.style.display = 'block';
+      return;
+    }
+
+    sectionLabelEl.style.display = 'block';
+    gridEl.innerHTML = data.photos.map(function(p, i){
+      return '<div class="wd-grid-item" data-full="' + p.url + '" data-index="' + i + '">' +
+             '<img class="wd-tile-bg" src="' + p.url + '" alt="" aria-hidden="true">' +
+             '<img class="wd-tile-main" src="' + p.url + '" alt="' + escapeHtml(p.title || data.title) + '">' +
+             '</div>';
+    }).join('');
+
+    items = Array.prototype.slice.call(gridEl.querySelectorAll('.wd-grid-item'));
+    items.forEach(function(item, i){
+      item.addEventListener('click', function(){ openLightbox(i); });
+    });
+  }
+
+  fetch(apiUrl)
+    .then(function(res){
+      if (!res.ok) throw new Error('Failed to load album');
+      return res.json();
+    })
+    .then(renderAlbum)
+    .catch(function(){
+      loadingEl.textContent = 'Could not load this album.';
+    });
+
+  // ===== Lightbox =====
+  var lightbox = document.getElementById('wdLightbox');
+  var stage = document.querySelector('.wd-lightbox-stage');
+  var lbImg = document.getElementById('wdLightboxImg');
+  var counter = document.getElementById('wdCounter');
+  var fsBtn = document.getElementById('wdFullscreen');
+  var currentIndex = 0;
+
+  function openLightbox(index){
+    currentIndex = index;
+    updateLightbox();
+    lightbox.classList.add('wd-open');
+    document.body.classList.add('wd-lock');
+  }
+
+  function closeLightbox(){
+    if(document.fullscreenElement){ document.exitFullscreen(); }
+    lightbox.classList.remove('wd-open');
+    document.body.classList.remove('wd-lock');
+  }
+
+  function updateLightbox(){
+    var item = items[currentIndex];
+    lbImg.src = item.getAttribute('data-full');
+    counter.textContent = (currentIndex + 1) + ' of ' + items.length;
+  }
+
+  function showNext(){
+    currentIndex = (currentIndex + 1) % items.length;
+    updateLightbox();
+  }
+
+  function showPrev(){
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    updateLightbox();
+  }
+
+  document.getElementById('wdClose').addEventListener('click', closeLightbox);
+  document.getElementById('wdNext').addEventListener('click', showNext);
+  document.getElementById('wdPrev').addEventListener('click', showPrev);
+
+  fsBtn.addEventListener('click', function(){
+    if(!document.fullscreenElement){
+      var req = stage.requestFullscreen || stage.webkitRequestFullscreen || stage.msRequestFullscreen;
+      if(req){ req.call(stage); }
+    } else {
+      var exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+      if(exit){ exit.call(document); }
+    }
+  });
+
+  document.addEventListener('fullscreenchange', function(){
+    fsBtn.innerHTML = document.fullscreenElement
+      ? '<i class="fa-solid fa-compress"></i>'
+      : '<i class="fa-solid fa-expand"></i>';
+  });
+
+  document.getElementById('wdZoom').addEventListener('click', function(){
+    lbImg.classList.toggle('wd-zoomed');
+    lbImg.style.maxWidth = lbImg.classList.contains('wd-zoomed') ? 'none' : '82vw';
+    lbImg.style.maxHeight = lbImg.classList.contains('wd-zoomed') ? 'none' : '82vh';
+    lbImg.style.cursor = lbImg.classList.contains('wd-zoomed') ? 'zoom-out' : 'zoom-in';
+  });
+
+  document.getElementById('wdShare').addEventListener('click', function(){
+    var url = lbImg.src;
+    if(navigator.share){
+      navigator.share({ url: url });
+    } else if(navigator.clipboard){
+      navigator.clipboard.writeText(url);
+    }
+  });
+
+  lightbox.addEventListener('click', function(e){
+    if(e.target === lightbox){ closeLightbox(); }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(!lightbox.classList.contains('wd-open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowRight') showNext();
+    if(e.key === 'ArrowLeft') showPrev();
+  });
+})();
+</script>
+{% endblock %}

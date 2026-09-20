@@ -1,0 +1,209 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<style>
+
+/* ===== Layout ===== */
+.fb-wrapper {
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* ===== Top Section ===== */
+.fb-top {
+    margin-top: 2rem;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.fb-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ===== Action Bar ===== */
+.fb-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.fb-btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.fb-btn-sync {
+    background: #1877f2;
+    color: #fff;
+}
+
+.fb-btn-settings {
+    background: #6c757d;
+    color: #fff;
+}
+
+.fb-btn:hover {
+    opacity: 0.85;
+}
+
+/* ===== ✅ FIXED GALLERY LAYOUT ===== */
+.fb-feed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* ===== Card ===== */
+.fb-post {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.fb-post:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* Image */
+.fb-post-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Body */
+.fb-post-body {
+    padding: 12px;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+/* Footer */
+.fb-post-footer {
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+/* Link */
+.fb-link {
+    color: #1877f2;
+    text-decoration: none;
+}
+.fb-link:hover {
+    text-decoration: underline;
+}
+
+/* Empty */
+.fb-empty {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    background: #fff;
+    border-radius: 12px;
+    grid-column: 1 / -1; /* center full width */
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="fb-wrapper">
+
+    <!-- Header -->
+    <div class="fb-top">
+        <div class="fb-title">📘 Facebook Photo Gallery</div>
+
+        <div class="fb-actions">
+            <a href="{% url 'facebook_settings' %}" class="fb-btn fb-btn-settings">
+                ⚙ Settings
+            </a>
+
+            <button onclick="syncFacebook()" class="fb-btn fb-btn-sync">
+                🔄 Sync Posts
+            </button>
+        </div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="fb-feed">
+
+        {% for post in posts %}
+        <div class="fb-post">
+
+            <!-- Image -->
+            {% if post.image %}
+            <div class="fb-post-image">
+                <img src="{{ post.image.url }}">
+            </div>
+            {% endif %}
+
+            <!-- Text -->
+            <div class="fb-post-body">
+                {{ post.message|truncatechars:80|default:"No content" }}
+            </div>
+
+            <!-- Footer -->
+            <div class="fb-post-footer">
+                <span>{{ post.created_time|date:"M d, Y" }}</span>
+
+                {% if post.post_url %}
+                <a href="{{ post.post_url }}" target="_blank" class="fb-link">
+                    View →
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+        {% empty %}
+        <div class="fb-empty">
+            😢 No posts found. Click Sync to load posts.
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- JS -->
+<script>
+function syncFacebook() {
+    const btn = event.target;
+    btn.innerText = "⏳ Syncing...";
+    btn.disabled = true;
+
+    fetch("{% url 'sync_facebook' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        location.reload();
+    })
+    .catch(err => {
+        alert("Error!");
+        console.error(err);
+    });
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,415 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<style>
+    /* ==========================================================
+   Services — admin & public section (simple, user-friendly)
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+
+:root{
+    --bg:            #ffffff;
+    --surface:       #f8f7f5;
+    --ink:           #1f2937;
+    --ink-soft:      #6b7280;
+    --line:          #e5e7eb;
+
+    --accent:        #b5762f;
+    --accent-dark:   #8f5c22;
+    --accent-tint:   #fbf1e4;
+
+    --danger:        #dc2626;
+    --danger-tint:   #fdecec;
+
+    --success:       #16a34a;
+    --success-tint:  #eafbf0;
+
+    --radius: 10px;
+    --font: 'Inter', 'Noto Sans Bengali', -apple-system, sans-serif;
+}
+
+*{ box-sizing: border-box; }
+
+/* ---------- shared page shell ---------- */
+#edit-section-heading,
+#add-service{
+    background: var(--bg);
+    padding: 48px 20px;
+    font-family: var(--font);
+}
+
+#edit-section-heading .wrap,
+#add-service .wrap{
+    margin: 0 auto;
+}
+
+#edit-section-heading + #add-service{
+    border-top: 8px solid var(--surface);
+}
+
+#edit-section-heading h2,
+#add-service h2{
+    font-family: var(--font);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin: 0 0 8px;
+}
+
+#edit-section-heading .wrap > p,
+#add-service .wrap > p{
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin: 0 0 24px;
+    line-height: 1.5;
+}
+
+/* ---------- flash messages ---------- */
+p.alert{
+    max-width: 680px;
+    margin: 20px auto;
+    padding: 14px 18px;
+    background: var(--success-tint);
+    border: 1px solid var(--success);
+    border-radius: var(--radius);
+    color: #14532d;
+    font-family: var(--font);
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+/* ---------- form card ---------- */
+#edit-section-heading form,
+#add-service form{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+}
+
+/* Django's .as_p wraps each field in <p> */
+#edit-section-heading form p,
+#add-service form p{
+    margin: 0 0 20px;
+}
+
+#edit-section-heading form p:last-of-type,
+#add-service form p:last-of-type{
+    margin-bottom: 0;
+}
+
+#edit-section-heading form label,
+#add-service form label{
+    display: block;
+    font-family: var(--font);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+#edit-section-heading form input[type="text"],
+#edit-section-heading form input[type="number"],
+#edit-section-heading form textarea,
+#edit-section-heading form select,
+#add-service form input[type="text"],
+#add-service form input[type="number"],
+#add-service form textarea,
+#add-service form select{
+    width: 100%;
+    font-family: var(--font);
+    font-size: 1rem;
+    color: var(--ink);
+    background: #ffffff;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: border-color 0.15s ease;
+}
+
+#edit-section-heading form textarea,
+#add-service form textarea{
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+#edit-section-heading form input:focus,
+#edit-section-heading form textarea:focus,
+#edit-section-heading form select:focus,
+#add-service form input:focus,
+#add-service form textarea:focus,
+#add-service form select:focus{
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-tint);
+}
+
+#edit-section-heading form small,
+#add-service form small{
+    display: block;
+    margin-top: 6px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+#edit-section-heading form ul.errorlist,
+#add-service form ul.errorlist{
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 10px 12px;
+    background: var(--danger-tint);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--danger);
+}
+
+/* ---------- buttons ---------- */
+#edit-section-heading button[type="submit"],
+#add-service button[type="submit"]{
+    width: 100%;
+    font-family: var(--font);
+    font-weight: 600;
+    font-size: 1rem;
+    color: #ffffff;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    margin-top: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+#edit-section-heading button[type="submit"]:hover,
+#add-service button[type="submit"]:hover{
+    background: var(--accent-dark);
+}
+
+#edit-section-heading button[type="submit"]:focus-visible,
+#add-service button[type="submit"]:focus-visible{
+    outline: 3px solid var(--accent-dark);
+    outline-offset: 2px;
+}
+
+/* ==========================================================
+   Public "what we do" section
+   ========================================================== */
+
+#services{
+    background: var(--bg);
+    padding: 64px 20px;
+    font-family: var(--font);
+}
+
+#services .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+#services .section-head{
+    max-width: 600px;
+    text-align: left;
+}
+
+#services .kicker{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent-dark);
+    margin-bottom: 10px;
+}
+
+#services .kicker span{
+    width: 18px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+    border-radius: 2px;
+}
+
+#services .section-head h2{
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0 0 12px;
+}
+
+#services .section-head p{
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+}
+
+#services .services-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 900px){
+    #services .services-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px){
+    #services .services-grid{ grid-template-columns: 1fr; }
+    #services .section-head h2{ font-size: 1.6rem; }
+}
+
+#services .service-card{
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+#services .service-card:hover{
+    border-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+#services .service-num{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-tint);
+    color: var(--accent-dark);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+#services .service-card h3{
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin: 0 0 8px;
+}
+
+#services .service-card p{
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+    flex-grow: 1;
+}
+
+#services .service-actions{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+#services .service-actions form{
+    margin: 0;
+    flex: 1;
+}
+
+#services .service-actions a,
+#services .service-actions button{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font);
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    border-radius: 7px;
+    padding: 9px 12px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.15s ease;
+}
+
+#services .service-actions a{
+    color: var(--accent-dark);
+    background: var(--accent-tint);
+}
+
+#services .service-actions a:hover{
+    background: #f3e2c6;
+}
+
+#services .service-actions button{
+    color: var(--danger);
+    background: var(--danger-tint);
+}
+
+#services .service-actions button:hover{
+    background: #fbd9d9;
+}
+
+#services p.empty-state{
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}
+
+@media (prefers-reduced-motion: reduce){
+    #services .service-card{ transition: none; }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <!-- ============ Section Heading (kicker/heading/sub_text) এডিট ফর্ম ============ -->
+    <section id="edit-section-heading">
+        <div class="wrap">
+            <h2>Section Heading এডিট করুন</h2>
+            <p>এই তথ্যগুলো "What We Do" সেকশনের উপরের অংশে দেখা যাবে।</p>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="section">
+                {{ section_form.as_p }}
+                <button type="submit">Update Section</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============ Add/Edit Service ফর্ম ============ -->
+    <section id="add-service">
+        <div class="wrap">
+            <h2>{% if editing %}Edit Service{% else %}নতুন Service যোগ করুন{% endif %}</h2>
+            <p>{% if editing %}এই সার্ভিসের তথ্য পরিবর্তন করে আপডেট করুন।{% else %}নতুন একটি সার্ভিস যোগ করতে নিচের ফর্মটি পূরণ করুন।{% endif %}</p>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="service">
+                {{ service_form.as_p }}
+                <button type="submit">
+                    {% if editing %}Update Service{% else %}Add Service{% endif %}
+                </button>
+            </form>
+        </div>
+    </section>
+
+    {% include 'what_we_do/_services_section.html' %}
+
+{% endblock %}

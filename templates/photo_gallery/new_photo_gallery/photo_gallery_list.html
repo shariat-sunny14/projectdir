@@ -1,0 +1,248 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="stylesheet" href="{% static 'photo_gallery/css/photo_gallery.css' %}">
+<script src="{% static 'photo_gallery/js/photo_gallery.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<main>
+    <section class="container-fluid pg-theme" style="margin-top: 0.5rem; margin-bottom:0.5rem;">
+
+        <!-- Header -->
+        <div class="pg-header">
+            <div class="pg-header-text">
+                <h1 class="pg-title">Photo Gallery</h1>
+                <p class="pg-subtitle">Manage galleries, covers and photo sets</p>
+            </div>
+            <button id="addPhotoGallery" type="button" class="pg-btn pg-btn-brass">
+                <i class='bx bx-plus'></i> Add Photo Gallery
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="pg-body">
+
+            <!-- Filter bar -->
+            <div class="pg-filter-bar">
+                <div class="pg-filter-field">
+                    <label>Photo Type</label>
+                    <select id="filterPhotoType" class="pg-input">
+                        <option value="">All</option>
+                        {% for value, label in photo_type_choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="pg-filter-field">
+                    <label>Service</label>
+                    <select id="filterIsService" class="pg-input">
+                        <option value="">All</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="pg-filter-field">
+                    <label>Recent Work</label>
+                    <select id="filterIsRecentWork" class="pg-input">
+                        <option value="">All</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="pg-filter-field">
+                    <label>Album</label>
+                    <select id="filterIsAlbum" class="pg-input">
+                        <option value="">All</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="pg-filter-field pg-filter-search">
+                    <label>Search Title</label>
+                    <input type="text" id="filterTitleSearch" class="pg-input" placeholder="Search by title...">
+                </div>
+                <div class="pg-filter-field pg-filter-actions">
+                    <label>&nbsp;</label>
+                    <button type="button" id="filterResetBtn" class="pg-btn pg-btn-outline-muted">Reset</button>
+                </div>
+            </div>
+
+            <div class="pg-table-frame">
+                <table id="pglist_table" class="pg-table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 3%;">Sl</th>
+                            <th>Gallery ID</th>
+                            <th>Photo Type</th>
+                            <th>Photo Title</th>
+                            <th>Tags</th>
+                            <th style="width: 8%;">Option</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PHGLISTTB">
+                        <!-- DataTables will populate this; do not hand-build rows here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="loader"></div>
+        </div>
+    </section>
+</main>
+<script>
+    var pglistTable = null;
+
+    $(document).ready(function () {
+
+        initGalleryTable();
+
+        function initGalleryTable() {
+
+            startLoader();
+
+            pglistTable = $('#pglist_table').DataTable({
+                destroy: true,
+                ordering: false,
+                ajax: {
+                    url: '/get_photo_gallery_list/',
+                    dataSrc: 'data',
+                    data: function (d) {
+                        d.photo_type = $('#filterPhotoType').val();
+                        d.is_service = $('#filterIsService').val();
+                        d.is_recent_work = $('#filterIsRecentWork').val();
+                        d.is_album = $('#filterIsAlbum').val();
+                        d.title = $('#filterTitleSearch').val();
+                    },
+                    complete: function () {
+                        endLoader();
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        endLoader();
+                    }
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    { data: 'phgallery_id' },
+                    { data: 'photo_type', defaultContent: '' },
+                    { data: 'title', defaultContent: '' },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (data, type, row) {
+                            let badges = '';
+                            if (row.is_service) badges += '<span class="pg-badge pg-badge-brass">Service</span>';
+                            if (row.is_recent_work) badges += '<span class="pg-badge pg-badge-sage">Recent</span>';
+                            if (row.is_album) badges += '<span class="pg-badge pg-badge-rust">Album</span>';
+                            return badges || '<span class="pg-badge-empty">&mdash;</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `
+                                <button type="button"
+                                    class="pg-icon-btn pg-edit edit-gallery"
+                                    data-id="${row.phgallery_id}" title="Edit">
+                                    <i class='bx bx-edit'></i>
+                                </button>
+
+                                <button type="button"
+                                    class="pg-icon-btn pg-delete delete-gallery"
+                                    data-id="${row.phgallery_id}" title="Delete">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                            `;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No Data Found"
+                }
+            });
+        }
+
+    });
+
+    // filters
+    $(document).on('change', '#filterPhotoType, #filterIsService, #filterIsRecentWork, #filterIsAlbum', function () {
+        pglistTable.ajax.reload();
+    });
+
+    let filterSearchTimer = null;
+    $(document).on('keyup', '#filterTitleSearch', function () {
+        clearTimeout(filterSearchTimer);
+        filterSearchTimer = setTimeout(function () {
+            pglistTable.ajax.reload();
+        }, 400);
+    });
+
+    $(document).on('click', '#filterResetBtn', function () {
+        $('#filterPhotoType, #filterIsService, #filterIsRecentWork, #filterIsAlbum').val('');
+        $('#filterTitleSearch').val('');
+        pglistTable.ajax.reload();
+    });
+
+    $(document).on("click", ".delete-gallery", function () {
+        var galleryId = $(this).data("id");
+
+        if (!confirm("Are you sure you want to delete this gallery?")) return;
+
+        $.ajax({
+            url: "{% url 'delete_gallery' %}",
+            type: "POST",
+            data: {
+                'gallery_id': galleryId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (response) {
+                if (response.status === 'success') {
+                    alert(response.message);
+                    pglistTable.ajax.reload(null, false);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred. Please try again.");
+            }
+        });
+    });
+
+    $(document).on('click', '#addPhotoGallery', function () {
+        modal_xl("Add New Photo Gallery", "{% url 'add_new_photo_gallery_modal' %}");
+    });
+
+    $(document).on('click', '.edit-gallery', function () {
+        var galleryId = $(this).data('id');
+        modal_xl("Edit Photo Gallery", "{% url 'edit_photo_gallery_modal' %}?phgallery_id=" + galleryId);
+    });
+
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        if (loader) loader.classList.add("loader-hidden");
+    });
+
+    function startLoader() {
+        const loader = document.querySelector(".loader");
+        if (loader) loader.classList.remove("loader-hidden");
+    }
+
+    function endLoader() {
+        const loader = document.querySelector(".loader");
+        if (!loader) return;
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 300);
+    }
+</script>
+{% endblock %}

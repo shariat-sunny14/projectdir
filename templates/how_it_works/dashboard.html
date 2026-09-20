@@ -1,0 +1,50 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="stylesheet" href="{% static 'how_it_works/css/how_it_works.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="hiw-admin">
+
+    <div class="hiw-heading-card">
+        <div>
+            <div class="hiw-kicker">{{ section.kicker }}</div>
+            <h4>{{ section.heading }}</h4>
+        </div>
+        <a href="{% url 'how_it_works:section_edit' %}" class="btn btn-outline-primary btn-sm">Edit Heading</a>
+    </div>
+
+    <div class="hiw-steps-header">
+        <h5>Process Steps</h5>
+        <a href="{% url 'how_it_works:step_create' %}" class="btn btn-primary btn-sm">+ Add Step</a>
+    </div>
+
+    <div class="row g-3">
+        {% for step in steps %}
+        <div class="col-md-6">
+            <div class="hiw-step-card">
+                <div class="hiw-step-top">
+                    <span class="step-badge">{{ step.formatted_step_number }}</span>
+                    <span class="hiw-status {% if step.is_active %}hiw-status--active{% else %}hiw-status--hidden{% endif %}">
+                        {% if step.is_active %}Active{% else %}Hidden{% endif %}
+                    </span>
+                </div>
+                <h6>{{ step.title }}</h6>
+                <p>{{ step.description }}</p>
+                <div class="hiw-step-actions">
+                    <a href="{% url 'how_it_works:step_update' step.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a href="{% url 'how_it_works:step_delete' step.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="hiw-empty">কোনো step এখনো add করা হয়নি।</div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

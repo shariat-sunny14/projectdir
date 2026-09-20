@@ -1,0 +1,22 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<link rel="stylesheet" href="{% static 'how_it_works/css/how_it_works.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="hiw-admin" style="max-width: 480px;">
+    <div class="hiw-delete-card">
+        <h5>Delete step "{{ step.title }}"?</h5>
+        <div class="hiw-note">এই action ফিরিয়ে নেওয়া যাবে না।</div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="hiw-delete-actions">
+                <a href="{% url 'how_it_works:how_it_workst' %}" class="btn btn-light">Cancel</a>
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

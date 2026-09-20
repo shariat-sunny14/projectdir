@@ -1,0 +1,814 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<style>
+    :root {
+        --wwa-bg: #f7f4ee;
+        --wwa-surface: #ffffff;
+        --wwa-surface-2: #fbf8f2;
+        --wwa-border: #e4ddce;
+        --wwa-ink: #2c2620;
+        --wwa-muted: #8b8172;
+        --wwa-gold: #b07c3b;
+        --wwa-gold-dark: #8c5f28;
+        --wwa-gold-soft: #d9ae6f;
+        --wwa-gold-wash: rgba(176, 124, 59, 0.08);
+        --wwa-danger: #b8462f;
+        --wwa-danger-wash: rgba(184, 70, 47, 0.08);
+        --wwa-radius: 16px;
+        --wwa-radius-sm: 9px;
+        --wwa-font: 'Cormorant Garamond', 'Georgia', serif;
+        --wwa-font-ui: 'Jost', 'Helvetica Neue', sans-serif;
+    }
+
+    .wwa-page {
+        background: var(--wwa-bg);
+        min-height: 100vh;
+        padding: 56px 24px 96px;
+        font-family: var(--wwa-font-ui);
+        color: var(--wwa-ink);
+    }
+
+    .wwa-container { max-width: 940px; margin: 0 auto; }
+
+    /* ---------- Header ---------- */
+    .wwa-header { margin-bottom: 36px; }
+
+    .wwa-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--wwa-gold-dark);
+        margin-bottom: 16px;
+    }
+
+    .wwa-kicker-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--wwa-gold);
+        flex-shrink: 0;
+    }
+
+    .wwa-header h1 {
+        font-family: var(--wwa-font);
+        font-weight: 500;
+        font-size: 40px;
+        margin: 0;
+        color: var(--wwa-ink);
+        line-height: 1.15;
+    }
+
+    .wwa-header p {
+        color: var(--wwa-muted);
+        font-size: 14.5px;
+        margin-top: 12px;
+        max-width: 62ch;
+        line-height: 1.6;
+    }
+
+    /* ---------- Layout preview: shows admin where each field lands ---------- */
+    .wwa-preview {
+        background: var(--wwa-surface);
+        border: 1px solid var(--wwa-border);
+        border-radius: var(--wwa-radius);
+        padding: 24px 26px;
+        margin-bottom: 32px;
+    }
+
+    .wwa-preview-title {
+        font-size: 12.5px;
+        color: var(--wwa-muted);
+        margin: 0 0 16px;
+    }
+
+    .wwa-preview-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 22px;
+        align-items: stretch;
+    }
+
+    .wwa-preview-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .wwa-mock-line {
+        height: 8px;
+        border-radius: 4px;
+        background: var(--wwa-border);
+    }
+
+    .wwa-mock-line.wwa-mock-kicker { width: 30%; height: 6px; background: var(--wwa-gold-soft); }
+    .wwa-mock-line.wwa-mock-heading { width: 85%; height: 14px; background: var(--wwa-gold-dark); opacity: 0.55; margin-top: 4px; }
+    .wwa-mock-line.wwa-mock-heading-2 { width: 60%; height: 14px; background: var(--wwa-gold-dark); opacity: 0.35; }
+    .wwa-mock-line.wwa-mock-body { width: 95%; margin-top: 6px; }
+    .wwa-mock-line.wwa-mock-body-2 { width: 80%; }
+    .wwa-mock-line.wwa-mock-note { width: 45%; margin-top: 8px; opacity: 0.6; }
+
+    .wwa-preview-stats { display: flex; flex-direction: column; gap: 8px; }
+    .wwa-preview-stats-intro { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+    .wwa-preview-stats-row { display: flex; gap: 8px; }
+    .wwa-mock-stat {
+        flex: 1;
+        border: 1px dashed var(--wwa-border);
+        border-radius: 8px;
+        padding: 10px 8px;
+        text-align: center;
+    }
+    .wwa-mock-stat-num { height: 10px; width: 55%; margin: 0 auto 6px; border-radius: 3px; background: var(--wwa-gold-soft); }
+    .wwa-mock-stat-label { height: 6px; width: 75%; margin: 0 auto; border-radius: 3px; background: var(--wwa-border); }
+
+    .wwa-preview-tag {
+        display: inline-block;
+        font-size: 11px;
+        color: var(--wwa-gold-dark);
+        background: var(--wwa-gold-wash);
+        padding: 2px 8px;
+        border-radius: 5px;
+        margin-bottom: 8px;
+        align-self: flex-start;
+    }
+
+    @media (max-width: 640px) {
+        .wwa-preview-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Cards ---------- */
+    .wwa-card {
+        background: var(--wwa-surface);
+        border: 1px solid var(--wwa-border);
+        border-radius: var(--wwa-radius);
+        padding: 32px 32px 26px;
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    .wwa-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 28px; right: 28px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--wwa-gold), transparent);
+        opacity: 0.6;
+    }
+
+    .wwa-card-title { font-family: var(--wwa-font); font-size: 23px; font-weight: 600; margin: 0 0 4px; color: var(--wwa-gold-dark); }
+    .wwa-card-sub { font-size: 13px; color: var(--wwa-muted); margin: 0 0 24px; line-height: 1.5; }
+
+    /* ---------- Field + example, grouped tightly ---------- */
+    .wwa-field { margin: 0 0 22px; }
+    .wwa-field:last-child { margin-bottom: 0; }
+
+    .wwa-field-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 7px;
+    }
+
+    .wwa-field-top label {
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--wwa-ink);
+        margin: 0;
+    }
+
+    .wwa-field-hint {
+        font-size: 12px;
+        color: var(--wwa-muted);
+        font-style: italic;
+        text-align: right;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .wwa-field-hint strong {
+        color: var(--wwa-gold-dark);
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .wwa-field input[type="text"],
+    .wwa-field textarea {
+        width: 100%;
+        background: var(--wwa-surface-2);
+        border: 1px solid var(--wwa-border);
+        border-radius: 8px;
+        padding: 11px 13px;
+        color: var(--wwa-ink);
+        font-family: var(--wwa-font-ui);
+        font-size: 14.5px;
+        box-sizing: border-box;
+        transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .wwa-field textarea { min-height: 84px; resize: vertical; }
+
+    .wwa-field input:focus,
+    .wwa-field textarea:focus,
+    .wwa-heading-part input:focus {
+        outline: none;
+        border-color: var(--wwa-gold);
+        box-shadow: 0 0 0 3px rgba(176,124,59,0.15);
+        background: #ffffff;
+    }
+
+    .wwa-field-note {
+        font-size: 12.5px;
+        color: var(--wwa-muted);
+        margin-top: 8px;
+        line-height: 1.5;
+    }
+
+    /* ---------- Heading group: 3 inputs that compose one line ---------- */
+    .wwa-heading-group {
+        display: grid;
+        grid-template-columns: 1.6fr 0.7fr 1.6fr;
+        gap: 12px;
+    }
+
+    .wwa-heading-part label {
+        display: block;
+        font-size: 11.5px;
+        color: var(--wwa-muted);
+        margin-bottom: 6px;
+    }
+
+    .wwa-heading-part input[type="text"] {
+        width: 100%;
+        background: var(--wwa-surface-2);
+        border: 1px solid var(--wwa-border);
+        border-radius: 8px;
+        padding: 11px 13px;
+        color: var(--wwa-ink);
+        font-family: var(--wwa-font-ui);
+        font-size: 14.5px;
+        box-sizing: border-box;
+    }
+
+    .wwa-heading-example {
+        display: block;
+        font-size: 11.5px;
+        color: var(--wwa-gold-dark);
+        margin-top: 6px;
+    }
+
+    @media (max-width: 640px) {
+        .wwa-heading-group { grid-template-columns: 1fr; }
+    }
+
+    .wwa-errors {
+        background: var(--wwa-danger-wash);
+        border: 1px solid rgba(184, 70, 47, 0.3);
+        color: #93392a;
+        padding: 11px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .wwa-divider { border: none; border-top: 1px solid var(--wwa-border); margin: 40px 0 28px; }
+
+    /* ---------- Stat cards ---------- */
+    .wwa-stats-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+    .wwa-stats-head h2 { font-family: var(--wwa-font); font-size: 25px; margin: 0; color: var(--wwa-gold-dark); font-weight: 600; }
+    .wwa-stats-count { font-size: 12px; color: var(--wwa-muted); }
+
+    .wwa-stats-note {
+        font-size: 13px;
+        color: var(--wwa-muted);
+        margin: 0 0 20px;
+        line-height: 1.6;
+    }
+
+    .wwa-stats-note strong { color: var(--wwa-gold-dark); font-weight: 600; }
+
+    .wwa-stat-row {
+        background: var(--wwa-surface);
+        border: 1px solid var(--wwa-border);
+        border-radius: 12px;
+        padding: 18px 20px 16px 68px;
+        margin-bottom: 14px;
+        position: relative;
+        transition: border-color .18s ease;
+    }
+
+    .wwa-stat-row:hover { border-color: var(--wwa-gold-soft); }
+    .wwa-stat-row.wwa-marked-delete { opacity: 0.4; }
+
+    .wwa-position {
+        position: absolute;
+        left: 12px;
+        top: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 42px;
+    }
+
+    .wwa-position-number {
+        font-family: var(--wwa-font);
+        font-size: 21px;
+        font-weight: 700;
+        color: var(--wwa-gold-dark);
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+
+    .wwa-position-btn {
+        width: 30px;
+        height: 24px;
+        border: 1px solid var(--wwa-border);
+        background: #ffffff;
+        color: var(--wwa-gold-dark);
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 11px;
+        margin-bottom: 4px;
+        line-height: 1;
+        transition: all .15s ease;
+    }
+
+    .wwa-position-btn:hover:not(:disabled) { border-color: var(--wwa-gold); background: var(--wwa-gold-wash); }
+    .wwa-position-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .wwa-stat-row-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 0.7fr 0.9fr;
+        gap: 16px;
+        align-items: start;
+    }
+
+    @media (max-width: 720px) {
+        .wwa-stat-row-grid { grid-template-columns: 1fr 1fr; }
+        .wwa-stat-row { padding-left: 60px; }
+    }
+
+    .wwa-stat-field { margin: 0; }
+
+    .wwa-stat-field label {
+        display: block;
+        font-size: 11.5px;
+        color: var(--wwa-muted);
+        margin-bottom: 6px;
+    }
+
+    .wwa-stat-row input[type="text"],
+    .wwa-stat-row input[type="number"] {
+        width: 100%;
+        background: var(--wwa-surface-2);
+        border: 1px solid var(--wwa-border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: var(--wwa-ink);
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .wwa-stat-row input:focus {
+        outline: none;
+        border-color: var(--wwa-gold);
+        box-shadow: 0 0 0 3px rgba(176,124,59,0.15);
+    }
+
+    .wwa-stat-row input[type="checkbox"] {
+        width: 17px; height: 17px;
+        accent-color: var(--wwa-gold);
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+
+    .wwa-stat-example {
+        display: block;
+        font-size: 11.5px;
+        color: var(--wwa-gold-dark);
+        margin-top: 6px;
+    }
+
+    .wwa-stat-field-note {
+        display: block;
+        font-size: 11.5px;
+        color: var(--wwa-muted);
+        margin-top: 6px;
+        line-height: 1.4;
+    }
+
+    /* real order field: driven by JS, kept for submission, not shown */
+    .wwa-order-real { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+
+    .wwa-remove-btn {
+        background: transparent;
+        border: 1px solid rgba(184, 70, 47, 0.35);
+        color: var(--wwa-danger);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        width: 100%;
+        transition: all .15s ease;
+    }
+
+    .wwa-remove-btn:hover { background: var(--wwa-danger-wash); border-color: var(--wwa-danger); }
+    .wwa-delete-field { display: none; }
+
+    .wwa-remove-row-bar { margin-top: 14px; }
+
+    .wwa-add-row-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        border: 1px dashed var(--wwa-border);
+        color: var(--wwa-gold-dark);
+        border-radius: 10px;
+        padding: 13px 20px;
+        font-size: 13px;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+        transition: all .18s ease;
+        font-family: var(--wwa-font-ui);
+    }
+
+    .wwa-add-row-btn:hover { border-color: var(--wwa-gold); background: var(--wwa-gold-wash); }
+
+    .wwa-submit-bar {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        justify-content: flex-end;
+        padding: 18px 0 4px;
+        margin-top: 8px;
+        background: linear-gradient(180deg, rgba(247,244,238,0), var(--wwa-bg) 40%);
+    }
+
+    .wwa-save-btn {
+        background: linear-gradient(180deg, var(--wwa-gold-soft), var(--wwa-gold-dark));
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 36px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        cursor: pointer;
+        box-shadow: 0 12px 24px -10px rgba(140,95,40,0.45);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .wwa-save-btn:hover { transform: translateY(-1px); box-shadow: 0 16px 30px -10px rgba(140,95,40,0.55); }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="wwa-page">
+    <div class="wwa-container">
+
+        <div class="wwa-header">
+            <h1>Edit Who We Are Section</h1>
+            <p>Protyekta field-er niche example o dekhano ache eta website-er kon jaygay show hobe — nichey mini preview-teo dekhte parben layout-ta.</p>
+        </div>
+
+        <form method="post" id="wwa-form" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}<div class="wwa-errors">{{ form.non_field_errors }}</div>{% endif %}
+
+            <!-- ===== LEFT SIDE COPY ===== -->
+            <div class="wwa-card">
+                <h2 class="wwa-card-title">About Who we are</h2>
+                <p class="wwa-card-sub">Left column text — kicker, heading, paragraph, and the small note under it.</p>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        {{ form.kicker_text.label_tag }}
+                        <span class="wwa-field-hint">e.g. <strong>Who we are</strong></span>
+                    </div>
+                    {{ form.kicker_text }}
+                    {% if form.kicker_text.errors %}<div class="wwa-errors">{{ form.kicker_text.errors }}</div>{% endif %}
+                </div>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        {{ form.subtitle.label_tag }}
+                        <span class="wwa-field-hint">e.g. <strong>Bridal Harmony</strong></span>
+                    </div>
+                    {{ form.subtitle }}
+                    {% if form.subtitle.errors %}<div class="wwa-errors">{{ form.subtitle.errors }}</div>{% endif %}
+                </div>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        <label>Heading</label>
+                        <span class="wwa-field-hint">3 parts combine into one line</span>
+                    </div>
+                    <div class="wwa-heading-group">
+                        <div class="wwa-heading-part">
+                            <label for="{{ form.title_main.id_for_label }}">Main</label>
+                            {{ form.title_main }}
+                            <span class="wwa-heading-example">Premium Class Photography</span>
+                            {% if form.title_main.errors %}<div class="wwa-errors">{{ form.title_main.errors }}</div>{% endif %}
+                        </div>
+                        <div class="wwa-heading-part">
+                            <label for="{{ form.title_highlight.id_for_label }}">Highlight</label>
+                            {{ form.title_highlight }}
+                            <span class="wwa-heading-example">&amp;</span>
+                            {% if form.title_highlight.errors %}<div class="wwa-errors">{{ form.title_highlight.errors }}</div>{% endif %}
+                        </div>
+                        <div class="wwa-heading-part">
+                            <label for="{{ form.title_after.id_for_label }}">After</label>
+                            {{ form.title_after }}
+                            <span class="wwa-heading-example">Cinematography Services</span>
+                            {% if form.title_after.errors %}<div class="wwa-errors">{{ form.title_after.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        {{ form.description.label_tag }}
+                        <span class="wwa-field-hint">Main paragraph</span>
+                    </div>
+                    {{ form.description }}
+                    <p class="wwa-field-note">Heading-er ekdom niche show hobe.</p>
+                    {% if form.description.errors %}<div class="wwa-errors">{{ form.description.errors }}</div>{% endif %}
+                </div>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        {{ form.note.label_tag }}
+                        <span class="wwa-field-hint">Small closing line</span>
+                    </div>
+                    {{ form.note }}
+                    <p class="wwa-field-note">Description-er niche, ekta divider line-er por chhoto text hishebe show hobe.</p>
+                    {% if form.note.errors %}<div class="wwa-errors">{{ form.note.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <!-- ===== RIGHT SIDE STATS INTRO ===== -->
+            <div class="wwa-card">
+                <h2 class="wwa-card-title">Stats Intro</h2>
+                <p class="wwa-card-sub">The short line that sits just above the stat card grid.</p>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        {{ form.stats_intro_label.label_tag }}
+                        <span class="wwa-field-hint">e.g. <strong>Our journey</strong></span>
+                    </div>
+                    {{ form.stats_intro_label }}
+                    {% if form.stats_intro_label.errors %}<div class="wwa-errors">{{ form.stats_intro_label.errors }}</div>{% endif %}
+                </div>
+
+                <div class="wwa-field">
+                    <div class="wwa-field-top">
+                        {{ form.stats_intro_text.label_tag }}
+                        <span class="wwa-field-hint">e.g. <strong>More than a decade&hellip;</strong></span>
+                    </div>
+                    {{ form.stats_intro_text }}
+                    {% if form.stats_intro_text.errors %}<div class="wwa-errors">{{ form.stats_intro_text.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <hr class="wwa-divider">
+
+            <!-- ===== STAT CARDS ===== -->
+            <div class="wwa-stats-head">
+                <h2>Stat Cards</h2>
+                <span class="wwa-stats-count" id="wwa-stats-count"></span>
+            </div>
+            <p class="wwa-stats-note">
+                Bam pashe number-e click kore <strong>Up / Down</strong> button diye card-er serial change korte parben —
+                website-e stats-grid-e uporer number-er card <strong>age (left/first)</strong> show hobe.
+            </p>
+
+            {% if formset.non_form_errors %}<div class="wwa-errors">{{ formset.non_form_errors }}</div>{% endif %}
+
+            {{ formset.management_form }}
+
+            <div id="wwa-stat-rows">
+                {% for f in formset %}
+                <div class="wwa-stat-row" data-wwa-row>
+                    <div class="wwa-position">
+                        <button type="button" class="wwa-position-btn" data-wwa-up title="Move up">&#9650;</button>
+                        <span class="wwa-position-number" data-wwa-position-label>{{ forloop.counter }}</span>
+                        <button type="button" class="wwa-position-btn" data-wwa-down title="Move down">&#9660;</button>
+                    </div>
+
+                    {% if f.non_field_errors %}<div class="wwa-errors">{{ f.non_field_errors }}</div>{% endif %}
+
+                    <div class="wwa-stat-row-grid">
+                        {% for hidden in f.hidden_fields %}{{ hidden }}{% endfor %}
+
+                        <div class="wwa-stat-field">
+                            {{ f.label.label_tag }}
+                            {{ f.label }}
+                            <span class="wwa-stat-example">e.g. Happy Clients</span>
+                            {% if f.label.errors %}<div class="wwa-errors">{{ f.label.errors }}</div>{% endif %}
+                        </div>
+                        <div class="wwa-stat-field">
+                            {{ f.target_number.label_tag }}
+                            {{ f.target_number }}
+                            <span class="wwa-stat-example">e.g. 6000</span>
+                            {% if f.target_number.errors %}<div class="wwa-errors">{{ f.target_number.errors }}</div>{% endif %}
+                        </div>
+                        <div class="wwa-stat-field">
+                            {{ f.suffix.label_tag }}
+                            {{ f.suffix }}
+                            <span class="wwa-stat-example">e.g. +</span>
+                            {% if f.suffix.errors %}<div class="wwa-errors">{{ f.suffix.errors }}</div>{% endif %}
+                        </div>
+                        <div class="wwa-stat-field">
+                            {{ f.is_featured.label_tag }}
+                            {{ f.is_featured }}
+                            <span class="wwa-stat-field-note">Card-ta highlighted style-e dekhabe</span>
+                            {% if f.is_featured.errors %}<div class="wwa-errors">{{ f.is_featured.errors }}</div>{% endif %}
+                        </div>
+
+                        <!-- real order field: hidden, JS controls its value -->
+                        <div class="wwa-order-real">
+                            {{ f.order.label_tag }}
+                            {{ f.order }}
+                        </div>
+                        <div class="wwa-delete-field">{{ f.DELETE }}</div>
+                    </div>
+
+                    <div class="wwa-remove-row-bar">
+                        <button type="button" class="wwa-remove-btn" data-wwa-remove>Remove This Card</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="wwa-add-row-btn" id="wwa-add-row">+ Add Another Stat Card</button>
+
+            <div class="wwa-submit-bar">
+                <button type="submit" class="wwa-save-btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+(function () {
+    var container = document.getElementById('wwa-stat-rows');
+    var addBtn = document.getElementById('wwa-add-row');
+    var totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+    var countLabel = document.getElementById('wwa-stats-count');
+
+    function getRows() {
+        return Array.prototype.slice.call(container.querySelectorAll('[data-wwa-row]:not(.wwa-marked-delete)'));
+    }
+
+    function syncPositions() {
+        var rows = getRows();
+        rows.forEach(function (row, index) {
+            var posLabel = row.querySelector('[data-wwa-position-label]');
+            var orderInput = row.querySelector('.wwa-order-real input');
+            var upBtn = row.querySelector('[data-wwa-up]');
+            var downBtn = row.querySelector('[data-wwa-down]');
+
+            if (posLabel) posLabel.textContent = index + 1;
+            if (orderInput) orderInput.value = index + 1;
+            if (upBtn) upBtn.disabled = (index === 0);
+            if (downBtn) downBtn.disabled = (index === rows.length - 1);
+        });
+        countLabel.textContent = rows.length + (rows.length === 1 ? ' card' : ' cards');
+    }
+
+    function wireRowControls(row) {
+        var removeBtn = row.querySelector('[data-wwa-remove]');
+        var upBtn = row.querySelector('[data-wwa-up]');
+        var downBtn = row.querySelector('[data-wwa-down]');
+        var deleteCheckbox = row.querySelector('.wwa-delete-field input[type="checkbox"]');
+
+        removeBtn.addEventListener('click', function () {
+            if (deleteCheckbox) {
+                deleteCheckbox.checked = true;
+                row.classList.add('wwa-marked-delete');
+                row.style.display = 'none';
+            } else {
+                row.remove();
+                renumberForms();
+            }
+            syncPositions();
+        });
+
+        upBtn.addEventListener('click', function () {
+            var prev = row.previousElementSibling;
+            while (prev && prev.classList.contains('wwa-marked-delete')) prev = prev.previousElementSibling;
+            if (prev) {
+                container.insertBefore(row, prev);
+                syncPositions();
+            }
+        });
+
+        downBtn.addEventListener('click', function () {
+            var next = row.nextElementSibling;
+            while (next && next.classList.contains('wwa-marked-delete')) next = next.nextElementSibling;
+            if (next) {
+                container.insertBefore(next, row);
+                syncPositions();
+            }
+        });
+    }
+
+    function renumberForms() {
+        var rows = container.querySelectorAll('[data-wwa-row]');
+        var prefix = totalFormsInput.name.replace('-TOTAL_FORMS', '');
+        rows.forEach(function (row, index) {
+            row.querySelectorAll('input, select, textarea').forEach(function (el) {
+                if (el.name) el.name = el.name.replace(new RegExp(prefix + '-\\d+-'), prefix + '-' + index + '-');
+                if (el.id) el.id = el.id.replace(new RegExp('id_' + prefix + '-\\d+-'), 'id_' + prefix + '-' + index + '-');
+            });
+        });
+        totalFormsInput.value = rows.length;
+    }
+
+    // A card counts as "empty" if none of its actual data fields have anything
+    // in them — regardless of whether it's a brand-new extra form or an
+    // existing saved record. A saved id does NOT make a blank card "real".
+    function isRowEmpty(row) {
+        // Only look inside .wwa-stat-field (label / target number / suffix /
+        // is featured) — never the hidden .wwa-order-real or the id/FK/DELETE
+        // management inputs. Those always carry some value (Django assigns
+        // "order" automatically), which previously made every extra row look
+        // "filled in" even though the user hadn't typed anything.
+        var isEmpty = true;
+        row.querySelectorAll('.wwa-stat-field input[type="text"], .wwa-stat-field input[type="number"], .wwa-stat-field textarea').forEach(function (el) {
+            if (el.value && el.value.trim() !== '') isEmpty = false;
+        });
+        row.querySelectorAll('.wwa-stat-field input[type="checkbox"]').forEach(function (el) {
+            if (el.checked) isEmpty = false;
+        });
+        return isEmpty;
+    }
+
+    function cleanupEmptyRow(row) {
+        var idInput = row.querySelector('input[name$="-id"]');
+        var deleteCheckbox = row.querySelector('.wwa-delete-field input[type="checkbox"]');
+        var hasSavedId = idInput && idInput.value.trim() !== '';
+
+        if (hasSavedId && deleteCheckbox) {
+            // This card already exists in the database but is blank — flag it
+            // for deletion so the next successful save actually removes it,
+            // instead of it coming back as a "required field" error forever.
+            deleteCheckbox.checked = true;
+            row.classList.add('wwa-marked-delete');
+            row.style.display = 'none';
+        } else {
+            // A blank "extra" form that was never saved — just drop it,
+            // nothing needs to be sent to the server for it at all.
+            row.remove();
+        }
+    }
+
+    function stripEmptyExtraRows() {
+        var touchedAny = false;
+        container.querySelectorAll('[data-wwa-row]').forEach(function (row) {
+            if (isRowEmpty(row)) {
+                cleanupEmptyRow(row);
+                touchedAny = true;
+            }
+        });
+        if (touchedAny) renumberForms();
+    }
+
+    stripEmptyExtraRows();
+    container.querySelectorAll('[data-wwa-row]').forEach(wireRowControls);
+    syncPositions();
+
+    addBtn.addEventListener('click', function () {
+        var rows = container.querySelectorAll('[data-wwa-row]');
+        var lastRow = rows[rows.length - 1];
+        var newRow = lastRow.cloneNode(true);
+
+        newRow.querySelectorAll('input[type="text"], input[type="number"]').forEach(function (el) { el.value = ''; });
+        newRow.querySelectorAll('input[type="checkbox"]').forEach(function (el) { el.checked = false; });
+        newRow.classList.remove('wwa-marked-delete');
+        newRow.style.display = '';
+
+        var deleteField = newRow.querySelector('.wwa-delete-field');
+        if (deleteField) deleteField.remove();
+        newRow.querySelectorAll('input[name$="-id"]').forEach(function (el) { el.remove(); });
+
+        var newIndex = parseInt(totalFormsInput.value, 10);
+        newRow.querySelectorAll('[name], [id]').forEach(function (el) {
+            if (el.name) el.name = el.name.replace(/-\d+-/, '-' + newIndex + '-');
+            if (el.id) el.id = el.id.replace(/-\d+-/, '-' + newIndex + '-');
+        });
+
+        totalFormsInput.value = newIndex + 1;
+        container.appendChild(newRow);
+        wireRowControls(newRow);
+        syncPositions();
+    });
+})();
+</script>
+{% endblock %}

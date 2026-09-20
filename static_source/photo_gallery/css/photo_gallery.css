@@ -1,0 +1,608 @@
+/* ==========================================================================
+   Photo Gallery — Premium Theme (Light)
+   A darkroom / contact-sheet inspired admin surface, on warm paper white.
+   Ivory ground, single brass accent, serif display + grotesque body.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,420;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+.pg-theme {
+    --pg-bg: #f6f4ef;
+    --pg-surface: #ffffff;
+    --pg-surface-raised: #f1efe8;
+    --pg-border: rgba(30, 27, 20, 0.10);
+    --pg-border-strong: rgba(30, 27, 20, 0.22);
+    --pg-ink: #221f1a;
+    --pg-ink-muted: #6e695f;
+    --pg-ink-faint: #9a9488;
+    --pg-brass: #a9782d;
+    --pg-brass-hover: #8f6423;
+    --pg-brass-soft: rgba(169, 120, 45, 0.12);
+    --pg-rust: #9c4a37;
+    --pg-rust-soft: rgba(156, 74, 55, 0.10);
+    --pg-sage: #5c7752;
+    --pg-sage-soft: rgba(92, 119, 82, 0.10);
+    --pg-font-display: "Fraunces", Georgia, serif;
+    --pg-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    font-family: var(--pg-font-body);
+    color: var(--pg-ink);
+    background: var(--pg-bg);
+}
+
+.pg-theme * {
+    box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+.pg-header {
+    background: linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
+    border-bottom: 2px solid var(--pg-brass);
+    border-radius: 4px 4px 0 0;
+    padding: 1.35rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.pg-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.pg-title {
+    font-family: var(--pg-font-display);
+    font-weight: 500;
+    font-size: 1.55rem;
+    letter-spacing: 0.01em;
+    color: var(--pg-ink);
+    margin: 0;
+    line-height: 1.1;
+}
+
+.pg-subtitle {
+    font-size: 0.82rem;
+    color: var(--pg-ink-muted);
+    margin: 0;
+}
+
+.pg-btn {
+    font-family: var(--pg-font-body);
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    padding: 0.6rem 1.15rem;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid transparent;
+    line-height: 1;
+}
+
+.pg-btn-brass {
+    background: var(--pg-brass);
+    color: #fffdf8;
+    border-color: var(--pg-brass);
+}
+
+.pg-btn-brass:hover {
+    background: var(--pg-brass-hover);
+    border-color: var(--pg-brass-hover);
+}
+
+.pg-btn-ghost {
+    background: transparent;
+    color: var(--pg-brass);
+    border-color: var(--pg-brass-soft);
+}
+
+.pg-btn-ghost:hover {
+    background: var(--pg-brass-soft);
+    border-color: var(--pg-brass);
+}
+
+.pg-btn-outline-muted {
+    background: transparent;
+    color: var(--pg-ink-muted);
+    border-color: var(--pg-border-strong);
+}
+
+.pg-btn-outline-muted:hover {
+    color: var(--pg-ink);
+    border-color: var(--pg-ink-muted);
+}
+
+/* ---------- Body panel ---------- */
+.pg-body {
+    background: var(--pg-surface);
+    border: 1px solid var(--pg-border);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 1.5rem;
+    position: relative;
+}
+
+/* ---------- Table (contact-sheet) ---------- */
+.pg-table-frame {
+    border: 1px solid var(--pg-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+table.pg-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--pg-surface);
+    font-family: var(--pg-font-body);
+}
+
+table.pg-table thead th {
+    background: var(--pg-surface-raised);
+    color: var(--pg-ink-muted);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-align: center;
+    padding: 0.75rem 0.6rem;
+    border-bottom: 2px solid var(--pg-brass-soft);
+}
+
+table.pg-table tbody td {
+    padding: 0.65rem 0.6rem;
+    font-size: 0.82rem;
+    color: var(--pg-ink);
+    border-bottom: 1px solid var(--pg-border);
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.pg-table tbody tr {
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+table.pg-table tbody tr:hover {
+    background: var(--pg-surface-raised);
+    border-left-color: var(--pg-brass);
+}
+
+table.pg-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+table.pg-table .dataTables_empty {
+    color: var(--pg-ink-faint);
+    font-style: italic;
+    padding: 2rem 0;
+}
+
+/* thumbnail frame for photo cells */
+.pg-thumb {
+    width: 64px;
+    height: 48px;
+    object-fit: cover;
+    border: 1px solid var(--pg-border-strong);
+    border-radius: 2px;
+    padding: 2px;
+    background: var(--pg-bg);
+}
+
+/* ---------- Icon buttons in tables ---------- */
+.pg-icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--pg-border-strong);
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s ease;
+    margin: 0 0.15rem;
+}
+
+.pg-icon-btn.pg-edit {
+    color: var(--pg-brass);
+}
+
+.pg-icon-btn.pg-edit:hover {
+    background: var(--pg-brass-soft);
+    border-color: var(--pg-brass);
+}
+
+.pg-icon-btn.pg-delete {
+    color: var(--pg-rust);
+}
+
+.pg-icon-btn.pg-delete:hover {
+    background: var(--pg-rust-soft);
+    border-color: var(--pg-rust);
+}
+
+/* ---------- Loader ---------- */
+.pg-theme .loader {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.78);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transition: opacity 0.25s ease;
+}
+
+.pg-theme .loader::after {
+    content: "";
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid var(--pg-border-strong);
+    border-top-color: var(--pg-brass);
+    animation: pg-spin 0.8s linear infinite;
+}
+
+.pg-theme .loader-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes pg-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Modal (Add / Edit) — shared
+   ========================================================================== */
+
+.pg-modal {
+    background: var(--pg-surface);
+    color: var(--pg-ink);
+    font-family: var(--pg-font-body);
+    padding: 1.75rem;
+    border-radius: 4px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(30, 27, 20, 0.06);
+}
+
+.pg-modal-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--pg-border);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pg-modal-title {
+    font-family: var(--pg-font-display);
+    font-weight: 500;
+    font-size: 1.35rem;
+    color: var(--pg-ink);
+    margin: 0;
+}
+
+.pg-modal-close {
+    background: transparent;
+    border: 1px solid var(--pg-border-strong);
+    color: var(--pg-ink-muted);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.95rem;
+    line-height: 1;
+    transition: all 0.15s ease;
+}
+
+.pg-modal-close:hover {
+    color: var(--pg-rust);
+    border-color: var(--pg-rust);
+}
+
+/* details panel (left) */
+.pg-panel {
+    background: var(--pg-surface-raised);
+    border: 1px solid var(--pg-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.pg-panel-label {
+    font-size: 0.72rem;
+    color: var(--pg-ink-faint);
+    letter-spacing: 0.03em;
+    margin-bottom: 1.1rem;
+}
+
+.pg-field {
+    margin-bottom: 1.4rem;
+}
+
+.pg-field:last-child {
+    margin-bottom: 0;
+}
+
+.pg-field label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--pg-ink-muted);
+    margin-bottom: 0.4rem;
+}
+
+.pg-field label.required::after {
+    content: " *";
+    color: var(--pg-brass);
+}
+
+.pg-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--pg-border-strong);
+    color: var(--pg-ink);
+    font-family: var(--pg-font-body);
+    font-size: 0.92rem;
+    padding: 0.5rem 0.1rem;
+    border-radius: 0;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.pg-input:focus {
+    border-bottom: 2px solid var(--pg-brass);
+    padding-bottom: calc(0.5rem - 1px);
+}
+
+textarea.pg-input {
+    resize: vertical;
+    min-height: 4.5rem;
+}
+
+select.pg-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--pg-ink-muted) 50%), linear-gradient(135deg, var(--pg-ink-muted) 50%, transparent 50%);
+    background-position: calc(100% - 12px) center, calc(100% - 6px) center;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 1.5rem;
+}
+
+select.pg-input option {
+    background: var(--pg-surface);
+    color: var(--pg-ink);
+}
+
+/* upload panel (right) */
+.pg-upload-panel {
+    background: var(--pg-surface-raised);
+    border: 1px solid var(--pg-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.pg-dropzone {
+    position: relative;
+    border: 1.5px dashed var(--pg-border-strong);
+    border-radius: 3px;
+    padding: 1.5rem 1rem 1.25rem;
+    text-align: center;
+    margin-bottom: 1.4rem;
+    background: var(--pg-surface);
+    transition: border-color 0.15s ease;
+}
+
+.pg-dropzone:hover {
+    border-color: var(--pg-brass);
+}
+
+/* sprocket dots referencing filmstrip — the one deliberate motif */
+.pg-dropzone::before,
+.pg-dropzone::after {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    height: 1px;
+    background-image: radial-gradient(circle, var(--pg-border-strong) 1.5px, transparent 1.6px);
+    background-size: 14px 1px;
+    background-repeat: repeat-x;
+}
+
+.pg-dropzone::before {
+    top: 6px;
+}
+
+.pg-dropzone::after {
+    bottom: 6px;
+}
+
+.pg-frame {
+    width: 100%;
+    max-width: 220px;
+    min-height: 60px;
+    margin: 0 auto 0.9rem;
+    border: 1px solid var(--pg-border-strong);
+    background: var(--pg-surface-raised);
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pg-frame img {
+    max-width: 100%;
+    max-height: 160px;
+    display: block;
+}
+
+.pg-frame:empty {
+    display: none;
+}
+
+.pg-frame.pg-has-image {
+    display: flex;
+}
+
+.pg-dropzone h4 {
+    font-family: var(--pg-font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--pg-ink);
+    margin: 0 0 0.2rem;
+}
+
+.pg-dropzone p {
+    font-size: 0.72rem;
+    color: var(--pg-ink-faint);
+    margin: 0 0 0.9rem;
+}
+
+.pg-choose-btn {
+    display: inline-block;
+    border: 1px solid var(--pg-brass);
+    color: var(--pg-brass);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.pg-choose-btn:hover {
+    background: var(--pg-brass);
+    color: #fffdf8;
+}
+
+/* mini table (photo list inside modal) reuses .pg-table styling */
+.pg-mini-table-wrap {
+    margin-top: 1.75rem;
+}
+
+.pg-mini-table-wrap .pg-section-label {
+    font-size: 0.72rem;
+    color: var(--pg-ink-faint);
+    margin-bottom: 0.6rem;
+}
+
+input[type="radio"].pg-radio {
+    accent-color: var(--pg-brass);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.pg-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--pg-border);
+}
+
+@media (max-width: 767px) {
+    .pg-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* ---------- Filter bar ---------- */
+.pg-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: end;
+    background: var(--pg-surface-raised);
+    border: 1px solid var(--pg-border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.pg-filter-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+    flex: 1 1 160px;
+}
+
+.pg-filter-field label {
+    font-size: 0.72rem;
+    color: var(--pg-ink-faint);
+    margin-bottom: 0.3rem;
+}
+
+.pg-filter-search {
+    flex: 1 1 220px;
+}
+
+.pg-filter-actions {
+    flex: 0 0 auto;
+}
+
+/* ---------- Checkboxes (add/edit forms) ---------- */
+.pg-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.pg-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--pg-ink);
+    cursor: pointer;
+}
+
+.pg-checkbox {
+    accent-color: var(--pg-brass);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ---------- Tag badges (list table) ---------- */
+.pg-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    margin: 0 0.15rem;
+    white-space: nowrap;
+}
+
+.pg-badge-brass {
+    background: var(--pg-brass-soft);
+    color: var(--pg-brass-hover);
+}
+
+.pg-badge-sage {
+    background: var(--pg-sage-soft);
+    color: var(--pg-sage);
+}
+
+.pg-badge-rust {
+    background: var(--pg-rust-soft);
+    color: var(--pg-rust);
+}
+
+.pg-badge-empty {
+    color: var(--pg-ink-faint);
+}

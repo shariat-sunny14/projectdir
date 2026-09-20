@@ -1,0 +1,137 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_link %}
+<!--========== CSS ==========-->
+<link rel="stylesheet" href="{% static 'user_setup_style/css/user_setup_style.css' %}">
+<style>
+    .form-control:hover {
+        background: none;
+    }
+</style>
+
+<!--========== from js file ==========-->
+
+{% endblock %}
+<!--========== CONTENTS start==========-->
+{% block body %}
+<!-- loader start -->
+<!-- <div class="loader"></div> -->
+<!-- loader end -->
+<main>
+    <div class="col-sm-12">
+        <div class="card main-card">
+            <div class="card-body card-body_item_setup">
+                <div class="itemsetup_container">
+                    <form action="" method="" id="PackagesHBForm">
+                        <div class="add_edit_head">
+                            <h2 class="text-primary">Add New Advertisement Banner Info</h2>
+                        </div>
+                        <!--  -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card add_user_card">
+                                    <div class="card-body">
+                                        <div class="user_add_body">
+                                            <div class="sub_body_one">
+                                                <div class="row add_user_row">
+
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-sm-12" style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-between; align-items: center;">
+                                                            <label for="id_head_name"
+                                                                class="col-form-label font_size required">
+                                                                Title/Header:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-12 adduser_col">
+                                                            {% if packages_data %}
+                                                                {% for package in packages_data %}
+                                                                <input type="text" class="form-control form_adduser_body" value="{{ package.head_name }}"
+                                                                    id="id_head_name" name="head_name" maxlength="150"
+                                                                    required autocomplete="off">
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <input type="text" class="form-control form_adduser_body"
+                                                                    id="id_head_name" name="head_name" maxlength="150"
+                                                                    required autocomplete="off">
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-sm-2">
+                                                            <label for="id_body_text"
+                                                                class="col-form-label font_size required">
+                                                                Body Text:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-12 adduser_col">
+                                                            {% if packages_data %}
+                                                                {% for package in packages_data %}
+                                                                <textarea name="body_text" id="id_body_text" class="form-control form_adduser_body"
+                                                                    required maxlength="1000" style="height: 20rem;"
+                                                                    autocomplete="off">{{ package.body_text }}</textarea>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <textarea name="body_text" id="id_body_text" class="form-control form_adduser_body"
+                                                                    required maxlength="1000" style="height: 20rem;"
+                                                                    autocomplete="off"></textarea>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  -->
+                        </div>
+                        <div class="usersetup_modal-footer"
+                            style="display: flex; justify-content: right; align-items: center; text-align: center; margin-bottom: 1rem;">
+                            
+                            <button id="addUserBtn" name="submit" type="submit" class="btn btn-success"
+                                style="font-size: 0.85rem; padding: 0.5rem; margin-right: 1rem;">
+                                Add/Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    $(function () {
+        $('#PackagesHBForm').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                url: "{% url 'save_update_packages_head_body' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.success) {
+                        toastr.success(resp.msg);
+                        setTimeout(function () { location.reload() }, 300);
+                    } else {
+                        toastr.error(resp.errmsg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    toastr.error("An error occurred while processing the request.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

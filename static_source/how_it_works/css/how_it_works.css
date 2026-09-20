@@ -1,0 +1,376 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+.hiw-admin {
+    --ink: #20242B;
+    --ink-soft: #5B6270;
+    --ink-faint: #8890A0;
+    --paper: #EEF0F2;
+    --surface: #FFFFFF;
+    --line: #DCE0E3;
+    --accent: #A9782E;
+    --accent-deep: #7C5A22;
+    --accent-soft: #F3E8D3;
+    --danger: #B4432F;
+    --danger-soft: #F5E2DD;
+    --success: #3F7D58;
+    --success-soft: #E1EDE4;
+
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+}
+
+/* ---------- Section heading card ---------- */
+.hiw-heading-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hiw-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.3rem;
+}
+
+.hiw-kicker::before {
+    content: '';
+    width: 14px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+}
+
+.hiw-heading-card h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin: 0;
+}
+
+/* ---------- Buttons ---------- */
+.hiw-admin .btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    padding: 0.5rem 1.1rem;
+    transition: all 0.15s ease;
+    box-shadow: none;
+}
+
+.hiw-admin .btn-primary,
+.hiw-admin .btn-outline-primary {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #fff;
+}
+
+.hiw-admin .btn-outline-primary {
+    background: transparent;
+    color: var(--accent-deep);
+}
+
+.hiw-admin .btn-primary:hover,
+.hiw-admin .btn-outline-primary:hover {
+    background: var(--accent-deep);
+    border-color: var(--accent-deep);
+    color: #fff;
+}
+
+.hiw-admin .btn-outline-secondary {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+}
+
+.hiw-admin .btn-outline-secondary:hover {
+    border-color: var(--ink-soft);
+    color: var(--ink);
+    background: var(--paper);
+}
+
+.hiw-admin .btn-outline-danger {
+    background: transparent;
+    border: 1px solid var(--danger-soft);
+    color: var(--danger);
+}
+
+.hiw-admin .btn-outline-danger:hover {
+    background: var(--danger-soft);
+    border-color: var(--danger);
+}
+
+.hiw-admin .btn-danger {
+    background: var(--danger);
+    border: 1px solid var(--danger);
+    color: #fff;
+}
+
+.hiw-admin .btn-danger:hover {
+    background: #97372A;
+    border-color: #97372A;
+}
+
+.hiw-admin .btn-light {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+}
+
+.hiw-admin .btn-light:hover {
+    background: var(--paper);
+}
+
+.hiw-admin .btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ---------- Steps header ---------- */
+.hiw-steps-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.hiw-steps-header h5 {
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+}
+
+/* ---------- Step card ---------- */
+.hiw-step-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hiw-step-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(32, 36, 43, 0.06);
+}
+
+.hiw-step-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.step-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    color: var(--accent-deep);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+}
+
+.hiw-status {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+}
+
+.hiw-status--active {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.hiw-status--hidden {
+    background: var(--paper);
+    color: var(--ink-faint);
+}
+
+.hiw-step-card h6 {
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0.25rem 0 0.4rem;
+}
+
+.hiw-step-card p {
+    color: var(--ink-soft);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.hiw-step-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ---------- Empty state ---------- */
+.hiw-empty {
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--ink-soft);
+    background: var(--surface);
+}
+
+/* ---------- Forms ---------- */
+.hiw-form-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.hiw-form-card h5 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+}
+
+.hiw-admin .form-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-bottom: 0.35rem;
+}
+
+.hiw-admin input[type="text"],
+.hiw-admin input[type="number"],
+.hiw-admin textarea,
+.hiw-admin select {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--surface);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hiw-admin input:focus,
+.hiw-admin textarea:focus,
+.hiw-admin select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.hiw-admin .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0;
+}
+
+.hiw-admin .form-check-input {
+    width: 1.05rem;
+    height: 1.05rem;
+    border: 1.5px solid var(--line);
+    margin: 0;
+}
+
+.hiw-admin .form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.hiw-admin .form-check-label {
+    color: var(--ink);
+    font-size: 0.9rem;
+}
+
+.hiw-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+}
+
+.hiw-admin .alert-danger {
+    background: var(--danger-soft);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    padding: 0.85rem 1rem;
+}
+
+/* ---------- Delete confirm ---------- */
+.hiw-delete-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.hiw-delete-card h5 {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+}
+
+.hiw-note {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+.hiw-delete-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+}
+
+@media (max-width: 576px) {
+
+    .hiw-heading-card,
+    .hiw-form-card,
+    .hiw-delete-card {
+        padding: 1.25rem;
+    }
+
+    .hiw-form-actions,
+    .hiw-delete-actions {
+        justify-content: stretch;
+    }
+
+    .hiw-form-actions .btn,
+    .hiw-delete-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+}

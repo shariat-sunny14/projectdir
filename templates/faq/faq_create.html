@@ -1,0 +1,146 @@
+{% extends 'base_form/main_base/main_base.html' %}
+{% load static %}
+
+{% block extra_link %}
+<style>
+
+/* 🌟 Background */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* 🌟 Card */
+.form-wrapper {
+    max-width: 600px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* 🌟 Title */
+.form-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1e293b;
+}
+
+/* 🌟 Input Group */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* 🌟 Input */
+.form-control {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+    background: #fff;
+}
+
+/* Focus Effect */
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+}
+
+/* 🌟 Textarea */
+textarea.form-control {
+    resize: none;
+    height: 20rem;
+}
+
+/* 🌟 Checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+/* 🌟 Button */
+.btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79,70,229,0.4);
+}
+
+/* 🌟 Back Button */
+.btn-back {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.btn-back:hover {
+    color: #1e293b;
+}
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="form-wrapper">
+
+    <!-- 🔥 Form -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- 🔥 Title -->
+        <div class="form-title" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-content: center;">
+            ➕ Add New FAQ
+            <!-- Active -->
+            <div class="checkbox-group">
+                <input type="checkbox" name="is_active" id="id_is_active" checked style="width: 15%;">
+                <label for="id_is_active">Active</label>
+            </div>
+        </div>
+
+        <!-- Serial -->
+        <div class="form-group">
+            <input type="number" name="is_serial" class="form-control" placeholder="Serial Number">
+        </div>
+
+        <!-- Question -->
+        <div class="form-group">
+            <input type="text" name="question" class="form-control" placeholder="Enter Question">
+        </div>
+
+        <!-- Answer -->
+        <div class="form-group">
+            <textarea name="answer" class="form-control" placeholder="Enter Answer"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-submit">💾 Save FAQ</button>
+    </form>
+
+    <!-- Back -->
+    <a href="{% url 'faq_list' %}" class="btn-back">← Back to List</a>
+
+</div>
+
+{% endblock %}

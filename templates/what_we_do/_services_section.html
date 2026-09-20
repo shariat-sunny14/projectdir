@@ -1,0 +1,29 @@
+{% load static %}
+<section id="services">
+    <div class="wrap">
+        <div class="section-head reveal">
+            <div class="kicker"><span></span>{{ section.kicker_text }}</div>
+            <h2>{{ section.heading }}</h2>
+            <p>{{ section.sub_text }}</p>
+        </div>
+        <div class="services-grid reveal">
+            {% for service in services %}
+            <div class="service-card">
+                <span class="service-num">{{ service.display_number }}</span>
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.description }}</p>
+
+                <div class="service-actions">
+                    <a href="{% url 'what_we_do:service_edit' service.pk %}">Edit</a>
+                    <form method="post" action="{% url 'what_we_do:service_delete' service.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('আপনি কি নিশ্চিত?');">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-state">এখনো কোনো সার্ভিস যোগ করা হয়নি।</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
